@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="meter.js?v=20"></script>
+  <script  src="coin.js?v=20" defer></script>
+  <script src="daily.js?v=20"></script>
+  <script  src="navi.js?v=20"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
+	       crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css?v=20">
+  <link rel="icon" href="data:,">
+  <title>Palmu 確定値までの必要コイン数</title>
+</head>
+<body>
+
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="target_link"></nav>
+<nav id="navi"></nav>
+<script>navi("index", "navi");</script>
+<br>
+
+<div class="intro">
+現在のライブスコアから，<span id="index_rank"></span>保証ボーダーまでに必要なコイン数(参考値)を計算します．
+</div>
+
+<label id="score_label">現在のライブスコア: </label><input type="number" id="b" value="0"><br><br>
+
+<div class="output-block">
+<button class="copy-button" onclick="copyResult('result')">📋コピー</button>
+<textarea class="copy-output" id="result" readonly cols=40 rows=1 placeholder=""></textarea><br>
+</div>
+<small>(現在のスコア +2=確定+2に必要なコイン数, +4=確定+4に必要なコイン数, +6=確定+6に必要なコイン数)</small>
+
+<div class="guaranteed-score">
+	<span class="">保証ボーダー	<small>(確定スコア)</small></span>
+	<div class="input-row">
+		<label for="a2">+2</label>
+		<input type="number" id="a2" value="43990">
+	</div>
+	<div class="input-row">
+		<label for="a4">+4</label>
+		<input type="number" id="a4" value="84990">
+	</div>
+	<div class="input-row">
+		<label for="a6">+6</label>
+		<input type="number" id="a6" value="172990">
+	</div>
+</div>
+
+<button class="copy-button" onclick="copyResult('scores')">📋コピー</button>
+<textarea class="copy-output" id="scores" readonly cols=40 rows=1>(スコア)</textarea><br>
+
+
+<span class="sub-title">使い方</span>
+
+<ul class="help">
+	<li>最初に一番上のタブから，ランクを選択してください．
+	<li>+2/+4/+6 の保証ボーダーが正しいことを確認してください．正しくなければ修正してください．
+	<li>現在のライブスコアを入力してください．保証ボーダーまでに必要なコイン数が計算されます．
+	<li>「コピー」ボタンを押下して，Palmu のチャットに貼り付けてください．
+</ul>
+
+<span class="sub-title">注意事項</span>
+
+<ul class="help">
+	<li>必要なコイン数は，スコアの 1/3 として計算しています．
+コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．
+	<li>保証ボーダー（確定スコア）は手動で更新しているため，最新になっていなかったり，間違った値になっている可能性があります．
+改善要望・不具合報告は，<a href=https://github.com/ru-palmu/meter>GitHub</a> までおねがいします．
+</ul>
+
+</body>
+</html>
+

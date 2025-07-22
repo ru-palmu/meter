@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="meter.js?v=20"></script>
+  <script  src="coin.js?v=20" defer></script>
+  <script src="daily.js?v=20"></script>
+  <script  src="navi.js?v=20"></script>
+  <script src="graph.js?v=20" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
+	       crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css?v=20">
+  <link rel="icon" href="data:,">
+  <title>Palmu 確定スコアの履歴</title>
+</head>
+<body>
+
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="target_link"></nav>
+<nav id="navi"></nav>
+<script>navi("history", "navi");</script>
+<br>
+
+<div class="intro">
+保証ボーダー(確定スコア)の変化を確認します．
+ここの表の一番上の値が，「メーター」や「プラン」で利用しているものです．
+</div>
+
+<p>保証ボーダー（確定スコア）は，隔週の金曜日に更新されます。</p>
+
+<p>
+<table class="history">
+<tr>
+  <th>date</th>
+  <th>+2</th>
+  <th>+4</th>
+  <th>+6</th>
+  <th>4/2</th>
+  <th>6/2</th>
+  <th>6/4</th>
+</tr>
+<tbody id="history"></tbody>
+</table>
+
+
+<div>
+	<canvas id="chart-history"></canvas>
+</div>
+
+
+<span class="sub-title">表の見方</span>
+
+<p>
+<span class="inline-code">+2</span>列，
+<span class="inline-code">+4</span>列，
+<span class="inline-code">+6</span>列は，それぞれ，
++2, +4, +6 の保証ボーダー（確定スコア）の数値です．
+保証ボーダーは 1/1000 の値を表示しています．
+前の値よりも減っている場合には，赤背景になっています．
+
+
+<p>
+<span class="inline-code">4/2</span>列，
+<span class="inline-code">6/2</span>列，
+<span class="inline-code">6/4</span>列は，
+保証ボーダーの比を表しています．
+例えば，<span class="inline-code">4/2</span> は，
+<span class="inline-code">+4</span> を
+<span class="inline-code">+2</span> の値で割った値です．
+
+</body>
+</html>
+
