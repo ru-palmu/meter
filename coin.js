@@ -157,15 +157,24 @@ function calculateLiveScoreToCoins(rank = '') {
     return `+${i}=${s.toLocaleString()}`;
   });
 
-  ret = b.toLocaleString();
+  let help = '(現在のスコア';
+  let help2 = '';
+
+  let ret = b.toLocaleString();
   if (targets.length == 1) {
 	ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
+    help += ' / 保証ボーダー';
+	help2 += '+' + targets[0] + '=確定+' + targets[0] + 'に必要なコイン数';
+  } else {
+	help2 += '+2=確定+2に必要なコイン数, +4=確定+4に必要なコイン数, +6=確定+6に必要なコイン数';
   }
   ret += ' 🪙 ';
+
   ret += results.filter(s => s !== "").join(', ');
   // ret +=  ': ' + getCurrentTime() + '';
   document.getElementById("result").value = ret;
 
+  document.getElementById("result-placeholder").innerHTML = help + ' 🪙 ' + help2 + ')';
 
   ret = `${rank}確定スコア +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
   document.getElementById("scores").value = ret;

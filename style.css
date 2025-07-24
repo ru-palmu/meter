@@ -188,6 +188,13 @@ body {
 }
 
 
+.help-text {
+  font-size: smaller;
+  color: #666;
+  margin-top: 4px;
+  display: block;
+}
+
 
 /** 個別: history.html **/
 
