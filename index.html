@@ -9,7 +9,7 @@
   <script  src="navi.js?v=20"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
 	       crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="style.css?v=20">
+  <link rel="stylesheet" href="style.css?v=18">
   <link rel="icon" href="data:,">
   <title>Palmu 確定値までの必要コイン数</title>
 </head>
@@ -29,6 +29,13 @@
 
 <div class="output-block">
 <button class="copy-button" onclick="copyResult('result')">📋コピー</button>
+<select id="result-format">
+	<option value="all">全部</option>
+	<option value="2">+2 のみ</option>
+	<option value="4">+4 のみ</option>
+	<option value="6">+6 のみ</option>
+</select>
+
 <textarea class="copy-output" id="result" readonly cols=40 rows=1 placeholder=""></textarea><br>
 </div>
 <small>(現在のスコア +2=確定+2に必要なコイン数, +4=確定+4に必要なコイン数, +6=確定+6に必要なコイン数)</small>

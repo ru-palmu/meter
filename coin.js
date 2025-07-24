@@ -140,7 +140,15 @@ function calculateLiveScoreToCoins(rank = '') {
     b = 0;
   }
 
-  const results = [2, 4, 6].map(i => {
+  const format = document.getElementById("result-format").value;
+  let targets = [];
+  if (format == 'all') {
+	  targets = [2, 4, 6];
+  } else {
+	  targets = [parseInt(format)];
+  }
+
+  const results = targets.map(i => {
     // 残スコアから必要コイン数を算出
     const s = roundUpToNearest10((a[i] - b) / 3);
     if (s < 20) {
@@ -149,7 +157,11 @@ function calculateLiveScoreToCoins(rank = '') {
     return `+${i}=${s.toLocaleString()}`;
   });
 
-  ret = b.toLocaleString() + ' 🪙 ';
+  ret = b.toLocaleString();
+  if (targets.length == 1) {
+	ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
+  }
+  ret += ' 🪙 ';
   ret += results.filter(s => s !== "").join(', ');
   // ret +=  ': ' + getCurrentTime() + '';
   document.getElementById("result").value = ret;
@@ -180,7 +192,6 @@ function applyPreset() {
     document.getElementById("a6").value = p[6];
     calculate(selected);
   }
-
 }
 
 
@@ -224,7 +235,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'b', 'days', 'points'].forEach(id => {
+  ['a2', 'a4', 'a6', 'result-format', 'b', 'days', 'points'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
 
