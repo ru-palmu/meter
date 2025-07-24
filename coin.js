@@ -90,7 +90,7 @@ function renderBorderHistory(rank) {
 
   const rankH3 = document.getElementById("history_rank");
   if (rankH3) {
-    rankH3.innerHTML = ': ' + rank;
+    rankH3.innerHTML = 'ランク' + rank + 'の';
   }
 }
 
