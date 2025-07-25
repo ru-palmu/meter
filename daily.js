@@ -67,7 +67,7 @@ function calculatePlans() {
 	let result = rank + ": " + days + "日で +" + points + "\nプラン\t|\tコイン";
 	for (const [plan, score] of rawPlans) {
 
-        s = roundUpToNearest10(score / 3);
+        s = score2coin(score);
 		result += "\n" + plan.join("") + "\t|\t" + s.toLocaleString();
 	}
 	document.getElementById("result_daily").value = result;

@@ -5,7 +5,7 @@ const cand_rank = ["B1", "B2", "B3", "A1", "A2", "A3", "S"];
 // preset から最新の日付を取得
 const latestDate = Object.keys(presets).sort().reverse()[0];
 
-// ランクの一覧
+// 各ページ上部のランク選択タブの描画
 function renderLinks(selected_rank) {
   const container = document.getElementById("target_link");
   container.innerHTML = ""; // クリア
@@ -50,10 +50,10 @@ function renderBorderHistory(rank) {
 
   const sortedDates = Object.keys(presets).sort().reverse();
   for (let i = 0; i < sortedDates.length; i++) {
-	const date = sortedDates[i];
+    const date = sortedDates[i];
     if (!presets[date][rank]) {
       continue;
-        }
+    }
     const tr = document.createElement("tr");
 
     // 日付セル
@@ -65,15 +65,15 @@ function renderBorderHistory(rank) {
 
     // 値セル（A1とB3の 2/4/6）
     [2, 4, 6].forEach(point => {
-	  val = a1[point];
+      val = a1[point];
       const td = document.createElement("td");
-	  if (i + 1 < sortedDates.length &&
-		  presets[sortedDates[i + 1]][rank] &&
-		  presets[sortedDates[i + 1]][rank][point] &&
-		  val < presets[sortedDates[i + 1]][rank][point]) {
-		  td.className = 'decrease';
-	  }
-	  td.textContent = formatAsK(val);
+      if (i + 1 < sortedDates.length &&
+          presets[sortedDates[i + 1]][rank] &&
+          presets[sortedDates[i + 1]][rank][point] &&
+          val < presets[sortedDates[i + 1]][rank][point]) {
+          td.className = 'decrease';
+      }
+      td.textContent = formatAsK(val);
       // td.textContent = val.toLocaleString();
       tr.appendChild(td);
     });
@@ -87,22 +87,18 @@ function renderBorderHistory(rank) {
 
     tbody.appendChild(tr);
   }
-
-  const rankH3 = document.getElementById("history_rank");
-  if (rankH3) {
-    rankH3.innerHTML = 'ランク' + rank + 'の';
-  }
 }
 
 
-// 1の位を切り上げ
-function roundUpToNearest10(n) {
-  return Math.ceil(n / 10) * 10;
+// ライブスコアに相当するコイン数を算出する．
+// ギフトの最小値が 10 のため, 1の位を切り上げ.
+function score2coin(score) {
+  coin = score / 3;
+  return Math.ceil(coin / 10) * 10;
 }
-
 
 // 現在時刻取得．未使用
-function getCurrentTime() {
+function _getCurrentTime() {
   const now = new Date();
   const h = String(now.getHours()).padStart(2, '0');
   const m = String(now.getMinutes()).padStart(2, '0');
@@ -114,16 +110,16 @@ function getCurrentTime() {
 // ライブスコアから確定スコアまでのコイン数算出 or
 // プラン計算
 function calculate(rank = '') {
-    if (rank instanceof Event) {
-        rank = '';
-    }
-    if (document.getElementById("b")) {
-        calculateLiveScoreToCoins(rank);
-    }
+  if (rank instanceof Event) {
+    rank = '';
+  }
+  if (document.getElementById("live_score")) {
+    calculateLiveScoreToCoins(rank);
+  }
 
-    if (document.getElementById("days")) {
-        calculatePlans(rank);
-    }
+  if (document.getElementById("days")) {
+    calculatePlans(rank);
+  }
 }
 
 
@@ -134,7 +130,7 @@ function calculateLiveScoreToCoins(rank = '') {
     4: parseInt(document.getElementById("a4").value),
     6: parseInt(document.getElementById("a6").value)
   };
-  let b = parseInt(document.getElementById("b").value);
+  let b = parseInt(document.getElementById("live_score").value);
 
   if (isNaN(b) || b === 0) {
     b = 0;
@@ -143,14 +139,14 @@ function calculateLiveScoreToCoins(rank = '') {
   const format = document.getElementById("result-format").value;
   let targets = [];
   if (format == 'all') {
-	  targets = [2, 4, 6];
+    targets = [2, 4, 6];
   } else {
-	  targets = [parseInt(format)];
+    targets = [parseInt(format)];
   }
 
   const results = targets.map(i => {
     // 残スコアから必要コイン数を算出
-    const s = roundUpToNearest10((a[i] - b) / 3);
+    const s = score2coin(a[i] - b);
     if (s < 20) {
         return '';
     }
@@ -162,11 +158,11 @@ function calculateLiveScoreToCoins(rank = '') {
 
   let ret = b.toLocaleString();
   if (targets.length == 1) {
-	ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
+    ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
     help += ' / 保証ボーダー';
-	help2 += '+' + targets[0] + '=確定+' + targets[0] + 'に必要なコイン数';
+    help2 += '+' + targets[0] + '=確定+' + targets[0] + 'に必要なコイン数';
   } else {
-	help2 += '+2=確定+2に必要なコイン数, +4=確定+4に必要なコイン数, +6=確定+6に必要なコイン数';
+    help2 += '+2=確定+2に必要なコイン数, +4=確定+4に必要なコイン数, +6=確定+6に必要なコイン数';
   }
   ret += ' 🪙 ';
 
@@ -180,6 +176,7 @@ function calculateLiveScoreToCoins(rank = '') {
   document.getElementById("scores").value = ret;
 }
 
+// 選択されているランクを取得
 function selectedRank() {
   const radios = document.getElementsByName("rank");
   const presetFromURL = getQueryParam("r");
@@ -235,18 +232,22 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   if (key) {
     renderBorderHistory(key);
+    renderLinks(key);
 
-	if (document.getElementById("index_rank")) {
-	  document.getElementById("index_rank").textContent = 'ランク' + key + 'での';
-	}
+    [
+      ['index_rank', 'ランク', 'での'],
+      ['history_rank', 'ランク', 'の'],
+    ].forEach(([id, prefix, suffix]) => {
+      const sp = document.getElementById(id);
+      if (sp) {
+        sp.textContent = prefix + key + suffix;
+      }
+    });
   }
-  renderLinks(key);
-
 
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'result-format', 'b', 'days', 'points'].forEach(id => {
+  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'days', 'points'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
-
 });
 
