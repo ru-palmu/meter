@@ -121,7 +121,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'days', 'points'].forEach(id => {
+  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'days', 'points', 'result_format'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
 });

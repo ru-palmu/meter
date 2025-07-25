@@ -28,6 +28,11 @@
 <p>保証ボーダー（確定スコア）は，隔週の金曜日に更新されます。</p>
 
 <p>
+<select id="result-format">
+	<option value="score">保証ボーダー</option>
+	<option value="coin">コイン</option>
+</select>
+<br>
 <table class="history">
 <tr>
   <th>date</th>
@@ -55,8 +60,9 @@
 <span class="inline-code">+6</span>列は，それぞれ，
 +2, +4, +6 の保証ボーダー（確定スコア）の数値です．
 保証ボーダーは 1/1000 の値を表示しています．
-前の値よりも減っている場合には，赤背景になっています．
-
+例えば，410k の場合には, 410 と表示され，
+8130 の場合には， 8.1 と表示されます．
+前回の値よりも小さくなっている場合には，赤背景になります．
 
 <p>
 <span class="inline-code">4/2</span>列，

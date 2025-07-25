@@ -1,4 +1,12 @@
 
+function _scoreOrCoinHistory(val, format) {
+    if (format == 'coin') {
+        val = score2coin(val);
+    }
+	return val;
+}
+
+
 // preset を出力 (for 履歴 history.html)
 // 保証ボーダーの履歴
 function renderBorderHistory() {
@@ -11,6 +19,7 @@ function renderBorderHistory() {
   rank = selectedRank();
 
   const sortedDates = Object.keys(presets).sort().reverse();
+  const format = document.getElementById("result-format").value;
   for (let i = 0; i < sortedDates.length; i++) {
     const date = sortedDates[i];
     if (!presets[date][rank]) {
@@ -35,7 +44,7 @@ function renderBorderHistory() {
           val < presets[sortedDates[i + 1]][rank][point]) {
           td.className = 'decrease';
       }
-      td.textContent = formatAsK(val);
+      td.textContent = formatAsK(_scoreOrCoinHistory(val, format));
       // td.textContent = val.toLocaleString();
       tr.appendChild(td);
     });
@@ -51,6 +60,9 @@ function renderBorderHistory() {
   }
 }
 
+let chartInstanceHistory = null;
+
+
 function renderHistoryGraph() {
 	const elem = document.getElementById('chart-history');
 	if (!elem) {
@@ -63,6 +75,11 @@ function renderHistoryGraph() {
 		return;
 	}
 
+	if (chartInstanceHistory) {
+		chartInstanceHistory.destroy(); // 既存のチャートを破棄
+	}
+
+
 	// 辞書 presets のキーを昇順にソート
 	const rank = selectedRank();
 
@@ -71,17 +88,23 @@ function renderHistoryGraph() {
 	const data4 = [];
 	const data6 = [];
 
+    const format = document.getElementById("result-format").value;
 	for (const date of Object.keys(presets).sort()) {
 		const gd = presets[date][rank];
 		if (gd) {
 			labels.push(date);
-			data2.push(gd[2] || 0);
-			data4.push(gd[4] || 0);
-			data6.push(gd[6] || 0);
+			data2.push(_scoreOrCoinHistory(gd[2], format) || 0);
+			data4.push(_scoreOrCoinHistory(gd[4], format) || 0);
+			data6.push(_scoreOrCoinHistory(gd[6], format) || 0);
 		}
 	}
 
-	new Chart(ctx, {
+	let name = '保証ボーダー';
+	if (format == 'coin') {
+		name = '確定値のコイン';
+	}
+
+	chartInstanceHistory = new Chart(ctx, {
 		'type': 'line',
 		'data': {
 			'labels': labels,
@@ -110,17 +133,28 @@ function renderHistoryGraph() {
 
 				}
 			},
-			title: {
-				display: true,
-				text: `確定値の履歴 (${rank})`,
+			plugins: {
+				title: {
+					display: true,
+					text: `${name}履歴 (${rank})`,
+				},
 			},
 		}
 	});
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+function renderHistories() {
 	renderHistoryGraph();
 	renderBorderHistory();
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+	renderHistories();
 	renderNavis("navi_func", "navi_rank", "footer");
 	setRankText(selectedRank(), "history_rank", "ランク", "の");
+
+    ['result-format'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', renderHistories, undefined);
+    });
+
 });
