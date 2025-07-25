@@ -64,11 +64,26 @@ function calculatePlans() {
 
 	const rank = selectedRank();
 	rawPlans.sort((a, b) => a[1] - b[1]);
-	let result = rank + ": " + days + "日で +" + points + "\nプラン\t|\tコイン";
+	let result = rank + ": " + days + "日で +" + points + "\nプラン";
+
+	const format = document.getElementById("result-format").value;
+	if (format == 'score' || format == 'both') {
+		result += '\t| スコア';
+	}
+	if (format != 'score') {
+		result += '\t| コイン';
+	}
+
 	for (const [plan, score] of rawPlans) {
 
-        s = score2coin(score);
-		result += "\n" + plan.join("") + "\t|\t" + s.toLocaleString();
+		result += "\n" + plan.join("");
+		if (format == 'score' || format == 'both') {
+			result += '\t| ' + score.toLocaleString();
+		}
+		if (format != 'score') {
+			s = score2coin(score);
+			result += '\t| ' + s.toLocaleString();
+		}
 	}
 	document.getElementById("result_daily").value = result;
 }
