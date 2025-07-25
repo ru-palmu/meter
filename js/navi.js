@@ -1,12 +1,73 @@
+// ヘッダ部のナビゲーションを管理するスクリプト
+// 共通関数的なものも管理
+
+
 const cand_rank = ["B1", "B2", "B3", "A1", "A2", "A3", "S"];
 
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
 const latestDate = Object.keys(presets).sort().reverse()[0];
 
-function renderNavis(page, navi_func, navi_rank, _footer) {
+//////////////////////////////////////////////////
+// 共通関数
+//////////////////////////////////////////////////
+
+// キロ表示
+function formatAsK(value) {
+  if (value < 100000) {
+    return (Math.floor(value / 100) / 10).toFixed(1);  // 小数第1位（切り捨て）
+  } else {
+    return Math.floor(value / 1000);      // 整数（千単位）
+  }
+}
+
+// ライブスコアに相当するコイン数を算出する．
+// ギフトの最小値が 10 のため, 1の位を切り上げ.
+function score2coin(score) {
+  coin = score / 3;
+  return Math.ceil(coin / 10) * 10;
+}
+
+// 現在時刻取得．未使用
+function _getCurrentTime() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  return `${h}:${m}`;
+}
+
+
+function setRankText(rank, elementId, prefix, suffix) {
+  const sp = document.getElementById(elementId);
+  if (sp) {
+    sp.textContent = prefix + rank + suffix;
+  }
+}
+
+//////////////////////////////////////////////////
+// ナビゲーションのレンダリング
+//////////////////////////////////////////////////
+
+function renderNavis(navi_func, navi_rank, _footer) {
+	page = _getCurrentPage();
 	_renderNaviFunc(page, navi_func);
 	_renderNaviRank(selectedRank(), navi_rank);
 }
+
+function _getCurrentPage() {
+  const path = location.pathname;
+  let filename = path.split('/').pop(); // 最後の要素を取得
+
+  // ルート（/）や末尾がスラッシュだけのパスなら
+  if (!filename || filename === '') {
+    return 'index';
+  }
+
+  // クエリパラメータやアンカーがある場合は無視して、拡張子を除く
+  filename = filename.split('?')[0].split('#')[0].split('.')[0];
+
+  return filename || 'index';
+}
+
 
 function _getQueryParam(name) {
   const url = new URL(window.location.href);

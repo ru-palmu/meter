@@ -1,79 +1,5 @@
 
 
-// キロ表示
-function formatAsK(value) {
-  if (value < 100000) {
-    return (Math.floor(value / 100) / 10).toFixed(1);  // 小数第1位（切り捨て）
-  } else {
-    return Math.floor(value / 1000);      // 整数（千単位）
-  }
-}
-
-// preset を出力 (for 履歴 history.html)
-function renderBorderHistory(rank) {
-  const tbody = document.getElementById("history");
-  if (!tbody) {
-    return;
-  }
-  tbody.innerHTML = ""; // 一旦クリア
-
-  const sortedDates = Object.keys(presets).sort().reverse();
-  for (let i = 0; i < sortedDates.length; i++) {
-    const date = sortedDates[i];
-    if (!presets[date][rank]) {
-      continue;
-    }
-    const tr = document.createElement("tr");
-
-    // 日付セル
-    const dateCell = document.createElement("td");
-    dateCell.textContent = date;
-    tr.appendChild(dateCell);
-
-    const a1 = presets[date][rank];
-
-    // 値セル（A1とB3の 2/4/6）
-    [2, 4, 6].forEach(point => {
-      val = a1[point];
-      const td = document.createElement("td");
-      if (i + 1 < sortedDates.length &&
-          presets[sortedDates[i + 1]][rank] &&
-          presets[sortedDates[i + 1]][rank][point] &&
-          val < presets[sortedDates[i + 1]][rank][point]) {
-          td.className = 'decrease';
-      }
-      td.textContent = formatAsK(val);
-      // td.textContent = val.toLocaleString();
-      tr.appendChild(td);
-    });
-
-    [a1[4]/a1[2], a1[6]/a1[2], a1[6]/a1[4]].forEach(val => {
-      const td = document.createElement("td");
-      // 小数第2位まで表示
-      td.textContent = val.toFixed(2);
-      tr.appendChild(td);
-    });
-
-    tbody.appendChild(tr);
-  }
-}
-
-
-// ライブスコアに相当するコイン数を算出する．
-// ギフトの最小値が 10 のため, 1の位を切り上げ.
-function score2coin(score) {
-  coin = score / 3;
-  return Math.ceil(coin / 10) * 10;
-}
-
-// 現在時刻取得．未使用
-function _getCurrentTime() {
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2, '0');
-  const m = String(now.getMinutes()).padStart(2, '0');
-  return `${h}:${m}`;
-}
-
 
 // 本体:
 // ライブスコアから確定スコアまでのコイン数算出 or
@@ -82,11 +8,13 @@ function calculate(rank = '') {
   if (rank instanceof Event) {
     rank = '';
   }
+  // index.html
   if (document.getElementById("live_score")) {
     calculateLiveScoreToCoins(rank);
   }
 
-  if (document.getElementById("days")) {
+  // plan.html
+  if (document.getElementById("days") && typeof calculatePlans === 'function') {
     calculatePlans(rank);
   }
 }
@@ -145,10 +73,8 @@ function calculateLiveScoreToCoins(rank = '') {
   document.getElementById("scores").value = ret;
 }
 
-// ランクを選んだときの処理
-function applyPreset() {
-  const selected = selectedRank();
-
+// ランクに応じて保証ボーダーを設定する
+function applyPreset(selected) {
   if (selected && presets[latestDate] && presets[latestDate][selected]) {
     const p = presets[latestDate][selected];
     document.getElementById("a2").value = p[2];
@@ -157,7 +83,6 @@ function applyPreset() {
     calculate(selected);
   }
 }
-
 
 // コピーボタン
 function copyResult(name) {
@@ -177,23 +102,21 @@ function copyResult(name) {
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
 
+  renderNavis("navi_func", "navi_rank", "footer");
+
   // GETパラメータ r で指定されたランクをチェックする
   key = selectedRank();
 
   if (document.getElementById("a2")) {
-    applyPreset();
+    applyPreset(key);
   }
   if (key) {
-    renderBorderHistory(key);
 
     [
       ['index_rank', 'ランク', 'での'],
-      ['history_rank', 'ランク', 'の'],
+//      ['history_rank', 'ランク', 'の'],
     ].forEach(([id, prefix, suffix]) => {
-      const sp = document.getElementById(id);
-      if (sp) {
-        sp.textContent = prefix + key + suffix;
-      }
+	  setRankText(key, id, prefix, suffix);
     });
   }
 
