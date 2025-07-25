@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/meter.js?v=21"></script>
+  <script  src="js/navi.js?v=21"></script>
   <script  src="js/coin.js?v=21" defer></script>
   <script src="js/daily.js?v=21"></script>
-  <script  src="js/navi.js?v=21"></script>
   <script src="js/graph.js?v=21" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
 	       crossorigin="anonymous"></script>
@@ -18,9 +18,8 @@
 <body>
 
 <h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
-<nav id="target_link"></nav>
-<nav id="navi"></nav>
-<script>navi("history", "navi");</script>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
 <br>
 
 <div class="intro">
@@ -69,6 +68,10 @@
 例えば，<span class="inline-code">4/2</span> は，
 <span class="inline-code">+4</span> を
 <span class="inline-code">+2</span> の値で割った値です．
+
+<address id="footer"></address>
+
+<script>renderNavis("history", "navi_func", "navi_rank", "footer");</script>
 
 </body>
 </html>

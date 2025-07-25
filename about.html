@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="js/meter.js?v=21"></script>
+  <script  src="js/navi.js?v=21"></script>
   <script  src="js/coin.js?v=21" defer></script>
   <script src="js/daily.js?v=21"></script>
-  <script  src="js/navi.js?v=21"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
 	       crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/style.css?v=21">
@@ -16,9 +16,8 @@
 <body>
 
 <h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
-<nav id="target_link"></nav>
-<nav id="navi"></nav>
-<script>navi("about", "navi");</script>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
 <br>
 
 <span class="sub-title">このツールについて</span>
@@ -44,3 +43,11 @@
 <li>「履歴」：保証ボーダー（確定スコア・確定値）の履歴を表示します．
 <li>「使い方」：このページです．
 </ul>
+
+<address id="footer"></address>
+
+<script>renderNavis("about", "navi_func", "navi_rank", "footer");</script>
+</body>
+</html>
+
+

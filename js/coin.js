@@ -1,35 +1,4 @@
 
-const cand_rank = ["B1", "B2", "B3", "A1", "A2", "A3", "S"];
-
-
-// preset から最新の日付を取得
-const latestDate = Object.keys(presets).sort().reverse()[0];
-
-// 各ページ上部のランク選択タブの描画
-function renderLinks(selected_rank) {
-  const container = document.getElementById("target_link");
-  container.innerHTML = ""; // クリア
-
-  const available = presets[latestDate];
-
-  const ul = document.createElement("ul");
-  ul.className = "tab-nav";
-
-  cand_rank.forEach(rank => {
-    if (available && available[rank]) {
-      const li = document.createElement("li");
-      if (rank === selected_rank) {
-        li.className = "active";
-      }
-      const a = document.createElement("a");
-      a.href = `?r=${rank}`;
-      a.textContent = rank;
-      li.appendChild(a);
-      ul.appendChild(li)
-    }
-  });
-  container.appendChild(ul);
-}
 
 // キロ表示
 function formatAsK(value) {
@@ -176,17 +145,6 @@ function calculateLiveScoreToCoins(rank = '') {
   document.getElementById("scores").value = ret;
 }
 
-// 選択されているランクを取得
-function selectedRank() {
-  const radios = document.getElementsByName("rank");
-  const presetFromURL = getQueryParam("r");
-  let key = default_rank;
-  if (presetFromURL && presets[latestDate][presetFromURL]) {
-    key = presetFromURL;
-  }
-  return key;
-}
-
 // ランクを選んだときの処理
 function applyPreset() {
   const selected = selectedRank();
@@ -216,11 +174,6 @@ function copyResult(name) {
 }
 
 
-function getQueryParam(name) {
-  const url = new URL(window.location.href);
-  return url.searchParams.get(name);
-}
-
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -232,7 +185,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   if (key) {
     renderBorderHistory(key);
-    renderLinks(key);
 
     [
       ['index_rank', 'ランク', 'での'],
