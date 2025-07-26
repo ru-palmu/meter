@@ -101,7 +101,7 @@ function renderHistoryGraph() {
 
 	let name = '保証ボーダー';
 	if (format == 'coin') {
-		name = '確定値のコイン';
+		name = 'コイン相当';
 	}
 
 	chartInstanceHistory = new Chart(ctx, {

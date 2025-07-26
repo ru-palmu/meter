@@ -10,7 +10,7 @@
 	       crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/style.css?v=18">
   <link rel="icon" href="favicon.ico" type="image/icon">
-  <title>Palmu 確定値までの必要コイン数</title>
+  <title>確定スコアまでの必要コイン数 ぱるむの計算機 for Palmu</title>
 </head>
 <body>
 
@@ -36,7 +36,7 @@
 
 <textarea class="copy-output" id="result" readonly cols=40 rows=1 placeholder=""></textarea><br>
 </div>
-<span class="help-text" id="result-placeholder">(現在のスコア +2=確定+2に必要なコイン数, +4=確定+4に必要なコイン数, +6=確定+6に必要なコイン数)</span>
+<span class="help-text" id="result-placeholder">(現在のスコア +2=確定+2に必要なコイン数, +4=確定+4に..., +6=確定+6に...)</span>
 
 <div class="guaranteed-score">
 	<span class="">保証ボーダー	<small>（確定スコア）</small></span>
@@ -64,7 +64,7 @@
 	<li>最初に一番上のタブから，ランクを選択してください．
 	<li>+2/+4/+6 の保証ボーダーが正しいことを確認してください．正しくなければ修正してください．
 	<li>現在のライブスコアを入力してください．保証ボーダーまでに必要なコイン数が計算されます．
-	<li>出力を変更したい場合は，出力形式を選択してください．
+	<li>+4だけ等, 特定のポイントのみが必要など出力を変更したい場合は，出力形式を選択してください．
 	<li>「コピー」ボタンを押下して，Palmu のチャットに貼り付けてください．
 </ul>
 
@@ -75,6 +75,12 @@
 コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．
 	<li>保証ボーダー（確定スコア）は手動で更新しているため，最新になっていなかったり，間違った値になっている可能性があります．
 改善要望・不具合報告は，<a href=https://github.com/ru-palmu/meter>GitHub</a> までおねがいします．
+</ul>
+
+<span class="sub-title">ご参考</span>
+
+<ul class="help">
+	<li><a href="https://note.com/palmu/n/nc853285c3db3">【たいむず（2024/10）】ライブスコアの導入</a> <a href="https://note.com/palmu/n/nc853285c3db3#f469e53e-1e96-4c56-8de5-476f1ed9d6f8">6. ライブスコアの算出ロジックについて</a>
 </ul>
 
 <address id="footer"></address>

@@ -11,7 +11,7 @@
 	       crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/style.css?v=21">
   <link rel="icon" href="favicon.ico" type="image/icon">
-  <title>Palmu キープ・ランクアップまでのプラン計算</title>
+  <title>ランクキープ・ランクアップまでのプラン計算 ぱるむの計算機 for Palmu</title>
 </head>
 <body>
 
@@ -21,27 +21,28 @@
 <br>
 
 <div class="intro">
-キープ・ランクアップに必要なコイン数（参考値）やライブスコアを計算します．
+ランクキープ・ランクアップに必要なコイン数（参考値）やライブスコアを計算します．
 </div>
 
 <div>
-  <select id="days">
-    <!-- 1〜7 -->
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
-    <option value="6">6</option>
-    <option value="7">7</option>
-  </select>日で，
+	<select id="days">
+		<!-- 1〜7 -->
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7" selected>7</option>
+	</select>日で，
 
-  <select id="points">
-    <script>
-      for (let i = 4; i <= 18; i++) {
-        document.write(`<option value="${i}">${i}</option>`);
-      }
-    </script>
-  </select>ポイント獲得
+	<select id="points">
+		<script>
+			for (let i = 4; i <= 18; i++) {
+				const selectedAttr = (i === 12) ? ' selected' : '';
+				document.write(`<option value="${i}"${selectedAttr}>${i}</option>`);
+			}
+		</script>
+	</select>ポイント獲得
 
 </div>
 
