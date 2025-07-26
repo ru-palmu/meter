@@ -1,6 +1,3 @@
-
-
-
 // 本体:
 // ライブスコアから確定スコアまでのコイン数算出 or
 // プラン計算
@@ -17,6 +14,21 @@ function calculate(rank = '') {
   if (document.getElementById("days") && typeof calculatePlans === 'function') {
     calculatePlans(rank);
   }
+
+  if (document.getElementById("scores")) {
+    setScores(rank);
+  }
+}
+
+function setScores(rank = '') {
+  const a = {
+    2: parseInt(document.getElementById("a2").value),
+    4: parseInt(document.getElementById("a4").value),
+    6: parseInt(document.getElementById("a6").value)
+  };
+
+  ret = `${rank}確定スコア +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
+  document.getElementById("scores").value = ret;
 }
 
 
@@ -69,8 +81,6 @@ function calculateLiveScoreToCoins(rank = '') {
 
   document.getElementById("result-placeholder").innerHTML = help + ' 🪙 ' + help2 + ')';
 
-  ret = `${rank}確定スコア +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
-  document.getElementById("scores").value = ret;
 }
 
 // ランクに応じて保証ボーダーを設定する

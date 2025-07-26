@@ -38,25 +38,7 @@
 </div>
 <span class="help-text" id="result-placeholder">(現在のスコア +2=確定+2に必要なコイン数, +4=確定+4に..., +6=確定+6に...)</span>
 
-<div class="guaranteed-score">
-	<span class="">保証ボーダー	<small>（確定スコア）</small></span>
-	<div class="input-row">
-		<label for="a2">+2</label>
-		<input type="number" id="a2" value="43990">
-	</div>
-	<div class="input-row">
-		<label for="a4">+4</label>
-		<input type="number" id="a4" value="84990">
-	</div>
-	<div class="input-row">
-		<label for="a6">+6</label>
-		<input type="number" id="a6" value="172990">
-	</div>
-</div>
-
-<button class="copy-button" onclick="copyResult('scores')">📋コピー</button>
-<textarea class="copy-output" id="scores" readonly cols=40 rows=1>(スコア)</textarea><br>
-
+<div id="guaranteed-score"></div>
 
 <span class="sub-title">使い方</span>
 

@@ -1,7 +1,6 @@
 // ヘッダ部のナビゲーションを管理するスクリプト
 // 共通関数的なものも管理
 
-
 const cand_rank = ["B1", "B2", "B3", "A1", "A2", "A3", "S"];
 
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
@@ -44,6 +43,75 @@ function setRankText(rank, elementId, prefix, suffix) {
 }
 
 //////////////////////////////////////////////////
+// 確定スコアの描画
+//////////////////////////////////////////////////
+
+function insertGuaranteedScore(targetId) {
+    const container = document.getElementById(targetId);
+    if (!container) {
+        return;
+    }
+
+    // 必要なら中身を初期化
+    container.innerHTML = '';
+
+    const outerDiv = document.createElement('div');
+    outerDiv.className = 'guaranteed-score';
+
+    // タイトル
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = '保証ボーダー ';
+    const small = document.createElement('small');
+    small.textContent = '（確定スコア）';
+    titleSpan.appendChild(small);
+    outerDiv.appendChild(titleSpan);
+
+    // 入力行
+    const values = [
+        { id: 'a2', label: '+2', value: 43990 },
+        { id: 'a4', label: '+4', value: 84990 },
+        { id: 'a6', label: '+6', value: 172990 }
+    ];
+
+    values.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'input-row';
+
+        const label = document.createElement('label');
+        label.setAttribute('for', item.id);
+        label.textContent = item.label;
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.id = item.id;
+        input.value = item.value;
+
+        row.appendChild(label);
+        row.appendChild(input);
+        outerDiv.appendChild(row);
+    });
+
+    // コピーボタン
+    const button = document.createElement('button');
+    button.className = 'copy-button';
+    button.textContent = '📋コピー';
+    button.setAttribute('onclick', "copyResult('scores')");
+    outerDiv.appendChild(button);
+
+    // テキストエリア
+    const textarea = document.createElement('textarea');
+    textarea.className = 'copy-output';
+    textarea.id = 'scores';
+    textarea.readOnly = true;
+    textarea.cols = 40;
+    textarea.rows = 1;
+    textarea.textContent = '(スコア)';
+    outerDiv.appendChild(textarea);
+
+    container.appendChild(outerDiv);
+}
+
+//////////////////////////////////////////////////
 // ナビゲーションのレンダリング
 //////////////////////////////////////////////////
 
@@ -51,6 +119,7 @@ function renderNavis(navi_func, navi_rank, _footer) {
 	page = _getCurrentPage();
 	_renderNaviFunc(page, navi_func);
 	_renderNaviRank(selectedRank(), navi_rank);
+	insertGuaranteedScore("guaranteed-score");
 }
 
 function _getCurrentPage() {
