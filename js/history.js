@@ -157,4 +157,5 @@ window.addEventListener("DOMContentLoaded", () => {
       document.getElementById(id)?.addEventListener('input', renderHistories, undefined);
     });
 
+	setupTooltips()
 });

@@ -134,5 +134,14 @@ window.addEventListener("DOMContentLoaded", () => {
   ['a2', 'a4', 'a6', 'result-format', 'live_score', 'days', 'points', 'result_format'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
+
+  renderGlossary();
+  setupTooltips();
 });
+
+if (document.getElementById("glossary")) {
+	window.addEventListener("hashchange", () => {
+		hashChangeGlossary();
+	});
+}
 

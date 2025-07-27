@@ -204,6 +204,36 @@ body {
 }
 
 
+/** ツールチップ表示 **/
+
+.term {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted #555;
+  color: #004466;
+}
+
+.tooltip-box {
+  position: absolute;
+  z-index: 100;
+  background-color: #ffffff;
+  color: #222;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 0.85em;
+  max-width: 300px;
+  width: 80vw;
+  top: 1.5em;
+  left: 0;
+}
+
+.tooltip-box a {
+  color: #007777;
+  text-decoration: underline;
+}
+
 /***************************************************
  * 個別: history.html
  ***************************************************/
@@ -250,4 +280,70 @@ table.history td.decrease {
   font-weight: bold;
 }
 
+/***************************************************
+ * 個別: about.html
+ ***************************************************/
 
+/* 用語集スタイル */
+.glossary {
+  padding: 0em 1em;
+}
+
+.glossary dt {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #1a4d1a; /* 深緑 */
+  margin-top: 1em;
+  padding-left: 1em;
+  position: relative;
+}
+
+.glossary dt a {
+  font-weight: 600;
+  color: #1a4d1a; /* 深緑 */
+  text-decoration: none;
+  border-bottom: 1px dotted #555;
+}
+
+
+.glossary dt::before {
+  content: "● ";
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-size: 1em;
+}
+
+.glossary dd {
+  margin: 0.4em 0 1em 1.5em;
+  color: #333;
+  line-height: 1.6;
+  border-left: 3px solid #e0f0e0;
+  padding-left: 0.8em;
+  background-color: #fcfffc;
+  border-radius: 3px;
+}
+
+.glossary dt.highlighted {
+  background-color: #dff0d8; /* 明るい緑背景 */
+  border-radius: 4px;
+  transition: background-color 1s ease;
+}
+
+/** 用語集用画像 **/
+.glossary div.img {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 80%;
+  height: auto;
+  margin: 0.5em 0;
+  border: 0px;
+}
+
+.glossary div.img img {
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
