@@ -5,6 +5,11 @@ body {
 	padding: 5px;
 }
 
+
+/*******************************************************************
+ * ナビゲーションメニュー
+ *******************************************************************/
+
 .tab-nav, .sub-tab-nav {
   display: flex;
   list-style: none;
@@ -38,21 +43,6 @@ body {
 }
 
 
-/*
-.tab-nav li, .sub-tab-nav li {
-  padding: 5px 9px;
-  background: #f0f0f0;
-  cursor: pointer;
-  border-radius: 5px 5px 0 0;
-}
-
-.tab-nav li.active, .sub-tab-nav li.active {
-  background-color: #d8f3dc;
-  font-weight: bold;
-  border-bottom: 5px solid #95d5b2;
-}
-*/
-
 .tab-nav a, .sub-tab-nav a {
   text-decoration: none;
   color: #2d6a4f
@@ -68,44 +58,6 @@ body {
   display: block;
 }
 
-
-.inline-code {
-  font-family: monospace;
-  background-color: #f6f8fa;
-  color: #24292e;
-  padding: 0.2em 0.4em;
-  margin: 0;
-  font-size: 85%;
-  border-radius: 6px;
-  white-space: nowrap;
-}
-
-.code-block {
-  background-color: #f6f8fa;
-  color: #24292e;
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-  font-size: 85%;
-  padding: 1em;
-  border-radius: 6px;
-  overflow: auto;
-  line-height: 1.45;
-  border: 1px solid #d0d7de;
-  width: 95%;
-  margin: 1em auto; /* 中央寄せ */
-}
-
-/* 使い方・注意事項等のサブタイトル */
-.sub-title {
-  display: block;               /* 単独行にする */
-  font-size: 1.1em;             /* h4相当 */
-  font-weight: 600;
-  padding: 0.2em 0.6em;
-  margin: 1.0em 0 0.5em 0;
-  background-color: rgba(0, 100, 0, 0.1); /* 落ち着いた薄緑背景 */
-  color: #1a4d1a;               /* 深い緑 */
-  border-left: 4px solid #1a4d1a;
-  border-radius: 4px;
-}
 
 /* 一番上のツールタイトル */
 .tool-title {
@@ -126,11 +78,63 @@ body {
   text-overflow: ellipsis; /* 収まりきらないと ... にする */
 }
 
+
+
+/* サブタイトル： 使い方・注意事項等 */
+.sub-title {
+  display: block;               /* 単独行にする */
+  font-size: 1.1em;             /* h4相当 */
+  font-weight: 600;
+  padding: 0.2em 0.6em;
+  margin: 1.0em 0 0.5em 0;
+  background-color: rgba(0, 100, 0, 0.1); /* 落ち着いた薄緑背景 */
+  color: #1a4d1a;               /* 深い緑 */
+  border-left: 4px solid #1a4d1a;
+  border-radius: 4px;
+}
+
+/* 各ページ冒頭の１行説明文 */
 .intro {
   margin-bottom: 1.2rem;
 }
 
-/* +2/+4/+6 の保証ボーダーテキストボックスの表示用 */
+
+/** <pre> inline **/
+.inline-code {
+  font-family: monospace;
+  background-color: #f6f8fa;
+  color: #24292e;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/** <pre> **/
+.code-block {
+  background-color: #f6f8fa;
+  color: #24292e;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  font-size: 85%;
+  padding: 1em;
+  border-radius: 6px;
+  overflow: auto;
+  line-height: 1.45;
+  border: 1px solid #d0d7de;
+  width: 95%;
+  margin: 1em auto; /* 中央寄せ */
+}
+
+
+/***************************************************
+ * +2/+4/+6 の保証ボーダーテキストボックスの表示用
+ ***************************************************/
+
+.guaranteed-score {
+  margin-top: 1rem;
+}
+
 .input-row {
   display: flex;
   align-items: center;
@@ -152,10 +156,10 @@ body {
   font-size: 0.9rem;
 }
 
-.guaranteed-score {
-  margin-top: 1rem;
-}
 
+/***************************************************
+ * コピーボタン
+ ***************************************************/
 
 .copy-button {
   background-color: #eee;
@@ -187,7 +191,11 @@ body {
   margin-right: 10px;
 }
 
+/***************************************************
+ * ヘルプテキスト
+ ***************************************************/
 
+/** グレーなヘルプテキスト **/
 .help-text {
   font-size: smaller;
   color: #666;
@@ -196,7 +204,9 @@ body {
 }
 
 
-/** 個別: history.html **/
+/***************************************************
+ * 個別: history.html
+ ***************************************************/
 
 table.history {
   width: 100%;
