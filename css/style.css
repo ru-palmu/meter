@@ -366,3 +366,28 @@ table.history td.decrease {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+
+.func {
+  margin: 1em 0;
+  padding: 0.5em 1em;;
+  background-color: #f0f8f4; /* ベースに淡い緑 */
+  border-radius: 8px;
+  border: 1px solid #a2d5a2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  font-size: 1em;
+}
+
+.func dt {
+  font-weight: bold;
+  color: #2f6b2f;
+  margin-top: 0.6em;
+}
+
+.func dd {
+  margin: 0 0 0.8em 1em;
+  color: #333;
+  line-height: 1.5;
+}
+
+

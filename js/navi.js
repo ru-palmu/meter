@@ -133,7 +133,7 @@ function _getCurrentPage() {
     return 'index';
   }
 
-  // クエリパラメータやアンカーがある場合は無視して、拡張子を除く
+  // クエリパラメータやアンカーがある場合は無視して，拡張子を除く
   filename = filename.split('?')[0].split('#')[0].split('.')[0];
 
   return filename || 'index';
@@ -229,34 +229,38 @@ function renderFooter() {
 //////////////////////////////////////////////////
 const glossary = {
 	coin: {
-		msg: "コイン数は，ライブスコアの 1/3 とし，1 の位を切り上げたものとして計算しています．コメント数や視聴者数などにも応じて変動するため参考値としてご利用ください。",
+		msg: "コイン数は，ライブスコアの 1/3 とし，1 の位を切り上げたものとして計算しています．コメント数や視聴者数などにも応じて変動するため参考値としてご利用ください．",
 		page: "coin",
 		index: "コインスウ",
-		dt: "コイン数",
-		dd: "コイン数は，<span class='term' data-term='score'>ライブスコア</span>の 1/3 として計算しています．ライブスコアの算出方法は公開されていないこと，また，コメント数や視聴者数などにも応じて変動するため参考値としてご利用ください。",
+		dt: "コイン数 <small>（ギフト数）</small>",
+		dd: "コイン数は，<span class='term' data-term='score'>ライブスコア</span>の 1/3 として計算しています．ライブスコアの算出方法は公開されていないこと，また，コメント数や視聴者数などにも応じて変動するため参考値としてご利用ください．" +
+"<p>ライブスコアの算出方法は公開されていないものの，ギフトが最もライブスコアに寄与することは間違いありません．同じ人がたくさんのコインを投げるよりも，多くの人が投げることや，追いギフ・追いコメなどがライブスコアに影響があると言われています．" +
+"",
 
 	},
 	score: {
-		msg: "ライブスコアとは，ライバーさんがリスナーさんから受け取る応援を示す指標で，コメントの数や視聴人数、スーパーライクの回数などもスコアに含まれる。",
+		msg: "ライブスコアとは，ライバーさんがリスナーさんから受け取る応援を示す指標で，コメントの数や視聴人数，スーパーライクの回数などもスコアに含まれる．",
 		page: "score",
 		index: "ライブスコア",
 		dt: "ライブスコア",
-		dd: "ライブスコアとは，ライバーがリスナーから受け取る応援を示す指標です。現在の配信画面の左上に表示され，１分ごとに更新され，24時にリセットされます．" +
+		dd: "ライブスコアとは，ライバーがリスナーから受け取る応援を示す指標です．１分ごとに更新され，24時（00:00）にリセットされます．１日の間にだんだんと大きくなる数値で，小さくなることはありません．" +
 		"<p>ライブスコアは，「<span class='term' data-term='coin'>コイン数</span>」「コメント数」「スーパーライク数」「視聴人数」などの応援要素を総合して算出されていますが，そのロジックは公開されていません．" +
+"<p>ライブスコアは，配信画面の左上に矢印と共に表示されています．下の画像では，現在のライブスコアが 79,782 であることを表しています．" +
 "<p><div class='img'><img src='img/score.png' alt='ライブスコアの例' width='20%'></div>" +
+"<p>多くの場合，ライバーが目標となる<span class='term' data-term='point'>デイリーポイント</span>を設定し，それに対応するライブスコアを目指すことになります．" +
 "<p>より詳細な情報は，『<a href='https://note.com/palmu/n/nc853285c3db3'>【たいむず（2024/10）】ライブスコアの導入</a> <a href='https://note.com/palmu/n/nc853285c3db3#f469e53e-1e96-4c56-8de5-476f1ed9d6f8'>6. ライブスコアの算出ロジックについて</a>』『<a href='https://intercom.help/light-inc/ja/articles/9941027-%E3%83%A9%E3%82%A4%E3%83%96%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6'>ライブスコアについて</a>』を参照ください．" +
 		"",
 	},
 	border: {
-		msg: "保証ボーダーとは，締め時間に関係なく、その日のライブスコアが規定値を上回ると、デイリーランクポイントの「+2」「+4」「+6」の獲得が保証される仕組みです。別名：確定値，確定スコア",
+		msg: "保証ボーダーとは，締め時間に関係なく，その日のライブスコアが規定値を上回ると，デイリーランクポイントの「+2」「+4」「+6」の獲得が保証される仕組みです．別名：確定値，確定スコア",
 		page: "gborder",
 		index: "ホショウボーダー",
-		dt: "保証ボーダー (確定スコア, 確定値)",
-		dd: "保証ボーダーとは，締め時間に関係なく、その日のライブスコアが規定値を上回ると、<span class='term' data-term='point'>デイリーランクポイント</span>の「+2」「+4」「+6」の獲得が保証される仕組みです。ライバーのプロフィールに表示される「<span class='term' data-term='rank'>ユーザーランク</span>」から、保証ボーダーの値を確認できます．下の場合では，「+2」「+4」「+6」の確定値は，それぞれ，「83.6K」「118K」「160K」です．" +
-		"ここで，「K」は「キロ」，つまり，1,000倍の値を表します．「118K」の場合だと，118,000 から 118,999 の間の値を表します．本ツールでは，中央値である，118,500 を採用しています．" +
+		dt: "保証ボーダー <small>（確定スコア，確定値）</small>",
+		dd: "保証ボーダーとは，締め時間に関係なく，その日のライブスコアが規定値を上回ると，<span class='term' data-term='point'>デイリーランクポイント</span>の「+2」「+4」「+6」の獲得が保証される仕組みです．ライバーのプロフィールに表示される「<span class='term' data-term='rank'>ユーザーランク</span>」から，保証ボーダーの値を確認できます．下の場合では，「+2」「+4」「+6」の確定値は，それぞれ，「8,425」「20.2K」「51.4K」です．" +
+		"ここで，「K」は「キロ」，つまり，1,000倍の値を表します．「51.4K」の場合，51,400 から 51,499 の間の値を表します．本ツールでは，中央値である 51,450 を採用しています．" +
 		"<p><div class='img'><img src='img/border.png' alt='保証ボーダーの例' width='70%'></div>" +
 		"<p>なお，本ツールでは，保証ボーダーの値を手動で登録しているため，最新になっていなかったり，間違った値になっている可能性があります．" +
-		"不具合報告は，<a href=https://github.com/ru-palmu/meter>GitHub</a> までお願いします．" +
+		"不具合報告は，<a href=https://github.com/ru-palmu/meter/issues>GitHub</a> までお願いします．" +
 "<p>より詳細な情報は，『<a href='https://note.com/palmu/n/n4eb0cf1c4aa8'>【たいむず(2024/6)】保証ボーダーとスキップカードについて</a>』を参照ください．" +
 "",
 	},
@@ -275,9 +279,9 @@ const glossary = {
 "「ランクアップ」には 18 ポイント，「ランクキープ」には 12 ポイントが必要です．" +
 "<p>下の画像は，上の画像の「ユーザーランク」を表す「B2ランク」をタップすると表示される画面です．" +
 "2日と13時間9分で， +2 を獲得するとランクキープ，+8 を獲得するとランクアップできることを表しています．" +
-"ランクアップをめざす場合には，<a href='plan.html' class='append-query'>本ツール: 「プラン」</a>では <strong>3日</strong>と<strong>8ポイント</strong>を入力してください．" +
+"ランクアップをめざす場合には，本ツール「<a href='plan.html' class='append-query'>プラン</a>」では <strong>3日</strong>と<strong>8ポイント</strong>を入力してください．" +
 "<p><div class='img'><img src='img/rankup.png' alt='保証ボーダーの例' width='70%'></div>" +
-"より詳細な情報は，『<a href='https://note.com/palmu/n/nff989241c2bf'>「全てのライバーさんへの配信機能の開放」と、「ユーザーランク」機能について</a>』を参照ください．" +
+"より詳細な情報は，『<a href='https://note.com/palmu/n/nff989241c2bf'>「全てのライバーさんへの配信機能の開放」と，「ユーザーランク」機能について</a>』を参照ください．" +
 "",
 	},
 	point: {
@@ -287,11 +291,11 @@ const glossary = {
 		dt: "デイリーランクポイント",
 		dd: "デイリーランクポイントは，ライバーがライブスコアに応じて獲得するポイントです．" +
 		"配信を行わなければ「+0」，配信を行うと少なくとも「+1」が獲得できます．" +
-		"締め時間（00:00）までにボーダー，または，<span class='term' data-term='border'>保証ボーダー</span>を超えると，「+2」「+4」「+6」が獲得できます．" +
+		"締め時間である 00:00 までにボーダー，または，<span class='term' data-term='border'>保証ボーダー</span>を超えると，「+2」「+4」「+6」が獲得できます．" +
 "<p>下の画像では，保証ボーダーの 83.6K を超えているため，「+2」が獲得できることを表しています．" +
 "また，ボーダー（変動スコア）の 118K を超えているため，緑色で「+4」と表示されていますが，" +
-"残り 13時間9分の間でボーダーは上がっていく可能性があり，「+4」が獲得できることは保証されていません．" +
-"<p><div class='img'><img src='img/border.png' alt='保証ボーダーの例' width='70%'></div>" +
+"残り 13時間9分の間でボーダーは上がっていく可能性があり，「+4」の獲得は保証されていません．" +
+"<p><div class='img'><img src='img/point.png' alt='保証ボーダーの例' width='70%'></div>" +
 "より詳細な情報は，『<a href='https://note.com/palmu/n/nff989241c2bf'>アップデート便り(2024/03)</a>』を参照ください．" +
 "",
 	},
@@ -309,7 +313,7 @@ function setupTooltips() {
 
     // ② それぞれにクリックイベントをつける
     term.addEventListener('click', (e) => {
-      // ③ 既にツールチップが表示されていたら、消す（トグル）
+      // ③ 既にツールチップが表示されていたら，消す（トグル）
       const existing = term.querySelector('.tooltip-box');
       if (existing) {
         existing.remove();
@@ -319,7 +323,7 @@ function setupTooltips() {
       // ④ 他のツールチップがあれば消す
       document.querySelectorAll('.tooltip-box').forEach(b => b.remove());
 
-      // ⑤ ツールチップを作って中身を設定し、DOMに追加
+      // ⑤ ツールチップを作って中身を設定し，DOMに追加
       const tooltip = document.createElement('div');
       tooltip.className = 'tooltip-box';
 
@@ -352,7 +356,7 @@ function hashChangeGlossary() {
 	return;
   }
 
-  // ハッシュが変更されたら、該当する用語をハイライト
+  // ハッシュが変更されたら，該当する用語をハイライト
   const dt = document.querySelector(`dl#glossary dt${hash}`);
   if (dt) {
 	dt.classList.add('highlighted');
@@ -386,7 +390,7 @@ function renderGlossary() {
     const a = document.createElement("a");
 	const currentParams = window.location.search;
     a.href = `${currentParams}#${term.page}`;
-	a.textContent = term.dt;
+	a.innerHTML = term.dt;
     dt.appendChild(a);
 	if (hash == `#${term.page}`) {
       dt.className = 'highlighted';
@@ -394,7 +398,6 @@ function renderGlossary() {
       setTimeout(() => {
         dt.className = '';
       }, 5000);
-
 	}
 
     const dd = document.createElement("dd");
