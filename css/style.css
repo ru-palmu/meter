@@ -126,6 +126,25 @@ body {
   margin: 1em auto; /* 中央寄せ */
 }
 
+.footer-content {
+  background-color: #e6f4ea; /* 淡い緑 */
+  color: #2f6b2f;            /* 濃い緑 */
+  text-align: center;
+  padding: 0.6em 1em;
+  font-size: 0.9em;
+  border-top: 2px solid #a2d5a2;
+  margin-top: 3em;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05); /* 上向きの軽い影 */
+}
+.footer-content a {
+  color: #2f6b2f;
+  text-decoration: underline;
+}
+.footer-content a:hover {
+  color: #1a4d1a; /* より深い緑に */
+}
+
 
 /***************************************************
  * +2/+4/+6 の保証ボーダーテキストボックスの表示用

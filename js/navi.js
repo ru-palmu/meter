@@ -120,7 +120,8 @@ function renderNavis(navi_func, navi_rank, _footer) {
 	_renderNaviFunc(page, navi_func);
 	_renderNaviRank(selectedRank(), navi_rank);
 	insertGuaranteedScore("guaranteed-score");
-    appendCurrentQueryToLinks('append-query')
+	appendCurrentQueryToLinks('append-query')
+	renderFooter();
 }
 
 function _getCurrentPage() {
@@ -202,6 +203,25 @@ function _renderNaviRank(selected_rank, target_id) {
     }
   });
   container.appendChild(ul);
+}
+
+
+//////////////////////////////////////////////////
+// フッタ部
+//////////////////////////////////////////////////
+
+function renderFooter() {
+  const footer = document.getElementById("footer");
+  if (!footer) return;
+
+  const year = new Date().getFullYear(); // ← 現在の年を取得
+
+  footer.innerHTML = `
+    <div class="footer-content">
+      © ${year} (る) |
+      <a href="https://github.com/ru-palmu/meter/" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  `;
 }
 
 //////////////////////////////////////////////////
