@@ -62,7 +62,8 @@ function insertGuaranteedScore(targetId) {
     const titleSpan = document.createElement('span');
     titleSpan.textContent = '保証ボーダー ';
     const small = document.createElement('small');
-    small.textContent = '（確定スコア）';
+	const formatted = `${latestDate.slice(0, 4)}/${latestDate.slice(4, 6)}/${latestDate.slice(6, 8)}`;
+    small.textContent = '（確定スコア，' + formatted + ' ver）';
     titleSpan.appendChild(small);
     outerDiv.appendChild(titleSpan);
 
