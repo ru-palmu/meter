@@ -219,7 +219,7 @@ function renderFooter() {
   footer.innerHTML = `
     <div class="footer-content">
       © ${year} (る) |
-      <a href="https://github.com/ru-palmu/meter/" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/ru-palmu/meter/" target="_blank" rel="noopener">GitHub</a>, <a href="https://x.com/UoxRTnR2GS38164">X</a>
     </div>
   `;
 }
@@ -260,7 +260,7 @@ const glossary = {
 		"ここで，「K」は「キロ」，つまり，1,000倍の値を表します．「51.4K」の場合，51,400 から 51,499 の間の値を表します．本ツールでは，中央値である 51,450 を採用しています．" +
 		"<p><div class='img'><img src='img/border.png' alt='保証ボーダーの例' width='70%'></div>" +
 		"<p>なお，本ツールでは，保証ボーダーの値を手動で登録しているため，最新になっていなかったり，間違った値になっている可能性があります．" +
-		"不具合報告は，<a href=https://github.com/ru-palmu/meter/issues>GitHub</a> までお願いします．" +
+		"不具合報告は，<a href=https://github.com/ru-palmu/meter/issues>GitHub</a> または <a href='https://x.com/UoxRTnR2GS38164'>X</a> までお願いします．" +
 "<p>より詳細な情報は，『<a href='https://note.com/palmu/n/n4eb0cf1c4aa8'>【たいむず(2024/6)】保証ボーダーとスキップカードについて</a>』を参照ください．" +
 "",
 	},
