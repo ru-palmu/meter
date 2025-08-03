@@ -10,7 +10,77 @@ body {
  * ナビゲーションメニュー
  *******************************************************************/
 
-.tab-nav, .sub-tab-nav {
+/* --- タブナビ（上部，ユーザーランク） --- */
+.tab-nav {
+  display: flex;
+  flex-wrap: nowrap;             /* 折り返しなし */
+  overflow-x: auto;              /* 横スクロール可能 */
+  gap: 5px;                      /* タブ間の隙間 */
+  padding: 5px 0;
+  margin-bottom: 7px;
+  list-style: none;
+  scrollbar-width: none;         /* Firefox用：スクロールバー非表示 */
+  -webkit-overflow-scrolling: touch; /* iOSスムーズスクロール */
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+.tab-nav::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari：スクロールバー非表示 */
+}
+
+.tab-nav li {
+  flex: 0 0 auto;                /* 幅を自動調整、折り返さない */
+  padding: 3px 8px;             /* タップしやすい余白 */
+  background: #c3e6cb;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+  min-width: 34px;
+  border-radius: 5px;
+}
+
+.tab-nav li.C {
+/*
+  border-top: 2px dotted #5a8f7b;
+ background-color: #cdeedc;
+ */
+}
+.tab-nav li.B {
+  font-weight: bold;
+/*
+  background-color: #a7d7c5;
+ */
+}
+
+.tab-nav li.A {
+/*
+  border-top: 2px dotted #5a8f7b;
+  background-color: #cdeedc;
+ */
+}
+.tab-nav li.S {
+  font-weight: bold;
+/*
+  background-color: #a7d7c5;
+ */
+}
+
+.tab-nav li.active {
+  /* background-color: #e6fff0; /* ミント */
+  background-color: #95d5b2;
+  border-bottom: 5px solid #52b788;
+  font-weight: bold;
+}
+
+.tab-nav a {
+  text-decoration: none;
+  color: #2d6a4f;
+  display: block;
+}
+
+/* --- タブナビ（下部，機能） --- */
+.sub-tab-nav {
   display: flex;
   list-style: none;
   padding: 0;
@@ -18,16 +88,6 @@ body {
   margin-bottom: 7px;
 }
 
-
-.tab-nav li {
-  padding: 3px 8px;
-  background: #c3e6cb; /* 濃いめ */
-}
-
-.tab-nav li.active {
-  background-color: #95d5b2;
-  border-bottom: 5px solid #52b788;
-}
 
 .sub-tab-nav li {
   padding: 3px 8px;
@@ -42,8 +102,7 @@ body {
   box-shadow: 0 2px 6px rgba(56, 142, 60, 0.4); /* さりげない影で浮かせる */
 }
 
-
-.tab-nav a, .sub-tab-nav a {
+.sub-tab-nav a {
   text-decoration: none;
   color: #2d6a4f
 }
@@ -79,7 +138,6 @@ body {
 }
 
 
-
 /* サブタイトル： 使い方・注意事項等 */
 .sub-title {
   display: block;               /* 単独行にする */
@@ -97,7 +155,6 @@ body {
 .intro {
   margin-bottom: 1.2rem;
 }
-
 
 /** <pre> inline **/
 .inline-code {
@@ -144,7 +201,6 @@ body {
 .footer-content a:hover {
   color: #1a4d1a; /* より深い緑に */
 }
-
 
 /***************************************************
  * +2/+4/+6 の保証ボーダーテキストボックスの表示用
@@ -222,9 +278,7 @@ body {
   display: block;
 }
 
-
 /** ツールチップ表示 **/
-
 .term {
   position: relative;
   cursor: help;
@@ -324,7 +378,6 @@ table.history td.decrease {
   border-bottom: 1px dotted #555;
 }
 
-
 .glossary dt::before {
   content: "● ";
   position: absolute;
@@ -381,7 +434,6 @@ table.history td.decrease {
   line-height: 1.4;
 }
 
-
 .func dt a {
   text-decoration: underline;
   color: #2f6b2f;
@@ -419,7 +471,6 @@ table.history td.decrease {
   color: #4caf50;
   /* color: #bbb; */
 }
-
 
 .func dd {
   margin: 0 0 0.8em 2.1em;

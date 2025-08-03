@@ -1,7 +1,7 @@
 // ヘッダ部のナビゲーションを管理するスクリプト
 // 共通関数的なものも管理
 
-const cand_rank = ["C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "S"];
+const cand_rank = ["C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "A4", "A5", "S", "SS"];
 
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
 const latestDate = Object.keys(presets).sort().reverse()[0];
@@ -195,6 +195,8 @@ function _renderNaviRank(selected_rank, target_id) {
       const li = document.createElement("li");
       if (rank === selected_rank) {
         li.className = "active";
+      } else {
+        li.className = rank[0];
       }
       const a = document.createElement("a");
       a.href = `?r=${rank}`;
