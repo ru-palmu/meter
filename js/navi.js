@@ -249,7 +249,7 @@ const glossary = {
 "<p>ライブスコアは，配信画面の左上に矢印と共に表示されています．下の画像では，現在のライブスコアが 79,782 であることを表しています．" +
 "<p><div class='img'><img src='img/score.png' alt='ライブスコアの例' width='20%'></div>" +
 "<p>多くの場合，ライバーが目標となる<span class='term' data-term='point'>デイリーポイント</span>を設定し，それに対応するライブスコアを目指すことになります．" +
-"<p>より詳細な情報は，『<a href='https://note.com/palmu/n/nc853285c3db3'>【たいむず（2024/10）】ライブスコアの導入</a> <a href='https://note.com/palmu/n/nc853285c3db3#f469e53e-1e96-4c56-8de5-476f1ed9d6f8'>6. ライブスコアの算出ロジックについて</a>』『<a href='https://intercom.help/light-inc/ja/articles/9941027-%E3%83%A9%E3%82%A4%E3%83%96%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6'>ライブスコアについて</a>』を参照ください．" +
+"<p>より詳細な情報は，『<a href='https://note.com/palmu/n/nc853285c3db3'>【たいむず（2024/10）】ライブスコアの導入</a> <a href='https://note.com/palmu/n/nc853285c3db3#f469e53e-1e96-4c56-8de5-476f1ed9d6f8'>6. ライブスコアの算出ロジックについて</a>』『FAQ: <a href='https://intercom.help/light-inc/ja/articles/9941027-%E3%83%A9%E3%82%A4%E3%83%96%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6'>ライブスコアについて</a>』を参照ください．" +
 		"",
 	},
 	border: {
@@ -262,7 +262,7 @@ const glossary = {
 		"<p><div class='img'><img src='img/border.png' alt='保証ボーダーの例' width='70%'></div>" +
 		"<p>なお，本ツールでは，保証ボーダーの値を手動で登録しているため，最新になっていなかったり，間違った値になっている可能性があります．" +
 		"不具合報告は，<a href=https://github.com/ru-palmu/meter/issues>GitHub</a> または <a href='https://x.com/UoxRTnR2GS38164'>X</a> までお願いします．" +
-"<p>より詳細な情報は，『<a href='https://note.com/palmu/n/n4eb0cf1c4aa8'>【たいむず(2024/6)】保証ボーダーとスキップカードについて</a>』を参照ください．" +
+"<p>より詳細な情報は，『<a href='https://note.com/palmu/n/n4eb0cf1c4aa8'>【たいむず(2024/6)】保証ボーダーとスキップカードについて</a>』『FAQ: <a href='https://intercom.help/light-inc/ja/articles/9418444-%E4%BF%9D%E8%A8%BC%E3%83%9C%E3%83%BC%E3%83%80%E3%83%BC%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6'>保証ボーダーについて</a>』を参照ください．" +
 "",
 	},
 	rank: {
@@ -298,7 +298,7 @@ const glossary = {
 "また，ボーダー（変動スコア）の 118K を超えているため，緑色で「+4」と表示されていますが，" +
 "残り 13時間9分の間でボーダーは上がっていく可能性があり，「+4」の獲得は保証されていません．" +
 "<p><div class='img'><img src='img/point.png' alt='保証ボーダーの例' width='70%'></div>" +
-"より詳細な情報は，『<a href='https://note.com/palmu/n/nff989241c2bf'>アップデート便り(2024/03)</a>』を参照ください．" +
+"より詳細な情報は，『<a href='https://note.com/palmu/n/nff989241c2bf'>アップデート便り(2024/03)</a>』『FAQ：<a href='https://intercom.help/light-inc/ja/articles/9053402-%E3%83%87%E3%82%A4%E3%83%AA%E3%83%BC%E3%83%A9%E3%83%B3%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88%E3%81%A8%E3%81%AF'>デイリーランクポイントとは</a>』を参照ください．" +
 "",
 	},
 }
