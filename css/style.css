@@ -307,6 +307,13 @@ body {
   text-decoration: underline;
 }
 
+thead th {
+	position: sticky;
+	top: 0;
+	background-color: #a8d5a2; /* 明るい緑 */
+}
+
+
 /***************************************************
  * 個別: history.html
  ***************************************************/
