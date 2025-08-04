@@ -504,8 +504,6 @@ table.history td.decrease {
 
 table.scheduler {
   border-collapse: collapse;
-  width: 100%;
-  min-width: 500px;
 }
 table.scheduler th, table.scheduler td {
   border: 1px solid #ccc;
@@ -522,7 +520,7 @@ table.scheduler th, table.scheduler td {
 .scheduler th.memo,
 .scheduler td.memo {
   width: 100%;
-  min-width: 100px; /* 最小幅を設定 */
+  min-width: 200px; /* 最小幅を設定 */
 }
 
 .scheduler td.memo input {
