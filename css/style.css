@@ -203,6 +203,29 @@ body {
 }
 
 /***************************************************
+ * ボタンとセレクトボックス
+ ***************************************************/
+
+select,
+button {
+  font-size: 14px;         /* 小さめ文字 */
+  padding: 2px 4px;        /* コンパクトに */
+  height: auto;            /* 高さを標準に */
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* 見た目の統一感を持たせる（スマホ用に小さめ） */
+input,
+select,
+button {
+  box-sizing: border-box;
+}
+
+
+/***************************************************
  * +2/+4/+6 の保証ボーダーテキストボックスの表示用
  ***************************************************/
 
@@ -237,7 +260,6 @@ body {
  ***************************************************/
 
 .copy-button {
-  background-color: #eee;
   color: #333;
   font-weight: 600;
   font-size: 0.9rem;
@@ -526,6 +548,16 @@ table.scheduler th, table.scheduler td {
 .scheduler td.memo input {
   width: 100%;
   box-sizing: border-box;
+}
+
+select {
+  width: auto;             /* 幅は自動 */
+  max-width: 100%;         /* はみ出さないように */
+}
+
+/* ▼アイコンが数字と被るのを防ぐ（Android用） */
+.point-select {
+  appearance: none;        /* スマホ（特にiOS）で標準の外観を消す */
 }
 
 
