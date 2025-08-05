@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script    src="js/meter.js?v=25"></script>
+  <script     src="js/navi.js?v=25"></script>
+  <script src="js/schedule.js?v=25"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
+           crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/style.css?v=25">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>予定表 ぱるむの計算機 for Palmu</title>
+
+</head>
+<body>
+
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<br>
+
+<div class="intro">
+ポイントの取得計画を立てるための予定表 β版です．
+</div>
+
+<div>
+この予定表は，今使っているスマホやパソコンの中だけに保存されます．
+他の端末では見られず， 履歴の消去や設定の変更などで消えてしまうことがあります．
+<p>
+現在の実装では，過去の予定表は参照できません．
+</div>
+
+<fieldset>
+  <legend>日付変更時点の情報</legend>
+
+  <div class="input-group">
+    <label for="dailyPoint">累積デイリーランクポイント</label>
+    <input type="number" id="dailyPoint" min="0" max="18" step="1" />
+  </div>
+
+  <div class="input-group">
+    <label for="skipCards">スキップカード残数</label>
+    <input type="number" id="skipCards" min="0" max="10" step="1" />
+  </div>
+
+  <div class="input-group">
+    <label for="resetDate">残りランク更新期間（日数）</label>
+    <input type="number" id="resetDate" min="1" max="7" step="1" />
+  </div>
+</fieldset>
+
+<div class="scheduler-wrapper">
+  <div id="futureSchedule" class="scheduler-table active">
+    <table class="scheduler" id="scheduleTable">
+      <thead>
+        <tr>
+          <th class="date">日付</th>
+          <th class="weekday">曜<br>日</th>
+          <th class="point">pt</th>
+          <th class="total">合<br>計</th>
+          <th class="rank">ラ<br>ン<br>ク</th>
+          <th class="skipRemain">ス<br>キ<br>カ</th>
+          <!-- <th class="restDay">残</th> -->
+          <th class="memo">メモ</th>
+        </tr>
+      </thead>
+      <tbody id="scheduleBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<span class="sub-title">使い方</span>
+
+<ul class="help">
+	<li>最初に初期値を設定してください．
+    <ul>
+      <li>累積デイリーランクポイント: 1日で獲得したポイントの合計（最大18pt）
+      <li>スキップカード残数: 残っているスキップカードの枚数（最大10枚）
+      <li>残りランク更新期間（日数）: ランク更新までの残り日数（1～7日）
+    </ul>
+	<li>pt列を計画に合わせて入力してください．「ス」はスキップカードを使用したことを示します．
+  <li>「ランク」列は，今日のランクからどのように変化したかを示します．ランクアップすると，1増え，ランクダウンすると 1 減ります．
+	<li>「スキカ」列は，スキップカードの残数を示します．スキップカードを使用すると 1 減ります．
+  <li>「メモ」列は，任意のメモを入力できます．
+</ul>
+
+<span class="sub-title">注意事項</span>
+
+<ul class="help">
+	<li>本機能は，勢いに任せて実装しているので仕様が大きく変更になる可能性があります．
+	<li>一部のブラウザで，pt列の設定が保存されないバグを確認しています．
+  <li>この予定表は，現在の実装では過去の予定表を参照できません．
+    要望がたくさんあれば、過去分も参照できるようにするかもしれません．
+</ul>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
+
+<!-- vim: set et ts=2 sts=2 sw=2 et: -->

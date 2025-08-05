@@ -485,3 +485,126 @@ table.history td.decrease {
   line-height: 1.5;
 }
 
+/***************************************************
+ * 個別: schedule.html
+ ***************************************************/
+
+.scheduler-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.schedule-table {
+  display: none;
+  overflow-x: auto;
+}
+.schedule-table.active {
+  display: block;
+}
+
+table.scheduler {
+  border-collapse: collapse;
+}
+table.scheduler th, table.scheduler td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: center;
+}
+
+.scheduler th,
+.scheduler td {
+  white-space: nowrap;
+  padding: 0.3em 0.6em;
+}
+
+.scheduler th.memo,
+.scheduler td.memo {
+  width: 100%;
+  min-width: 200px; /* 最小幅を設定 */
+}
+
+.scheduler td.memo input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.date, .weekday, .point, .total, .memo, .skipRemain {
+  /* class名だけ設置。後で自由に調整してください */
+}
+table.scheduler tr.today {
+  background-color: #fffae6; /* 今日の日付の背景色 */
+}
+table.scheduler td.reset {    /* デイリーポイントの最終日 */
+  /* 濃い緑 */
+  background-color: #d4edda;
+  font-weight: bold;
+}
+table.scheduler tr.separator {
+  border-bottom: 3px double #000;
+}
+
+table.scheduler td.invalid {
+  background-color: #fdd;
+}
+
+table.scheduler tr.event0 {
+  /* background-color: #e0f7fa; /* イベント0の背景色 */
+}
+table.scheduler tr.event1 {
+  background-color: #e0f7fa; /* イベント0の背景色 */
+}
+
+.input-group {
+  margin-bottom: 1em;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.2em;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 0.4em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+fieldset {
+  border: 2px solid #4caf50;
+  border-radius: 10px;
+  padding: 1em;
+  max-width: 400px;
+  margin: 1em;
+  background-color: #f9f9f9;
+}
+
+legend {
+  font-weight: bold;
+  color: #4caf50;
+  padding: 0 0.5em;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 1em 0;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s, color 0.3s;
+}
+
+.toggle-btn.active {
+  background: #007bff;
+  color: white;
+}
