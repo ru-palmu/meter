@@ -62,7 +62,7 @@ function calculateLiveScoreToCoins(rank = '') {
     return `+${i}=${s.toLocaleString()}`;
   });
 
-  let help = '(現在のスコア';
+  let help = '現在のスコア';
   let help2 = '';
 
   let ret = b.toLocaleString();
@@ -79,7 +79,7 @@ function calculateLiveScoreToCoins(rank = '') {
   // ret +=  ': ' + getCurrentTime() + '';
   document.getElementById("result").value = ret;
 
-  document.getElementById("result-placeholder").innerHTML = help + ' 🪙 ' + help2 + ')';
+  document.getElementById("result-placeholder").value = help + ' 🪙 ' + help2;
 
 }
 

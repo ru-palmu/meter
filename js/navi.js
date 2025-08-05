@@ -95,7 +95,7 @@ function insertGuaranteedScore(targetId) {
     // コピーボタン
     const button = document.createElement('button');
     button.className = 'copy-button';
-    button.textContent = '📋コピー';
+    button.textContent = '📋確定スコアをコピー';
     button.setAttribute('onclick', "copyResult('scores')");
     outerDiv.appendChild(button);
 
