@@ -4,8 +4,8 @@
 const POINT_OPTIONS = ["+0", "+1", "+2", "+4", "+6", "ス"];
 
 // スキップカードを配布するのは月曜日
-const DISTRIBUTE_SKIP_CARDS_DAY = 0; // 月曜日(0)
-const DISTRIBUTE_EVENT_DAY = 0; //  イベント終了日
+const DISTRIBUTE_SKIP_CARDS_DAY = 1; // 月曜日(0)
+const DISTRIBUTE_EVENT_DAY = 1; //  イベント終了日
 
 const MAX_SKIP_CARDS = 10; // スキップカードの最大数
 
@@ -66,7 +66,7 @@ function loadInitialSettings() {
     const start = new Date(savedToday);
     let d = start;
     while (d < today) {
-      const dow = d.getDate()
+      const dow = d.getDay()
       const dateStr = dateToStr(d);
 
       if (dow == DISTRIBUTE_SKIP_CARDS_DAY) {
