@@ -40,6 +40,10 @@ body {
   border-radius: 5px;
 }
 
+.tab-nav li.D {
+  font-weight: bold;
+}
+
 .tab-nav li.C {
 /*
   border-top: 2px dotted #5a8f7b;
