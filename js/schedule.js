@@ -1,4 +1,5 @@
 
+const SCHEDULE_PREFIX = 'meter_schedule_';
 
 // --- 定数 ---
 const POINT_OPTIONS = ["+0", "+1", "+2", "+4", "+6", "ス"];
@@ -36,6 +37,24 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
 });
 */
 
+function __getScheduleLocalStorage(key) {
+  const prefix = SCHEDULE_PREFIX;
+  const fullKey = `${prefix}${key}`;
+  const value = localStorage.getItem(fullKey);
+  if (value) {
+    return value;
+  }
+
+  return localStorage.getItem(key);
+}
+
+function __setScheduleLocalStorage(key, value) {
+  const prefix = SCHEDULE_PREFIX;
+  const fullKey = `${prefix}${key}`;
+  localStorage.setItem(fullKey, value);
+}
+
+
 // 月曜日にスキップカードを2枚配布する
 function distributeSkipCards(skipCards) {
   return Math.min(skipCards + 2, MAX_SKIP_CARDS); // 2枚補充
@@ -43,18 +62,17 @@ function distributeSkipCards(skipCards) {
 
 // --- 初期設定のロード ---
 function loadInitialSettings() {
-  const savedSchedule = localStorage.getItem("scheduleData");
+  const savedSchedule = __getScheduleLocalStorage("scheduleData");
   scheduleData = savedSchedule ? JSON.parse(savedSchedule) : {};
 
-  let savedSkip = parseInt(localStorage.getItem("skipCards") || "0");
-  let savedReset = parseInt(localStorage.getItem("resetDate") || "7");
-  let savedDailyPoint = parseInt(localStorage.getItem("dailyPoint") || "0");
-  // const savedToday = localStorage.getItem("today") || "";
+  let savedSkip = parseInt(__getScheduleLocalStorage("skipCards") || "0");
+  let savedReset = parseInt(__getScheduleLocalStorage("resetDate") || "7");
+  let savedDailyPoint = parseInt(__getScheduleLocalStorage("dailyPoint") || "0");
 
   if (isNaN(savedReset)) savedReset = 7;
   if (isNaN(savedSkip)) savedSkip = 0;
   if (isNaN(savedDailyPoint)) savedDailyPoint = 0;
-  const savedToday = getYesterday();
+  const savedToday = __getScheduleLocalStorage("today");
   const today = new Date(getToday());
 
   //////////////////////////////////////////////////////
@@ -373,10 +391,10 @@ function updateWeekEvents(weekKey) {
 // --- データ保存 ---
 // とりま，利用者が設定している通りに保存する
 function saveSchedule() {
-  localStorage.setItem("skipCards", document.getElementById("skipCards").value);
-  localStorage.setItem("resetDate", document.getElementById("resetDate").value);
-  localStorage.setItem("dailyPoint", document.getElementById("dailyPoint").value);
-  localStorage.setItem("today", getToday());
+  __setScheduleLocalStorage("skipCards", document.getElementById("skipCards").value);
+  __setScheduleLocalStorage("resetDate", document.getElementById("resetDate").value);
+  __setScheduleLocalStorage("dailyPoint", document.getElementById("dailyPoint").value);
+  __setScheduleLocalStorage("today", getToday());
 
   const rows = document.querySelectorAll("#scheduleTable tbody tr");
   const data = {};
@@ -410,7 +428,7 @@ function saveSchedule() {
   });
 
   scheduleData = data;
-  localStorage.setItem("scheduleData", JSON.stringify(data));
+  __setScheduleLocalStorage("scheduleData", JSON.stringify(data));
 }
 
 function defaultScheduleDay(dstr) {
