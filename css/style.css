@@ -154,6 +154,7 @@ body {
 /* 各ページ冒頭の１行説明文 */
 .intro {
   margin-bottom: 1.2rem;
+  margin-top: 1.5rem;
 }
 
 /** <pre> inline **/
