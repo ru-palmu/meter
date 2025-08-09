@@ -1,10 +1,18 @@
+// for plan.html
+
+const PLAN_PREFIX = 'meter_plan_';
+
 // 一週間のプランを計画する
 function calculatePlans() {
+
 	const days = parseInt(document.getElementById("days").value);
 	const points = parseInt(document.getElementById("points").value);
+	const format = document.getElementById("result-format").value;
 	const a2 = parseInt(document.getElementById("a2").value);
 	const a4 = parseInt(document.getElementById("a4").value);
 	const a6 = parseInt(document.getElementById("a6").value);
+
+	_savePlanArgs(days, points, format);
 
 	// 配列で a の値を保持する
 	const costMap = {
@@ -66,7 +74,6 @@ function calculatePlans() {
 	rawPlans.sort((a, b) => a[1] - b[1]);
 	let result = rank + ": " + days + "日で +" + points + "\nプラン";
 
-	const format = document.getElementById("result-format").value;
 	if (format == 'score' || format == 'both') {
 		result += '\t| スコア';
 	}
@@ -88,3 +95,32 @@ function calculatePlans() {
 	document.getElementById("result_daily").value = result;
 }
 
+
+// n 日後に x ポイントの選択除法をセッションに保存する
+function _savePlanArgs(days, points, format) {
+	[
+		['days', days],
+		['points', points],
+		['format', format],
+	].forEach(([key, value]) => {
+		sessionStorage.setItem(PLAN_PREFIX + key, value);
+	});
+}
+
+// n 日後に x ポイントの選択除法をセッションから取得する
+function loadDefaultPlan() {
+	[
+		['days', 'days'],
+		['points', 'points'],
+		['format', 'result-format'],
+	].forEach(([session_id, elem_id]) => {
+
+		const elem = document.getElementById(elem_id);
+		if (elem) {
+			const value = sessionStorage.getItem(PLAN_PREFIX + session_id);
+			if (value) {
+				elem.value = value;
+			}
+		}
+	});
+}

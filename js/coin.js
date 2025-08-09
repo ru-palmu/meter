@@ -112,6 +112,10 @@ function copyResult(name) {
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
 
+  if (typeof loadDefaultPlan === 'function') {
+    loadDefaultPlan();
+  }
+
   renderNavis("navi_func", "navi_rank", "footer");
 
   // GETパラメータ r で指定されたランクをチェックする
