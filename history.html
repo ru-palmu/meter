@@ -35,6 +35,7 @@
 	<option value="score">ライブスコア</option>
 	<option value="coin">コイン</option>
 </select>
+<span id="history-unit">[K 表示]</span>
 <br>
 <table class="history">
 <thead>
@@ -64,9 +65,11 @@
 <span class="inline-code">+4</span>列，
 <span class="inline-code">+6</span>列は，それぞれ，
 +2, +4, +6 の保証ボーダー（確定スコア）の数値です．
-保証ボーダーは 1/1000 の値を表示しています．
+<span id="history-kiro-show">
+保証ボーダーは K 表示，つまり，1/1000 の値を表示しています．
 例えば，Palmu 上で 410K の場合には, ここでは 410 と表示されます．
 Palmu 上で 8130 の場合には， ここでは 8.1 と表示されます．
+</span>
 赤背景は，前回の値よりも小さくなっていることを表します．
 
 <p>

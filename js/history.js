@@ -1,8 +1,11 @@
 
-function _scoreOrCoinHistory(val, format) {
+function _scoreOrCoinHistory(val, format, useRaw) {
     if (format == 'coin') {
         val = score2coin(val);
     }
+	if (!useRaw) {
+		val = formatAsK(val);
+	}
 	return val;
 }
 
@@ -19,7 +22,10 @@ function renderBorderHistory() {
   rank = selectedRank();
 
   const sortedDates = Object.keys(presets).sort().reverse();
+  // score or coin のフォーマットを取得
   const format = document.getElementById("result-format").value;
+
+  const useRaw = rank[0] == 'D' || rank[0] == 'C';
   for (let i = 0; i < sortedDates.length; i++) {
     const date = sortedDates[i];
     if (!presets[date][rank]) {
@@ -44,7 +50,8 @@ function renderBorderHistory() {
           val < presets[sortedDates[i + 1]][rank][point]) {
           td.className = 'decrease';
       }
-      td.textContent = formatAsK(_scoreOrCoinHistory(val, format));
+
+      td.textContent = _scoreOrCoinHistory(val, format, useRaw);
       // td.textContent = val.toLocaleString();
       tr.appendChild(td);
     });
@@ -57,6 +64,18 @@ function renderBorderHistory() {
     });
 
     tbody.appendChild(tr);
+  }
+
+  const kiro_show = document.getElementById("history-kiro-show");
+  const kiro_unit = document.getElementById("history-unit");
+  if (useRaw) {
+	  kiro_show.innerHTML = '';
+	  kiro_unit.innerHTML = '';
+  } else {
+	  kiro_show.innerHTML = '保証ボーダーは K 表示，つまり，1/1000 の値を表示しています．' +
+		  '例えば，Palmu 上で 410K の場合には, ここでは 410 と表示されます．' +
+		  'Palmu 上で 8130 の場合には， ここでは 8.1 と表示されます．';
+	  kiro_unit.innerHTML = '[K 表示]';
   }
 }
 
@@ -93,9 +112,9 @@ function renderHistoryGraph() {
 		const gd = presets[date][rank];
 		if (gd) {
 			labels.push(date);
-			data2.push(_scoreOrCoinHistory(gd[2], format) || 0);
-			data4.push(_scoreOrCoinHistory(gd[4], format) || 0);
-			data6.push(_scoreOrCoinHistory(gd[6], format) || 0);
+			data2.push(_scoreOrCoinHistory(gd[2], format, true) || 0);
+			data4.push(_scoreOrCoinHistory(gd[4], format, true) || 0);
+			data6.push(_scoreOrCoinHistory(gd[6], format, true) || 0);
 		}
 	}
 
