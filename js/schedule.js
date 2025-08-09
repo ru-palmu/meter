@@ -233,6 +233,7 @@ function generateSchedule() {
     tdMemo.className = "memo";
     const memoInput = document.createElement("input");
     memoInput.type = "text";
+    memoInput.maxLength = 256; // メモの最大文字数
     memoInput.value = scheduleData[dateStr]?.memo || "";
     memoInput.addEventListener("input", () => {
       saveSchedule();
