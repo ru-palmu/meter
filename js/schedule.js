@@ -398,15 +398,22 @@ function saveSchedule() {
 
   const rows = document.querySelectorAll("#scheduleTable tbody tr");
   const data = {};
+  const data_for_save = {};
 
   rows.forEach((row) => {
     // 日付
     const dateStr = row.querySelector(".date").textContent;
-    if (!data[dateStr]) data[dateStr] = {};
+    if (!data[dateStr]) {
+      data[dateStr] = {};
+      data_for_save[dateStr] = {};
+    }
 
     // デイリーポイント
     const point = row.querySelector(".point select")?.value || "";
-    if (point) data[dateStr].point = point;
+    if (point) {
+      data[dateStr].point = point;
+      data_for_save[dateStr].point = point;
+    }
 
     // 合計
     const total = row.querySelector(".total")?.textContent || "";
@@ -418,17 +425,14 @@ function saveSchedule() {
 
     // メモ
     const memo = row.querySelector(".memo input")?.value || "";
-    if (memo) data[dateStr].memo = memo;
-  });
-
-  // 週イベントも保存
-  Object.keys(weekEvents).forEach((wk) => {
-    if (!data[wk]) data[wk] = {};
-    data[wk].event = weekEvents[wk];
+    if (memo) {
+      data[dateStr].memo = memo;
+      data_for_save[dateStr].memo = memo;
+    }
   });
 
   scheduleData = data;
-  __setScheduleLocalStorage("scheduleData", JSON.stringify(data));
+  __setScheduleLocalStorage("scheduleData", JSON.stringify(data_for_save));
 }
 
 function defaultScheduleDay(dstr) {
