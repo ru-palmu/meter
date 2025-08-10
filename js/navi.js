@@ -199,6 +199,9 @@ function _renderNaviFunc(page, target) {
 // 各ページ上部のランク選択タブの描画
 function _renderNaviRank(selected_rank, target_id) {
   const container = document.getElementById(target_id);
+  if (!container) {
+    return ;
+  }
   container.innerHTML = ""; // クリア
 
   const available = presets[latestDate];
