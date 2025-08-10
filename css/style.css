@@ -521,11 +521,11 @@ table.history td.decrease {
   -webkit-overflow-scrolling: touch;
 }
 
-.schedule-table {
+.scheduler-table {
   display: none;
   overflow-x: auto;
 }
-.schedule-table.active {
+.scheduler-table.active {
   display: block;
 }
 
@@ -625,23 +625,57 @@ legend {
   padding: 0 0.5em;
 }
 
-.toggle-buttons {
-  display: flex;
-  justify-content: center;
-  margin: 1em 0;
+.toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
 }
 
-.toggle-btn {
-  flex: 1;
-  padding: 0.5em;
-  border: 1px solid #ccc;
-  background: #f9f9f9;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s, color 0.3s;
+/* チェックボックスは完全非表示 */
+.toggle-wrapper input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-.toggle-btn.active {
-  background: #007bff;
-  color: white;
+.toggle {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #d6f0e0;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 140px;
+    height: 40px;
+    font-size: 14px;
+    color: #555;
+    user-select: none;
+    overflow: hidden; /* スライダーはみ出し防止 */
 }
+
+.toggle-label {
+    flex: 1;
+    text-align: center;
+    z-index: 2; /* スライダーより上 */
+    pointer-events: none;
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 0;         /* 上端にフィット */
+    left: 0;        /* 左端にフィット */
+    width: 50%;     /* 半分の幅 */
+    height: 100%;   /* 高さを全体に */
+    background: #4caf50;
+    border-radius: 30px;
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
+
+/* チェック時に右へ移動 */
+#schedule-toggle:checked + .toggle .toggle-slider {
+    transform: translateX(100%);
+}
+

@@ -161,16 +161,14 @@ function generateSchedule() {
   const tbody = document.getElementById("scheduleBody");
   tbody.innerHTML = "";
   const { start, end } = getDateRange();
+  let event = false;
 
-  weekEvents = {}; // クリア
-  today = getToday();
+  const today = getToday();
 
   let d = new Date(start);
   while (d <= end) {
     const dateStr = dateToStr(d);
     const dow = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
-    const weekKey = getWeekKey(d);    // イベントの表示用：火曜始まりの週キー
-    const isFirstOfWeek = dateStr === weekKey;
 
     if (!scheduleData[dateStr]) {
       scheduleData[dateStr] = defaultScheduleDay(dateStr);
@@ -179,6 +177,15 @@ function generateSchedule() {
     const tr = document.createElement("tr");
     if (dateStr === today) {
       tr.classList.add("today"); // 今日の日付にクラスを追加
+    } else {
+      if (event) {
+        tr.classList.add("event1");
+      } else {
+        tr.classList.add("event0");
+      }
+    }
+    if (d.getDay() === DISTRIBUTE_EVENT_DAY) {
+      event = !event;
     }
 
     // 日付
@@ -263,34 +270,41 @@ function generateSchedule() {
 
     d.setDate(d.getDate() + 1);
   }
-
-  // 週イベントを初期反映
-  Object.keys(weekEvents).forEach((weekKey) => updateWeekEvents(weekKey));
 }
 
 function generateSchedulePast() {
   const tbody = document.getElementById("scheduleBodyPast");
   tbody.innerHTML = "";
-  const end = getYesterday(); // 昨日までのスケジュール
-  const start1 = Object.keys(scheduleData).sort()[0];
+  const end = new Date(getYesterday()); // 昨日までのスケジュール
+  let start = Object.keys(scheduleData).sort()[0];
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const oneMonthAgoStr = dateToStr(oneMonthAgo);
+  if (start > oneMonthAgoStr) {
+    start = oneMonthAgoStr; // 1ヶ月前からのデータを表示
+  }
 
-  weekEvents = {}; // クリア
-  today = getToday();
+  let event = false;
 
-  let d = new Date(start1);
-  let found = false;
+  let d = new Date(start);
   while (d <= end) {
     const dateStr = dateToStr(d);
     const dow = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
-    const weekKey = getWeekKey(d);    // イベントの表示用：火曜始まりの週キー
-    const isFirstOfWeek = dateStr === weekKey;
 
     if (!scheduleData[dateStr]) {
       scheduleData[dateStr] = defaultScheduleDay(dateStr);
     }
+
     const tr = document.createElement("tr");
-    if (dateStr === today) {
-      tr.classList.add("today"); // 今日の日付にクラスを追加
+    if (true) {
+      if (event) {
+        tr.classList.add("event1");
+      } else {
+        tr.classList.add("event0");
+      }
+    }
+    if (d.getDay() === DISTRIBUTE_EVENT_DAY) {
+      event = !event;
     }
 
     // 日付
@@ -303,11 +317,7 @@ function generateSchedulePast() {
     const tdWeek = document.createElement("td");
     tdWeek.className = "weekday";
     tdWeek.textContent = dow;
-    if (d == today) {
-        tdWeek.classList.add("today"); // 今日の日付にクラスを追加
-    }
     tr.appendChild(tdWeek);
-
 
     // ポイント
     const tdPoint = document.createElement("td");
@@ -323,34 +333,9 @@ function generateSchedulePast() {
     if (scheduleData[dateStr]?.point) pointSel.value = scheduleData[dateStr].point;
     pointSel.addEventListener("change", () => {
       saveSchedule();
-      updateTotals();
     });
     tdPoint.appendChild(pointSel);
     tr.appendChild(tdPoint);
-
-    // 合計
-    const tdTotal = document.createElement("td");
-    tdTotal.className = "total";
-    tr.appendChild(tdTotal);
-    if (scheduleData[dateStr]?.total) tdTotal.value = scheduleData[dateStr].total;
-
-    // ランク
-    const tdRank = document.createElement("td");
-    tdRank.className = "rank";
-    tr.appendChild(tdRank);
-    if (scheduleData[dateStr]?.rank) tdTotal.value = scheduleData[dateStr].rank;
-
-    // スキップカード残数
-    const tdSkipRemain = document.createElement("td");
-    tdSkipRemain.className = "skipRemain";
-    tr.appendChild(tdSkipRemain);
-    if (scheduleData[dateStr]?.skipRemain) tdSkipRemain.value = scheduleData[dateStr].skipRemain;
-
-    // 区切り日までの残日数
-    const tdRestDay= document.createElement("td");
-    tdRestDay.className = "restDay";
-    // tr.appendChild(tdRestDay);
-    if (scheduleData[dateStr]?.restDay) tdRestDay.value = scheduleData[dateStr].restDay;
 
     // メモ
     const tdMemo = document.createElement("td");
@@ -368,24 +353,6 @@ function generateSchedulePast() {
 
     d.setDate(d.getDate() + 1);
   }
-
-  // 週イベントを初期反映
-  Object.keys(weekEvents).forEach((weekKey) => updateWeekEvents(weekKey));
-}
-
-// 同じ週のイベント列を更新（週の火曜だけ編集可、他はテキスト表示）
-function updateWeekEvents(weekKey) {
-  const rows = document.querySelectorAll("#scheduleTable tbody tr");
-  rows.forEach((row) => {
-    const dateStr = row.querySelector(".date").textContent;
-    if (getWeekKey(dateStr) === weekKey) {
-      const tdEvent = row.children[2];
-      const isFirstOfWeek = dateStr === weekKey;
-      if (!isFirstOfWeek) {
-        tdEvent.textContent = weekEvents[weekKey];
-      }
-    }
-  });
 }
 
 // --- データ保存 ---
@@ -396,23 +363,23 @@ function saveSchedule() {
   __setScheduleLocalStorage("dailyPoint", document.getElementById("dailyPoint").value);
   __setScheduleLocalStorage("today", getToday());
 
-  const rows = document.querySelectorAll("#scheduleTable tbody tr");
-  const data = {};
-  const data_for_save = {};
+  const data = {};  // メモリ載せておく用
+  const data_for_save = {}; // 全部
 
-  rows.forEach((row) => {
+  ///////////////////////////////////////////////
+  // 未来分
+  ///////////////////////////////////////////////
+  document.querySelectorAll("#scheduleTable tbody tr").forEach((row) => {
     // 日付
     const dateStr = row.querySelector(".date").textContent;
     if (!data[dateStr]) {
       data[dateStr] = {};
-      data_for_save[dateStr] = {};
     }
 
     // デイリーポイント
     const point = row.querySelector(".point select")?.value || "";
     if (point) {
       data[dateStr].point = point;
-      data_for_save[dateStr].point = point;
     }
 
     // 合計
@@ -427,7 +394,36 @@ function saveSchedule() {
     const memo = row.querySelector(".memo input")?.value || "";
     if (memo) {
       data[dateStr].memo = memo;
-      data_for_save[dateStr].memo = memo;
+    }
+
+    if (point != "+1" || memo) {
+      data_for_save[dateStr] = { point: point, memo: memo };
+    }
+  });
+
+  ///////////////////////////////////////////////
+  // 過去分
+  ///////////////////////////////////////////////
+  document.querySelectorAll("#scheduleTablePast tbody tr").forEach((row) => {
+    const dateStr = row.querySelector(".date").textContent;
+    if (!data[dateStr]) {
+      data[dateStr] = {};
+    }
+
+    // デイリーポイント
+    const point = row.querySelector(".point select")?.value || "";
+    if (point) {
+      data[dateStr].point = point;
+    }
+
+    // メモ
+    const memo = row.querySelector(".memo input")?.value || "";
+    if (memo) {
+      data[dateStr].memo = memo;
+    }
+
+    if (point != "+1" || memo) {
+      data_for_save[dateStr] = { point: point, memo: memo };
     }
   });
 
@@ -474,7 +470,6 @@ function updateTotalsFuture(endx, skipCount, resetDate, dailyPoint) {
   let d = new Date(today);
   let skipCard = false;
   resetDate += 1;
-  let event = false;
   let rank = 0;
   if (dailyPoint >= RANK_UP_POINT) {
     dailyPoint = 0;
@@ -492,12 +487,8 @@ function updateTotalsFuture(endx, skipCount, resetDate, dailyPoint) {
       resetDate = (resetDate + MAX_RESET_DATE - 2) % MAX_RESET_DATE + 1;
     }
 
-    scheduleData[dstr].event = event;
     if (d.getDay() === DISTRIBUTE_SKIP_CARDS_DAY) {
       skipCount = distributeSkipCards(skipCount);
-    }
-    if (d.getDay() === DISTRIBUTE_EVENT_DAY) {
-      event = !event;
     }
     skipCard = useSkipCard(dstr);
     if (skipCard) {
@@ -539,8 +530,6 @@ function updateTotals() {
   let dailyPoint = parseInt(document.getElementById("dailyPoint").value, 10);
   if (isNaN(dailyPoint)) dailyPoint = 0;
 
-  let errorMessages = [];
-
   const today = new Date(getToday());
 
   const endx = new Date(rows[rows.length - 1].children[0].textContent);
@@ -554,15 +543,6 @@ function updateTotals() {
     const tdSkipRemain = row.querySelector(".skipRemain");
     const tdRestDay = row.querySelector(".restDay");
     const tdRank = row.querySelector(".rank");
-
-    if (dateStr != today) {
-      if (scheduleData[dateStr]?.event) {
-        row.classList.add("event1");
-      } else {
-        row.classList.add("event0");
-      }
-    }
-
 
     // pointSel で選択されたポイントを取得
     const point = pointSel ? pointSel.value : "+0";
@@ -605,8 +585,22 @@ function setupEvents() {
 document.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
 
+  const toggle = document.getElementById('schedule-toggle');
+  toggle.addEventListener('change', function() {
+    if (this.checked) {
+      document.getElementById('pastScheduleDiv').style.display = 'none';
+      document.getElementById('futureScheduleDiv').style.display = 'block';
+    } else {
+      document.getElementById('pastScheduleDiv').style.display = 'block';
+      document.getElementById('futureScheduleDiv').style.display = 'none';
+    }
+  });
+  // 未来（チェック）をデフォルトにする
+  toggle.checked = true;
+
   loadInitialSettings();
   generateSchedule();
+  generateSchedulePast();
   setupEvents();
   updateTotals();
 });

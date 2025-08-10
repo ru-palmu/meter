@@ -6,7 +6,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script    src="js/meter.js?v=25"></script>
   <script     src="js/navi.js?v=25"></script>
-  <script src="js/schedule.js?v=25"></script>
+  <script src="js/schedule.js?v=25" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
            crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/style.css?v=25">
@@ -34,7 +34,8 @@
 この予定表は，今使っているスマホやパソコンの中だけに保存されます．
 他の端末では見られず， 履歴の消去や設定の変更などで消えてしまうことがあります．
 <p>
-現在の実装では，過去の予定表は参照できません．
+諸事情で，過去と未来を別に表示するようにしています．
+また，過去はスキップカード残数等を表示しません．
 </div>
 
 <fieldset>
@@ -56,8 +57,18 @@
   </div>
 </fieldset>
 
+<div class="toggle-wrapper">
+  <input type="checkbox" id="schedule-toggle" checked>
+  <label for="schedule-toggle" class="toggle">
+    <span class="toggle-label past">過去</span>
+    <span class="toggle-slider"></span>
+    <span class="toggle-label future">未来</span>
+  </label>
+</div>
+
+
 <div class="scheduler-wrapper">
-  <div id="futureSchedule" class="scheduler-table active">
+  <div id="futureScheduleDiv" class="scheduler-table active">
     <table class="scheduler" id="scheduleTable">
       <thead>
         <tr>
@@ -72,6 +83,20 @@
         </tr>
       </thead>
       <tbody id="scheduleBody"></tbody>
+    </table>
+  </div>
+  <div id="pastScheduleDiv" class="scheduler-table">
+    <table class="scheduler" id="scheduleTablePast">
+      <thead>
+        <tr>
+          <th class="date">日付</th>
+          <th class="weekday">曜<br>日</th>
+          <th class="point">pt</th>
+          <!-- <th class="restDay">残</th> -->
+          <th class="memo">メモ</th>
+        </tr>
+      </thead>
+      <tbody id="scheduleBodyPast"></tbody>
     </table>
   </div>
 </div>
@@ -96,8 +121,6 @@
 <ul class="help">
 	<li>本機能は，勢いに任せて実装しているので仕様が大きく変更になる可能性があります．
 	<li>一部のブラウザで，pt列の設定が保存されないバグを確認しています．
-  <li>この予定表は，現在の実装では過去の予定表を参照できません．
-    要望がたくさんあれば、過去分も参照できるようにするかもしれません．
   <li>2025/09からの新しいランクシステムには対応していません．ランクダウン直後の +18 もランクアップしたと判定します．
     2025/09以降に修正予定です．
 </ul>
