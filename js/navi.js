@@ -1,6 +1,8 @@
 // ヘッダ部のナビゲーションを管理するスクリプト
 // 共通関数的なものも管理
 
+const COMMON_PREFIX = 'meter_common_';
+
 const cand_rank = ["D", "C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "A4", "A5", "S", "SS"];
 
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
@@ -119,7 +121,9 @@ function insertGuaranteedScore(targetId) {
 function renderNavis(navi_func, navi_rank, _footer) {
 	page = _getCurrentPage();
 	_renderNaviFunc(page, navi_func);
-	_renderNaviRank(selectedRank(), navi_rank);
+	const rank = selectedRank();
+	localStorage.setItem(COMMON_PREFIX + "selected_rank", rank);
+	_renderNaviRank(rank, navi_rank);
 	insertGuaranteedScore("guaranteed-score");
 	appendCurrentQueryToLinks('append-query')
 	renderFooter();
@@ -149,7 +153,10 @@ function _getQueryParam(name) {
 // 選択されているランクを取得
 function selectedRank() {
   const presetFromURL = _getQueryParam("r");
-  let key = default_rank;
+  let key = localStorage.getItem(COMMON_PREFIX + "selected_rank");
+  if (!key) {
+	  key = default_rank;
+  }
   if (presetFromURL && presets[latestDate][presetFromURL]) {
     key = presetFromURL;
   }
