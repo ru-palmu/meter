@@ -36,6 +36,11 @@ function renderBorderHistory() {
     // 日付セル
     const dateCell = document.createElement("td");
     dateCell.textContent = date;
+	dateCell.className = 'copyable';
+	dateCell.addEventListener('click', () => {
+		const text = dateCell.textContent.trim();
+		copyHistory(text);
+	});
     tr.appendChild(dateCell);
 
     const a1 = presets[date][rank];
@@ -160,6 +165,36 @@ function renderHistoryGraph() {
 			},
 		}
 	});
+}
+
+function copyHistory(dateStr) {
+  if (!presets[dateStr]) {
+	return;
+  }
+
+  rank = selectedRank();
+
+  const p2 = formatPalmu(presets[dateStr][rank][2]);
+  const p4 = formatPalmu(presets[dateStr][rank][4]);
+  const p6 = formatPalmu(presets[dateStr][rank][6]);
+  const textToCopy = `${dateStr} ${rank}確定スコア +2=${p2} +4=${p4} +6=${p6}`;
+
+  const textarea = document.createElement("textarea");
+  textarea.value = textToCopy;
+
+  // 見えなくするためのスタイルを設定
+  textarea.style.position = "fixed";  // スクロールしても位置が変わらないように
+  textarea.style.left = "-9999px";    // 画面外に移動
+  textarea.style.top = "0";
+  textarea.style.opacity = "0";       // 透明化（念のため）
+  textarea.style.pointerEvents = "none";  // 操作できないように
+
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  document.execCommand('copy');
+
+  document.body.removeChild(textarea);
 }
 
 function renderHistories() {

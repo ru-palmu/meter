@@ -387,6 +387,16 @@ table.history td.decrease {
   font-weight: bold;
 }
 
+.copyable {
+  user-select: none; /* 文字選択が邪魔なら */
+  transition: background-color 0.3s ease;
+}
+
+.copyable.tapped {
+  background-color: #d0ffd0;
+}
+
+
 /***************************************************
  * 個別: about.html
  ***************************************************/

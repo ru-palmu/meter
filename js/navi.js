@@ -21,6 +21,14 @@ function formatAsK(value) {
   }
 }
 
+function formatPalmu(value) {
+  if (value < 10000) {
+	  return value;
+  } else {
+	  return formatAsK(value) + "K";
+  }
+}
+
 // ライブスコアに相当するコイン数を算出する．
 // ギフトの最小値が 10 のため, 1の位を切り上げ.
 function score2coin(score) {
