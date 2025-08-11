@@ -269,7 +269,7 @@ const glossary = {
 		"<p>ライブスコアは，「<span class='term' data-term='coin'>コイン数</span>」「コメント数」「スーパーライク数」「視聴人数」などの応援要素を総合して算出されていますが，そのロジックは公開されていません．" +
 "<p>ライブスコアは，配信画面の左上に矢印と共に表示されています．下の画像では，現在のライブスコアが 79,782 であることを表しています．" +
 "<p><div class='img'><img src='img/score.png' alt='ライブスコアの例' width='20%'></div>" +
-"<p>多くの場合，ライバーが目標となる<span class='term' data-term='point'>デイリーポイント</span>を設定し，それに対応するライブスコアを目指すことになります．" +
+"<p>多くの場合，ライバーが目標となる<span class='term' data-term='point'>デイリーランクポイント</span>を設定し，それに対応するライブスコアを目指すことになります．" +
 "<p>より詳細な情報は，『<a href='https://note.com/palmu/n/nc853285c3db3'>【たいむず（2024/10）】ライブスコアの導入</a> <a href='https://note.com/palmu/n/nc853285c3db3#f469e53e-1e96-4c56-8de5-476f1ed9d6f8'>6. ライブスコアの算出ロジックについて</a>』『FAQ: <a href='https://intercom.help/light-inc/ja/articles/9941027-%E3%83%A9%E3%82%A4%E3%83%96%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6'>ライブスコアについて</a>』を参照ください．" +
 		"",
 	},

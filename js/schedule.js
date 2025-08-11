@@ -376,7 +376,7 @@ function saveSchedule() {
       data[dateStr] = {};
     }
 
-    // デイリーポイント
+    // デイリーランクポイント
     const point = row.querySelector(".point select")?.value || "";
     if (point) {
       data[dateStr].point = point;
@@ -410,7 +410,7 @@ function saveSchedule() {
       data[dateStr] = {};
     }
 
-    // デイリーポイント
+    // デイリーランクポイント
     const point = row.querySelector(".point select")?.value || "";
     if (point) {
       data[dateStr].point = point;

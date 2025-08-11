@@ -582,7 +582,7 @@ select {
 table.scheduler tr.today {
   background-color: #fffae6; /* 今日の日付の背景色 */
 }
-table.scheduler td.reset {    /* デイリーポイントの最終日 */
+table.scheduler td.reset {    /* デイリーランクポイントの最終日 */
   /* 濃い緑 */
   background-color: #d4edda;
   font-weight: bold;
