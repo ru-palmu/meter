@@ -222,6 +222,16 @@ button {
   box-shadow: none;
 }
 
+button:hover {
+  background-color: #ddd;
+}
+
+button:active {
+  background-color: #bbb;
+  transform: translateY(1px);
+}
+
+
 /* 見た目の統一感を持たせる（スマホ用に小さめ） */
 input,
 select,
@@ -273,10 +283,6 @@ button {
   cursor: pointer;
   white-space: nowrap;
   transition: background-color 0.2s ease;
-}
-
-.copy-button:hover {
-  background-color: #ddd;
 }
 
 .copy-output {
