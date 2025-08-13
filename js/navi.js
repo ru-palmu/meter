@@ -241,7 +241,7 @@ function renderFooter() {
   footer.innerHTML = `
     <div class="footer-content">
       © ${year} (る) |
-      <a href="https://github.com/ru-palmu/meter/" target="_blank" rel="noopener">GitHub</a>, <a href="https://x.com/UoxRTnR2GS38164">X</a>
+      <a href="https://github.com/ru-palmu/meter/" target="_blank" rel="noopener">GitHub</a>, <a href="https://x.com/ru_palmu">X</a>
     </div>
   `;
 }
@@ -282,7 +282,7 @@ const glossary = {
 		"ここで，「K」は「キロ」，つまり，1,000倍の値を表します．「51.4K」の場合，51,400 から 51,499 の間の値を表します．本ツールでは，中央値である 51,450 を採用しています．" +
 		"<p><div class='img'><img src='img/border.png' alt='保証ボーダーの例' width='70%'></div>" +
 		"<p>なお，本ツールでは，保証ボーダーの値を手動で登録しているため，最新になっていなかったり，間違った値になっている可能性があります．" +
-		"不具合報告は，<a href=https://github.com/ru-palmu/meter/issues>GitHub</a> または <a href='https://x.com/UoxRTnR2GS38164'>X</a> までお願いします．" +
+		"不具合報告は，<a href=https://github.com/ru-palmu/meter/issues>GitHub</a> または <a href='https://x.com/ru_palmu'>X</a> までお願いします．" +
 "<p>より詳細な情報は，『<a href='https://note.com/palmu/n/n4eb0cf1c4aa8'>【たいむず(2024/6)】保証ボーダーとスキップカードについて</a>』『FAQ: <a href='https://intercom.help/light-inc/ja/articles/9418444-%E4%BF%9D%E8%A8%BC%E3%83%9C%E3%83%BC%E3%83%80%E3%83%BC%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6'>保証ボーダーについて</a>』『ヘルプ：<a href='https://intercom.help/light-inc/ja/articles/10004958-%E4%BF%9D%E8%A8%BC%E3%83%9C%E3%83%BC%E3%83%80%E3%83%BC%E3%81%AE%E8%A1%A8%E8%A8%98%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6'>保証ボーダーの表記について</a>』を参照ください．" +
 "",
 	},
