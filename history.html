@@ -35,7 +35,6 @@
 	<option value="score">ライブスコア</option>
 	<option value="coin">コイン</option>
 </select>
-<span id="history-unit">[K 表示]</span>
 <br>
 <table class="history">
 <thead>
@@ -46,7 +45,6 @@
   <th>+6</th>
   <th>4/2</th>
   <th>6/2</th>
-  <th>6/4</th>
 </tr>
 </thead>
 <tbody id="history-tbody"></tbody>
@@ -73,17 +71,13 @@
 <span class="inline-code">+4</span>列，
 <span class="inline-code">+6</span>列は，それぞれ，
 +2, +4, +6 の保証ボーダー（確定スコア）の数値です．
-<span id="history-kiro-show">
-保証ボーダーは K 表示，つまり，1/1000 の値を表示しています．
-例えば，Palmu 上で 410K の場合には, ここでは 410 と表示されます．
-Palmu 上で 8130 の場合には， ここでは 8.1 と表示されます．
-</span>
+K がついている数値は，1/1000 の値を表示しています．
+詳細な説明は，<a href="about.html#gborder">こちら</a>をご覧ください．
 赤背景は，前回の値よりも小さくなっていることを表します．
 
 <p>
 <span class="inline-code">4/2</span>列，
-<span class="inline-code">6/2</span>列，
-<span class="inline-code">6/4</span>列は，
+<span class="inline-code">6/2</span>列は，
 保証ボーダーの比を表しています．
 例えば，<span class="inline-code">4/2</span> は，
 <span class="inline-code">+4</span> を

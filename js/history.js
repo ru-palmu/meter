@@ -4,7 +4,7 @@ function _scoreOrCoinHistory(val, format, useRaw) {
         val = score2coin(val);
     }
 	if (!useRaw) {
-		val = formatAsK(val);
+		val = formatPalmu(val);
 	}
 	return val;
 }
@@ -25,7 +25,6 @@ function renderBorderHistory() {
   // score or coin のフォーマットを取得
   const format = document.getElementById("result-format").value;
 
-  const useRaw = rank[0] == 'D' || rank[0] == 'C';
   for (let i = 0; i < sortedDates.length; i++) {
     const date = sortedDates[i];
     if (!presets[date][rank]) {
@@ -56,12 +55,12 @@ function renderBorderHistory() {
           td.className = 'decrease';
       }
 
-      td.textContent = _scoreOrCoinHistory(val, format, useRaw);
+      td.textContent = _scoreOrCoinHistory(val, format, false);
       // td.textContent = val.toLocaleString();
       tr.appendChild(td);
     });
 
-    [a1[4]/a1[2], a1[6]/a1[2], a1[6]/a1[4]].forEach(val => {
+    [a1[4]/a1[2], a1[6]/a1[2]].forEach(val => {
       const td = document.createElement("td");
       // 小数第2位まで表示
       td.textContent = val.toFixed(2);
@@ -69,18 +68,6 @@ function renderBorderHistory() {
     });
 
     tbody.appendChild(tr);
-  }
-
-  const kiro_show = document.getElementById("history-kiro-show");
-  const kiro_unit = document.getElementById("history-unit");
-  if (useRaw) {
-	  kiro_show.innerHTML = '';
-	  kiro_unit.innerHTML = '';
-  } else {
-	  kiro_show.innerHTML = '保証ボーダーは K 表示，つまり，1/1000 の値を表示しています．' +
-		  '例えば，Palmu 上で 410K の場合には, ここでは 410 と表示されます．' +
-		  'Palmu 上で 8130 の場合には， ここでは 8.1 と表示されます．';
-	  kiro_unit.innerHTML = '[K 表示]';
   }
 }
 
