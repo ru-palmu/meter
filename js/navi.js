@@ -206,6 +206,17 @@ function _renderNaviRank(selected_rank, target_id) {
 
   const available = presets[latestDate];
 
+  const wrapper = document.createElement("div");
+  wrapper.className = "tab-nav-wrapper";
+
+  const leftHint = document.createElement("div");
+  leftHint.className = "scroll-hint left";
+  leftHint.textContent = "←";
+
+  const rightHint = document.createElement("div");
+  rightHint.className = "scroll-hint right";
+  rightHint.textContent = "→";
+
   const ul = document.createElement("ul");
   ul.className = "tab-nav";
 
@@ -224,7 +235,24 @@ function _renderNaviRank(selected_rank, target_id) {
       ul.appendChild(li)
     }
   });
-  container.appendChild(ul);
+
+  wrapper.appendChild(leftHint);
+  wrapper.appendChild(ul);
+  wrapper.appendChild(rightHint);
+
+  container.appendChild(wrapper);
+
+  // 矢印の表示制御
+  function updateHints() {
+    const atStart = ul.scrollLeft <= 0;
+    const atEnd = ul.scrollLeft + ul.clientWidth >= ul.scrollWidth - 1;
+    leftHint.classList.toggle("hidden", atStart);
+    rightHint.classList.toggle("hidden", atEnd);
+  }
+
+  ul.addEventListener("scroll", updateHints);
+  window.addEventListener("resize", updateHints);
+  updateHints();
 }
 
 
