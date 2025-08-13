@@ -589,6 +589,10 @@ table.scheduler th, table.scheduler td {
   padding: 0.3em 0.6em;
 }
 
+.scheduler tr {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
 .scheduler th.memo,
 .scheduler td.memo {
   width: 100%;
@@ -722,5 +726,15 @@ legend {
 /* チェック時に右へ移動 */
 #schedule-toggle:checked + .toggle .toggle-slider {
     transform: translateX(100%);
+}
+
+.schedule-direction {
+  background: #b2dfdb; /* 落ち着いたティール系、背景との差がはっきり */
+  color: #004d40;      /* 深めの緑で文字が読みやすい */
+
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid #ccc;
 }
 

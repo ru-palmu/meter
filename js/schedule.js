@@ -284,10 +284,10 @@ function generateSchedulePast() {
     start = oneMonthAgoStr; // 1ヶ月前からのデータを表示
   }
 
-  let event = false;
+  let event = false;  // イベントの切り替わりで背景色を変えるためのフラグ
 
-  let d = new Date(start);
-  while (d <= end) {
+  const d = end;
+  while (dateToStr(d) >= start) {
     const dateStr = dateToStr(d);
     const dow = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
 
@@ -351,7 +351,7 @@ function generateSchedulePast() {
 
     tbody.appendChild(tr);
 
-    d.setDate(d.getDate() + 1);
+    d.setDate(d.getDate() - 1);
   }
 }
 
@@ -585,18 +585,44 @@ function setupEvents() {
 document.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
 
+  const toggleDescription = [
+      '昨日から順に過去を表示しています',
+      '今日から順に未来を表示しています',
+  ];
+
   const toggle = document.getElementById('schedule-toggle');
-  toggle.addEventListener('change', function() {
-    if (this.checked) {
-      document.getElementById('pastScheduleDiv').style.display = 'none';
-      document.getElementById('futureScheduleDiv').style.display = 'block';
-    } else {
-      document.getElementById('pastScheduleDiv').style.display = 'block';
-      document.getElementById('futureScheduleDiv').style.display = 'none';
-    }
-  });
+  const direction = document.getElementById('schedule-direction');
   // 未来（チェック）をデフォルトにする
   toggle.checked = true;
+  direction.textContent = toggleDescription[toggle.checked ? 1 : 0];
+  toggle.addEventListener('change', function() {
+
+    if (this.checked) {
+      // 未来
+      document.getElementById('pastScheduleDiv').style.display = 'none';
+      document.getElementById('futureScheduleDiv').style.display = 'block';
+      direction.textContent = toggleDescription[1];
+    } else {
+      // 過去
+      document.getElementById('pastScheduleDiv').style.display = 'block';
+      document.getElementById('futureScheduleDiv').style.display = 'none';
+      direction.textContent = toggleDescription[0];
+    }
+
+    // アニメーション
+    const rows = document.querySelectorAll('.scheduler tr');
+    rows.forEach(row => {
+      row.style.transform = this.checked ? 'translateY(20px)' : 'translateY(-20px)';
+      row.style.opacity = '0';
+      setTimeout(() => {
+        row.style.transform = 'translateY(0)';
+        row.style.opacity = '1';
+      }, 50);
+
+    });
+
+
+  });
 
   loadInitialSettings();
   generateSchedule();
