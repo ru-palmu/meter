@@ -175,6 +175,10 @@ function selectedRank() {
 // page：現在のページID
 // target：ナビゲーションを表示する要素のID
 function _renderNaviFunc(page, target) {
+	const container = document.getElementById(target);
+	if (!container) {
+		return;
+	}
 
 	const pages = [
 		{ id: "index", name: "メーター", url: "index.html" },
@@ -184,15 +188,26 @@ function _renderNaviFunc(page, target) {
 		{ id: "about", name: "使い方", url: "about.html" },
 	];
 
-	let html = '<ul class="sub-tab-nav">';
 	const query = window.location.search;
 
+    const ul = document.createElement('ul');
+	ul.className = 'sub-tab-nav';
+
 	for (const p of pages) {
-		const cls = (p.id === page ? "active" : "");
-		html += `<li class="sub-tab ${cls}"><a href="${p.url}${query}">${p.name}</a></li>`;
+		const li = document.createElement('li');
+		li.className = 'sub-tab';
+		if (p.id === page) {
+			li.classList.add('active');
+		}
+		const a = document.createElement('a');
+		a.href = `${p.url}${query}`;
+		a.textContent = p.name;
+		li.appendChild(a);
+		ul.appendChild(li);
 	}
-	html += '</ul>';
-	document.getElementById(target).innerHTML = html;
+
+	container.innerHTML = '';
+	container.appendChild(ul);
 }
 
 
