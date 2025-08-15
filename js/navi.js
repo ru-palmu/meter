@@ -171,6 +171,45 @@ function selectedRank() {
   return key;
 }
 
+// X へのシェアボタンを生成
+function _shareX() {
+  // Xでシェアボタンを追加
+  const shareLi = document.createElement('li');
+  shareLi.className = 'sub-tab share-btn';
+
+  const shareA = document.createElement('a');
+  shareA.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent('#palmu 用の確定値までの残コイン数を計算するツール #ぱるむの計算機')}&url=${encodeURIComponent('https://ru-palmu.github.io/meter/')}`;
+  shareA.target = '_blank';
+  shareA.rel = 'noopener noreferrer';
+  shareA.style.display = 'flex';
+  shareA.style.alignItems = 'center';
+  shareA.style.gap = '4px';
+
+  // SVGアイコン（公式Xロゴ）
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('xmlns', svgNS);
+  svg.setAttribute('viewBox', '0 0 1200 1227');
+  svg.setAttribute('width', '14');
+  svg.setAttribute('height', '14');
+  svg.setAttribute('fill', 'currentColor');
+  svg.setAttribute('aria-hidden', 'true');
+
+  const path = document.createElementNS(svgNS, 'path');
+  path.setAttribute('d', 'M714.163 519.284L1160.89 0H1040.49L667.137 432.009L370.906 0H0l469.746 682.897L0 1226.75h120.406l396.57-458.77 311.26 458.77H1200L714.163 519.284zM562.78 698.065l-45.933-65.932-367.02-527.611h157.662l295.635 424.871 45.932 65.932 379.115 544.369H870.51L562.78 698.065z');
+
+
+  svg.appendChild(path);
+
+  // テキスト
+  const textNode = document.createTextNode('シェア');
+
+  shareA.appendChild(svg);
+  shareA.appendChild(textNode);
+  shareLi.appendChild(shareA);
+  return shareLi;
+}
+
 // 機能に関するナビゲーションをレンダリング
 // page：現在のページID
 // target：ナビゲーションを表示する要素のID
@@ -206,8 +245,13 @@ function _renderNaviFunc(page, target) {
 		ul.appendChild(li);
 	}
 
+	const li = _shareX();
+	if (li) {
+		ul.appendChild(li);
+	}
+
 	container.innerHTML = '';
-	container.appendChild(ul);
+	_renderTabNaviWrapper(container, ul);
 }
 
 function _renderTabNaviWrapper(container, ul) {

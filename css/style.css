@@ -17,7 +17,7 @@ body {
   overflow-x: auto;              /* 横スクロール可能 */
   gap: 5px;                      /* タブ間の隙間 */
   padding: 5px 0;
-  margin-bottom: 7px;
+  margin-bottom: 0px;
   list-style: none;
   scrollbar-width: none;         /* Firefox用：スクロールバー非表示 */
   -webkit-overflow-scrolling: touch; /* iOSスムーズスクロール */
@@ -115,16 +115,23 @@ body {
 /* --- タブナビ（下部，機能） --- */
 .sub-tab-nav {
   display: flex;
-  list-style: none;
+  flex-wrap: nowrap;             /* 折り返しなし */
+  overflow-x: auto;              /* 横スクロール可能 */
+  gap: 5px;                      /* タブ間の隙間 */
   padding: 0;
-  gap: 5px;
   margin-bottom: 7px;
+  list-style: none;
+  scrollbar-width: none;         /* Firefox用：スクロールバー非表示 */
+  -webkit-overflow-scrolling: touch; /* iOSスムーズスクロール */
+  scroll-behavior: smooth;
+  position: relative;
 }
 
 
 .sub-tab-nav li {
   padding: 3px 8px;
   background: #e0f7e9; /* 淡いめ */
+  white-space: nowrap;
 }
 
 .sub-tab-nav li.active {
@@ -138,6 +145,23 @@ body {
 .sub-tab-nav a {
   text-decoration: none;
   color: #2d6a4f
+}
+
+/* シェアボタン専用タブの見た目を既存タブと揃える */
+.sub-tab-nav li.share-btn {
+  background: #e0f7e9;
+  padding: 3px 8px;
+}
+.sub-tab-nav li.share-btn a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #2d6a4f;
+  text-decoration: none;
+  font-size: 14px;
+}
+.sub-tab-nav li.share-btn a:hover {
+  opacity: 0.8;
 }
 
 .tab-content {
@@ -161,7 +185,7 @@ body {
   border-bottom: 3px solid #a2d5a2; /* 下線（装飾） */
   text-align: center;
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   border-radius: 0 0 10px 10px;    /* 下側だけ角丸で優しい印象 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 軽い影で浮き感 */
 
