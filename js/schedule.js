@@ -619,6 +619,15 @@ document.addEventListener("DOMContentLoaded", () => {
         row.style.opacity = '1';
       }, 50);
 
+
+      // 【重要】アニメーション完了後にスタイルを完全リセット
+      setTimeout(() => {
+        row.style.transform = '';
+        row.style.opacity = '';
+        // 強制的に再描画をトリガー
+        row.offsetHeight;
+      }, 100);
+
     });
 
 
