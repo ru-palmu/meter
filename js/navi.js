@@ -210,17 +210,7 @@ function _renderNaviFunc(page, target) {
 	container.appendChild(ul);
 }
 
-
-// 各ページ上部のランク選択タブの描画
-function _renderNaviRank(selected_rank, target_id) {
-  const container = document.getElementById(target_id);
-  if (!container) {
-    return ;
-  }
-  container.innerHTML = ""; // クリア
-
-  const available = presets[latestDate];
-
+function _renderTabNaviWrapper(container, ul) {
   const wrapper = document.createElement("div");
   wrapper.className = "tab-nav-wrapper";
 
@@ -231,6 +221,34 @@ function _renderNaviRank(selected_rank, target_id) {
   const rightHint = document.createElement("div");
   rightHint.className = "scroll-hint right";
   rightHint.textContent = "→";
+
+  wrapper.appendChild(leftHint);
+  wrapper.appendChild(ul);
+  wrapper.appendChild(rightHint);
+
+  container.appendChild(wrapper);
+  // 矢印の表示制御
+  function updateHints() {
+    const atStart = ul.scrollLeft <= 0;
+    const atEnd = ul.scrollLeft + ul.clientWidth >= ul.scrollWidth - 1;
+    leftHint.classList.toggle("hidden", atStart);
+    rightHint.classList.toggle("hidden", atEnd);
+  }
+
+  ul.addEventListener("scroll", updateHints);
+  window.addEventListener("resize", updateHints);
+  updateHints();
+}
+
+// 各ページ上部のランク選択タブの描画
+function _renderNaviRank(selected_rank, target_id) {
+  const container = document.getElementById(target_id);
+  if (!container) {
+    return ;
+  }
+  container.innerHTML = ""; // クリア
+
+  const available = presets[latestDate];
 
   const ul = document.createElement("ul");
   ul.className = "tab-nav";
@@ -251,23 +269,8 @@ function _renderNaviRank(selected_rank, target_id) {
     }
   });
 
-  wrapper.appendChild(leftHint);
-  wrapper.appendChild(ul);
-  wrapper.appendChild(rightHint);
+  _renderTabNaviWrapper(container, ul);
 
-  container.appendChild(wrapper);
-
-  // 矢印の表示制御
-  function updateHints() {
-    const atStart = ul.scrollLeft <= 0;
-    const atEnd = ul.scrollLeft + ul.clientWidth >= ul.scrollWidth - 1;
-    leftHint.classList.toggle("hidden", atStart);
-    rightHint.classList.toggle("hidden", atEnd);
-  }
-
-  ul.addEventListener("scroll", updateHints);
-  window.addEventListener("resize", updateHints);
-  updateHints();
 }
 
 
