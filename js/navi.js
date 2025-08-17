@@ -224,6 +224,7 @@ function _renderNaviFunc(page, target) {
 		{ id: "plan", name: "プラン", url: "plan.html" },
 		{ id: "history", name: "履歴", url: "history.html" },
 		{ id: "schedule", name: "予定表", url: "schedule.html" },
+		{ id: "event", name: "イベント", url: "event.html" },
 		{ id: "about", name: "使い方", url: "about.html" },
 	];
 
