@@ -762,3 +762,212 @@ legend {
   border-bottom: 1px solid #ccc;
 }
 
+
+/***************************************************
+ * 個別: event.html
+ ***************************************************/
+
+/* フィルター + トグル横並び */
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-item label {
+  font-size: 14px;
+  margin-bottom: 3px;
+  color: #333;
+}
+
+.filter-item select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  min-width: 80px;
+}
+
+.filter-item select:focus {
+  border-color: #4caf50;
+  background-color: #e0f2e9;
+  outline: none;
+}
+
+/* トグルスイッチ */
+.toggle-view {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .3s;
+  border-radius: 24px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+.switch input:checked + .slider {
+  background-color: #4caf50;
+}
+.switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* 横スクロールテーブル */
+.table-container {
+  overflow-x: auto;
+  margin-top: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.event-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  background:#fff;
+}
+
+.event-table th, .event-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.event-table th:nth-child(4),
+.event-table td:nth-child(4),
+.event-table th:nth-child(5),
+.event-table td:nth-child(5),
+.event-table th:nth-child(6),
+.event-table td:nth-child(6),
+.event-table th:nth-child(7),
+.event-table td:nth-child(7) {
+  text-align: right;
+}
+
+
+.event-table thead {
+  background:#4caf50;
+  color:white;
+  position: sticky;
+  top: 0;
+}
+
+.event-table tbody tr:nth-child(even){
+  background:#f9f9f9;
+}
+
+.event-table tbody tr:hover{
+  background:#e0f2e9;
+}
+
+/* カード型 */
+.event-card {
+  display: flex;
+  flex-direction: row; /* 左右並び */
+
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:12px;
+  background-color: #f9f9f9;
+  box-shadow:0 2px 4px rgba(0,0,0,0.1);
+}
+
+.event-card h3 {
+  margin:0 0 8px;
+  color:#4caf50;
+  font-size:18px;
+}
+
+.event-card p {
+  margin:4px 0;
+  font-size:14px;
+}
+
+.event-card ol {
+  margin:6px 0;
+  padding-left:20px;
+}
+
+.event-card-left {
+  flex: 1; /* 左側はテキストで幅いっぱい */
+  padding-right: 10px;
+}
+
+.event-card-right {
+  flex: 0 0 120px; /* 右側は固定幅 */
+}
+
+.event-card-right img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.help dt {
+	font-weight: bold;
+}
+
+
+.event-ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.event-ranking-table th,
+.event-ranking-table td {
+  padding: 2px 6px;
+}
+
+.event-ranking-table th {
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.event-ranking-table td:nth-child(1),
+.event-ranking-table th:nth-child(1),
+.event-ranking-table th:nth-child(2),
+.event-ranking-table td:nth-child(2) {
+  text-align: right;
+  flex-wrap: nowrap;             /* 折り返しなし */
+  white-space: nowrap;
+ 
+}

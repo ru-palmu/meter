@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/meter.js?v=25"></script>
+  <script  src="js/navi.js?v=25"></script>
+  <script  src="../data/events/event.js?v=25"></script>
+  <script  src="js/event.js?v=25" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1005701113779263"
+	       crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/style.css?v=25">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>イベント履歴 - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）専用のコイン計算機．過去に開催されたイベント上位のコイン額を確認できます．">
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+</header>
+
+<main>
+<div class="intro">
+	過去のランキング型イベントの履歴を確認できます．
+	作戦を練るときはデータを見ましょう．
+</div>
+
+<!-- フィルター + トグル -->
+<div class="filter-row">
+  <div class="filters">
+    <!-- イベント絞り込み -->
+    <div class="filter-item">
+      <label for="eventFilter">イベント</label>
+      <select id="eventFilter">
+      </select>
+    </div>
+
+    <!-- ランク絞り込み -->
+    <div class="filter-item">
+      <label for="rankFilter">ランク</label>
+      <select id="rankFilter"></select>
+    </div>
+  </div>
+
+  <!-- トグルスイッチ -->
+  <div class="toggle-view">
+    <span>カード</span>
+    <label class="switch">
+      <input type="checkbox" id="toggleView">
+      <span class="slider"></span>
+    </label>
+  </div>
+</div>
+
+<!-- 横スクロールテーブル -->
+<div class="table-container" id="tableView">
+  <table class="event-table">
+    <thead>
+      <tr>
+        <th>イベント</th>
+        <th>開始日</th>
+        <th>ランク</th>
+        <th>人数</th>
+        <th>1位</th>
+        <th>3位</th>
+        <th>5位</th>
+      </tr>
+    </thead>
+    <tbody id="eventTableBody"></tbody>
+  </table>
+</div>
+
+<!-- カード型表示 -->
+<div id="cardView" style="display:none;"></div>
+
+<span class="sub-title">使い方</span>
+
+<ul class="help">
+	<li>イベントを選択すると，そのイベントのみに絞り込まれます．
+		<dl>
+			<dt>トプバナ</dt><dd>トップバナーチャレンジ [1ヶ月]<br>上位3名は注目タブのバナーに掲載．上位5名は特別ページにインタビュー</dd>
+			<dt>登竜門</dt><dd>トップライバーへの登竜門 [3ヶ月]<br>AS帯は上位5名，B帯は上位3名が駅広告</dd>
+            <dt>ハフアニ</dt><dd>HALF-YEAR ANNIVERSARY [6ヶ月]</dd>
+            <dt>バッジ</dt><dd>ファンバッジメモリアル</dd>
+            <dt>誕生日</dt><dd>Palmu Special Birthday</dd>
+			<dt>大型</dt><dd>全員参加型イベント<br>「星杯」や「花火大会」など．毎月開催のイベント（「毎日配信」等）が停止になる大型イベント</dd>
+            <dt>その他</dt><dd>上記に該当しないイベント．スポンサー型？</dd>
+		</dl>
+	</li>
+	<li>ランクを選択すると，そのランクで参加可能なイベントのみに絞り込まれます．
+	<li>カード表示に切り替えるとより詳細な情報が表示されます．
+</ul>
+
+<span class="sub-title">注意事項</span>
+
+<ul class="help">
+	<li>本機能で表示しているデータは，過去イベントのスクリーンショットから，OCRにより読み込んで生成しています．そのため，間違っている可能性があります．特に，多くのライバーの名前に記号や絵文字が含まれており，名前の読み取りは失敗しています．カード表示の際に，元画像を表示するようにしていますので，正しい情報は画像でご確認ください．
+	<li>改善要望・不具合報告は，<a href=https://github.com/ru-palmu/meter/issues>GitHub</a> または <a href="https://x.com/ru_palmu">X</a> までお願いします．
+</ul>
+
+</main>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
+
