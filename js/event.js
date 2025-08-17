@@ -3,7 +3,7 @@
 const EVENT_ITEM = [
 	{"value": "TB", "text": "トプバナ", "long": "トップバナー"},
 	{"value": "GoS", "text": "登竜門"},
-	{"value": "HYA", "text": "ハフイヤ"},
+	{"value": "HYA", "text": "ハフアニ", "long": "ハーフイヤーアニバーサリー"},
 	{"value": "FB", "text": "バッジ", "long": "ファンバッジ"},
 	{"value": "BD", "text": "誕生日"},
 	{"value": "ALL", "text": "大型"},
