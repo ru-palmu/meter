@@ -221,11 +221,35 @@ function renderCards(data) {
   });
 }
 
+function updateUrl() {
+  const params = new URLSearchParams(window.location.search);
+
+  // event パラメータの更新
+  if (eventSelect.value === "") {
+    params.delete("event");
+  } else {
+    params.set("event", eventSelect.value);
+  }
+
+  // rank パラメータの更新
+  if (rankSelect.value === "") {
+    params.delete("rank");
+  } else {
+    params.set("rank", rankSelect.value);
+  }
+
+  // 更新したクエリでリダイレクト
+  window.location.href = window.location.pathname + "?" + params.toString();
+}
+
 // フィルター処理
 function applyFilter(){
-  const eventVal = eventSelect.value;
-  const rankVal = rankSelect.value;
+  // GET パラメータから絞り込み条件とセレクタの初期値を取得
+  const params = new URLSearchParams(window.location.search);
+  const eventVal = params.get("event") || "";
+  const rankVal = params.get("rank") || "";
   const rankIndex = RANK_DIC[rankVal] ?? -1;
+
   const filtered = events.filter(ev=>{
     const eventMatch = !eventVal || ev.event.substring(0, 3) === eventVal;
 	if (!eventMatch) {
@@ -241,6 +265,8 @@ function applyFilter(){
 	}
 	return false;
   });
+  eventSelect.value = eventVal;
+  rankSelect.value = rankVal;
   renderTable(filtered);
   renderCards(filtered);
 }
@@ -271,6 +297,6 @@ window.addEventListener("DOMContentLoaded", () => {
   applyFilter();
 
   // フィルターイベント
-  eventSelect.addEventListener("change", applyFilter);
-  rankSelect.addEventListener("change", applyFilter);
+  eventSelect.addEventListener("change", updateUrl);
+  rankSelect.addEventListener("change", updateUrl);
 });

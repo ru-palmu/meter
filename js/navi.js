@@ -298,6 +298,8 @@ function _renderNaviRank(selected_rank, target_id) {
   const ul = document.createElement("ul");
   ul.className = "tab-nav";
 
+  const params = new URLSearchParams(window.location.search);
+
   cand_rank.forEach(rank => {
     if (available && available[rank]) {
       const li = document.createElement("li");
@@ -307,7 +309,8 @@ function _renderNaviRank(selected_rank, target_id) {
         li.className = rank[0];
       }
       const a = document.createElement("a");
-      a.href = `?r=${rank}`;
+      params.set("r", rank);
+      a.href = `?${params.toString()}`;
       a.textContent = rank;
       li.appendChild(a);
       ul.appendChild(li)
