@@ -877,10 +877,16 @@ legend {
 .event-table th:nth-child(6),
 .event-table td:nth-child(6),
 .event-table th:nth-child(7),
-.event-table td:nth-child(7) {
+.event-table td:nth-child(7),
+.event-table th:nth-child(8),
+.event-table td:nth-child(8) {
   text-align: right;
 }
 
+.event-table th:nth-child(9),
+.event-table td:nth-child(9) {
+  text-align: left;
+}
 
 .event-table thead {
   background:#4caf50;

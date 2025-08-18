@@ -89,17 +89,31 @@ function renderTable(data) {
 	const td_event = document.createElement("td");
 	const event_jp = EVENT_DIC[ev.event.substring(0, 3)][0] || ev.event;
 	td_event.className = "event-" + ev.event.substring(0, 3);
-	td_event.textContent = event_jp;
+	const txt = document.createTextNode(event_jp);
+	td_event.appendChild(txt);
+	if (ev.title) {
+		const small_title = document.createElement("small");
+		small_title.textContent = `（${ev.title[1]}）`;
+		td_event.appendChild(small_title);
+	}
 	tr.appendChild(td_event)
 
     const date = ev.date || "";
-    const minMax = `${ev.min ?? ""}~${ev.max ?? ""}`;
-    const num = ev.num ?? "";
-    const gift1 = ev.rank[0].gift.toLocaleString() || "";
-    const gift3 = ev.rank[2].gift.toLocaleString() || "";
-    const gift5 = ev.rank[4].gift.toLocaleString() || "";
+    const minMax = `${ev.min ?? ""}〜${ev.max ?? ""}`;
 
-	[date, minMax, num, gift1, gift3, gift5].forEach(text => {
+    const group = (ev.group ?? "").substring(2);
+    const num = ev.num ?? "";
+	const groupnum = (ev.gnum) ? `${ev.gnum} / ` : '';
+	const elems = [date, minMax, group, `${groupnum}${num}`];
+
+	[0, 2, 4].forEach(v => {
+      const g= ev.rank[0].gift.toLocaleString() || "";
+	  elems.push(g);
+	});
+
+	elems.push(ev.title?.[0] || "");
+
+	elems.forEach(text => {
 		const td = document.createElement("td");
 		td.textContent = text;
 		tr.appendChild(td);
@@ -163,7 +177,7 @@ function renderCards(data) {
 	left.appendChild(h3);
 
 	if (ev.title) {
-		const title = _eventTitleAndText('タイトル', ev.title);
+		const title = _eventTitleAndText('タイトル', ev.title[0]);
 		left.appendChild(title);
 	}
 
@@ -178,7 +192,11 @@ function renderCards(data) {
 		left.appendChild(group);
 	}
 
-	const num = _eventTitleAndText('参加人数', `${ev.num || ''}` || '');
+	let groupnum = '';
+	if (ev.gnum) {
+		groupnum = `${ev.gnum} / `;
+	}
+	const num = _eventTitleAndText('参加人数', `${groupnum}${ev.num || ''}` || '');
 	left.appendChild(num);
 
 	const ol = _eventOlRanking(ev.rank);
