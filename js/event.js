@@ -107,7 +107,7 @@ function renderTable(data) {
 	const elems = [date, minMax, group, `${groupnum}${num}`];
 
 	[0, 2, 4].forEach(v => {
-      const g= ev.rank[0].gift.toLocaleString() || "";
+      const g= ev.rank[v].gift.toLocaleString() || "";
 	  elems.push(g);
 	});
 
