@@ -52,34 +52,19 @@ cand_rank.forEach(r => {
   rankSelect.appendChild(opt);
 });
 
-let events = [];
+const events = EVENTS_LOCAL;
 
-// イベントデータ（例）
-fetch('../data/events/events.json')
-  .then(response => {
-    if (!response.ok) throw new Error("JSON取得失敗");
-    return response.json();
-  })
-  .then(data => {
-    events = data;
-    applyFilter();  // JSON読み込み後に描画
-  })
-  .catch(err => {
-    console.warn("fetch失敗、ローカル用フォールバックを使用", err);
+function openModal(imgSrc) {
+	const modal = document.getElementById("modal");
+	const modalImg = document.getElementById("modal-img");
+	modalImg.src = imgSrc;
+	modal.style.display = "flex";
+}
 
-    // 新しい script タグを作って読み込む
-    const script = document.createElement("script");
-    script.src = "js/_event_data.js"; // ローカルに置いた JS ファイル
-    script.onload = () => {
-      // 読み込み完了後に変数を代入
-      events = EVENTS_LOCAL;
-      applyFilter();
-    };
-    script.onerror = () => {
-      console.error("ローカル JS の読み込みにも失敗しました");
-    };
-    document.body.appendChild(script);
-});
+function closeModal() {
+	document.getElementById("modal").style.display = "none";
+}
+
 
 // 表描画
 const tbody = document.getElementById("eventTableBody");
@@ -87,6 +72,20 @@ function _renderEventTable(data) {
   tbody.innerHTML = "";
   data.forEach(ev => {
     const tr = document.createElement("tr");
+
+	const td_ss = document.createElement("td");
+	const btn_ss = document.createElement("button");
+	btn_ss.className = "ss-btn";
+	btn_ss.textContent = "SS";
+	btn_ss.dataset.img = ev.img;
+	btn_ss.addEventListener("click", () => {
+		const imgSrc = btn_ss.dataset.img;
+		if (imgSrc) {
+			openModal(imgSrc);
+		}
+	});
+	td_ss.appendChild(btn_ss);
+	tr.appendChild(td_ss)
 
 	const td_event = document.createElement("td");
 	const event_jp = EVENT_DIC[ev.event.substring(0, 3)][0] || ev.event;
@@ -265,6 +264,12 @@ function _renderEventCards(data) {
 	img.src = `${ev.img || ''}`;
 	img.alt = event_jp + ev.date || '';
 	right.appendChild(img);
+	img.addEventListener("click", () => {
+		const imgSrc = img.src;
+		if (imgSrc) {
+			openModal(imgSrc);
+		}
+	});
 
 	card.appendChild(left);
 	card.appendChild(right);
@@ -366,4 +371,31 @@ window.addEventListener("DOMContentLoaded", () => {
   rankSelect.addEventListener("change", updateUrl);
   // トグル切替
   document.getElementById("toggleView").addEventListener("change", updateUrl);
+
+  document.getElementById("modal-close").addEventListener("click", () => {
+	  closeModal();
+  });
+
+  const overlay = document.getElementById("modal");
+  overlay.addEventListener("click", (event) => {
+	if (event.target === overlay) {
+	  closeModal();
+	}
+  });
+
+  // Escape キーでモーダルを閉じる
+  document.addEventListener("keydown", (event) => {
+	console.log(event.key);
+	if (event.key === "Escape") {
+	  closeModal();
+	}
+  });
+
+  // 下スワイプで画像を閉じる
+  // const modal_img = document.getElementById("modal-img");
+  // modal_img.addEventListener("touchstart", e => startY = e.touches[0].clientY);
+  // modal_img.addEventListener("touchend", e => {
+  //   const endY = e.changedTouches[0].clientY;
+  //   if (endY - startY > 100) closeModal(); // 下にスワイプで閉じる
+  // });
 });
