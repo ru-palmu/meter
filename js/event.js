@@ -289,6 +289,12 @@ function updateUrl() {
     params.set("rank", rankSelect.value);
   }
 
+  if (document.getElementById("toggleView").checked) {
+    params.set("eview", "card");
+  } else {
+    params.delete("eview");
+  }
+
   // 更新したクエリでリダイレクト
   window.location.href = window.location.pathname + "?" + params.toString();
 }
@@ -333,33 +339,24 @@ function applyFilter(){
 	  const end = start + page_size;
 	  filtered.splice(0, filtered.length, ...filtered.slice(start, end));
   }
+  params.set("page", page);
 
-  _renderEventTable(filtered);
-  _renderEventCards(filtered);
-  _renderEventPagination(data_size, page, page_size);
-}
-
-function _eventToggleView(checked) {
-  if (checked) {
-    // カードビュー
+  const isCard = (params.get("eview") == "card");
+  document.getElementById("toggleView").checked = isCard;
+  if (isCard) {
+    _renderEventCards(filtered);
     document.getElementById("tableView").style.display = "none";
     document.getElementById("cardView").style.display = "block";
   } else {
-	// テーブルビュー
+    _renderEventTable(filtered);
     document.getElementById("tableView").style.display = "block";
     document.getElementById("cardView").style.display = "none";
   }
+  _renderEventPagination(data_size, page, page_size);
 }
-
-// トグル切替
-document.getElementById("toggleView").addEventListener("change", e => {
-	_eventToggleView(e.target.checked);
-});
 
 window.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
-
-  _eventToggleView(document.getElementById("toggleView").checked);
 
   // 初期描画
   applyFilter();
@@ -367,4 +364,6 @@ window.addEventListener("DOMContentLoaded", () => {
   // フィルターイベント
   eventSelect.addEventListener("change", updateUrl);
   rankSelect.addEventListener("change", updateUrl);
+  // トグル切替
+  document.getElementById("toggleView").addEventListener("change", updateUrl);
 });
