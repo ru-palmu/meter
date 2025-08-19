@@ -1,6 +1,9 @@
 // 本体:
 // ライブスコアから確定スコアまでのコイン数算出 or
 // プラン計算
+//
+const METER_PREFIX = 'meter_meter_';
+
 function calculate(rank = '') {
   if (rank instanceof Event) {
     rank = '';
@@ -31,9 +34,25 @@ function setScores(rank = '') {
   document.getElementById("scores").value = ret;
 }
 
+// 出力形式を保存する
+function _saveMeterArgs(format) {
+	const table = [
+		['format', format],
+	];
+	saveSessionArgs(METER_PREFIX, table);
+}
+
+function loadDefaultMeter() {
+	const table = [
+		['format', 'result-format'],
+	];
+	loadDefaultValues(METER_PREFIX, table);
+}
 
 // 現在のライブスコアから確定スコアまでのコイン数を算出
 function calculateLiveScoreToCoins(rank = '') {
+
+
   const a = {
     2: parseInt(document.getElementById("a2").value),
     4: parseInt(document.getElementById("a4").value),
@@ -46,8 +65,9 @@ function calculateLiveScoreToCoins(rank = '') {
   }
 
   const format = document.getElementById("result-format").value;
+  _saveMeterArgs(format);
   let targets = [];
-  if (format == 'all') {
+  if (format == 'all' || format == 'easy') {
     targets = [2, 4, 6];
   } else {
     targets = [parseInt(format)];
@@ -59,7 +79,11 @@ function calculateLiveScoreToCoins(rank = '') {
     if (s < 20) {
         return '';
     }
-    return `+${i}=${s.toLocaleString()}`;
+	if (format == 'easy') {
+	    return `${s.toLocaleString()}コインで+${i}確定`;
+	} else {
+	    return `+${i}=${s.toLocaleString()}`;
+	}
   });
 
   let help = '現在のスコア';
@@ -67,11 +91,16 @@ function calculateLiveScoreToCoins(rank = '') {
 
   let ret = b.toLocaleString();
   if (targets.length == 1) {
+	// +2, +4, +6 のみ
     ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
     help += ' / 保証ボーダー';
     help2 += '+' + targets[0] + '=確定+' + targets[0] + 'に必要なコイン数';
-  } else {
+  } else if (format == 'all') {
     help2 += '+2=確定+2に必要なコイン数, +4=確定+4に..., +6=確定+6に...';
+  } else {
+	// やさしいひょうじ
+	ret = '現在のスコア ' + ret;
+    help2 += '約xxxコイン数で，+2確定, ...';
   }
   ret += ' 🪙 ';
 
@@ -114,6 +143,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
   if (typeof loadDefaultPlan === 'function') {
     loadDefaultPlan();
+  }
+  if (typeof loadDefaultMeter === 'function') {
+    loadDefaultMeter();
   }
 
   renderNavis("navi_func", "navi_rank", "footer");

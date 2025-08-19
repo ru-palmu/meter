@@ -52,6 +52,25 @@ function setRankText(rank, elementId, prefix, suffix) {
   }
 }
 
+function loadDefaultValues(prefix, table) {
+	table.forEach(([session_id, elem_id]) => {
+		const elem = document.getElementById(elem_id);
+		if (elem) {
+			const value = sessionStorage.getItem(prefix + session_id);
+			if (value) {
+				elem.value = value;
+			}
+		}
+	});
+}
+
+function saveSessionArgs(prefix, table) {
+	table.forEach(([key, value]) => {
+		sessionStorage.setItem(prefix + key, value);
+	});
+}
+
+
 //////////////////////////////////////////////////
 // 確定スコアの描画
 //////////////////////////////////////////////////

@@ -98,29 +98,20 @@ function calculatePlans() {
 
 // n 日後に x ポイントの選択除法をセッションに保存する
 function _savePlanArgs(days, points, format) {
-	[
+	const table = [
 		['days', days],
 		['points', points],
 		['format', format],
-	].forEach(([key, value]) => {
-		sessionStorage.setItem(PLAN_PREFIX + key, value);
-	});
+	];
+	saveSessionArgs(PLAN_PREFIX, table);
 }
 
 // n 日後に x ポイントの選択除法をセッションから取得する
 function loadDefaultPlan() {
-	[
+	const table = [
 		['days', 'days'],
 		['points', 'points'],
 		['format', 'result-format'],
-	].forEach(([session_id, elem_id]) => {
-
-		const elem = document.getElementById(elem_id);
-		if (elem) {
-			const value = sessionStorage.getItem(PLAN_PREFIX + session_id);
-			if (value) {
-				elem.value = value;
-			}
-		}
-	});
+	];
+	loadDefaultValues(PLAN_PREFIX, table);
 }
