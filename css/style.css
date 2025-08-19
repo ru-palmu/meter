@@ -977,3 +977,32 @@ legend {
   white-space: nowrap;
  
 }
+
+/* pagenation */
+.pagination {
+  display: flex;
+  justify-content: center;      /* 中央揃え */
+  flex-wrap: wrap;              /* 横幅が狭い場合は折り返す */
+  gap: 4px;                     /* ボタン間の隙間 */
+  margin: 12px 0;
+}
+
+.page-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.page-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.page-btn.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+

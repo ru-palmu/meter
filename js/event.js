@@ -16,6 +16,8 @@ for (let i = 0; i < cand_rank.length; i++) {
 	RANK_DIC[cand_rank[i]] = i;
 }
 
+const PAGE_SIZE = 20; // ページあたりの表示数
+
 // ランクフィルター
 const eventSelect = document.getElementById("eventFilter");
 const rankSelect = document.getElementById("rankFilter");
@@ -81,7 +83,7 @@ fetch('../data/events/events.json')
 
 // 表描画
 const tbody = document.getElementById("eventTableBody");
-function renderTable(data) {
+function _renderEventTable(data) {
   tbody.innerHTML = "";
   data.forEach(ev => {
     const tr = document.createElement("tr");
@@ -120,7 +122,56 @@ function renderTable(data) {
 	});
 
     tbody.appendChild(tr);
+
   });
+}
+
+function _renderEventPagination(data_size, page, page_size) {
+
+  if (data_size > page_size) {
+    // pagination
+	btns = [];
+	if (true) {
+	  const btn = document.createElement("button");
+	  btn.className = "page-btn";
+	  btn.textContent = "«";
+	  btn.dataset.page = page - 1;
+	  btn.disabled = (page <= 1);
+	  btns.push(btn);
+	}
+
+	const last_page = Math.ceil(data_size / page_size);
+	for (i = 1; i <= last_page; i++) {
+	  const btn = document.createElement("button");
+	  btn.className = "page-btn";
+	  btn.textContent = i;
+	  btn.dataset.page = i;
+	  if (i === page) {
+		btn.classList.add("active");
+	  }
+	  btns.push(btn);
+	}
+
+	if (true) {
+	  const btn = document.createElement("button");
+	  btn.className = "page-btn";
+	  btn.textContent = "»";
+	  btn.dataset.page = page + 1;
+	  btn.disabled = (page >= last_page);
+	  btns.push(btn);
+	}
+
+    const pagination = document.getElementById("pagination");
+	btns.forEach(btn => {
+	  pagination.appendChild(btn);
+      btn.addEventListener("click", () => {
+        const params = new URLSearchParams(window.location.search);
+		params.set("page", btn.dataset.page);
+        // 更新したクエリでリダイレクト
+        window.location.href = window.location.pathname + "?" + params.toString();
+	  });
+	});
+  }
 }
 
 function _eventTitleAndText(title, text) {
@@ -161,7 +212,7 @@ function _eventOlRanking(rank) {
 }
 
 // カード描画
-function renderCards(data) {
+function _renderEventCards(data) {
   const container = document.getElementById("cardView");
   container.innerHTML = "";
   data.forEach(ev => {
@@ -267,8 +318,25 @@ function applyFilter(){
   });
   eventSelect.value = eventVal;
   rankSelect.value = rankVal;
-  renderTable(filtered);
-  renderCards(filtered);
+
+  const page_size = parseInt(params.get("page_size")) || PAGE_SIZE;
+  let page = 1;
+  const data_size = filtered.length;
+  if (filtered.length > page_size) {
+	  page = parseInt(params.get("page")) || 1;
+	  let  start = (page - 1) * page_size;
+	  if ((page - 1) * page_size >= filtered.length) {
+		  page = 1;
+		  params.set("page", page);
+		  start = 0;
+	  }
+	  const end = start + page_size;
+	  filtered.splice(0, filtered.length, ...filtered.slice(start, end));
+  }
+
+  _renderEventTable(filtered);
+  _renderEventCards(filtered);
+  _renderEventPagination(data_size, page, page_size);
 }
 
 function _eventToggleView(checked) {
