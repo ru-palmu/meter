@@ -141,11 +141,12 @@ function copyResult(name) {
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
 
+  if (typeof loadDefaultMeter === 'function') {
+	// plan.html からも呼ばれる
+    loadDefaultMeter();
+  }
   if (typeof loadDefaultPlan === 'function') {
     loadDefaultPlan();
-  }
-  if (typeof loadDefaultMeter === 'function') {
-    loadDefaultMeter();
   }
 
   renderNavis("navi_func", "navi_rank", "footer");
