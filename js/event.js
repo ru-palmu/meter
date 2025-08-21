@@ -198,7 +198,7 @@ function _eventOlRanking(rank) {
 	});
 	table.appendChild(tr);
 
-	for (let i = 0; i <= 5; i++) {
+	for (let i = 0; i <= 5 && i < rank.length; i++) {
 		const tr = document.createElement("tr");
 		[rank[i].rank, rank[i].gift.toLocaleString(), rank[i].name].forEach(text => {
 			const td = document.createElement("td");
