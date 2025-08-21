@@ -70,13 +70,15 @@ function closeModal() {
 const tbody = document.getElementById("eventTableBody");
 function _renderEventTable(data) {
   tbody.innerHTML = "";
+  let idx = 0;
   data.forEach(ev => {
     const tr = document.createElement("tr");
 
+	idx += 1
 	const td_ss = document.createElement("td");
 	const btn_ss = document.createElement("button");
 	btn_ss.className = "ss-btn";
-	btn_ss.textContent = "SS";
+	btn_ss.textContent = idx;
 	btn_ss.dataset.img = ev.img;
 	btn_ss.addEventListener("click", () => {
 		const imgSrc = btn_ss.dataset.img;
@@ -123,6 +125,75 @@ function _renderEventTable(data) {
     tbody.appendChild(tr);
 
   });
+}
+
+let chartInstanceEvent = null;
+
+// 欠損区間用の segment 共通関数
+function _missingSegmentStyle(datasetIndex) {
+  return {
+    borderDash: ctx => {
+      const { p0DataIndex, p1DataIndex, chart } = ctx;
+      const data = chart.data.datasets[datasetIndex].data;
+      const v0 = data[p0DataIndex];
+      const v1 = data[p1DataIndex];
+      return (v0 === null || v1 === null) ? [5, 5] : undefined;
+    },
+    borderColor: ctx => {
+      const { p0DataIndex, p1DataIndex, chart } = ctx;
+      const data = chart.data.datasets[datasetIndex].data;
+      const v0 = data[p0DataIndex];
+      const v1 = data[p1DataIndex];
+      return (v0 === null || v1 === null) ? 'gray' : chart.data.datasets[datasetIndex].borderColor;
+    }
+  };
+}
+
+function _renderEventGraph(data) {
+	const elem = document.getElementById('chart-event');
+	if (!elem) {
+		console.warn("chart-history element not found");
+		return;
+	}
+	const ctx = elem.getContext('2d');
+	if (!ctx) {
+		console.log("Failed to get context for chart-history");
+		return;
+	}
+	if (chartInstanceEvent) {
+		chartInstanceEvent.destroy(); // 既存のチャートを破棄
+	}
+
+	// 1 ~ data.length をラベルに設定
+	const labels = data.map((ev, i) => {
+		return `${i + 1}`;
+	});
+
+	// 1-8 位までをグラフに描こうではないか．
+	const COLORS = ["red", "blue", "green", "orange", "purple", "brown", "pink"];
+	const datasets = [];
+	for (let i = 0; i < COLORS.length; i++) {
+		const scores = data.map(ev =>
+			ev.rank[i] !== undefined ? ev.rank[i].gift : null
+		);
+
+		datasets.push({
+			label: `${i + 1}位`,
+			data: scores,
+			borderColor: COLORS[i],
+			spanGaps: true,
+			segment: _missingSegmentStyle(i),
+		});
+	}
+
+	chartInstanceEvent = new Chart(ctx, {
+		'type': 'line',
+		'data': {
+			'labels': labels,
+			'datasets': datasets,
+		},
+	});
+
 }
 
 function _renderEventPagination(data_size, page, page_size) {
@@ -214,6 +285,7 @@ function _eventOlRanking(rank) {
 function _renderEventCards(data) {
   const container = document.getElementById("cardView");
   container.innerHTML = "";
+  let idx = 0;
   data.forEach(ev => {
     const card = document.createElement("div");
     card.className = "event-card";
@@ -221,9 +293,11 @@ function _renderEventCards(data) {
 	const left = document.createElement("div");
 	left.className = "event-card-left";
 
+	idx += 1;
+
 	const h3 = document.createElement("h3");
 	const event_jp = EVENT_DIC[ev.event.substring(0, 3)][1] || ev.event;
-	h3.textContent = event_jp;
+	h3.textContent = `[${idx}] ${event_jp}`;
 	left.appendChild(h3);
 
 	if (ev.title) {
@@ -358,6 +432,7 @@ function applyFilter(){
     document.getElementById("cardView").style.display = "none";
   }
   _renderEventPagination(data_size, page, page_size);
+  _renderEventGraph(filtered);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
