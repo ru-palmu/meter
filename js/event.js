@@ -385,7 +385,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Escape キーでモーダルを閉じる
   document.addEventListener("keydown", (event) => {
-	console.log(event.key);
 	if (event.key === "Escape") {
 	  closeModal();
 	}
