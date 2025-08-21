@@ -74,8 +74,11 @@ function calculatePlans() {
 	rawPlans.sort((a, b) => a[1] - b[1]);
 	let result = rank + ": " + days + "日で +" + points + "\nプラン";
 
+	// format は coin|score|both のいずれか
 	if (format == 'score' || format == 'both') {
 		result += '\t| スコア';
+	} else if (format != 'coin') {
+		document.getElementById("result-format").value = 'coin';
 	}
 	if (format != 'score') {
 		result += '\t| コイン';
