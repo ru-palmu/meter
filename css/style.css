@@ -16,13 +16,14 @@ body {
   flex-wrap: nowrap;             /* 折り返しなし */
   overflow-x: auto;              /* 横スクロール可能 */
   gap: 5px;                      /* タブ間の隙間 */
-  padding: 5px 0;
+  padding: 1px 0;
   margin-bottom: 0px;
   list-style: none;
   scrollbar-width: none;         /* Firefox用：スクロールバー非表示 */
   -webkit-overflow-scrolling: touch; /* iOSスムーズスクロール */
   scroll-behavior: smooth;
   position: relative;
+  font-size: 0.875em;
 }
 
 .tab-nav::-webkit-scrollbar {
@@ -31,7 +32,7 @@ body {
 
 .tab-nav li {
   flex: 0 0 auto;                /* 幅を自動調整、折り返さない */
-  padding: 2px 8px;             /* タップしやすい余白 */
+  padding: 1px 7px;             /* タップしやすい余白 */
   background: #c3e6cb;
   text-align: center;
   white-space: nowrap;
@@ -40,33 +41,17 @@ body {
   border-radius: 5px;
 }
 
-.tab-nav li.D {
+.tab-nav li.D,
+.tab-nav li.B,
+.tab-nav li.S {
   font-weight: bold;
 }
 
-.tab-nav li.C {
-/*
-  border-top: 2px dotted #5a8f7b;
- background-color: #cdeedc;
- */
-}
-.tab-nav li.B {
-  font-weight: bold;
-/*
-  background-color: #a7d7c5;
- */
-}
-
+.tab-nav li.C,
 .tab-nav li.A {
 /*
   border-top: 2px dotted #5a8f7b;
-  background-color: #cdeedc;
- */
-}
-.tab-nav li.S {
-  font-weight: bold;
-/*
-  background-color: #a7d7c5;
+ background-color: #cdeedc;
  */
 }
 
@@ -91,7 +76,7 @@ body {
 .scroll-hint {
   position: absolute;
   bottom: 40%;
-  transform: translateY(-50%);
+  transform: translateY(-35%);
   font-size: 18px;
   color: rgba(0,0,0,0.4);
   pointer-events: none;
@@ -110,37 +95,45 @@ body {
   opacity: 0;
 }
 
-
-
 /* --- タブナビ（下部，機能） --- */
 .sub-tab-nav {
   display: flex;
-  flex-wrap: nowrap;             /* 折り返しなし */
-  overflow-x: auto;              /* 横スクロール可能 */
-  gap: 5px;                      /* タブ間の隙間 */
-  padding: 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 5px;
+  padding: 1px 0;
   margin-bottom: 7px;
   list-style: none;
-  scrollbar-width: none;         /* Firefox用：スクロールバー非表示 */
-  -webkit-overflow-scrolling: touch; /* iOSスムーズスクロール */
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   position: relative;
+  font-size: 0.85em;
 }
 
-
 .sub-tab-nav li {
-  padding: 3px 8px;
-  background: #e0f7e9; /* 淡いめ */
+  padding: 1px 7px;
+  background: #e0f7e9;
   white-space: nowrap;
+  border-radius: 4px;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.13); /* ← 全タブにごく控えめな影 */
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.sub-tab-nav li:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15); /* ← hoverでちょっと強く */
+  transform: translateY(-1px);            /* ← 軽く浮かせる */
 }
 
 .sub-tab-nav li.active {
-  background-color: #81c784;  /* 緑系でやや鮮やかめ */
-  color: white;               /* 文字は白にしてコントラストUP */
-  font-weight: 700;           /* 太字に */
-  border-bottom: 5px solid #388e3c;  /* 濃いグリーンの太いボーダー */
-  box-shadow: 0 2px 6px rgba(56, 142, 60, 0.4); /* さりげない影で浮かせる */
+  background-color: #81c784;
+  color: white;
+  font-weight: 700;
+  border-bottom: 5px solid #388e3c;
+  box-shadow: 0 3px 6px rgba(56,142,60,0.35); /* ← アクティブは影を濃くして存在感 */
 }
+
+
 
 .sub-tab-nav a {
   text-decoration: none;
@@ -226,7 +219,66 @@ body {
   white-space: nowrap;
 }
 
-/** <pre> **/
+
+/*******************************************************************
+ * お知らせ
+ *******************************************************************/
+
+/* お知らせバナー全体 */
+#notice-banner {
+  display: none;
+  background-color: #e0f7e9; /* 淡い緑でサイトに馴染む */
+  color: #2d6a4f;            /* 濃い文字で視認性確保 */
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin: 5px 20px;
+  font-size: 14px;
+
+  /* 凹んで見えるように影を内側に */
+  box-shadow:
+    inset 2px 2px 4px rgba(0,0,0,0.12),
+    inset -2px -2px 4px rgba(255,255,255,0.6);
+}
+
+/* お知らせリスト */
+.notice-list {
+  list-style-type: disc;   /* 黒丸 */
+  padding-left: 20px;      /* 左揃えインデント */
+  margin: 0;
+}
+
+/* お知らせリストのアイテム */
+.notice-list li {
+  margin-bottom: 4px;      /* アイテム間の隙間 */
+  line-height: 1.4;        /* スマホでも読みやすい行間 */
+
+}
+
+.notice-list li::marker {
+  color: #52b788;      /* 緑系の丸に */
+  font-size: 1.2em;    /* 少し大きめ */
+}
+
+/* 最後の li の下マージンを消す */
+.notice-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* お知らせリンク */
+.notice-list li a {
+  color: #1b4332;          /* 濃い緑系 */
+  text-decoration: underline;
+}
+
+.notice-list li a:hover {
+  opacity: 0.8;
+}
+
+
+/*******************************************************************
+ * <pre>
+ *******************************************************************/
+
 .code-block {
   background-color: #f6f8fa;
   color: #24292e;
@@ -240,6 +292,10 @@ body {
   width: 95%;
   margin: 1em auto; /* 中央寄せ */
 }
+
+/*******************************************************************
+ * フッタ
+ *******************************************************************/
 
 .footer-content {
   background-color: #e6f4ea; /* 淡い緑 */

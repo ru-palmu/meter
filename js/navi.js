@@ -154,6 +154,7 @@ function renderNavis(navi_func, navi_rank, _footer) {
 	insertGuaranteedScore("guaranteed-score");
 	appendCurrentQueryToLinks('append-query')
 	renderFooter();
+	renderNotices('notice-banner', PALMU_NOTICES);
 }
 
 function _getCurrentPage() {
@@ -338,6 +339,71 @@ function _renderNaviRank(selected_rank, target_id) {
 
   _renderTabNaviWrapper(container, ul);
 
+}
+
+//////////////////////////////////////////////////
+// お知らせ
+//////////////////////////////////////////////////
+
+/**
+ * 指定した要素に1週間以内のお知らせを表示
+ * 日付だけ、または日時（YYYY-MM-DD or YYYY-MM-DDTHH:MM）に対応
+ * @param {string} elementId - バナーを挿入する要素のID
+ * @param {Array} notices - 日付・テキスト・URLを含む通知配列
+ */
+function renderNotices(elementId, notices) {
+  const today = new Date();
+  const oneWeekLater = new Date();
+  oneWeekLater.setDate(today.getDate() + 7);
+
+  const upcoming = notices.filter(n => {
+    const noticeDate = new Date(n.date);
+    // 日付だけの場合は0時に設定されるため、時刻情報がない場合は1日後の23:59に設定
+    if (!n.date.includes('T')) {
+      noticeDate.setHours(23, 59, 59, 999);
+    }
+    return noticeDate >= today && noticeDate <= oneWeekLater;
+  });
+  if (upcoming.length === 0) {
+    banner.style.display = 'none'; // お知らせがない場合は非表示
+    return ;
+  }
+
+  const banner = document.getElementById(elementId);
+  if (!banner) {
+    return ;
+  }
+
+  banner.style.display = 'block'; // お知らせがない場合は非表示
+
+  const ul = document.createElement('ul');
+  ul.className = 'notice-list';
+
+  upcoming.forEach(n => {
+    const li = document.createElement('li');
+    // 日付を YYYY/MM/DD の形式に変換
+    const date = new Date(n.date);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // 月は0から始まるので+1
+    const dd = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${yyyy}/${mm}/${dd}: `;
+    li.appendChild(document.createTextNode(formattedDate));
+
+    let displayText = n.text;
+    if (n.time) displayText += ` (${n.time})`; // 時間情報を表示
+
+    if (n.url) {
+      const a = document.createElement('a');
+      a.href = n.url;
+      a.textContent = displayText;
+      li.appendChild(a);
+    } else {
+      li.textContent = displayText;
+    }
+    ul.appendChild(li);
+  });
+
+  banner.appendChild(ul);
 }
 
 
