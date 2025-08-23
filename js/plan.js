@@ -22,7 +22,7 @@ function calculatePlans() {
 		6: a6,
 	};
 
-	rawPlans = [];
+	const rawPlans = [];
   /**
    * 再帰関数：すべての有効なプランを探索する
    * @param {number} dayIndex - 今が何日目か（0からスタート）
@@ -91,7 +91,7 @@ function calculatePlans() {
 			result += '\t| ' + score.toLocaleString();
 		}
 		if (format != 'score') {
-			s = score2coin(score);
+			const s = score2coin(score);
 			result += '\t| ' + s.toLocaleString();
 		}
 	}
@@ -118,3 +118,7 @@ function loadDefaultPlan() {
 	];
 	loadDefaultValues(PLAN_PREFIX, table);
 }
+
+window.calculatePlans = calculatePlans;
+window.loadDefaultPlan = loadDefaultPlan;
+

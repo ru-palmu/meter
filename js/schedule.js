@@ -146,16 +146,6 @@ function dateToStr(d) {
   return d.toISOString().split("T")[0];
 }
 
-// 火曜始まり（月曜終わり）の週キー（火曜の日付を返す）
-function getWeekKey(d) {
-  const date = new Date(d);
-  const dow = date.getDay();
-  // 火曜=2 → shift so 火曜=0 ... 月曜=6
-  const delta = (dow + 6) % 7;
-  date.setDate(date.getDate() - delta);
-  return dateToStr(date);
-}
-
 // --- スケジュール表の生成 ---
 function generateSchedule() {
   const tbody = document.getElementById("scheduleBody");
@@ -431,7 +421,7 @@ function saveSchedule() {
   __setScheduleLocalStorage("scheduleData", JSON.stringify(data_for_save));
 }
 
-function defaultScheduleDay(dstr) {
+function defaultScheduleDay(__dstr) {
     return { point: "+1", memo: "" };
 }
 
@@ -476,7 +466,7 @@ function updateTotalsFuture(endx, skipCount, resetDate, dailyPoint) {
     resetDate = 1;
   }
   while (d <= endx) {
-    dstr = dateToStr(d);
+    const dstr = dateToStr(d);
     if (!scheduleData[dstr]) {
         scheduleData[dstr] = defaultScheduleDay(dstr);
     }
@@ -530,14 +520,11 @@ function updateTotals() {
   let dailyPoint = parseInt(document.getElementById("dailyPoint").value, 10);
   if (isNaN(dailyPoint)) dailyPoint = 0;
 
-  const today = new Date(getToday());
-
   const endx = new Date(rows[rows.length - 1].children[0].textContent);
   updateTotalsFuture(endx, skipCount, resetDate, dailyPoint);
 
   for (const row of rows) {
     const dateStr = row.children[0].textContent;
-    const date = new Date(dateStr);
     const pointSel = row.querySelector(".point select");
     const tdTotal = row.querySelector(".total");
     const tdSkipRemain = row.querySelector(".skipRemain");

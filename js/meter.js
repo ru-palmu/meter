@@ -1,8 +1,8 @@
 // GETパラメータがないときのデフォルト値
-const default_rank = "A1";
+window.default_rank = "A1";
 
 // 日付 => 保証ボーダー
-const presets = {
+window.presets = {
         "20250815": {
                 S:  { 2: 205500, 4: 459500, 6: 795500 },
                 A3: { 2:  92550, 4: 208500, 6: 438500 },

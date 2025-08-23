@@ -19,7 +19,7 @@ function renderBorderHistory() {
   }
   tbody.innerHTML = ""; // 一旦クリア
 
-  rank = selectedRank();
+  const rank = selectedRank();
 
   const sortedDates = Object.keys(presets).sort().reverse();
   // score or coin のフォーマットを取得
@@ -46,7 +46,7 @@ function renderBorderHistory() {
 
     // 値セル（A1とB3の 2/4/6）
     [2, 4, 6].forEach(point => {
-      val = a1[point];
+      const val = a1[point];
       const td = document.createElement("td");
       if (i + 1 < sortedDates.length &&
           presets[sortedDates[i + 1]][rank] &&
@@ -159,7 +159,7 @@ function copyHistory(dateStr) {
 	return;
   }
 
-  rank = selectedRank();
+  const rank = selectedRank();
 
   const p2 = formatPalmu(presets[dateStr][rank][2]);
   const p4 = formatPalmu(presets[dateStr][rank][4]);
