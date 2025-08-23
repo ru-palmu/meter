@@ -200,7 +200,7 @@ function _renderEventPagination(data_size, page, page_size) {
 
   if (data_size > page_size) {
     // pagination
-	btns = [];
+	const btns = [];
 	if (true) {
 	  const btn = document.createElement("button");
 	  btn.className = "page-btn";
@@ -211,7 +211,7 @@ function _renderEventPagination(data_size, page, page_size) {
 	}
 
 	const last_page = Math.ceil(data_size / page_size);
-	for (i = 1; i <= last_page; i++) {
+	for (let i = 1; i <= last_page; i++) {
 	  const btn = document.createElement("button");
 	  btn.className = "page-btn";
 	  btn.textContent = i;

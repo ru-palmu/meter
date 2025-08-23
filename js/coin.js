@@ -30,7 +30,7 @@ function setScores(rank = '') {
     6: parseInt(document.getElementById("a6").value)
   };
 
-  ret = `${rank}確定スコア +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
+  const ret = `${rank}確定スコア +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
   document.getElementById("scores").value = ret;
 }
 
@@ -50,8 +50,7 @@ function loadDefaultMeter() {
 }
 
 // 現在のライブスコアから確定スコアまでのコイン数を算出
-function calculateLiveScoreToCoins(rank = '') {
-
+function calculateLiveScoreToCoins(__rank = '') {
 
   const a = {
     2: parseInt(document.getElementById("a2").value),
@@ -152,7 +151,7 @@ window.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
 
   // GETパラメータ r で指定されたランクをチェックする
-  key = selectedRank();
+  const key = selectedRank();
 
   if (document.getElementById("a2")) {
     applyPreset(key);
@@ -182,3 +181,4 @@ if (document.getElementById("glossary")) {
 	});
 }
 
+window.copyResult = copyResult;

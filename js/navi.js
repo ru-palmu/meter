@@ -32,12 +32,12 @@ function formatPalmu(value) {
 // ライブスコアに相当するコイン数を算出する．
 // ギフトの最小値が 10 のため, 1の位を切り上げ.
 function score2coin(score) {
-  coin = score / 3;
+  const coin = score / 3;
   return Math.ceil(coin / 10) * 10;
 }
 
 // 現在時刻取得．未使用
-function _getCurrentTime() {
+function __getCurrentTime() {
   const now = new Date();
   const h = String(now.getHours()).padStart(2, '0');
   const m = String(now.getMinutes()).padStart(2, '0');
@@ -145,8 +145,8 @@ function insertGuaranteedScore(targetId) {
 // ナビゲーションのレンダリング
 //////////////////////////////////////////////////
 
-function renderNavis(navi_func, navi_rank, _footer) {
-	page = _getCurrentPage();
+function renderNavis(navi_func, navi_rank, __footer) {
+	const page = _getCurrentPage();
 	_renderNaviFunc(page, navi_func);
 	const rank = selectedRank();
 	localStorage.setItem(COMMON_PREFIX + "selected_rank", rank);
@@ -514,7 +514,7 @@ function setupTooltips() {
     }
 
     // ② それぞれにクリックイベントをつける
-    term.addEventListener('click', (e) => {
+    term.addEventListener('click', (__e) => {
       // ③ 既にツールチップが表示されていたら，消す（トグル）
       const existing = term.querySelector('.tooltip-box');
       if (existing) {
@@ -579,7 +579,7 @@ function renderGlossary() {
 
   const hash = location.hash;
 
-  sortedTerms = Object.values(glossary).sort((a, b) => {
+  const sortedTerms = Object.values(glossary).sort((a, b) => {
     if (a.index < b.index) return -1;
     if (a.index > b.index) return 1;
     return 0;
@@ -639,3 +639,14 @@ function appendCurrentQueryToLinks(className) {
     link.setAttribute('href', newHref);
   });
 }
+
+window.formatPalmu = formatPalmu;
+window.score2coin = score2coin;
+window.renderNavis = renderNavis;
+window.setRankText = setRankText;
+window.loadDefaultValues = loadDefaultValues;
+window.saveSessionArgs = saveSessionArgs;
+window.setupTooltips = setupTooltips;
+window.renderGlossary = renderGlossary;
+window.hashChangeGlossary = hashChangeGlossary;
+
