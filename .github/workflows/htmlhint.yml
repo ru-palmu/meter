@@ -20,4 +20,4 @@ jobs:
         run: npm install htmlhint
 
       - name: Run HTMLHint
-        run: npm run lint:html
+        run: npx htmlhint .
