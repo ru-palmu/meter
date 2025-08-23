@@ -7,5 +7,6 @@
   "head-script-disabled": false,
   "img-alt-require": true,
   "space-tab-mixed-disabled": true,
+  "tag-pair": true,
   "attr-no-duplication": true
 }
