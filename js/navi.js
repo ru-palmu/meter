@@ -153,8 +153,10 @@ function renderNavis(navi_func, navi_rank, __footer) {
 	_renderNaviRank(rank, navi_rank);
 	insertGuaranteedScore("guaranteed-score");
 	appendCurrentQueryToLinks('append-query')
-	renderFooter();
-	renderNotices('notice-banner', PALMU_NOTICES);
+	_renderFooter();
+	if (typeof PALMU_NOTICES !== "undefined") {
+		_renderNotices('notice-banner', PALMU_NOTICES);
+	}
 }
 
 function _getCurrentPage() {
@@ -351,7 +353,7 @@ function _renderNaviRank(selected_rank, target_id) {
  * @param {string} elementId - バナーを挿入する要素のID
  * @param {Array} notices - 日付・テキスト・URLを含む通知配列
  */
-function renderNotices(elementId, notices) {
+function _renderNotices(elementId, notices) {
   const today = new Date();
   const oneWeekLater = new Date();
   oneWeekLater.setDate(today.getDate() + 7);
@@ -411,16 +413,17 @@ function renderNotices(elementId, notices) {
 // フッタ部
 //////////////////////////////////////////////////
 
-function renderFooter() {
+function _renderFooter() {
   const footer = document.getElementById("footer");
   if (!footer) return;
 
   const year = new Date().getFullYear(); // ← 現在の年を取得
 
+  const aopt = 'target="_blank" rel="noopener"';
   footer.innerHTML = `
     <div class="footer-content">
       © ${year} (る) |
-      <a href="https://github.com/ru-palmu/meter/" target="_blank" rel="noopener">GitHub</a>, <a href="https://x.com/ru_palmu">X</a>
+      <a href="https://github.com/ru-palmu/meter/" ${aopt}>GitHub</a>, <a href="https://x.com/ru_palmu" ${aopt}>X</a>
     </div>
   `;
 }
