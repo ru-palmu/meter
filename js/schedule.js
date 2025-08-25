@@ -348,11 +348,6 @@ function generateSchedulePast() {
 // --- データ保存 ---
 // とりま，利用者が設定している通りに保存する
 function saveSchedule() {
-  __setScheduleLocalStorage("skipCards", document.getElementById("skipCards").value);
-  __setScheduleLocalStorage("resetDate", document.getElementById("resetDate").value);
-  __setScheduleLocalStorage("dailyPoint", document.getElementById("dailyPoint").value);
-  __setScheduleLocalStorage("today", getToday());
-
   const data = {};  // メモリ載せておく用
   const data_for_save = {}; // 全部
 
@@ -418,7 +413,15 @@ function saveSchedule() {
   });
 
   scheduleData = data;
+  if (data.length == 0) {
+    return ;
+  }
   __setScheduleLocalStorage("scheduleData", JSON.stringify(data_for_save));
+  __setScheduleLocalStorage("skipCards", document.getElementById("skipCards").value);
+  __setScheduleLocalStorage("resetDate", document.getElementById("resetDate").value);
+  __setScheduleLocalStorage("dailyPoint", document.getElementById("dailyPoint").value);
+  __setScheduleLocalStorage("today", getToday());
+
 }
 
 function defaultScheduleDay(__dstr) {
