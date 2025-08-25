@@ -77,12 +77,12 @@ let chartInstanceHistory = null;
 function renderHistoryGraph() {
 	const elem = document.getElementById('chart-history');
 	if (!elem) {
-		console.log("chart-history element not found");
+		console.warn("chart-history element not found");
 		return;
 	}
 	const ctx = elem.getContext('2d');
 	if (!ctx) {
-		console.log("Failed to get context for chart-history");
+		console.warn("Failed to get context for chart-history");
 		return;
 	}
 

@@ -157,7 +157,7 @@ function _renderEventGraph(data) {
 	}
 	const ctx = elem.getContext('2d');
 	if (!ctx) {
-		console.log("Failed to get context for chart-history");
+		console.warn("Failed to get context for chart-event");
 		return;
 	}
 	if (chartInstanceEvent) {
