@@ -57,16 +57,22 @@ body {
 
 .tab-nav li.active {
   /* background-color: #e6fff0; /* ミント */
-  background-color: #95d5b2;
-  border-bottom: 5px solid #52b788;
+  background-color: #52b788;
+  border-bottom: 5px solid #2f855a;
   font-weight: bold;
 }
 
 .tab-nav a {
   text-decoration: none;
-  color: #2d6a4f;
+  /* color: #2d6a4f; */
+  color: #14532d;	/* 濃い緑 */
   display: block;
 }
+
+.tab-nav li.active a {
+  color: #ffffff;
+}
+
 
 .tab-nav-wrapper {
   position: relative;
@@ -126,19 +132,24 @@ body {
 }
 
 .sub-tab-nav li.active {
-  background-color: #81c784;
-  color: white;
+  background-color: #388e3c;
+  color: #ffffff;
   font-weight: 700;
-  border-bottom: 5px solid #388e3c;
+  border-bottom: 5px solid #27632a;
   box-shadow: 0 3px 6px rgba(56,142,60,0.35); /* ← アクティブは影を濃くして存在感 */
 }
 
-
-
 .sub-tab-nav a {
   text-decoration: none;
-  color: #2d6a4f
+  /* color: #2d6a4f */
+  color: #14532d;  /* 濃い緑 */
 }
+
+.sub-tab-nav li.active a {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 
 /* シェアボタン専用タブの見た目を既存タブと揃える */
 .sub-tab-nav li.share-btn {
@@ -149,7 +160,7 @@ body {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #2d6a4f;
+  color: #14532d;  /* 濃い緑 */
   text-decoration: none;
   font-size: 14px;
 }
@@ -214,7 +225,7 @@ body {
   color: #24292e;
   padding: 0.2em 0.4em;
   margin: 0;
-  font-size: 85%;
+  font-size: 90%;
   border-radius: 6px;
   white-space: nowrap;
 }
@@ -750,7 +761,7 @@ fieldset {
 
 legend {
   font-weight: bold;
-  color: #4caf50;
+  color: #14532d;
   padding: 0 0.5em;
 }
 
@@ -773,13 +784,13 @@ legend {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #d6f0e0;
+    background: #d6f0e0;	/* 薄緑 */
     border-radius: 30px;
     cursor: pointer;
     width: 140px;
     height: 40px;
     font-size: 14px;
-    color: #555;
+    color: #555;	/* unchecked の文字 */
     user-select: none;
     overflow: hidden; /* スライダーはみ出し防止 */
 }
@@ -797,10 +808,21 @@ legend {
     left: 0;        /* 左端にフィット */
     width: 50%;     /* 半分の幅 */
     height: 100%;   /* 高さを全体に */
-    background: #4caf50;
+    background: #4caf50;	/* checked 濃い緑 */
     border-radius: 30px;
     transition: transform 0.3s ease;
     z-index: 1;
+}
+
+/* input:checked の場合にスライダーの下にあるラベルを白文字にする */
+#schedule-toggle:checked + .toggle .toggle-label.future {
+  color: #ffffff; /* 未来がチェックされたとき白文字 */
+  font-weight: bold;
+}
+
+#schedule-toggle:not(:checked) + .toggle .toggle-label.past {
+  color: #ffffff; /* 過去が選択されたとき白文字 */
+  font-weight: bold;
 }
 
 /* チェック時に右へ移動 */
@@ -944,7 +966,7 @@ legend {
   text-align: left;
 }
 
-.event-table thead {
+.event-table thead th {
   background:#4caf50;
   color:white;
   position: sticky;
