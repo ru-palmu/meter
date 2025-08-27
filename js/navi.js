@@ -354,8 +354,13 @@ function _renderNaviRank(selected_rank, target_id) {
  * @param {Array} notices - 日付・テキスト・URLを含む通知配列
  */
 function _renderNotices(elementId, notices) {
+  const banner = document.getElementById(elementId);
+  if (!banner) {
+    return ;
+  }
+
   const today = new Date();
-  const oneWeekLater = new Date();
+  const oneWeekLater = new Date(today);
   oneWeekLater.setDate(today.getDate() + 7);
 
   const upcoming = notices.filter(n => {
@@ -364,19 +369,24 @@ function _renderNotices(elementId, notices) {
     if (!n.date.includes('T')) {
       noticeDate.setHours(23, 59, 59, 999);
     }
-    return noticeDate >= today && noticeDate <= oneWeekLater;
+
+	if (n.start) {
+	  const startDate = new Date(n.start);
+	  if (startDate <= today && noticeDate >= oneWeekLater) {
+		return true;
+	  }
+	}
+
+	console.log([today, noticeDate, oneWeekLater, n.text, today <= noticeDate, noticeDate <= oneWeekLater]);
+    return today <= noticeDate && noticeDate <= oneWeekLater;
   });
   if (upcoming.length === 0) {
     banner.style.display = 'none'; // お知らせがない場合は非表示
     return ;
   }
 
-  const banner = document.getElementById(elementId);
-  if (!banner) {
-    return ;
-  }
 
-  banner.style.display = 'block'; // お知らせがない場合は非表示
+  banner.style.display = 'block'; // お知らせがある
 
   const ul = document.createElement('ul');
   ul.className = 'notice-list';
