@@ -377,7 +377,7 @@ function _renderNotices(elementId, notices) {
 	  }
 	}
 
-	console.log([today, noticeDate, oneWeekLater, n.text, today <= noticeDate, noticeDate <= oneWeekLater]);
+	// console.log([today, noticeDate, oneWeekLater, n.text, today <= noticeDate, noticeDate <= oneWeekLater]);
     return today <= noticeDate && noticeDate <= oneWeekLater;
   });
   if (upcoming.length === 0) {
