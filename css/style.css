@@ -231,6 +231,11 @@ body {
 }
 
 
+.adv-container {
+  margin: 10px 0;
+}
+
+
 /*******************************************************************
  * お知らせ
  *******************************************************************/
@@ -511,6 +516,12 @@ table.history td.decrease {
   background-color: #fbeaea;
   color: #000;
   font-weight: bold;
+}
+
+table.history tr.separator td {
+  border-bottom: 1px dashed #ff9800; /* オレンジの線 */
+  /* border-bottom: 1px dashed #999; /* 細めの破線 */
+  background-color: transparent;   /* 背景は変えない */
 }
 
 .copyable {

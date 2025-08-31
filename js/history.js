@@ -1,12 +1,64 @@
+// history.html 用
+
+
+
+// 縦線描画プラグイン, borderDates は日付の配列
+function verticalLinesBetweenPlugin(borderDates) {
+    return {
+        id: 'verticalLineBetween',
+        afterDraw(chart) {
+            const ctx = chart.ctx;
+            const xAxis = chart.scales['x'];
+            const yAxis = chart.scales['y'];
+
+            borderDates.forEach(date => {
+                const index = chart.data.labels.indexOf(date);
+                if (index <= 0) return; // 前のラベルがない場合はスキップ
+
+                const prevX = xAxis.getPixelForTick(index - 1);
+                const currX = xAxis.getPixelForTick(index);
+                const x = (prevX + currX) / 2; // 中間座標
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x, yAxis.top);
+                ctx.lineTo(x, yAxis.bottom);
+                ctx.strokeStyle = 'rgba(255,165,0,0.5)'; // 薄いオレンジ
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4,2]); // 破線
+                ctx.stroke();
+                ctx.restore();
+            });
+        }
+    };
+}
+
+
+// separator 日付をテーブルから取得
+function getSeparatorDatesFromTable() {
+    const tbody = document.getElementById("history-tbody");
+    const separators = tbody.querySelectorAll("tr.separator");
+    const dates = [];
+
+    separators.forEach(tr => {
+        // 直前の行の日付セルを取得
+        const dateCell = tr.querySelector("td:first-child");
+        if (dateCell) {
+            dates.push(dateCell.textContent.trim());
+        }
+    });
+
+    return dates;
+}
 
 function _scoreOrCoinHistory(val, format, useRaw) {
     if (format == 'coin') {
         val = score2coin(val);
     }
-	if (!useRaw) {
-		val = formatPalmu(val);
-	}
-	return val;
+    if (!useRaw) {
+        val = formatPalmu(val);
+    }
+    return val;
 }
 
 
@@ -31,15 +83,19 @@ function renderBorderHistory() {
       continue;
     }
     const tr = document.createElement("tr");
+    if (date == "20250901") {
+        // 14ランクに変更した
+        tr.className = 'separator';
+    }
 
     // 日付セル
     const dateCell = document.createElement("td");
     dateCell.textContent = date;
-	dateCell.className = 'copyable';
-	dateCell.addEventListener('click', () => {
-		const text = dateCell.textContent.trim();
-		copyHistory(text);
-	});
+    dateCell.className = 'copyable';
+    dateCell.addEventListener('click', () => {
+        const text = dateCell.textContent.trim();
+        copyHistory(text);
+    });
     tr.appendChild(dateCell);
 
     const a1 = presets[date][rank];
@@ -115,6 +171,8 @@ function renderHistoryGraph() {
 		name = 'コイン相当';
 	}
 
+	const borderDates = getSeparatorDatesFromTable(); // ← ここで separator 日付取得
+
 	chartInstanceHistory = new Chart(ctx, {
 		'type': 'line',
 		'data': {
@@ -150,7 +208,8 @@ function renderHistoryGraph() {
 					text: `${name}履歴 (${rank})`,
 				},
 			},
-		}
+		},
+		plugins: [verticalLinesBetweenPlugin(borderDates)],
 	});
 }
 
@@ -185,8 +244,8 @@ function copyHistory(dateStr) {
 }
 
 function renderHistories() {
-	renderHistoryGraph();
 	renderBorderHistory();
+	renderHistoryGraph();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
