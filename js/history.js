@@ -151,18 +151,16 @@ function renderHistoryGraph() {
 	const rank = selectedRank();
 
 	const labels = [];
-	const data2 = [];
-	const data4 = [];
-	const data6 = [];
+	const datas = {2: [], 4: [], 6: []};
 
     const format = document.getElementById("result-format").value;
 	for (const date of Object.keys(presets).sort()) {
 		const gd = presets[date][rank];
 		if (gd) {
 			labels.push(date);
-			data2.push(_scoreOrCoinHistory(gd[2], format, true) || 0);
-			data4.push(_scoreOrCoinHistory(gd[4], format, true) || 0);
-			data6.push(_scoreOrCoinHistory(gd[6], format, true) || 0);
+			[2, 4, 6].forEach(point => {
+				datas[point].push(_scoreOrCoinHistory(gd[point], format, true) || 0);
+			});
 		}
 	}
 
@@ -180,17 +178,17 @@ function renderHistoryGraph() {
 			'datasets': [
 				{
 					label: "+2",
-					data: data2,
+					data: datas[2],
 					borderColor: 'blue',
 				},
 				{
 					label: "+4",
-					data: data4,
+					data: datas[4],
 					borderColor: 'green',
 				},
 				{
 					label: "+6",
-					data: data6,
+					data: datas[6],
 					borderColor: 'red',
 				},
 			],
