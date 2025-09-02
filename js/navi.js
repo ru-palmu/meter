@@ -5,6 +5,11 @@ const COMMON_PREFIX = 'meter_common_';
 
 const cand_rank = ["D", "C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "A4", "A5", "S", "SS"];
 
+const RANK_DIC = {}
+for (let i = 0; i < cand_rank.length; i++) {
+	RANK_DIC[cand_rank[i]] = i;
+}
+
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
 const latestDate = Object.keys(presets).sort().reverse()[0];
 

@@ -11,17 +11,11 @@ const EVENT_ITEM = [
 ];
 const EVENT_DIC = {}
 
-const RANK_DIC = {}
-for (let i = 0; i < cand_rank.length; i++) {
-	RANK_DIC[cand_rank[i]] = i;
-}
-
 const PAGE_SIZE = 20; // ページあたりの表示数
 
 // ランクフィルター
 const eventSelect = document.getElementById("eventFilter");
 const rankSelect = document.getElementById("rankFilter");
-
 
 eventSelect.innerHTML = "";
 const defaultEvent = document.createElement("option");

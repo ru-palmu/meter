@@ -33,6 +33,7 @@ export default [
 
 		// navi.js
 		cand_rank: "readonly",
+		RANK_DIC: "readonly",
 		loadDefaultValues: "readonly",
 		formatAsK: "readonly",
 		formatPalmu: "readonly",

@@ -129,6 +129,27 @@ function renderBorderHistory() {
 
 let chartInstanceHistory = null;
 
+function _setChartHistorySize() {
+	const canvas = document.getElementById('chart-history');
+	if (!canvas) {
+		console.warn("chart-history element not found");
+		return;
+	}
+	const container = document.getElementById('chart-history-container');
+	if (!container) {
+		console.warn("chart-history-container element not found");
+		return;
+	}
+
+	const legendHeight = 66 / 1.7 * 2.9; // 凡例の高さを考慮
+	const axisHeight = 66; // 軸の高さを考慮
+	const minGraphHeight = 200;
+
+	const width = container.clientWidth;
+	canvas.height = legendHeight + axisHeight + Math.min(minGraphHeight, width);
+	canvas.width = width;
+	console.log(width, canvas.height);
+}
 
 function renderHistoryGraph() {
 	const elem = document.getElementById('chart-history');
@@ -142,6 +163,8 @@ function renderHistoryGraph() {
 		return;
 	}
 
+	_setChartHistorySize();
+
 	if (chartInstanceHistory) {
 		chartInstanceHistory.destroy(); // 既存のチャートを破棄
 	}
@@ -149,17 +172,38 @@ function renderHistoryGraph() {
 
 	// 辞書 presets のキーを昇順にソート
 	const rank = selectedRank();
+	const rank_idx = RANK_DIC[rank];
+	const rankdwn = rank_idx > 0 ? cand_rank[rank_idx - 1] : null;
+	const rankupp = rank_idx < cand_rank.length - 1 ? cand_rank[rank_idx + 1] : null;
 
 	const labels = [];
-	const datas = {2: [], 4: [], 6: []};
+	const datas = {2: [], 4: [], 6: [], dwn2: [], dwn4: [], dwn6: [], upp2: [], upp4: [], upp6: []};
 
     const format = document.getElementById("result-format").value;
+	const updown = [
+		[rankdwn, 'dwn', [10, 5]],
+		[rankupp, 'upp', [5, 5]],
+	];
 	for (const date of Object.keys(presets).sort()) {
 		const gd = presets[date][rank];
 		if (gd) {
 			labels.push(date);
 			[2, 4, 6].forEach(point => {
 				datas[point].push(_scoreOrCoinHistory(gd[point], format, true) || 0);
+			});
+
+
+			updown.forEach(([rankKey, prefix]) => {
+				if (rankKey != null && presets[date][rankKey]) {
+					const gd_u = presets[date][rankKey];
+					[2, 4, 6].forEach(point => {
+						datas[prefix + point].push(_scoreOrCoinHistory(gd_u[point], format, true) || undefined);
+					});
+				} else {
+					[2, 4, 6].forEach(point => {
+						datas[prefix + point].push(undefined);
+					});
+				}
 			});
 		}
 	}
@@ -171,27 +215,41 @@ function renderHistoryGraph() {
 
 	const borderDates = getSeparatorDatesFromTable(); // ← ここで separator 日付取得
 
+	const datasets = [];
+	const lines = []; // index, label, color, width, dash
+
+	updown.forEach(([rankKey, prefix, dash]) => {
+		if (rankKey != null) {
+			[[2, 'blue', 1, dash], [4, 'green', 1, dash], [6, 'red', 1, dash]].forEach(([point, color, width, dash]) => {
+				lines.push([prefix + point, `${rankKey} +${point}`, color, width, dash]);
+			});
+		}
+
+		if (prefix == 'dwn') {
+			lines.push([2, `${rank} +2`, 'blue', 3, []]);
+			lines.push([4, `${rank} +4`, 'green', 3, []]);
+			lines.push([6, `${rank} +6`, 'red', 3, []]);
+		}
+	});
+
+	lines.forEach(([point, label, color, width, dash]) => {
+		if (datas[point].some(v => v !== undefined)) {
+			datasets.push({
+				label: label,
+				data: datas[point],
+				borderColor: color,
+				borderWidth: width,
+				borderDash: dash,
+				hidden: (width < 3),
+			});
+		}
+	});
+
 	chartInstanceHistory = new Chart(ctx, {
 		'type': 'line',
 		'data': {
 			'labels': labels,
-			'datasets': [
-				{
-					label: "+2",
-					data: datas[2],
-					borderColor: 'blue',
-				},
-				{
-					label: "+4",
-					data: datas[4],
-					borderColor: 'green',
-				},
-				{
-					label: "+6",
-					data: datas[6],
-					borderColor: 'red',
-				},
-			],
+			'datasets': datasets,
 		},
 		options: {
 			scales: {
@@ -206,6 +264,7 @@ function renderHistoryGraph() {
 					text: `${name}履歴 (${rank})`,
 				},
 			},
+			responsive: false,
 		},
 		plugins: [verticalLinesBetweenPlugin(borderDates)],
 	});
@@ -257,3 +316,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	setupTooltips()
 });
+
+window.addEventListener('resize', () => {
+	_setChartHistorySize();
+});
+
