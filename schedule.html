@@ -54,7 +54,7 @@
 
   <div class="input-group">
     <label for="dailyPoint">累積デイリーランクポイント</label>
-    <input type="number" id="dailyPoint" min="0" max="18" step="1" />
+    <input type="number" id="dailyPoint" min="0" max="42" step="1" />
   </div>
 
   <div class="input-group">
@@ -65,6 +65,13 @@
   <div class="input-group">
     <label for="resetDate">残りランク更新期間（日数）</label>
     <input type="number" id="resetDate" min="1" max="7" step="1" />
+  </div>
+
+  <div class="input-group">
+    <label for="rankChange">前回のランク変動</label>
+    <input type="radio" id="rankChangeDown" name="rankChange" value="Down">ダウン
+    <input type="radio" id="rankChangeKeep" name="rankChange" value="Keep">キープ
+    <input type="radio" id="rankChangeUp"   name="rankChange" value="Up"  >アップ
   </div>
 
   <span id="schedule_debug_buttons"></span>
@@ -119,7 +126,8 @@
 <span class="sub-title">使い方</span>
 
 <ul class="help">
-	<li>最初に初期値を設定してください．
+	<li>最初に一番上のタブから，<span class="term" data-term="rank">ランク</span>を選択してください．</li>
+	<li>次に初期値を設定してください．
     <ul>
       <li>累積デイリーランクポイント: 1日で獲得したポイントの合計（最大18pt）</li>
         <li>スキップカード残数: 残っているスキップカードの枚数（最大10枚）</li>
@@ -137,8 +145,6 @@
 <ul class="help">
 	<li>本機能は，勢いに任せて実装しているので仕様が大きく変更になる可能性があります．</li>
 	<li>一部のブラウザで，pt列の設定が保存されないバグを確認しています．</li>
-  <li>2025/09からの新しいランクシステムには対応していません．ランクダウン直後の +18 もランクアップしたと判定します．
-    2025/09以降に修正予定です．</li>
 </ul>
 
 <span class="sub-title">ご参考</span>

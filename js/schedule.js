@@ -69,57 +69,50 @@ function loadInitialSettings() {
   let savedReset = parseInt(__getScheduleLocalStorage("resetDate") || "7");
   let savedDailyPoint = parseInt(__getScheduleLocalStorage("dailyPoint") || "0");
 
+  let savedRankChange = __getScheduleLocalStorage("rankChange");
+  if (savedRankChange != "Down" && savedRankChange != "Keep" && savedRankChange != "Up") {
+    savedRankChange = "Keep";
+  }
+
   if (isNaN(savedReset)) savedReset = 7;
   if (isNaN(savedSkip)) savedSkip = 0;
   if (isNaN(savedDailyPoint)) savedDailyPoint = 0;
   const savedToday = __getScheduleLocalStorage("today");
-  const today = new Date(getToday());
+  const todayStr = getToday();
 
   //////////////////////////////////////////////////////
   // スキップカードの残数と区切り日を最新に調整する
   //////////////////////////////////////////////////////
-  if (savedToday && savedToday !== today) {
+  if (savedToday && savedToday !== todayStr) {
     // 前に保存した日付が今日と違う場合は、
     // 残数と区切り日を計算しなおし
     const start = new Date(savedToday);
-    let d = start;
-    while (d < today) {
-      const dow = d.getDay()
-      const dateStr = dateToStr(d);
+    const end = new Date(getYesterday());
 
-      if (dow == DISTRIBUTE_SKIP_CARDS_DAY) {
-        // 月曜日ならスキップカードを2枚配布
-        savedSkip = distributeSkipCards(savedSkip);
-      }
-      if (useSkipCard(dateStr)) {
-        // スキップカードを使っている日付は、残数を減らす
-        savedSkip = Math.max(savedSkip - 1, 0);
-      } else {
-        // -1 処理のワンライナー
-        savedReset = (savedReset + MAX_RESET_DATE - 2) % MAX_RESET_DATE + 1;
-        savedDailyPoint += getDailyPoint(dateStr);
-        if (savedReset == 1 || savedDailyPoint >= RANK_UP_POINT) {
-          savedDailyPoint = 0;
-          savedReset = 1;
-        }
-      }
-      d.setDate(d.getDate() + 1);
-    }
+    const ret = updateTotalsFuture(start, end, savedSkip, savedReset, savedDailyPoint, savedRankChange);
+
+    savedSkip = ret[0];
+    savedReset = (ret[1] + MAX_RESET_DATE - 2) % MAX_RESET_DATE + 1;
+    savedDailyPoint = ret[2];
+    savedRankChange = ret[3];
   }
 
   document.getElementById("skipCards").value = savedSkip;
   document.getElementById("resetDate").value = savedReset;
   document.getElementById("dailyPoint").value = savedDailyPoint;
+  document.getElementById("rankChange" + savedRankChange).checked = true;
 }
+
+const TODAY_DIFF = 0;
 
 // 昨日の日付をyyyy-mm-ddで返す
 function getYesterday() {
-  return _getDateDiff(1);
+  return _getDateDiff(TODAY_DIFF + 1);
 }
 
 // 今日の日付をyyyy-mm-ddで返す
 function getToday() {
-  return _getDateDiff(0);
+  return _getDateDiff(TODAY_DIFF);
 }
 
 // n 日前の日付をyyyy-mm-ddで返す
@@ -133,7 +126,7 @@ function _getDateDiff(n) {
 
 // 表示対象の期間を返す
 function getDateRange() {
-  const today = new Date();
+  const today = getToday();
   const start = new Date(today);
   // start.setMonth(start.getMonth() - 2);
   const end = new Date(today);
@@ -267,7 +260,7 @@ function generateSchedulePast() {
   tbody.innerHTML = "";
   const end = new Date(getYesterday()); // 昨日までのスケジュール
   let start = Object.keys(scheduleData).sort()[0];
-  const oneMonthAgo = new Date();
+  const oneMonthAgo = new Date(getToday());
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
   const oneMonthAgoStr = dateToStr(oneMonthAgo);
   if (start > oneMonthAgoStr) {
@@ -420,9 +413,18 @@ function saveSchedule() {
   __setScheduleLocalStorage("skipCards", document.getElementById("skipCards").value);
   __setScheduleLocalStorage("resetDate", document.getElementById("resetDate").value);
   __setScheduleLocalStorage("dailyPoint", document.getElementById("dailyPoint").value);
+  __setScheduleLocalStorage("rankChange", _getSelectedRankChange());
   __setScheduleLocalStorage("today", getToday());
-
 }
+
+function _getSelectedRankChange() {
+  const rankChange = document.querySelector("input[name=rankChange]:checked");
+  if (rankChange) {
+    return rankChange.value;
+  }
+  return "Keep";
+}
+
 
 function defaultScheduleDay(__dstr) {
     return { point: "+1", memo: "" };
@@ -436,7 +438,7 @@ function useSkipCard(datestr) {
 function isSeparationDate(dateStr) {
   // 区切り日かどうか.
   // 残り日数がないか，+18 獲得した
-  return (scheduleData[dateStr].restDay == 1 && !useSkipCard(dateStr)) || scheduleData[dateStr].total >= 18;
+  return scheduleData[dateStr].separator;
 }
 
 function getDailyPoint(datestr) {
@@ -458,13 +460,19 @@ function getDailyPoint(datestr) {
   }
 }
 
-function updateTotalsFuture(endx, skipCount, resetDate, dailyPoint) {
-  const today = getToday();
-  let d = new Date(today);
+// @return [skipCount, resetDate, dailyPoint, rankChange];
+function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rankChange) {
+  let d = new Date(startx);
   let skipCard = false;
   resetDate += 1;
-  let rank = 0;
-  if (dailyPoint >= RANK_UP_POINT) {
+
+  const selected_rank = selectedRank();
+  let rank = RANK_DIC[selected_rank] ?? -5;
+
+  let rank_down = rankChange == "Down";  // ランクダウン直後はランクアップできない
+  let rank_status = ''; // SS+ 対応でっせ．
+
+  if (dailyPoint >= RANK_UP_POINT && !rank_down) {
     dailyPoint = 0;
     resetDate = 1;
   }
@@ -474,9 +482,8 @@ function updateTotalsFuture(endx, skipCount, resetDate, dailyPoint) {
         scheduleData[dstr] = defaultScheduleDay(dstr);
     }
 
-
     if (!skipCard) {
-      // 1 デクリメント
+      // デクリメント・ワンライナー
       resetDate = (resetDate + MAX_RESET_DATE - 2) % MAX_RESET_DATE + 1;
     }
 
@@ -494,21 +501,41 @@ function updateTotalsFuture(endx, skipCount, resetDate, dailyPoint) {
     scheduleData[dstr].restDay = resetDate;
     scheduleData[dstr].skipRemain = skipCount;
     scheduleData[dstr].total = dailyPoint;
-    scheduleData[dstr].rank = rank
+    if (0 <= rank && rank < cand_rank.length) {
+        scheduleData[dstr].rank = cand_rank[rank] + rank_status;
+    } else {
+        scheduleData[dstr].rank = rank
+    }
 
-    if (resetDate == 1 && !skipCard || dailyPoint >= RANK_UP_POINT) {
-      if (dailyPoint >= RANK_UP_POINT) {
-        rank++;
-      } else if (dailyPoint < RANK_KEEP_POINT) {
-        rank--;
+    scheduleData[dstr].separator = false;
+    if (resetDate == 1 && !skipCard || dailyPoint >= RANK_UP_POINT && !rank_down) {
+      rank_status = '';
+      if (dailyPoint >= RANK_UP_POINT && !rank_down) {  // ランクアップ
+        if (rank + 1 < cand_rank.length) {
+          rank++;
+        } else {
+          rank_status = '+';
+        }
+        rankChange = "Up";
+      } else if (dailyPoint < RANK_KEEP_POINT) {  // ランクダウン
+        if (rank > 0) { // Dランクはそれ以上下がらない
+          rank--;
+          rank_down = true;
+        }
+        rankChange = "Down";
+      } else { // ランクキープ
+        rank_down = false;
+        rankChange = "Keep";
       }
       dailyPoint = 0;
       resetDate = 1;
-
+      scheduleData[dstr].separator = true;
     }
 
     d.setDate(d.getDate() + 1);
   }
+
+  return [skipCount, resetDate, dailyPoint, rankChange];
 }
 
 // --- 合計・スキップ残数計算、スキップカード残数チェック・エラー表示 ---
@@ -523,8 +550,10 @@ function updateTotals() {
   let dailyPoint = parseInt(document.getElementById("dailyPoint").value, 10);
   if (isNaN(dailyPoint)) dailyPoint = 0;
 
+  let rankChange = _getSelectedRankChange();
+
   const endx = new Date(rows[rows.length - 1].children[0].textContent);
-  updateTotalsFuture(endx, skipCount, resetDate, dailyPoint);
+  updateTotalsFuture(getToday(), endx, skipCount, resetDate, dailyPoint, rankChange);
 
   for (const row of rows) {
     const dateStr = row.children[0].textContent;
@@ -567,6 +596,16 @@ function setupEvents() {
     document.getElementById(id).addEventListener("input", () => {
       saveSchedule();
       updateTotals();
+    });
+  });
+
+  ["rankChange"].forEach((name) => {
+    const radios = document.querySelectorAll(`input[name="${name}"]`);
+    radios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        saveSchedule();
+        updateTotals();
+      });
     });
   });
 }
