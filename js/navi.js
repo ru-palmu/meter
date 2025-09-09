@@ -370,6 +370,7 @@ function _renderNotices(elementId, notices) {
   const oneWeekLater = new Date(today);
   oneWeekLater.setDate(today.getDate() + 7);
 
+  // 表示する項目を絞り込み
   const upcoming = notices.filter(n => {
     const noticeDate = new Date(n.date);
     // 日付だけの場合は0時に設定されるため、時刻情報がない場合は1日後の23:59に設定
@@ -417,7 +418,21 @@ function _renderNotices(elementId, notices) {
       a.textContent = displayText;
       li.appendChild(a);
     } else {
-      li.textContent = displayText;
+      li.appendChild(document.createTextNode(displayText));
+    }
+
+    if (n.links && n.links.length > 0) {
+        li.appendChild(document.createTextNode(' '));
+        n.links.forEach(l => {
+            li.appendChild(document.createTextNode('['));
+            if (l.kind == "SS") {
+                const a = document.createElement('a');
+                a.href = `../data/${l.file}`;
+                a.textContent = "SS";
+                li.appendChild(a);
+            }
+            li.appendChild(document.createTextNode(']'));
+        });
     }
     ul.appendChild(li);
   });
