@@ -92,9 +92,13 @@ function loadInitialSettings() {
     const ret = updateTotalsFuture(start, end, savedSkip, savedReset, savedDailyPoint, savedRankChange);
 
     savedSkip = ret[0];
-    savedReset = (ret[1] + MAX_RESET_DATE - 2) % MAX_RESET_DATE + 1;
+    savedReset = ret[1];
     savedDailyPoint = ret[2];
     savedRankChange = ret[3];
+  }
+
+  if (savedDailyPoint > RANK_UP_POINT) {
+    savedDailyPoint = RANK_UP_POINT;
   }
 
   document.getElementById("skipCards").value = savedSkip;
@@ -103,7 +107,7 @@ function loadInitialSettings() {
   document.getElementById("rankChange" + savedRankChange).checked = true;
 }
 
-const TODAY_DIFF = 0;
+const TODAY_DIFF = -0;
 
 // 昨日の日付をyyyy-mm-ddで返す
 function getYesterday() {
@@ -186,6 +190,12 @@ function generateSchedule() {
     }
     tr.appendChild(tdWeek);
 
+    // スキップカード残数
+    const tdSkipRemain = document.createElement("td");
+    tdSkipRemain.className = "skipRemain";
+    tr.appendChild(tdSkipRemain);
+    if (scheduleData[dateStr]?.skipRemain) tdSkipRemain.value = scheduleData[dateStr].skipRemain;
+
 
     // ポイント
     const tdPoint = document.createElement("td");
@@ -221,12 +231,6 @@ function generateSchedule() {
     tdRank.className = "rank";
     tr.appendChild(tdRank);
     if (scheduleData[dateStr]?.rank) tdTotal.value = scheduleData[dateStr].rank;
-
-    // スキップカード残数
-    const tdSkipRemain = document.createElement("td");
-    tdSkipRemain.className = "skipRemain";
-    tr.appendChild(tdSkipRemain);
-    if (scheduleData[dateStr]?.skipRemain) tdSkipRemain.value = scheduleData[dateStr].skipRemain;
 
     // 区切り日までの残日数
     const tdRestDay= document.createElement("td");
@@ -460,11 +464,10 @@ function getDailyPoint(datestr) {
   }
 }
 
+// 今日を起点として，未来のポイント・ランクを計算する
 // @return [skipCount, resetDate, dailyPoint, rankChange];
 function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rankChange) {
   let d = new Date(startx);
-  let skipCard = false;
-  resetDate += 1;
 
   const selected_rank = selectedRank();
   let rank = RANK_DIC[selected_rank] ?? -5;
@@ -474,27 +477,25 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
 
   if (dailyPoint >= RANK_UP_POINT && !rank_down) {
     dailyPoint = 0;
-    resetDate = 1;
+    resetDate = 7;
   }
+
   while (d <= endx) {
     const dstr = dateToStr(d);
     if (!scheduleData[dstr]) {
         scheduleData[dstr] = defaultScheduleDay(dstr);
     }
 
-    if (!skipCard) {
-      // デクリメント・ワンライナー
-      resetDate = (resetDate + MAX_RESET_DATE - 2) % MAX_RESET_DATE + 1;
-    }
-
     if (d.getDay() === DISTRIBUTE_SKIP_CARDS_DAY) {
       skipCount = distributeSkipCards(skipCount);
     }
-    skipCard = useSkipCard(dstr);
+    const skipCard = useSkipCard(dstr);
     if (skipCard) {
       if (skipCount >= 0) {
         skipCount--;
       }
+    } else {
+      resetDate = (resetDate + - 1) % MAX_RESET_DATE;
     }
 
     dailyPoint += getDailyPoint(dstr);
@@ -508,7 +509,7 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
     }
 
     scheduleData[dstr].separator = false;
-    if (resetDate == 1 && !skipCard || dailyPoint >= RANK_UP_POINT && !rank_down) {
+    if (resetDate == 0 && !skipCard || dailyPoint >= RANK_UP_POINT && !rank_down) {
       rank_status = '';
       if (dailyPoint >= RANK_UP_POINT && !rank_down) {  // ランクアップ
         if (rank + 1 < cand_rank.length) {
@@ -528,7 +529,7 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
         rankChange = "Keep";
       }
       dailyPoint = 0;
-      resetDate = 1;
+      resetDate = MAX_RESET_DATE;
       scheduleData[dstr].separator = true;
     }
 
@@ -538,17 +539,24 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
   return [skipCount, resetDate, dailyPoint, rankChange];
 }
 
+function _clamp(v, min, max, def) {
+  if (isNaN(v)) return def;
+  if (v < min) return min;
+  if (v > max) return max;
+  return v;
+}
+
 // --- 合計・スキップ残数計算、スキップカード残数チェック・エラー表示 ---
 function updateTotals() {
   const rows = document.querySelectorAll("#scheduleTable tbody tr");
-  const resetDate = parseInt(document.getElementById("resetDate").value);
-  if (isNaN(resetDate)) resetDate = 7;
+  let resetDate = parseInt(document.getElementById("resetDate").value);
+  resetDate = _clamp(resetDate, 1, MAX_RESET_DATE, 7);
 
   let skipCount = parseInt(document.getElementById("skipCards").value, 10);
-  if (isNaN(skipCount)) skipCount = 0;
+  skipCount = _clamp(skipCount, 0, MAX_SKIP_CARDS, 0);
 
   let dailyPoint = parseInt(document.getElementById("dailyPoint").value, 10);
-  if (isNaN(dailyPoint)) dailyPoint = 0;
+  dailyPoint = _clamp(dailyPoint, 0, RANK_UP_POINT, 0);
 
   let rankChange = _getSelectedRankChange();
 
