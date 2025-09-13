@@ -425,10 +425,15 @@ function _renderNotices(elementId, notices) {
         li.appendChild(document.createTextNode(' '));
         n.links.forEach(l => {
             li.appendChild(document.createTextNode('['));
-            if (l.kind == "SS") {
+            if (l.file) {
                 const a = document.createElement('a');
                 a.href = `../data/${l.file}`;
-                a.textContent = "SS";
+                a.textContent = l.label;
+                li.appendChild(a);
+            } else if (l.url) {
+                const a = document.createElement('a');
+                a.href = l.url;
+                a.textContent = l.label;
                 li.appendChild(a);
             }
             li.appendChild(document.createTextNode(']'));
