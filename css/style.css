@@ -212,6 +212,21 @@ body {
   border-radius: 4px;
 }
 
+/* サブサブタイトル：補足的な小見出し */
+.sub-sub-title {
+  display: block;
+  font-size: 1em;                /* h5 相当 */
+  font-weight: 500;
+  margin: 0.8em 0 0.4em 0;
+  padding: 0.15em 0.5em;
+  background-color: rgba(0, 100, 0, 0.05); /* さらに淡い薄緑 */
+  color: #2d6a4f;                /* やや柔らかい緑 */
+  border-left: 3px solid #52b788; /* 緑系で軽めのアクセント */
+  border-radius: 3px;
+}
+
+
+
 /* 各ページ冒頭の１行説明文 */
 .intro {
   margin-bottom: 1.2rem;
@@ -1124,5 +1139,44 @@ legend {
   font-size: 32px;
   color: #fff;
   cursor: pointer;
+}
+
+
+/** livescore.html */
+
+.figure-row {
+  display: grid;
+  grid-auto-flow: column;          /* 列方向に詰める */
+  grid-auto-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;   /* 1行目=画像, 2行目=キャプション */
+  gap: 8px 8px;                   /* 行間 / 列間 */
+  align-items: start;
+}
+
+.figure-row .img-container {
+  display: contents;               /* 子(img と figcaption)を親グリッドに直接参加させる */
+  margin: 0;                       /* figureの余白は消えるので gap で調整 */
+}
+
+.figure-row a {
+  grid-row: 1;                     /* 画像は1行目に */
+  justify-self: center;
+}
+
+.figure-row img {
+  grid-row: 1;                     /* 画像は1行目に */
+  justify-self: center;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;             /* 必要なら */
+}
+
+.figure-row figcaption {
+  font-size: 0.9em;   /* 少し小さめの文字 */
+  color: #555;        /* 薄い色で本文との差別化 */
+  grid-row: 2;                     /* キャプションは2行目に（全列で同じ行に並ぶ） */
+  text-align: center;
+  line-height: 1.4;                /* 各キャプションで同じ line-height に */
 }
 
