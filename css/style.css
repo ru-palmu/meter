@@ -1172,6 +1172,11 @@ legend {
   object-fit: contain;             /* 必要なら */
 }
 
+.figure-row img.img-large {
+  max-width: 400px;
+}
+
+
 .figure-row figcaption {
   font-size: 0.9em;   /* 少し小さめの文字 */
   color: #555;        /* 薄い色で本文との差別化 */
