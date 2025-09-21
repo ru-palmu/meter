@@ -74,7 +74,7 @@ function calculateLiveScoreToCoins(__rank = '') {
 
   const results = targets.map(i => {
     // 残スコアから必要コイン数を算出
-    const s = score2coin(a[i] - b);
+    const s = score2coin(a[i], b);
     if (s < 20) {
         return '';
     }

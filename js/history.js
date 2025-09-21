@@ -53,7 +53,7 @@ function getSeparatorDatesFromTable() {
 
 function _scoreOrCoinHistory(val, format, useRaw) {
     if (format == 'coin') {
-        val = score2coin(val);
+        val = score2coin(val, 0);
     }
     if (!useRaw) {
         val = formatPalmu(val);

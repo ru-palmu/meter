@@ -38,7 +38,8 @@ function formatPalmu(value) {
 
 // ライブスコアに相当するコイン数を算出する．
 // ギフトの最小値が 10 のため, 1の位を切り上げ.
-function score2coin(score) {
+function score2coin(goal_score, current_score) {
+  const score = goal_score - current_score;
   const coin = score / 3;
   return Math.ceil(coin / 10) * 10;
 }

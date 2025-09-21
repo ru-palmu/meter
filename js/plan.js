@@ -91,7 +91,7 @@ function calculatePlans() {
 			result += '\t| ' + score.toLocaleString();
 		}
 		if (format != 'score') {
-			const s = score2coin(score);
+			const s = score2coin(score, 0);
 			result += '\t| ' + s.toLocaleString();
 		}
 	}
