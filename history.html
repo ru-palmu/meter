@@ -34,7 +34,8 @@
 
 <select id="result-format">
 	<option value="score">ライブスコア</option>
-	<option value="coin">コイン</option>
+	<option value="coin">コイン（改良モデル）</option>
+	<option value="coin_per3">コイン（従来モデル[÷3]）</option>
 </select>
 <br>
 <table class="history">
@@ -64,6 +65,11 @@
 	<li>日付をタップすると，その日の確定スコアの情報がコピーできます．</li>
 </ul>
 
+<p><span class="term" data-term="score">ライブスコア</span>から<span class="term" data-term="coin">コイン数</span>の算出方法は，２種類あります．どちらの方法でも，コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．</p>
+<ul class="help">
+	<li>改良モデル[標準]: 調査により得られたデータをもとに，より正確にコイン数を推定します．詳細は，「<a href="">ライブスコアの算出式について</a>」を参照してください．</li>
+	<li>従来モデル[÷3]: ライブスコアを 3 で割った値をコイン数とします．</li>
+</ul>
 
 <span class="sub-title">表の見方</span>
 
@@ -89,8 +95,6 @@ K がついている数値は，1/1000 の値を表示しています．
 <span class="sub-title">注意事項</span>
 
 <ul class="help">
-	<li>必要な<span class="term" data-term="coin">コイン数</span>は，<span class="term" data-term="score">ライブスコア</span>の 1/3 として計算しています．
-コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．</li>
 	<li><span class="term" data-term="border">保証ボーダー</span>（確定スコア）は手動で更新しているため，最新になっていなかったり，間違った値になっている可能性があります．
 改善要望・不具合報告は，<a href="https://github.com/ru-palmu/meter/issues">GitHub</a> または <a href="https://x.com/ru_palmu">X</a> までお願いします．</li>
 </ul>

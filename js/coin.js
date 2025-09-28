@@ -66,19 +66,21 @@ function calculateLiveScoreToCoins(__rank = '') {
   const format = document.getElementById("result-format").value;
   _saveMeterArgs(format);
   let targets = [];
-  if (format == 'all' || format == 'easy') {
+  if (format == 'all' || format.startsWith('easy')) {
     targets = [2, 4, 6];
   } else {
     targets = [parseInt(format)];
   }
 
+  const s2calgo = format.endsWith('_per3') ? 'per3' : 'normal';
+
   const results = targets.map(i => {
     // 残スコアから必要コイン数を算出
-    const s = score2coin(a[i], b);
+    const s = score2coin(a[i], b, s2calgo);
     if (s < 20) {
         return '';
     }
-	if (format == 'easy') {
+	if (format.startsWith('easy')) {
 	    return `${s.toLocaleString()}コインで+${i}確定`;
 	} else {
 	    return `+${i}=${s.toLocaleString()}`;

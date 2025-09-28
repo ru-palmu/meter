@@ -36,11 +36,26 @@ function formatPalmu(value) {
   }
 }
 
+function score2coin_orig(score) {
+	const a = 2.675280793;
+	const b = 17299.15066;
+	const x = b / (3 - a);	// y=ax+b と y=3x の交点
+	if (score <= 3 * x) {
+		return score / 3;
+	} else {
+		return (score - b) / a;
+	}
+}
+
 // ライブスコアに相当するコイン数を算出する．
 // ギフトの最小値が 10 のため, 1の位を切り上げ.
-function score2coin(goal_score, current_score) {
-  const score = goal_score - current_score;
-  const coin = score / 3;
+function score2coin(goal_score, current_score, algorithm='normal') {
+  let coin = 0;
+  if (algorithm === 'per3') {
+    coin = (goal_score - current_score) / 3;
+  } else {
+    coin = score2coin_orig(goal_score) - score2coin_orig(current_score);
+  }
   return Math.ceil(coin / 10) * 10;
 }
 

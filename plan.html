@@ -57,9 +57,10 @@
 	<button class="copy-button" onclick="copyResult('result_daily')">📋 コピー</button>
 
 <select id="result-format">
-	<option value="coin">コイン</option>
+	<option value="coin">コイン（改良モデル）</option>
+	<option value="coin_per3">コイン（従来モデル[÷3]）</option>
 	<option value="score">ライブスコア</option>
-	<option value="both">ライブスコアとコイン</option>
+	<option value="both">全部</option>
 </select>
 <br>
   <textarea class="copy-output" id="result_daily" rows="8" cols="40" readonly></textarea>
@@ -80,6 +81,13 @@
 	<li>結果にプランが表示されます．結果は<span class="term" data-term="coin">コイン数</span>（ライブスコア）の少ない順に並んでいます．</li>
 	<li>出力形式を選択してください．</li>
 </ul>
+
+<p><span class="term" data-term="score">ライブスコア</span>から<span class="term" data-term="coin">コイン数</span>の算出方法は，２種類あります．どちらの方法でも，コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．</p>
+<ul class="help">
+	<li>改良モデル[標準]: 調査により得られたデータをもとに，より正確にコイン数を推定します．詳細は，「<a href="">ライブスコアの算出式について</a>」を参照してください．</li>
+	<li>従来モデル[÷3]: ライブスコアを 3 で割った値をコイン数とします．</li>
+</ul>
+
 
 例えば以下のような結果が得られます．
 <pre class="code-block">
@@ -107,8 +115,6 @@ B3 ランクの人が，4日で +8 ポイントを獲得するために必要な
 <span class="sub-title">注意事項</span>
 
 <ul class="help">
-	<li>必要な<span class="term" data-term="coin">コイン数</span>は，<span class="term" data-term="score">ライブスコア</span>の 1/3 として計算しています．
-コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．</li>
 	<li><span class="term" data-term="border">保証ボーダー</span>（確定スコア）は手動で更新しているため，最新になっていなかったり，間違った値になっている可能性があります．
 改善要望・不具合報告は，<a href="https://github.com/ru-palmu/meter/issues">GitHub</a> または <a href="https://x.com/ru_palmu">X</a> までお願いします．</li>
 </ul>

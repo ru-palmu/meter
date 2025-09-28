@@ -16,11 +16,16 @@ function calculatePlans() {
 
 	// 配列で a の値を保持する
 	const costMap = {
-		1: 1,
-		2: a2,
-		4: a4,
-		6: a6,
+		1: [1, 0, 0],
+		2: [a2],
+		4: [a4],
+		6: [a6],
 	};
+
+	[2, 4, 6].forEach(p => {
+		costMap[p].push(score2coin(costMap[p][0], 0, 'normal'));
+		costMap[p].push(score2coin(costMap[p][0], 0, 'per3'));
+	});
 
 	const rawPlans = [];
   /**
@@ -30,7 +35,7 @@ function calculatePlans() {
    * @param {number} currentTotalPoints - 現在の合計ポイント数
    */
 
-	function dfs(currentPlan, restDays, restPoints, score) {
+	function dfs(currentPlan, restDays, restPoints, scorecoin) {
 		if (restDays <= 0) {	// 指定日数に達した
 			if (restPoints > 0) {
 				return ;
@@ -49,7 +54,7 @@ function calculatePlans() {
 				}
 			}
 
-			rawPlans.push([[...currentPlan], score]);
+			rawPlans.push([[...currentPlan], scorecoin]);
 			return ;
 		}
 		let cand = [1, 2, 4, 6];
@@ -63,36 +68,49 @@ function calculatePlans() {
 			}
 
 			currentPlan.push(p);
-			dfs(currentPlan, restDays - 1, restPoints - p, score + costMap[p]);
+			const cm = costMap[p];
+			const sc = [scorecoin[0] + cm[0], scorecoin[1] + cm[1], scorecoin[2] + cm[2]];
+			dfs(currentPlan, restDays - 1, restPoints - p, sc);
 			currentPlan.pop(p);
 		}
 	}
 
-	dfs([], days, points, 0);
+	dfs([], days, points, [0, 0, 0]);
+
+	// 結果の表示条件
+	const showConds = {
+		// livescore, normal, per3, sort_idx
+		'coin': [[false, true, false], 1],
+		'coin_per3': [[false, false, true], 2],
+		'score': [[true, false, false], 0],
+		'both': [[true, true, true], 0],
+	};
+
+	const showCond = format in showConds ? showConds[format] : showConds['coin'];
 
 	const rank = selectedRank();
-	rawPlans.sort((a, b) => a[1] - b[1]);
+	const sort_idx = showCond[1];
+	rawPlans.sort((a, b) => a[1][sort_idx] - b[1][sort_idx]);
 	let result = rank + ": " + days + "日で +" + points + "\nプラン";
 
 	// format は coin|score|both のいずれか
-	if (format == 'score' || format == 'both') {
+	if (showCond[0][0]) {
 		result += '\t| スコア';
-	} else if (format != 'coin') {
-		document.getElementById("result-format").value = 'coin';
 	}
-	if (format != 'score') {
-		result += '\t| コイン';
+	if (showCond[0][1]) {
+		result += '\t| コイン[改]';
+	}
+	if (showCond[0][2]) {
+		result += '\t| コイン[÷3]';
 	}
 
-	for (const [plan, score] of rawPlans) {
+	for (const [plan, scorecoin] of rawPlans) {
 
 		result += "\n" + plan.join("");
-		if (format == 'score' || format == 'both') {
-			result += '\t| ' + score.toLocaleString();
-		}
-		if (format != 'score') {
-			const s = score2coin(score, 0);
-			result += '\t| ' + s.toLocaleString();
+		for (let i = 0; i < showCond[0].length; i++) {
+			if (showCond[0][i]) {
+				result += '\t| ' + scorecoin[i].toLocaleString();
+			}
 		}
 	}
 	document.getElementById("result_daily").value = result;
