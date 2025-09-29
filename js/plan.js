@@ -87,6 +87,9 @@ function calculatePlans() {
 	};
 
 	const showCond = format in showConds ? showConds[format] : showConds['coin'];
+	if (!(format in showConds)) {
+		document.getElementById("result-format").value = 'coin';
+	}
 
 	const rank = selectedRank();
 	const sort_idx = showCond[1];
