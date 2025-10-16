@@ -1185,3 +1185,85 @@ legend {
   line-height: 1.4;                /* 各キャプションで同じ line-height に */
 }
 
+/*----------------------------------------------------
+ * ヘルプの説明用 <ol> with 画像
+ ---------------------------------------------------*/
+
+ .help-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* 📱 スマホ標準設定 */
+.help-image-area {
+  flex: 0 0 min(25%, 100px);
+}
+
+.help-image-area img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.help {
+  flex: 1;
+}
+
+/* 丸付き数字 */
+.help ol {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0 0 0 1em; /* リスト全体の左余白 */
+}
+
+.help ol li {
+  counter-increment: step;
+  margin-bottom: 0.5em;
+  position: relative;
+  padding-left: 1.2em; /* ← ★ ここを 2em → 1.5em にして狭くした */
+}
+
+.help ol li::before {
+  content: "①";
+  color: red;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: bold;
+}
+
+/* ②③④⑤… */
+.help ol li:nth-child(2)::before { content: "②"; }
+.help ol li:nth-child(3)::before { content: "③"; }
+.help ol li:nth-child(4)::before { content: "④"; }
+.help ol li:nth-child(5)::before { content: "⑤"; }
+.help ol li:nth-child(6)::before { content: "⑥"; }
+.help ol li:nth-child(7)::before { content: "⑦"; }
+.help ol li:nth-child(8)::before { content: "⑧"; }
+.help ol li:nth-child(9)::before { content: "⑨"; }
+.help ol li:nth-child(10)::before { content: "⑩"; }
+
+/* 💻 PCでは画像を小さめに */
+@media (min-width: 769px) {
+  .help-image-area {
+    flex: 0 0 min(15%, 120px);
+  }
+}
+
+/* 📱 スマホで縦並び（任意） */
+@media (max-width: 480px) {
+  .help-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .help-image-area {
+    flex: 0 0 auto;
+    width: 60%;
+    max-width: 150px;
+  }
+}
+
