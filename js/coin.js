@@ -68,7 +68,11 @@ function calculateLiveScoreToCoins(__rank = '') {
   let targets = [];
   if (format == 'all' || format.startsWith('easy')) {
     targets = [2, 4, 6];
+  } else if (format.endsWith('x')) {
+	  // 2x, 4x, 6x
+    targets = [parseInt(format[0])];
   } else {
+	  // 2, 4, 6
     targets = [parseInt(format)];
   }
 
@@ -82,6 +86,8 @@ function calculateLiveScoreToCoins(__rank = '') {
     }
 	if (format.startsWith('easy')) {
 	    return `${s.toLocaleString()}コインで+${i}確定`;
+	} else if (format.endsWith('x')) {
+	    return s;
 	} else {
 	    return `+${i}=${s.toLocaleString()}`;
 	}
@@ -91,7 +97,14 @@ function calculateLiveScoreToCoins(__rank = '') {
   let help2 = '';
 
   let ret = b.toLocaleString();
-  if (targets.length == 1) {
+  let is_hitokoto_comment = false;
+  if (format.endsWith('x')) {
+	// 2x, 4x, 6x
+    ret = b + '→🪙';
+    is_hitokoto_comment = true;
+    help += '→🪙';
+    help2 += '+' + targets[0] + 'に必要なコイン数';
+  } else if (targets.length == 1) {
 	// +2, +4, +6 のみ
     ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
     help += ' / 保証ボーダー';
@@ -103,14 +116,16 @@ function calculateLiveScoreToCoins(__rank = '') {
 	ret = '現在のスコア ' + ret;
     help2 += '約xxxコイン数で+2確定, ...';
   }
-  ret += ' 🪙 ';
+  if (!is_hitokoto_comment) {
+    ret += ' 🪙 ';
+	help += ' 🪙 ';
+  }
 
   ret += results.filter(s => s !== "").join(', ');
   // ret +=  ': ' + getCurrentTime() + '';
+
   document.getElementById("result").value = ret;
-
-  document.getElementById("result-placeholder").value = help + ' 🪙 ' + help2;
-
+  document.getElementById("result-placeholder").value = help + help2;
 }
 
 // ランクに応じて保証ボーダーを設定する
