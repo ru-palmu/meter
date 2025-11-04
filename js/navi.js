@@ -223,7 +223,7 @@ function _shareX() {
   shareLi.className = 'sub-tab share-btn';
 
   const shareA = document.createElement('a');
-  shareA.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent('#palmu 用の確定値までの残コイン数を計算するツール #ぱるむの計算機')}&url=${encodeURIComponent('https://ru-palmu.github.io/meter/')}`;
+  shareA.href = `https://x.com/ru_palmu/status/1979435586030329963`;
   shareA.target = '_blank';
   shareA.rel = 'noopener noreferrer';
   shareA.style.display = 'flex';
