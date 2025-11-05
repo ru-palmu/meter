@@ -37,14 +37,10 @@ function formatPalmu(value) {
 }
 
 function score2coin_orig(score) {
-	const a = 2.675280793;
-	const b = 17299.15066;
-	const x = b / (3 - a);	// y=ax+b と y=3x の交点
-	if (score <= 3 * x) {
-		return score / 3;
-	} else {
-		return (score - b) / a;
-	}
+	const a1 = 2.675280793;
+	const b1 = 17299.15066;
+	const model = [[0, 3], [b1, a1]];
+	return Math.max(...model.map(([b, a]) => (score - b) / a));
 }
 
 // ライブスコアに相当するコイン数を算出する．
