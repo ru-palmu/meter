@@ -1185,6 +1185,29 @@ legend {
   line-height: 1.4;                /* 各キャプションで同じ line-height に */
 }
 
+
+.notice-old {
+  display: block;
+  background-color: #fff3cd;       /* 明るい黄色：注意を促す色 */
+  color: #664d03;                  /* 濃いめの茶色で読みやすく */
+  border: 1px solid #ffeeba;       /* やわらかい黄色の枠線 */
+  border-left: 6px solid #ffcc00;  /* 黄色の帯で視線を誘導 */
+  border-radius: 6px;
+  padding: 0.8em 1em;
+  margin: 1.2em 0;
+  font-size: 0.95em;
+  line-height: 1.6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.notice-old::before {
+  content: "⚠️  注意";
+  font-weight: bold;
+  margin-right: 0.4em;
+}
+
+
+
 /*----------------------------------------------------
  * ヘルプの説明用 <ol> with 画像
  ---------------------------------------------------*/
