@@ -371,6 +371,20 @@ function _renderNaviRank(selected_rank, target_id) {
 // お知らせ
 //////////////////////////////////////////////////
 
+function __noticeDate(date, before) {
+    // 日付だけの場合は0時に設定されるため、時刻情報がない場合は1日後の23:59に設定
+	const d = new Date(date);
+	if (before != 0) {
+		// before 日前にする
+		d.setDate(d.getDate() - before);
+	}
+	if (!date.includes('T')) {
+		d.setHours(23, 59, 59, 999);
+	}
+	return d;
+}
+
+
 /**
  * 指定した要素に1週間以内のお知らせを表示
  * 日付だけ、または日時（YYYY-MM-DD or YYYY-MM-DDTHH:MM）に対応
@@ -383,27 +397,15 @@ function _renderNotices(elementId, notices) {
     return ;
   }
 
-  const today = new Date();
-  const oneWeekLater = new Date(today);
-  oneWeekLater.setDate(today.getDate() + 7);
+  const now = new Date();
 
   // 表示する項目を絞り込み
   const upcoming = notices.filter(n => {
-    const noticeDate = new Date(n.date);
-    // 日付だけの場合は0時に設定されるため、時刻情報がない場合は1日後の23:59に設定
-    if (!n.date.includes('T')) {
-      noticeDate.setHours(23, 59, 59, 999);
-    }
+	const end = n.end ? new Date(n.end) : __noticeDate(n.date, 0);
+	const start = n.start ? new Date(n.start) : __noticeDate(n.date, 7);
 
-	if (n.start) {
-	  const startDate = new Date(n.start);
-	  if (startDate <= today && noticeDate >= oneWeekLater) {
-		return true;
-	  }
-	}
-
-	// console.log([today, noticeDate, oneWeekLater, n.text, today <= noticeDate, noticeDate <= oneWeekLater]);
-    return today <= noticeDate && noticeDate <= oneWeekLater;
+	console.log([start.toISOString(), now.toISOString(), end.toISOString(), n.text, start <= now, now <= end]);
+    return start <= now && now <= end;
   });
   if (upcoming.length === 0) {
     banner.style.display = 'none'; // お知らせがない場合は非表示
