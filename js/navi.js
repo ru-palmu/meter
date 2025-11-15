@@ -404,7 +404,7 @@ function _renderNotices(elementId, notices) {
 	const end = n.end ? new Date(n.end) : __noticeDate(n.date, 0);
 	const start = n.start ? new Date(n.start) : __noticeDate(n.date, 7);
 
-	console.log([start.toISOString(), now.toISOString(), end.toISOString(), n.text, start <= now, now <= end]);
+	// console.log([start.toISOString(), now.toISOString(), end.toISOString(), n.text, start <= now, now <= end]);
     return start <= now && now <= end;
   });
   if (upcoming.length === 0) {
