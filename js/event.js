@@ -447,7 +447,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const overlay = document.getElementById("modal");
   overlay.addEventListener("click", (event) => {
-	if (event.target === overlay) {
+	// 背景クリックでモーダルを閉じる
+	if (event.target == overlay || event.target.id === 'modal' || event.target.classList.contains('modal-overlay')) {
 	  closeModal();
 	}
   });

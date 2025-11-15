@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script       src="js/meter.js?v=45" defer></script>
+  <script src="../data/notice.js?v=45" defer></script>
+  <script        src="js/navi.js?v=45" defer></script>
+  <script        src="js/coin.js?v=45" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=45">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>ライブスコアデータ - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）専用のツールの説明．コイン数計算やプラン比較などの機能を提供します．">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<div id="notice-banner"></div>
+</header>
+
+<main>
+
+<div class="intro">
+	<p>ライブスコアとコイン数に関するデータを掲載します．</p>
+</div>
+
+<span class="sub-title">要約</span>
+
+<p>TBC. そのうち書きます.</p>
+
+
+<span class="sub-title">ギフト人数とライブスコアの関係について</span>
+
+
+<blockquote class="twitter-tweet">
+	<a href="https://x.com/ru_palmu/status/1984589459074248843">
+		<img src="img/livescore/scat-group.png" width="250px">
+	</a>
+</blockquote>
+
+
+<p>上の画像は，横軸ギフトに対して，どのようにライブスコアが分布するかを示したものです．</p>
+<p>いくつかのグループに分かれていて，赤線を「跳ねている」グループと呼びます．</p>
+<p>「詰まっている」グループ（跳ねていない）は，いくつかのグループに分かれています．</p>
+
+<p>
+N 人数 M コインは，M コイン以上のギフトを N 人が投げた場合を黒丸表示しています．
+黄色はそれ以外の場合のライブスコアの分布です．
+</p>
+<p>1000 コイン以上 2 人は，100 コイン以上のギフトを
+100 人が投げているかもしれませんし， 0 人かもしれません．</p>
+
+<p>100コイン以上 3 人の場合，3倍をこえている点はありますが，跳ねていグループに属する枠がありません．</p>
+
+<p>10コイン以上が 7 人以上いれば，B グループからは外れて Aグループもしくは跳ねているグループになりそうです．</p>
+
+<p>1000 コイン以上が 6 人の場合，すべて跳ねているグループに属しています．
+しかし，10コイン以上 6 人の場合には， A グループに属している点があるので，
+「1000 コイン以上が 6 人いれば，跳ねる」とは言えません．
+1000 コイン未満のギフトを投げる人が必要になる可能性があります．</p>
+
+<p>画像はタップすると拡大表示されます．
+スマホだと真ん中にこないかもしれません．ごめんなさい</p>
+
+<table class="scatter-table">
+    <tr>
+        <th class="scatter-header">人数</th>
+        <th class="scatter-header">10コイン</th>
+        <th class="scatter-header">100コイン</th>
+        <th class="scatter-header">1000コイン</th>
+    </tr>
+
+    <tr>
+        <th class="scatter-header">NN</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-NNgifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-NNgifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-NNgifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">1</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-1gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-1gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-1gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">2</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-2gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-2gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-2gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">3</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-3gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-3gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-3gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">4</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-4gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-4gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-4gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">5</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-5gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-5gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-5gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">6</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-6gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-6gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-6gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">7</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-7gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-7gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-7gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">8</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-8gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-8gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-8gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">9</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-9gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-9gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-9gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">10</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-10gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-10gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-10gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">11</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-11gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-11gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-11gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">12</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-12gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-12gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-12gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">13</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-13gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-13gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-13gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">14</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-14gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-14gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-14gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">15</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-15gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-15gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-15gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">16</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-16gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-16gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-16gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">17</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-17gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-17gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-17gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">18</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-18gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-18gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-18gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">19</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-19gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-19gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-19gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">20</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-20gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-20gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-20gifters.png" class="scatter-img">
+        </td>
+    </tr>
+    <tr>
+        <th class="scatter-header">≧21</th>
+        <td class="scatter-cell">
+			<img src="img/livescore/10coin-21gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/100coin-21gifters.png" class="scatter-img">
+        </td>
+        <td class="scatter-cell">
+			<img src="img/livescore/1000coin-21gifters.png" class="scatter-img">
+        </td>
+    </tr>
+
+</table>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    const modalClose = document.getElementById("modal-close");
+
+    // 表内の画像（scatter-img）をすべて取得
+    document.querySelectorAll(".scatter-img").forEach(img => {
+        img.addEventListener("click", () => {
+            modal.style.display = "flex";      // modal 表示
+            modalImg.src = img.src;            // クリックした画像を表示
+			modal.classList.add('active');
+			console.log("open");
+        });
+    });
+
+    // × を押すと閉じる
+    modalClose.addEventListener("click", () => {
+        modal.style.display = "none";
+        modalImg.src = "";
+		modal.classList.remove('active');
+		document.body.classList.remove('modal-open');
+    });
+
+    // 背景クリックでも閉じる
+    modal.addEventListener("click", (event) => {
+		if (event.target == modal || event.target.id === 'modal' || event.target.classList.contains('modal-overlay')) {
+            modal.style.display = "none";
+            modalImg.src = "";
+			modal.classList.remove('active');
+			document.body.classList.remove('modal-open');
+        }
+    });
+});
+</script>
+
+</main>
+
+<div class="modal" id="modal">
+	<span id="modal-close">&times;</span>
+	<img id="modal-img", src="" alt="screenshot">
+</div>
+
+
+</body>
+
+</html>

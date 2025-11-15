@@ -1121,15 +1121,26 @@ legend {
   position: fixed;
   z-index: 1000;
   left: 0; top: 0;
-  width: 100%; height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0,0,0,0.7);
   justify-content: center;
   align-items: center;
+
+}
+
+body.modal-open {
+  overflow: hidden; /* 背景スクロール防止 */
+  position: fixed;
+  width: 100%;
 }
 
 .modal img {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 95vw;
+  max-height: 95vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
@@ -1139,10 +1150,13 @@ legend {
   font-size: 32px;
   color: #fff;
   cursor: pointer;
+  z-index: 1002;
 }
 
 
-/** livescore.html */
+/***************************************************
+ * 個別: livescore.html
+ ***************************************************/
 
 .figure-row {
   display: grid;
@@ -1289,4 +1303,43 @@ legend {
     max-width: 150px;
   }
 }
+
+/***************************************************
+ * 個別: livescore2.html
+ ***************************************************/
+
+/* 散布図テーブル全体 */
+.scatter-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #ffffff;
+    margin-top: 10px;
+}
+
+/* 見出しセル（左の N=1 など、上段の列名） */
+.scatter-header {
+    background-color: #e8f3ef;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #c8d8d4;
+    padding: 8px;
+    white-space: nowrap;
+}
+
+/* 画像セル */
+.scatter-cell {
+    border: 1px solid #c8d8d4;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* セル内の画像 */
+.scatter-img {
+    max-width: 200px;   /* 必要に応じて調整 */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 
