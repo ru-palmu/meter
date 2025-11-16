@@ -26,22 +26,84 @@
 <main>
 
 <div class="intro">
-	<p>ライブスコアとコイン数に関するデータを掲載します．</p>
+	<p>このページでは，ギフト人数とライブスコアの関係について，より詳しく分析した散布図を掲載します．</p>
+
+	<p><a href="https://x.com/ru_palmu/status/1984533534279942611">黄点に関する説明ポスト</a>で掲載した図のまとめです．図の読み方などは，ポストを参照してください．</p>
+
 </div>
+
+<span class="sub-title">序</span>
+
+	<blockquote class="twitter-tweet">
+		<a href="https://x.com/ru_palmu/status/1984589459074248843">
+			<img src="img/livescore/scat-group.png" width="250px">
+		</a>
+	</blockquote>
+
+	<p>上の散布図は，横軸がギフト数（コイン数），縦軸がライブスコア➗ギフト数を表しています．
+	縦軸の値は 3 になると信じられていたものです．</p>
+
+	<p>黄色点がいくつかのグループに分かれていることがわかります．</p>
+
+	<ul>
+		<li>赤線の周辺にある黄色点を「跳ねている」グループと呼びます．Z グループとします．</li>
+		<li>赤線より下にあるグループを「詰まっている」グループと呼びます．
+			また，上からAグループ，Bグループ，... とします．</li>
+		<li>B, C, D, E グループをまとめて，B以下グループと呼びます．</li>
+	</ul>
 
 <span class="sub-title">要約</span>
 
-<p>TBC. そのうち書きます.</p>
+<p>散布図から言えそうなこと. (存在しているデータに基づく推測であり，必ずしも正しいとは限りません)</p>
 
+
+<p><strong>【十分条件】</strong>
+以下の条件を満たすと，跳ねているグループ，あるいは，Aグループに入ります．</p>
+<ul>
+	<li>15,000ライブスコア以上で，以下の条件を満たすと「跳ねている」グループに入る
+		<ul class="scat-score-aligned-list">
+			<li>10人以上，10コイン以上のギフトを投げる，かつ</li>
+			<li>7人以上，100コイン以上のギフトを投げる，かつ</li>
+			<li>5人以上，1000コイン以上のギフトを投げる</li>
+		</ul>
+	</li>
+	<li>15,000ライブスコア以上で，以下の条件を満たすとA グループに入る
+		<ul class="scat-score-aligned-list">
+			<li>7人以上，10コイン以上のギフトを投げる，かつ</li>
+			<li>4人以上，100コイン以上のギフトを投げる</li>
+		</ul>
+	</li>
+</ul>
+
+<p>上記は十分条件であって，この条件を満たさないと必ずしも跳ねない，あるいはAグループに入らないわけではありません．</p>
+
+<p>また，300 コインを投げた人は，10コイン以上投げた人と，100コイン以上投げた人の両方に加算されます．
+例を以下に示します．</p>
+
+<table class="history">
+	<tr>
+		<th>10〜99コイン人数</th>
+		<th>100〜999コイン人数</th>
+		<th>1000〜コイン人数</th>
+		<th>グループ</th>
+	</tr>
+	<tr><td>3人</td><td>2人</td><td>5人</td><td>跳ねているグループ確定</td></tr>
+	<tr><td>0人</td><td>3人</td><td>7人</td><td>跳ねているグループ確定</td></tr>
+	<tr><td>0人</td><td>0人</td><td>10人</td><td>跳ねているグループ確定</td></tr>
+	<tr><td>3人</td><td>3人</td><td>1人</td><td>Aグループ以上確定</td></tr>
+	<tr><td>0人</td><td>6人</td><td>1人</td><td>Aグループ以上確定</td></tr>
+</table>
+
+<span class="sub-title">データについて</span>
+
+<p>
+実データは、前日の「ライバーランキング」の「ライブスコア」を利用しています。ライブスコアの順位と数値が得られ、さらにトップファンから前日投げられたギフト数の合計を計算します。
+黄色の点はそれらのデータを横軸「ギフト数」、右縦軸「ライブスコア÷３」としてプロットしたものです。
+</p>
+
+<p>前日の「ライバーランキング」から取得しているため，だいたい 15,000 ライブスコア以上のデータが対象になっています．それよりも少ない C 帯以下が対象となるようなデータは含まれていません．</p>
 
 <span class="sub-title">ギフト人数とライブスコアの関係について</span>
-
-
-<blockquote class="twitter-tweet">
-	<a href="https://x.com/ru_palmu/status/1984589459074248843">
-		<img src="img/livescore/scat-group.png" width="250px">
-	</a>
-</blockquote>
 
 
 <p>上の画像は，横軸ギフトに対して，どのようにライブスコアが分布するかを示したものです．</p>
@@ -49,298 +111,767 @@
 <p>「詰まっている」グループ（跳ねていない）は，いくつかのグループに分かれています．</p>
 
 <p>
-N 人数 M コインは，M コイン以上のギフトを N 人が投げた場合を黒丸表示しています．
-黄色はそれ以外の場合のライブスコアの分布です．
+N 人数 M コインは，M コイン以上のギフトを N 人が投げた場合を黒丸表示しています． 黄色はそれ以外の点です．
 </p>
-<p>1000 コイン以上 2 人は，100 コイン以上のギフトを
-100 人が投げているかもしれませんし， 0 人かもしれません．</p>
+<p>X数は，Xグループに属するサンプル数を表します．X率は，Xグループに属するサンプル数を N 人数 M コイン全体のサンプル数で割ったものです．</p>
 
-<p>100コイン以上 3 人の場合，3倍をこえている点はありますが，跳ねていグループに属する枠がありません．</p>
 
-<p>10コイン以上が 7 人以上いれば，B グループからは外れて Aグループもしくは跳ねているグループになりそうです．</p>
+<p>図を見るときの注意点
+	<ul>
+		<li>100 コイン以上，1000 コイン以上の散布図の点は，それぞれ 100 コイン未満，1000コイン未満の人数はわかりません．10〜99コイン以上が 0 人かもしれませんし， 100人かもしれません．</li>
+		<li>この図は，ギフト数（ギフト人数）とライブスコアの関係のみを表していて，ライブスコアを構成する他の要素である，視聴時間やコメント数・スーパーライク数，および，それらの人数は含まれていません．
+			そのため，ギフト以外の要素で詰まっている点があるので，全体の 1%以下のような点は無視していいと考えています．
+		</li>
+	</ul>
+</p>
 
-<p>1000 コイン以上が 6 人の場合，すべて跳ねているグループに属しています．
+<p>たとえば，図から以下のようなことがわかります．
+	<ul>
+		<li>100コイン以上 3 人の場合，3倍をこえている点はありますが，跳ねているグループに属する枠がありません．</li>
+		<li>10コイン以上が 7 人以上いれば，B グループからは外れて Aグループもしくは跳ねているグループになりそうです．</li>
+		<li>1000 コイン以上が 6 人の場合，すべて跳ねているグループに属しています．
 しかし，10コイン以上 6 人の場合には， A グループに属している点があるので，
 「1000 コイン以上が 6 人いれば，跳ねる」とは言えません．
-1000 コイン未満のギフトを投げる人が必要になる可能性があります．</p>
+1000 コイン未満のギフトを投げる人が必要になる可能性があります．</li>
+	</ul>
+</p>
 
 <p>画像はタップすると拡大表示されます．
 スマホだと真ん中にこないかもしれません．ごめんなさい</p>
 
 <table class="scatter-table">
+  <thead>
     <tr>
-        <th class="scatter-header">人数</th>
-        <th class="scatter-header">10コイン</th>
-        <th class="scatter-header">100コイン</th>
-        <th class="scatter-header">1000コイン</th>
-    </tr>
-
-    <tr>
-        <th class="scatter-header">NN</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-NNgifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-NNgifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-NNgifters.png" class="scatter-img">
-        </td>
+      <th class="scatter-header" rowspan="3">人数</th>
+      <th class="scatter-header" colspan="4">10コイン</th>
+      <th class="scatter-header" colspan="4">100コイン</th>
+      <th class="scatter-header" colspan="4">1000コイン</th>
     </tr>
     <tr>
-        <th class="scatter-header">1</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-1gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-1gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-1gifters.png" class="scatter-img">
-        </td>
+      <th class="scatter-header">Z数</th>
+      <th class="scatter-header">A数</th>
+      <th class="scatter-header">B数</th>
+      <th class="scatter-header">C数</th>
+      <th class="scatter-header">Z数</th>
+      <th class="scatter-header">A数</th>
+      <th class="scatter-header">B数</th>
+      <th class="scatter-header">C数</th>
+      <th class="scatter-header">Z数</th>
+      <th class="scatter-header">A数</th>
+      <th class="scatter-header">B数</th>
+      <th class="scatter-header">C数</th>
     </tr>
     <tr>
-        <th class="scatter-header">2</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-2gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-2gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-2gifters.png" class="scatter-img">
-        </td>
+      <th class="scatter-header">Z率</th>
+      <th class="scatter-header">A率</th>
+      <th class="scatter-header">B率</th>
+      <th class="scatter-header">C率</th>
+      <th class="scatter-header">Z率</th>
+      <th class="scatter-header">A率</th>
+      <th class="scatter-header">B率</th>
+      <th class="scatter-header">C率</th>
+      <th class="scatter-header">Z率</th>
+      <th class="scatter-header">A率</th>
+      <th class="scatter-header">B率</th>
+      <th class="scatter-header">C率</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="scatter-cell">NN</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-NNgifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-NNgifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-NNgifters.png"></td>
     </tr>
     <tr>
-        <th class="scatter-header">3</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-3gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-3gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-3gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell" rowspan="3">1</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-1gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-1gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-1gifters.png"></td>
     </tr>
     <tr>
-        <th class="scatter-header">4</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-4gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-4gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-4gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">10</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">26</td>
+      <td class="scatter-cell">18</td>
+      <td class="scatter-cell">101</td>
+      <td class="scatter-cell">78</td>
+      <td class="scatter-cell">47</td>
+      <td class="scatter-cell">25</td>
     </tr>
     <tr>
-        <th class="scatter-header">5</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-5gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-5gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-5gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.091</td>
+      <td class="scatter-cell">0.909</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.591</td>
+      <td class="scatter-cell">0.409</td>
+      <td class="scatter-cell">0.402</td>
+      <td class="scatter-cell">0.311</td>
+      <td class="scatter-cell">0.187</td>
+      <td class="scatter-cell">0.100</td>
     </tr>
     <tr>
-        <th class="scatter-header">6</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-6gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-6gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-6gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell" rowspan="3">2</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-2gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-2gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-2gifters.png"></td>
     </tr>
     <tr>
-        <th class="scatter-header">7</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-7gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-7gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-7gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">8</td>
+      <td class="scatter-cell">20</td>
+      <td class="scatter-cell">15</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">79</td>
+      <td class="scatter-cell">35</td>
+      <td class="scatter-cell">11</td>
+      <td class="scatter-cell">334</td>
+      <td class="scatter-cell">115</td>
+      <td class="scatter-cell">35</td>
+      <td class="scatter-cell">6</td>
     </tr>
     <tr>
-        <th class="scatter-header">8</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-8gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-8gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-8gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.186</td>
+      <td class="scatter-cell">0.465</td>
+      <td class="scatter-cell">0.349</td>
+      <td class="scatter-cell">0.008</td>
+      <td class="scatter-cell">0.627</td>
+      <td class="scatter-cell">0.278</td>
+      <td class="scatter-cell">0.087</td>
+      <td class="scatter-cell">0.682</td>
+      <td class="scatter-cell">0.235</td>
+      <td class="scatter-cell">0.071</td>
+      <td class="scatter-cell">0.012</td>
     </tr>
     <tr>
-        <th class="scatter-header">9</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-9gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-9gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-9gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell" rowspan="3">3</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-3gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-3gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-3gifters.png"></td>
     </tr>
     <tr>
-        <th class="scatter-header">10</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-10gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-10gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-10gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">22</td>
+      <td class="scatter-cell">35</td>
+      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">104</td>
+      <td class="scatter-cell">30</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">370</td>
+      <td class="scatter-cell">46</td>
+      <td class="scatter-cell">11</td>
+      <td class="scatter-cell">1</td>
     </tr>
     <tr>
-        <th class="scatter-header">11</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-11gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-11gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-11gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.373</td>
+      <td class="scatter-cell">0.593</td>
+      <td class="scatter-cell">0.034</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.759</td>
+      <td class="scatter-cell">0.219</td>
+      <td class="scatter-cell">0.022</td>
+      <td class="scatter-cell">0.864</td>
+      <td class="scatter-cell">0.107</td>
+      <td class="scatter-cell">0.026</td>
+      <td class="scatter-cell">0.002</td>
     </tr>
     <tr>
-        <th class="scatter-header">12</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-12gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-12gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-12gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell" rowspan="3">4</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-4gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-4gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-4gifters.png"></td>
     </tr>
     <tr>
-        <th class="scatter-header">13</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-13gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-13gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-13gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">16</td>
+      <td class="scatter-cell">47</td>
+      <td class="scatter-cell">15</td>
+      <td class="scatter-cell">4</td>
+      <td class="scatter-cell">183</td>
+      <td class="scatter-cell">40</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">348</td>
+      <td class="scatter-cell">14</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
     </tr>
     <tr>
-        <th class="scatter-header">14</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-14gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-14gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-14gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0.195</td>
+      <td class="scatter-cell">0.573</td>
+      <td class="scatter-cell">0.183</td>
+      <td class="scatter-cell">0.049</td>
+      <td class="scatter-cell">0.821</td>
+      <td class="scatter-cell">0.179</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.961</td>
+      <td class="scatter-cell">0.039</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
-        <th class="scatter-header">15</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-15gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-15gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-15gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell" rowspan="3">5</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-5gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-5gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-5gifters.png"></td>
     </tr>
     <tr>
-        <th class="scatter-header">16</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-16gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-16gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-16gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">51</td>
+      <td class="scatter-cell">61</td>
+      <td class="scatter-cell">11</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">241</td>
+      <td class="scatter-cell">23</td>
+      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">298</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
     </tr>
     <tr>
-        <th class="scatter-header">17</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-17gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-17gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-17gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0.411</td>
+      <td class="scatter-cell">0.492</td>
+      <td class="scatter-cell">0.089</td>
+      <td class="scatter-cell">0.008</td>
+      <td class="scatter-cell">0.906</td>
+      <td class="scatter-cell">0.086</td>
+      <td class="scatter-cell">0.008</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.990</td>
+      <td class="scatter-cell">0.010</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
-        <th class="scatter-header">18</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-18gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-18gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-18gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell" rowspan="3">6</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-6gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-6gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-6gifters.png"></td>
     </tr>
     <tr>
-        <th class="scatter-header">19</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-19gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-19gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-19gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">70</td>
+      <td class="scatter-cell">45</td>
+      <td class="scatter-cell">9</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">218</td>
+      <td class="scatter-cell">6</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">242</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
     </tr>
     <tr>
-        <th class="scatter-header">20</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-20gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-20gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-20gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell">0.565</td>
+      <td class="scatter-cell">0.363</td>
+      <td class="scatter-cell">0.073</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.973</td>
+      <td class="scatter-cell">0.027</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
-        <th class="scatter-header">≧21</th>
-        <td class="scatter-cell">
-			<img src="img/livescore/10coin-21gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/100coin-21gifters.png" class="scatter-img">
-        </td>
-        <td class="scatter-cell">
-			<img src="img/livescore/1000coin-21gifters.png" class="scatter-img">
-        </td>
+      <td class="scatter-cell" rowspan="3">7</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-7gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-7gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-7gifters.png"></td>
     </tr>
-
+    <tr>
+      <td class="scatter-cell">110</td>
+      <td class="scatter-cell">26</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">222</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">230</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">0.803</td>
+      <td class="scatter-cell">0.190</td>
+      <td class="scatter-cell">0.007</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.996</td>
+      <td class="scatter-cell">0.004</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.996</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.004</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">8</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-8gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-8gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-8gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">145</td>
+      <td class="scatter-cell">20</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">223</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">161</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">0.873</td>
+      <td class="scatter-cell">0.120</td>
+      <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.991</td>
+      <td class="scatter-cell">0.004</td>
+      <td class="scatter-cell">0.004</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">9</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-9gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-9gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-9gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">139</td>
+      <td class="scatter-cell">13</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">186</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">151</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">0.908</td>
+      <td class="scatter-cell">0.085</td>
+      <td class="scatter-cell">0.007</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.995</td>
+      <td class="scatter-cell">0.005</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">10</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-10gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-10gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-10gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">166</td>
+      <td class="scatter-cell">6</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">193</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">125</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">0.965</td>
+      <td class="scatter-cell">0.035</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.995</td>
+      <td class="scatter-cell">0.005</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">11</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-11gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-11gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-11gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">162</td>
+      <td class="scatter-cell">7</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">163</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">90</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">0.959</td>
+      <td class="scatter-cell">0.041</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">12</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-12gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-12gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-12gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">163</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">153</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">76</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">0.994</td>
+      <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.987</td>
+      <td class="scatter-cell">0.013</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">13</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-13gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-13gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-13gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">138</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">118</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">76</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">14</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-14gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-14gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-14gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">142</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">118</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">55</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">0.993</td>
+      <td class="scatter-cell">0.007</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.992</td>
+      <td class="scatter-cell">0.008</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">15</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-15gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-15gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-15gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">128</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">104</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">52</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">16</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-16gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-16gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-16gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">117</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">80</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">49</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">17</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-17gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-17gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-17gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">132</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">88</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">29</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">18</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-18gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-18gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-18gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">110</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">54</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">21</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">19</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-19gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-19gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-19gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">100</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">62</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">24</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" rowspan="3">20</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-20gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-20gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-20gifters.png"></td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">92</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">81</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">23</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.000</td>
+    </tr>
+    <tr>
+      <td class="scatter-cell" >≧21</td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/10coin-21gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/100coin-21gifters.png"></td>
+      <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-21gifters.png"></td>
+    </tr>
+  </tbody>
 </table>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -377,6 +908,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
+
+
 
 </main>
 

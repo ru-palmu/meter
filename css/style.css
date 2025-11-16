@@ -1314,22 +1314,23 @@ body.modal-open {
     width: 100%;
     background-color: #ffffff;
     margin-top: 10px;
+    border: 1px solid #ccc;
 }
 
 /* 見出しセル（左の N=1 など、上段の列名） */
 .scatter-header {
-    background-color: #e8f3ef;
+    background-color: #a8d5a2;
     font-weight: bold;
     text-align: center;
     border: 1px solid #c8d8d4;
-    padding: 8px;
+    padding: 2px;
     white-space: nowrap;
 }
 
 /* 画像セル */
 .scatter-cell {
     border: 1px solid #c8d8d4;
-    padding: 8px;
+    padding: 2px;
     text-align: center;
     vertical-align: middle;
 }
@@ -1341,5 +1342,16 @@ body.modal-open {
     display: block;
     margin: 0 auto;
 }
+
+table.scatter-table tr.coin10 {
+  background-color: #e4f0dc;
+}
+table.scatter-table tr.coin100 {
+  background-color: #f0f8f4;
+}
+table.scatter-table tr.coin1000 {
+  background-color: #f6f9e6;
+}
+
 
 
