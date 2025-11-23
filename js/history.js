@@ -149,7 +149,7 @@ function _setChartHistorySize() {
 	const width = container.clientWidth;
 	canvas.height = legendHeight + axisHeight + Math.min(minGraphHeight, width);
 	canvas.width = width;
-	console.log(width, canvas.height);
+	// console.log(width, canvas.height);
 }
 
 function renderHistoryGraph() {

@@ -128,17 +128,6 @@ function calculateLiveScoreToCoins(__rank = '') {
   document.getElementById("result-placeholder").value = help + help2;
 }
 
-// ランクに応じて保証ボーダーを設定する
-function applyPreset(selected) {
-  if (selected && presets[latestDate] && presets[latestDate][selected]) {
-    const p = presets[latestDate][selected];
-    document.getElementById("a2").value = p[2];
-    document.getElementById("a4").value = p[4];
-    document.getElementById("a6").value = p[6];
-    calculate(selected);
-  }
-}
-
 // コピーボタン
 function copyResult(name) {
   const textarea = document.getElementById(name);
@@ -170,9 +159,9 @@ window.addEventListener("DOMContentLoaded", () => {
   // GETパラメータ r で指定されたランクをチェックする
   const key = selectedRank();
 
-  if (document.getElementById("a2")) {
-    applyPreset(key);
-  }
+  // if (document.getElementById("a2")) {
+  //   applyPreset(key);
+  // }
   if (key) {
 
     [
@@ -187,6 +176,10 @@ window.addEventListener("DOMContentLoaded", () => {
   ['a2', 'a4', 'a6', 'result-format', 'live_score', 'days', 'points', 'result_format'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
+
+
+  // 初回計算
+  calculate();
 
   renderGlossary();
   setupTooltips();

@@ -98,11 +98,29 @@ function saveSessionArgs(prefix, table) {
 //////////////////////////////////////////////////
 // 確定スコアの描画
 //////////////////////////////////////////////////
+//
+function updateGuaranteedScore(selector, rank) {
+	const select = document.getElementById(selector);
+	if (!select) {
+		return;
+	}
+	const ymd = select.value;
+	if (!ymd || !window.presets[ymd]) {
+		return;
+	}
+	const data = window.presets[ymd];
+	const r = data[rank];   // 指定ランクの辞書
 
-function insertGuaranteedScore(targetId) {
+	document.getElementById("a2").value = r[2];
+	document.getElementById("a4").value = r[4];
+	document.getElementById("a6").value = r[6];
+	document.getElementById("a2").dispatchEvent(new Event("input"));
+}
+
+function insertGuaranteedScore(targetId, rank) {
     const container = document.getElementById(targetId);
     if (!container) {
-        return;
+        return '';
     }
 
     // 必要なら中身を初期化
@@ -115,8 +133,28 @@ function insertGuaranteedScore(targetId) {
     const titleSpan = document.createElement('span');
     titleSpan.textContent = '保証ボーダー ';
     const small = document.createElement('small');
-	const formatted = `${latestDate.slice(0, 4)}/${latestDate.slice(4, 6)}/${latestDate.slice(6, 8)}`;
-    small.textContent = '（確定スコア，' + formatted + ' ver）';
+
+    // 保証ボーダーの日付セレクトボックス
+    const select = document.createElement('select');
+    select.id = 'date-select';
+
+    for (const ymd of Object.keys(presets).sort().reverse()) {
+        // rank が存在しない日付はスキップ
+        if (!presets[ymd][rank]) {
+            continue;
+        }
+
+        const formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
+        const op = document.createElement('option');
+        op.value = ymd;
+        op.textContent = formatted;
+        select.appendChild(op);
+    }
+
+    small.appendChild(document.createTextNode('（確定スコア '));
+    small.appendChild(select);
+    small.appendChild(document.createTextNode(' ver.）'));
+
     titleSpan.appendChild(small);
     outerDiv.appendChild(titleSpan);
 
@@ -163,6 +201,8 @@ function insertGuaranteedScore(targetId) {
     outerDiv.appendChild(textarea);
 
     container.appendChild(outerDiv);
+
+    return select.id;
 }
 
 //////////////////////////////////////////////////
@@ -175,7 +215,13 @@ function renderNavis(navi_func, navi_rank, __footer) {
 	const rank = selectedRank();
 	localStorage.setItem(COMMON_PREFIX + "selected_rank", rank);
 	_renderNaviRank(rank, navi_rank);
-	insertGuaranteedScore("guaranteed-score");
+	const selector = insertGuaranteedScore("guaranteed-score", rank);
+	updateGuaranteedScore(selector, rank);
+	document.addEventListener('change', (event) => {
+		if (event.target && event.target.id === selector) {
+			updateGuaranteedScore(selector, rank);
+		}
+	});
 	appendCurrentQueryToLinks('append-query')
 	_renderFooter();
 	if (typeof PALMU_NOTICES !== "undefined") {
