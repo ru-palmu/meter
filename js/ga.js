@@ -65,7 +65,7 @@ async function fetchIsEU() {
   try {
     const res = await fetch("https://ipapi.co/json/");
     const data = await res.json();
-    console.log("GeoIPデータ:", data.country_name, data.country_code);
+    // console.log("GeoIPデータ:", data.country_name, data.country_code);
     return EU_COUNTRIES.includes(data.country_code);
   } catch(e) {
     console.warn("fetchIsEU failed:", e);
@@ -92,6 +92,8 @@ async function initAnalytics() {
   }
 }
 
-// ページ読み込み時に自動実行
-initAnalytics();
+if (location.protocol !== 'file:') {
+	// ページ読み込み時に自動実行
+	initAnalytics();
+}
 
