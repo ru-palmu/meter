@@ -7,7 +7,7 @@ const cand_rank = ["D", "C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "A
 
 const RANK_DIC = {}
 for (let i = 0; i < cand_rank.length; i++) {
-	RANK_DIC[cand_rank[i]] = i;
+    RANK_DIC[cand_rank[i]] = i;
 }
 
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
@@ -691,7 +691,7 @@ function hashChangeGlossary() {
 function renderGlossary() {
   const dl = document.getElementById("glossary");
   if (!dl) {
-	return;
+    return;
   }
 
   const hash = location.hash;
@@ -707,17 +707,17 @@ function renderGlossary() {
     dt.id = term.page;
 
     const a = document.createElement("a");
-	const currentParams = window.location.search;
+    const currentParams = window.location.search;
     a.href = `${currentParams}#${term.page}`;
-	a.innerHTML = term.dt;
+    a.innerHTML = term.dt;
     dt.appendChild(a);
-	if (hash == `#${term.page}`) {
+    if (hash == `#${term.page}`) {
       dt.className = 'highlighted';
 
       setTimeout(() => {
         dt.className = '';
       }, 5000);
-	}
+    }
 
     const dd = document.createElement("dd");
     dd.innerHTML = term.dd;  // HTML挿入可
@@ -757,53 +757,95 @@ function appendCurrentQueryToLinks(className) {
   });
 }
 
+function renderPagination(data_size, page, page_size, range = 3) {
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
 
-function renderPagination(data_size, page, page_size) {
-  if (data_size > page_size) {
-    // pagination
-	const btns = [];
-	if (true) {
-	  const btn = document.createElement("button");
-	  btn.className = "page-btn";
-	  btn.textContent = "«";
-	  btn.dataset.page = page - 1;
-	  btn.disabled = (page <= 1);
-	  btns.push(btn);
-	}
+  const last_page = Math.ceil(data_size / page_size);
+  if (last_page <= 1) return;
 
-	const last_page = Math.ceil(data_size / page_size);
-	for (let i = 1; i <= last_page; i++) {
-	  const btn = document.createElement("button");
-	  btn.className = "page-btn";
-	  btn.textContent = i;
-	  btn.dataset.page = i;
-	  if (i === page) {
-		btn.classList.add("active");
-	  }
-	  btns.push(btn);
-	}
+  const buttons = [];
 
-	if (true) {
-	  const btn = document.createElement("button");
-	  btn.className = "page-btn";
-	  btn.textContent = "»";
-	  btn.dataset.page = page + 1;
-	  btn.disabled = (page >= last_page);
-	  btns.push(btn);
-	}
+  // ▲▲ 先頭へ: ≪
+  // buttons.push(_makePageBtn("≪", 1, page === 1));
 
-    const pagination = document.getElementById("pagination");
-	btns.forEach(btn => {
-	  pagination.appendChild(btn);
-      btn.addEventListener("click", () => {
-        const params = new URLSearchParams(window.location.search);
-		params.set("page", btn.dataset.page);
-        // 更新したクエリでリダイレクト
-        window.location.href = window.location.pathname + "?" + params.toString();
-	  });
-	});
+  // ▲ 前へ: <
+  buttons.push(_makePageBtn("<", page - 1, page === 1));
+
+  // ▼ ページ番号生成用
+  let start = Math.max(1, page - range);
+  let end = Math.min(last_page, page + range);
+
+  // 左寄せ
+  if (page <= range + 1) {
+    start = 1;
+    end = Math.min(last_page, 1 + range * 2);
   }
+  // 右寄せ
+  if (page >= last_page - range) {
+    end = last_page;
+    start = Math.max(1, last_page - range * 2);
+  }
+
+  // ▼ 最初のページが範囲外なら 1 を表示 + 省略記号 …
+  if (start > 1) {
+    buttons.push(_makePageBtn(1, 1, false));
+    if (start > 2) buttons.push(_makeEllipsis());
+  }
+
+  // ▼ 現在ページの前後 range を追加
+  for (let i = start; i <= end; i++) {
+    const btn = _makePageBtn(i, i, false, i === page);
+    buttons.push(btn);
+  }
+
+  // ▼ 最後のページが範囲外なら … + 最後のページ
+  if (end < last_page) {
+    if (end < last_page - 1) buttons.push(_makeEllipsis());
+    buttons.push(_makePageBtn(last_page, last_page, false));
+  }
+
+  // ▲ 次へ: >
+  buttons.push(_makePageBtn(">", page + 1, page === last_page));
+
+  // ▲▲ 最後へ: ≫
+  // buttons.push(_makePageBtn("≫", last_page, page === last_page));
+
+  // ▼ DOM追加
+  buttons.forEach(btn => pagination.appendChild(btn));
 }
+
+
+function _makePageBtn(label, targetPage, disabled, active=false) {
+  const btn = document.createElement("button");
+  btn.className = "page-btn";
+  btn.textContent = label;
+  btn.disabled = disabled;
+
+  if (active) {
+    btn.classList.add("active");
+  }
+
+  btn.dataset.page = targetPage;
+
+  if (!disabled) {
+    btn.addEventListener("click", () => {
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", targetPage);
+      window.location.href = window.location.pathname + "?" + params.toString();
+    });
+  }
+
+  return btn;
+}
+
+function _makeEllipsis() {
+  const span = document.createElement("button");
+  span.textContent = "…";
+  span.className = "page-ellipsis";
+  return span;
+}
+
 
 
 window.renderPagination = renderPagination;
