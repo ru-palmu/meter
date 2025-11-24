@@ -432,6 +432,13 @@ function __noticeDate(date, before) {
 	return d;
 }
 
+function __renderNoticeArchive() {
+	const a = document.createElement('a');
+	a.href = 'news.html';
+	a.className = 'notice-archive-link';
+	a.textContent = '過去のお知らせ';
+	return a;
+}
 
 /**
  * 指定した要素に1週間以内のお知らせを表示
@@ -456,7 +463,8 @@ function _renderNotices(elementId, notices) {
     return start <= now && now <= end;
   });
   if (upcoming.length === 0) {
-    banner.style.display = 'none'; // お知らせがない場合は非表示
+	const a = __renderNoticeArchive();
+	banner.appendChild(a);
     return ;
   }
 
@@ -510,6 +518,8 @@ function _renderNotices(elementId, notices) {
   });
 
   banner.appendChild(ul);
+  const a = __renderNoticeArchive();
+  banner.appendChild(a);
 }
 
 
