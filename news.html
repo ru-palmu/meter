@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script       src="js/meter.js?v=47" defer></script>
+  <script src="../data/notice.js?v=47" defer></script>
+  <script        src="js/navi.js?v=47" defer></script>
+  <script        src="js/news.js?v=47" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=47">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>確定スコアの履歴 - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）のお知らせ">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+</header>
+
+<main>
+<div class="intro">
+	過去のお知らせ
+</div>
+
+<!-- ▼ フィルタ部分 -->
+<div id="news_filter">
+  <label>
+    カテゴリ：
+    <select id="news_filter_kind">
+      <option value="">すべて</option>
+      <option value="sale">セール情報</option>
+      <option value="maintenance">メンテナンス</option>
+      <option value="update">更新情報（メンテなし）</option>
+      <option value="special">特別企画（その他情報）</option>
+      <option value="PalHub">PalHub 等 Youtube</option>
+      <option value="tool">ぱ(る)むの計算機に関する情報</option>
+    </select>
+  </label>
+
+  <label>
+    キーワード：
+    <input type="text" id="news_filter_text">
+  </label>
+</div>
+
+<!-- ▼ 一覧テーブル -->
+<div class="table-container" id="tableView">
+  <table id="news-table" class="news-table">
+    <thead>
+      <tr>
+        <th>日付</th>
+        <th>カテゴリ</th>
+        <th>内容</th>
+      </tr>
+    </thead>
+    <tbody id="news-tbody" class="news-tbody"></tbody>
+  </table>
+</div>
+
+<!-- ▼ ページネーション -->
+<div class="pagination" id="pagination"></div>
+
+<!-- ▼ テンプレート -->
+<template id="news-row-template">
+  <tr>
+    <td class="news_date"></td>
+    <td class="news_kind"></td>
+    <td class="news_text"></td>
+  </tr>
+</template>
+
+
+<span class="sub-title">ご参考</span>
+
+<ul class="help">
+	<li><a href="https://note.com/palmu/n/nc513b02e0bf6">【重要なお知らせ】ユーザーランクと配信ダイヤのアップデートについて</a> (2025/07/25, 11ランクから14ランクに変更)</li>
+</ul>
+
+</main>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
+
+<!-- vim:set et ts=2 sts=2 sw=2: -->

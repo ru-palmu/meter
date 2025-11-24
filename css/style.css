@@ -508,10 +508,6 @@ table.history td {
   text-align: right;
 }
 
-td:first-child {
-  text-align: center; /* 日付の列だけ中央揃え */
-}
-
 table.history th {
   background-color: #a8d5a2;
   color: #1b3a1b;
@@ -967,11 +963,17 @@ legend {
   background:#fff;
 }
 
+.news-table th, .news-table td,
 .event-table th, .event-table td {
   padding: 8px;
   border: 1px solid #ddd;
   text-align: center;
   white-space: nowrap;
+}
+
+.news-table th:nth-child(3),
+.news-table td:nth-child(3) {
+  text-align: left;
 }
 
 .event-table th:nth-child(5),
@@ -992,6 +994,7 @@ legend {
   text-align: left;
 }
 
+.news-table thead th,
 .event-table thead th {
   background:#4caf50;
   color:white;
@@ -999,11 +1002,12 @@ legend {
   top: 0;
 }
 
-.event-table tbody tr:nth-child(even){
+.news-table tbody tr:nth-child(even),
+.event-table tbody tr:nth-child(even) {
   background:#f9f9f9;
 }
 
-.event-table tbody tr:hover{
+.news-table tbody tr:hover, .event-table tbody tr:hover {
   background:#e0f2e9;
 }
 
@@ -1079,7 +1083,6 @@ legend {
   text-align: right;
   flex-wrap: nowrap;             /* 折り返しなし */
   white-space: nowrap;
- 
 }
 
 /*-----------------------------------------------------

@@ -191,51 +191,7 @@ function _renderEventGraph(data) {
 }
 
 function _renderEventPagination(data_size, page, page_size) {
-
-  if (data_size > page_size) {
-    // pagination
-	const btns = [];
-	if (true) {
-	  const btn = document.createElement("button");
-	  btn.className = "page-btn";
-	  btn.textContent = "«";
-	  btn.dataset.page = page - 1;
-	  btn.disabled = (page <= 1);
-	  btns.push(btn);
-	}
-
-	const last_page = Math.ceil(data_size / page_size);
-	for (let i = 1; i <= last_page; i++) {
-	  const btn = document.createElement("button");
-	  btn.className = "page-btn";
-	  btn.textContent = i;
-	  btn.dataset.page = i;
-	  if (i === page) {
-		btn.classList.add("active");
-	  }
-	  btns.push(btn);
-	}
-
-	if (true) {
-	  const btn = document.createElement("button");
-	  btn.className = "page-btn";
-	  btn.textContent = "»";
-	  btn.dataset.page = page + 1;
-	  btn.disabled = (page >= last_page);
-	  btns.push(btn);
-	}
-
-    const pagination = document.getElementById("pagination");
-	btns.forEach(btn => {
-	  pagination.appendChild(btn);
-      btn.addEventListener("click", () => {
-        const params = new URLSearchParams(window.location.search);
-		params.set("page", btn.dataset.page);
-        // 更新したクエリでリダイレクト
-        window.location.href = window.location.pathname + "?" + params.toString();
-	  });
-	});
-  }
+	return window.renderPagination(data_size, page, page_size);
 }
 
 function _eventTitleAndText(title, text) {

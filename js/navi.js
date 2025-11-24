@@ -216,7 +216,9 @@ function renderNavis(navi_func, navi_rank, __footer) {
 	localStorage.setItem(COMMON_PREFIX + "selected_rank", rank);
 	_renderNaviRank(rank, navi_rank);
 	const selector = insertGuaranteedScore("guaranteed-score", rank);
-	updateGuaranteedScore(selector, rank);
+	if (selector) {
+		updateGuaranteedScore(selector, rank);
+	}
 	document.addEventListener('change', (event) => {
 		if (event.target && event.target.id === selector) {
 			updateGuaranteedScore(selector, rank);
@@ -745,6 +747,56 @@ function appendCurrentQueryToLinks(className) {
   });
 }
 
+
+function renderPagination(data_size, page, page_size) {
+  if (data_size > page_size) {
+    // pagination
+	const btns = [];
+	if (true) {
+	  const btn = document.createElement("button");
+	  btn.className = "page-btn";
+	  btn.textContent = "«";
+	  btn.dataset.page = page - 1;
+	  btn.disabled = (page <= 1);
+	  btns.push(btn);
+	}
+
+	const last_page = Math.ceil(data_size / page_size);
+	for (let i = 1; i <= last_page; i++) {
+	  const btn = document.createElement("button");
+	  btn.className = "page-btn";
+	  btn.textContent = i;
+	  btn.dataset.page = i;
+	  if (i === page) {
+		btn.classList.add("active");
+	  }
+	  btns.push(btn);
+	}
+
+	if (true) {
+	  const btn = document.createElement("button");
+	  btn.className = "page-btn";
+	  btn.textContent = "»";
+	  btn.dataset.page = page + 1;
+	  btn.disabled = (page >= last_page);
+	  btns.push(btn);
+	}
+
+    const pagination = document.getElementById("pagination");
+	btns.forEach(btn => {
+	  pagination.appendChild(btn);
+      btn.addEventListener("click", () => {
+        const params = new URLSearchParams(window.location.search);
+		params.set("page", btn.dataset.page);
+        // 更新したクエリでリダイレクト
+        window.location.href = window.location.pathname + "?" + params.toString();
+	  });
+	});
+  }
+}
+
+
+window.renderPagination = renderPagination;
 window.formatPalmu = formatPalmu;
 window.score2coin = score2coin;
 window.renderNavis = renderNavis;
