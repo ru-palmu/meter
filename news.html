@@ -29,24 +29,25 @@
 </div>
 
 <!-- ▼ フィルタ部分 -->
-<div id="news_filter">
-  <label>
-    カテゴリ：
-    <select id="news_filter_kind">
-      <option value="">すべて</option>
-      <option value="sale">セール情報</option>
-      <option value="maintenance">メンテナンス</option>
-      <option value="update">更新情報（メンテなし）</option>
-      <option value="special">特別企画（その他情報）</option>
-      <option value="PalHub">PalHub 等 Youtube</option>
-      <option value="tool">ぱ(る)むの計算機に関する情報</option>
-    </select>
-  </label>
-
-  <label>
-    キーワード：
-    <input type="text" id="news_filter_text">
-  </label>
+<div id="news_filter" class="filter-row">
+  <div class="filters">
+    <div class="filter-item">
+      <label for="news_filter_kind">カテゴリ</label>
+      <select id="news_filter_kind">
+        <option value="">すべて</option>
+        <option value="sale">セール情報</option>
+        <option value="maintenance">メンテナンス</option>
+        <option value="update">更新情報（メンテなし）</option>
+        <option value="special">特別企画（その他情報）</option>
+        <option value="PalHub">PalHub 等 Youtube</option>
+        <option value="tool">ぱ(る)むの計算機に関する情報</option>
+      </select>
+    </div>
+    <div class="filter-item">
+      <label for="news_filter_text">キーワード</label>
+      <input type="text" id="news_filter_text">
+    </div>
+  </div>
 </div>
 
 <!-- ▼ 一覧テーブル -->
