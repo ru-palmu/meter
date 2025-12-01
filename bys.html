@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script       src="js/meter.js?v=48" defer></script>
+  <script src="../data/notice.js?v=48" defer></script>
+  <script        src="js/navi.js?v=48" defer></script>
+  <script        src="js/coin.js?v=48" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=48">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>ツールを使う前に - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）専用のツールの説明．コイン数計算やプラン比較などの機能を提供します．">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<div id="notice-banner"></div>
+</header>
+
+<main>
+
+<div class="intro">
+	<p>このページでは，ライブスコアの解説と，ツールの仮定について説明します．</p>
+</div>
+
+<span class="sub-title">ライブスコアとは</span>
+
+<div>
+	<p><span class="term" data-term="score">ライブスコア</span>とは，ライバーがリスナーから受け取る応援を示す指標です．１分ごとに更新され，24時（00:00）にリセットされます．１日の間にだんだんと大きくなる数値で，小さくなることはありません．</p>
+
+	<p>ライブスコアは，以下の要素と<strong>それに参加した人数</strong>などの応援要素を総合して算出されることが公式から発表されていますが，そのロジックは公開されていません．</p>
+	<ul>
+		<li><span class="term" data-term="coin">コイン数</span>（ギフト数）</li>
+		<li>視聴時間</li>
+		<li>コメント数</li>
+		<li>スーパーライク数</li>
+	</ul>
+	<p>ライブスコアの算出は，その時点での上記要素の値をもとにしており，その順序は影響しません．例えば，</p>
+	<ul>
+		<li>Aさんが，「1,000 コインを１回投げる」と「100 コインを 10 回投げる」は同じ</li>
+		<li>「Aさんが 1,000 コイン → Bさんが 100 コインを投げる」と
+			「Bさんが 100 コイン → Aさんが 1,000 コインを投げる」は同じ</li>
+	</ul>
+	<p>一方で，『コイン人数』がライブスコアの算出に影響するため，以下は異なり，後のほうがライブスコアが高くなります．</p>
+	<ul>
+		<li>「Aさんが 1,000 コインを１回投げる」＜「Aさんが 500 コイン，Bさんが 500 コインを投げる」</li>
+	</ul>
+	<p>まだ，確定情報ではありませんが，経験も含めて 100 コイン以上のコインのほうがライブスコアに与える影響が大きいと考えられています．
+	</p>
+	<ul>
+		<li>「Aさんが 990 コイン，B さんが 10コインを投げる」＜「Aさんが 500 コイン，Bさんが 500 コインを投げる」</li>
+	</ul>
+
+
+	<p>ライブスコアには，コイン数が最も大きく影響しますが，その他の要素（コイン人数・視聴時間・コメント数）が十分でなければ，コイン数がライブスコアに十分反映されにくくなります．</p>
+	<ul>
+		<li>Palmu 豆知識　<a href="https://x.com/ru_palmu/status/1971122935676141767">「ブースト」はありません</a></li>
+	</ul>
+</div>
+
+<span class="sub-title">ぱ(る)むの計算機でのコイン数算出時の仮定</span>
+
+<div>
+	<p>ライブスコアはコイン数のおおよそ 3 倍になると言われていますが，これはあくまで目安ですし，高ランク帯では 3 倍にならないことがわかっています．</p>
+	<p>例えば，1,000 コイン分のギフトが投げられた場合に，手元にあるデータでもライブスコアは 2,231 〜 3,466 までと差があります． これらは，上記の他の要素が十分でない場合に起こります．
+	</p>
+	<p>本ツールでは，ライブスコアからコイン数を算出する際に，ある程度「詰まっていない」状況を想定しており，視聴時間やコメント・スーパーライクが十分にあり，100コイン以上のギフトを C帯以下では 2-3 人以上， B 帯以上では 4-5 人以上が投げた場合を想定しています．</p>
+
+	<p>参考までに，100コイン以上のギフト人数によって「ライブスコア÷コイン数」の値がどのような範囲になるか，
+	手元にあるデータをもとにまとめました．D, Cランク帯では，「New 30 day」に入っていることで視聴人数やスーパーライク数が大きくなっている効果が大きいようです．</p>
+
+	<p>なお，260k ライブスコア以上では，少ない人数での目標ライブスコアの達成が難しいため，跳ねていない例はありません．
+	また，コイン数が大きくなるほど「ライブスコア÷コイン数」が小さくなることがわかっており，これまでみつかっている中で「3 倍」を超えた最大のライブスコアは 242k （100コイン以上人数が57人）です．</p>
+
+	<div class="table-container" id="tableView">
+		<table class="bys-table" id="bys-table">
+			<thead>
+				<tr>
+					<th rowspan="2">ランク</th>
+					<th colspan="2">ライブスコア</th>
+					<th colspan="4">100コイン以上人数</th>
+				</tr>
+				<tr>
+					<th>下限</th>
+					<th>上限</th>
+					<th>1</th>
+					<th>2〜3</th>
+					<th>4〜5</th>
+					<th>≧6</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>C1</td>
+					<td>500</td><td>5K</td>
+					<td>2.1〜3.5</td>
+					<td>2.7〜3.8</td>
+					<td>3.1〜4.3</td>
+					<td>3.7〜3.9</td>
+				</tr>
+				<tr>
+					<td>C2</td>
+					<td>2K</td><td>13K</td>
+					<td>2.0〜2.8</td>
+					<td>2.5〜3.5</td>
+					<td>3.0〜3.9</td>
+					<td>3.1〜3.7</td>
+				</tr>
+				<tr>
+					<td>C3</td>
+					<td>5K</td><td>17K</td>
+					<td>1.9〜2.6</td>
+					<td>2.4〜3.2</td>
+					<td>2.9〜3.6</td>
+					<td>3.2〜3.4</td>
+				</tr>
+				<tr>
+					<td>B1</td>
+					<td>14K</td><td>80K</td>
+					<td>1.9〜2.5</td>
+					<td>2.4〜2.9</td>
+					<td>2.8〜3.3</td>
+					<td>3.1〜3.4</td>
+				</tr>
+				<tr>
+					<td>B2</td>
+					<td>14K</td><td>100K</td>
+					<td>1.9〜2.5</td>
+					<td>2.4〜2.9</td>
+					<td>2.8〜3.3</td>
+					<td>3.1〜3.4</td>
+				</tr>
+				<tr>
+					<td>B3</td>
+					<td>25K</td><td>100K</td>
+					<td>1.9〜2.4</td>
+					<td>2.4〜2.8</td>
+					<td>2.8〜3.2</td>
+					<td>3.0〜3.3</td>
+				</tr>
+				<tr>
+					<td>A1</td>
+					<td>50K</td><td>180K</td>
+					<td>1.8〜2.3</td>
+					<td>2.3〜2.8</td>
+					<td>2.7〜3.2</td>
+					<td>3.0〜3.3</td>
+				</tr>
+				<tr>
+					<td>A2</td>
+					<td>70K</td><td>240K</td>
+					<td>1.8〜2.2</td>
+					<td>2.3〜2.7</td>
+					<td>2.6〜3.0</td>
+					<td>2.9〜3.2</td>
+				</tr>
+				<tr>
+					<td>A3</td>
+					<td>80K</td><td>380K</td>
+					<td>1.8〜2.2</td>
+					<td>2.3〜2.7</td>
+					<td>2.6〜3.0</td>
+					<td>2.8〜3.1</td>
+				</tr>
+				<tr>
+					<td>A4</td>
+					<td>95K</td><td>600K</td>
+					<td>1.8〜2.1</td>
+					<td>2.3〜2.7</td>
+					<td>2.6〜3.0</td>
+					<td>2.8〜3.1</td>
+				</tr>
+				<tr>
+					<td>A5</td>
+					<td>140K</td><td>750K</td>
+					<td>NA</td>
+					<td>2.3〜2.6</td>
+					<td>2.5〜2.9</td>
+					<td>2.7〜3.0</td>
+				</tr>
+				<tr>
+					<td>S</td>
+					<td>180K</td><td>900K</td>
+					<td>NA</td>
+					<td>2.3〜2.6</td>
+					<td>2.6〜2.9</td>
+					<td>2.7〜3.0</td>
+				</tr>
+				<tr>
+					<td>SS</td>
+					<td>350K</td><td>1.50M</td>
+					<td>NA</td>
+					<td>NA</td>
+					<td>2.6〜2.8</td>
+					<td>2.6〜2.9</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	より詳細なデータは<a href="scat-score.html">こちら</a>を参照してください．
+	<a href="https://x.com/ru_palmu/">X</a> でも情報を発信しています．
+</div>
+
+<span class="sub-title">ご参考</span>
+
+<ul class="help" id="palmu-tool-x-posts">
+	<li><a href="about.html#references">Palmu 関連リンク集</a></li>
+	<li><a href="about.html#tool">Palmu / ツールに関する解説 X ポスト集</a></li>
+</ul>
+
+<footer id="footer"></footer>
+
+</main>
+
+</body>
+</html>
+
