@@ -183,6 +183,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   renderGlossary();
   setupTooltips();
+  window.tableHeaderFixer();
 });
 
 if (document.getElementById("glossary")) {

@@ -846,8 +846,22 @@ function _makeEllipsis() {
   return span;
 }
 
+function tableHeaderFixer() {
+	const theadRows = document.querySelectorAll(`table thead tr`);
+	let offset = 0;
+	theadRows.forEach((row) => {
+		const ths = row.querySelectorAll('th');
+		ths.forEach((th) => {
+			th.style.top = `${offset}px`;
+			th.style.zIndex = 100; // 重なり順を調整
+		});
+		row.style.top = `${offset}px`;
+		offset += row.getBoundingClientRect().height;
+	});
+}
 
 
+window.tableHeaderFixer = tableHeaderFixer;
 window.renderPagination = renderPagination;
 window.formatPalmu = formatPalmu;
 window.score2coin = score2coin;
