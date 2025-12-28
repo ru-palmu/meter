@@ -32,11 +32,26 @@
 
 <p><span class="term" data-term="border">保証ボーダー</span>は，隔週の金曜日に更新されています．</p>
 
-<select id="result-format">
-	<option value="score">ライブスコア</option>
-	<option value="coin">コイン（改良モデル）</option>
-	<option value="coin_per3">コイン（従来モデル[÷3]）</option>
-</select>
+<div id="news_filter" class="filter-row">
+	<div class="filters">
+		<div class="filter-item">
+			<label for="result-metrics">表示内容</label>
+			<select id="result-metrics">
+				<option value="score">ライブスコア</option>
+				<option value="coin">コイン（改良モデル）</option>
+				<option value="coin_per3">コイン（従来モデル[÷3]）</option>
+			</select>
+		</div>
+		<div class="filter-item">
+			<label for="result-format">表示形式</label>
+			<select id="result-format">
+				<option value="short">短縮形式</option>
+				<option value="comma">カンマ形式</option>
+			</select>
+		</div>
+	</div>
+</div>
+
 <br>
 <table class="history">
 <thead>

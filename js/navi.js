@@ -60,14 +60,19 @@ function score2coin(goal_score, current_score, algorithm='normal') {
   return Math.ceil(coin / 10) * 10;
 }
 
-function scoreOrCoin(val, format, is_raw=false) {
-	if (format.startsWith('coin')) {
-		const s2calgo = (format.endsWith('_per3')) ? 'per3' : 'normal';
-		return score2coin(val, 0, s2calgo);
-	} else if (is_raw) {
-		return val;
-	} else {
+function scoreOrCoin(val, metrics, format) {
+	if (metrics.startsWith('coin')) {
+		const s2calgo = (metrics.endsWith('_per3')) ? 'per3' : 'normal';
+		val = score2coin(val, 0, s2calgo);
+	}
+
+	if (format === "comma") {
+		// カンマ区切り
+		return val.toLocaleString();
+	} else if (format === "short") {
 		return formatPalmu(val);
+	} else {
+		return val;
 	}
 }
 

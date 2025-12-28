@@ -1,6 +1,28 @@
 // history.html 用
 
 
+function updateUrl() {
+  const params = new URLSearchParams(window.location.search);
+
+  const format = document.getElementById('result-format');
+  if (format.value === "") {
+	  params.delete('format');
+  } else {
+	  params.set('format', format.value);
+  }
+
+  const metrics = document.getElementById('result-metrics');
+  if (metrics.value === "") {
+	  params.delete('metrics');
+  } else {
+	  params.set('metrics', metrics.value);
+  }
+
+  // 更新したクエリでリダイレクト
+  window.location.href = window.location.pathname + "?" + params.toString();
+}
+
+
 
 // 縦線描画プラグイン, borderDates は日付の配列
 function verticalLinesBetweenPlugin(borderDates) {
@@ -51,8 +73,8 @@ function getSeparatorDatesFromTable() {
     return dates;
 }
 
-function _scoreOrCoinHistory(val, format, useRaw) {
-	return window.scoreOrCoin(val, format, useRaw);
+function _scoreOrCoinHistory(val, metrics, format) {
+	return window.scoreOrCoin(val, metrics, format);
 }
 
 
@@ -69,7 +91,8 @@ function renderBorderHistory() {
 
   const sortedDates = Object.keys(presets).sort().reverse();
   // score or coin のフォーマットを取得
-  const format = document.getElementById("result-format").value;
+  const metrics = document.getElementById("result-metrics").value || '';
+  const format = document.getElementById("result-format").value || '';
 
   for (let i = 0; i < sortedDates.length; i++) {
     const date = sortedDates[i];
@@ -105,7 +128,7 @@ function renderBorderHistory() {
           td.className = 'decrease';
       }
 
-      td.textContent = _scoreOrCoinHistory(val, format, false);
+      td.textContent = _scoreOrCoinHistory(val, metrics, format);
       // td.textContent = val.toLocaleString();
       tr.appendChild(td);
     });
@@ -173,7 +196,7 @@ function renderHistoryGraph() {
 	const labels = [];
 	const datas = {2: [], 4: [], 6: [], dwn2: [], dwn4: [], dwn6: [], upp2: [], upp4: [], upp6: []};
 
-    const format = document.getElementById("result-format").value;
+    const metrics = document.getElementById("result-metrics").value;
 	const updown = [
 		[rankdwn, 'dwn', [10, 5]],
 		[rankupp, 'upp', [5, 5]],
@@ -183,7 +206,7 @@ function renderHistoryGraph() {
 		if (gd) {
 			labels.push(date);
 			[2, 4, 6].forEach(point => {
-				datas[point].push(_scoreOrCoinHistory(gd[point], format, true) || 0);
+				datas[point].push(_scoreOrCoinHistory(gd[point], metrics, "raw") || 0);
 			});
 
 
@@ -191,7 +214,7 @@ function renderHistoryGraph() {
 				if (rankKey != null && presets[date][rankKey]) {
 					const gd_u = presets[date][rankKey];
 					[2, 4, 6].forEach(point => {
-						datas[prefix + point].push(_scoreOrCoinHistory(gd_u[point], format, true) || undefined);
+						datas[prefix + point].push(_scoreOrCoinHistory(gd_u[point], metrics, "raw") || undefined);
 					});
 				} else {
 					[2, 4, 6].forEach(point => {
@@ -203,7 +226,7 @@ function renderHistoryGraph() {
 	}
 
 	let name = '保証ボーダー';
-	if (format == 'coin') {
+	if (metrics.startsWith('coin')) {
 		name = 'コイン相当';
 	}
 
@@ -300,12 +323,27 @@ function renderHistories() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+
+  	const params = new URLSearchParams(window.location.search);
+	[[params.get('format') || '', 'result-format'],
+	 [params.get('metrics') || '', 'result-metrics']].forEach(([val, id]) => {
+		if (val) {
+			const select = document.getElementById(id);
+			// 妥当な値なら選択状態にする
+			if ([...select.options].some((op) => op.value === val)) {
+				select.value = val;
+			}
+		}
+	});
+
+
 	renderHistories();
 	renderNavis("navi_func", "navi_rank", "footer");
 	setRankText(selectedRank(), "history_rank", "ランク", "の");
 
-    ['result-format'].forEach(id => {
-      document.getElementById(id)?.addEventListener('input', renderHistories, undefined);
+	['result-metrics', 'result-format'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', updateUrl);
+      document.getElementById(id)?.addEventListener('change', updateUrl);
     });
 
 	setupTooltips()

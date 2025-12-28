@@ -15,12 +15,20 @@ function updateUrl() {
   } else {
 	  params.set('format', format.value);
   }
+
+  const metrics = document.getElementById('result-metrics');
+  if (metrics.value === "") {
+	  params.delete('metrics');
+  } else {
+	  params.set('metrics', metrics.value);
+  }
+
   // 更新したクエリでリダイレクト
   window.location.href = window.location.pathname + "?" + params.toString();
 }
 
 
-function renderMeterTableDateSelect(date, format) {
+function renderMeterTableDateSelect(date, metrics, format) {
 	// date-select
 	const select = document.getElementById('date-select');
     for (const ymd of Object.keys(presets).sort().reverse()) {
@@ -37,10 +45,16 @@ function renderMeterTableDateSelect(date, format) {
 	} else {
 		select.value = Object.keys(presets).sort().reverse()[0];
 	}
-	if (format) {
-		const formatSelect = document.getElementById('result-format');
-		formatSelect.value = format;
-	}
+
+	[[format, 'result-format'], [metrics, 'result-metrics']].forEach(([val, id]) => {
+		if (val) {
+			const select = document.getElementById(id);
+			// 妥当な値なら選択状態にする
+			if ([...select.options].some((op) => op.value === val)) {
+				select.value = val;
+			}
+		}
+	});
 }
 
 function renderMeterTableForDate(ymd = '') {
@@ -70,12 +84,13 @@ function renderMeterTableForDate(ymd = '') {
 		row.appendChild(rankCell);
 
 		const format = document.getElementById('result-format').value;
+		const metrics = document.getElementById('result-metrics').value;
 
 		// メーター数値
 		['2', '4', '6'].forEach((point) => {
 			const meterCell = document.createElement('td');
 			const val = presets[ymd][rank][point];
-			meterCell.textContent = window.scoreOrCoin(val, format);
+			meterCell.textContent = window.scoreOrCoin(val, metrics, format);
 			row.appendChild(meterCell);
 		});
 
@@ -93,7 +108,15 @@ function renderLiveScoreTable(ymd = '') {
 		ymd = select.value = Object.keys(presets).sort().reverse()[0];
 	}
 
+	const metrics = document.getElementById('result-metrics').value;
 	const format = document.getElementById('result-format').value;
+
+	const th = document.getElementById('th-metrics');
+	if (metrics.startsWith('coin')) {
+		th.textContent = '推定コイン';
+	} else {
+		th.textContent = 'ライブスコア';
+	}
 
 	// データを全部並べる
 	const results = Object.entries(presets[ymd])
@@ -101,8 +124,8 @@ function renderLiveScoreTable(ymd = '') {
 			Object.entries(data).map(([point, meter]) => [
 				rank,
 				point,
-				window.scoreOrCoin(meter, format, true),
-				window.scoreOrCoin(meter, format, false)
+				window.scoreOrCoin(meter, metrics, 'raw'),
+				window.scoreOrCoin(meter, metrics, format)
 			])).sort((a, b) => b[2] - a[2]);
 
 	const tableBody = document.getElementById('livescore-tbody');
@@ -137,10 +160,14 @@ window.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
 
   const params = new URLSearchParams(window.location.search);
-  renderMeterTableDateSelect(params.get('date') || '', params.get('format') || '');
+  renderMeterTableDateSelect(
+	  params.get('date') || '',
+	  params.get('metrics') || '',
+	  params.get('format') || '');
   renderMeterTableForDate();  // 初期表示
   renderLiveScoreTable();
 
   document.getElementById('date-select').addEventListener('change', updateUrl);
   document.getElementById('result-format').addEventListener('change', updateUrl);
+  document.getElementById('result-metrics').addEventListener('change', updateUrl);
 });

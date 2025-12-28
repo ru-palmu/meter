@@ -28,14 +28,32 @@
 メーター表用
 </div>
 
-<div>
-	<select id="result-format">
-		<option value="score">ライブスコア</option>
-		<option value="coin">コイン（改良モデル）</option>
-		<option value="coin_per3">コイン（従来モデル[÷3]）</option>
-	</select>
-	<select id="date-select"></select>
+<div id="news_filter" class="filter-row">
+	<div class="filters">
+		<div class="filter-item">
+			<label for="result-metrics">表示内容</label>
+			<select id="result-metrics">
+				<option value="score">ライブスコア</option>
+				<option value="coin">コイン（改良モデル）</option>
+				<option value="coin_per3">コイン（従来モデル[÷3]）</option>
+			</select>
+		</div>
+		<div class="filter-item">
+			<label for="result-format">表示形式</label>
+			<select id="result-format">
+				<option value="comma">カンマ形式</option>
+				<option value="short">短縮形式</option>
+			</select>
+		</div>
+		<div class="filter-item">
+			<label for="date-select">更新日</label>
+			<select id="date-select"></select>
+		</div>
+	</div>
+</div>
 
+<br>
+<div>
 	<table id="meter-table" class="history">
 		<thead>
 			<tr>
@@ -56,9 +74,9 @@
 	<table id="livescore-table" class="history">
 		<thead>
 			<tr>
-				<th>ライブスコア</th>
 				<th>ランク</th>
 				<th>ポイント</th>
+				<th id="th-metrics">ライブスコア</th>
 			</tr>
 		</thead>
 		<tbody id="livescore-tbody">
