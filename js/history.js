@@ -52,14 +52,7 @@ function getSeparatorDatesFromTable() {
 }
 
 function _scoreOrCoinHistory(val, format, useRaw) {
-    if (format.startsWith('coin')) {
-        const s2calgo = (format.endsWith('_per3')) ? 'per3' : 'normal';
-        val = score2coin(val, 0, s2calgo);
-    }
-    if (!useRaw) {
-        val = formatPalmu(val);
-    }
-    return val;
+	return window.scoreOrCoin(val, format, useRaw);
 }
 
 

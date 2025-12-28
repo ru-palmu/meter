@@ -1,6 +1,26 @@
 
+function updateUrl() {
+  const params = new URLSearchParams(window.location.search);
 
-function renderMeterTableDateSelect() {
+  const select = document.getElementById('date-select');
+  if (select.value === "") {
+	  params.delete('date');
+  } else {
+	  params.set('date', select.value);
+  }
+
+  const format = document.getElementById('result-format');
+  if (format.value === "") {
+	  params.delete('format');
+  } else {
+	  params.set('format', format.value);
+  }
+  // 更新したクエリでリダイレクト
+  window.location.href = window.location.pathname + "?" + params.toString();
+}
+
+
+function renderMeterTableDateSelect(date, format) {
 	// date-select
 	const select = document.getElementById('date-select');
     for (const ymd of Object.keys(presets).sort().reverse()) {
@@ -12,15 +32,15 @@ function renderMeterTableDateSelect() {
     }
 
 	// 最新のものを選択状態にする
-	select.value = Object.keys(presets).sort().reverse()[0];
-
-	document.addEventListener('change', (event) => {
-		if (event.target && event.target.id === 'date-select') {
-			const selectedDate = event.target.value;
-			renderMeterTableForDate(selectedDate);
-			renderLiveScoreTable(selectedDate);
-		}
-	});
+	if (date && (date in presets)) {
+		select.value = date;
+	} else {
+		select.value = Object.keys(presets).sort().reverse()[0];
+	}
+	if (format) {
+		const formatSelect = document.getElementById('result-format');
+		formatSelect.value = format;
+	}
 }
 
 function renderMeterTableForDate(ymd = '') {
@@ -49,15 +69,17 @@ function renderMeterTableForDate(ymd = '') {
 		rankCell.textContent = rank;
 		row.appendChild(rankCell);
 
+		const format = document.getElementById('result-format').value;
+
 		// メーター数値
 		['2', '4', '6'].forEach((point) => {
 			const meterCell = document.createElement('td');
-			meterCell.textContent = formatPalmu(presets[ymd][rank][point]);
+			const val = presets[ymd][rank][point];
+			meterCell.textContent = window.scoreOrCoin(val, format);
 			row.appendChild(meterCell);
 		});
 
 		tableBody.appendChild(row);
-
 	});
 
 
@@ -71,19 +93,22 @@ function renderLiveScoreTable(ymd = '') {
 		ymd = select.value = Object.keys(presets).sort().reverse()[0];
 	}
 
+	const format = document.getElementById('result-format').value;
+
 	// データを全部並べる
 	const results = Object.entries(presets[ymd])
 		.flatMap(([rank, data]) =>
 			Object.entries(data).map(([point, meter]) => [
 				rank,
 				point,
-				meter,
+				window.scoreOrCoin(meter, format, true),
+				window.scoreOrCoin(meter, format, false)
 			])).sort((a, b) => b[2] - a[2]);
 
 	const tableBody = document.getElementById('livescore-tbody');
 	tableBody.innerHTML = '';
 
-	results.forEach(([rank, point, meter]) => {
+	results.forEach(([rank, point, _, meter]) => {
 
 		const row = document.createElement('tr');
 
@@ -99,7 +124,7 @@ function renderLiveScoreTable(ymd = '') {
 
 		// メーター数値
 		const meterCell = document.createElement('td');
-		meterCell.textContent = formatPalmu(meter);
+		meterCell.textContent = meter;
 		row.appendChild(meterCell);
 
 		tableBody.appendChild(row);
@@ -111,7 +136,11 @@ function renderLiveScoreTable(ymd = '') {
 window.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
 
-  renderMeterTableDateSelect();
+  const params = new URLSearchParams(window.location.search);
+  renderMeterTableDateSelect(params.get('date') || '', params.get('format') || '');
   renderMeterTableForDate();  // 初期表示
   renderLiveScoreTable();
+
+  document.getElementById('date-select').addEventListener('change', updateUrl);
+  document.getElementById('result-format').addEventListener('change', updateUrl);
 });

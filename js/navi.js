@@ -60,6 +60,18 @@ function score2coin(goal_score, current_score, algorithm='normal') {
   return Math.ceil(coin / 10) * 10;
 }
 
+function scoreOrCoin(val, format, is_raw=false) {
+	if (format.startsWith('coin')) {
+		const s2calgo = (format.endsWith('_per3')) ? 'per3' : 'normal';
+		return score2coin(val, 0, s2calgo);
+	} else if (is_raw) {
+		return val;
+	} else {
+		return formatPalmu(val);
+	}
+}
+
+
 // 現在時刻取得．未使用
 function __getCurrentTime() {
   const now = new Date();
@@ -865,6 +877,7 @@ window.tableHeaderFixer = tableHeaderFixer;
 window.renderPagination = renderPagination;
 window.formatPalmu = formatPalmu;
 window.score2coin = score2coin;
+window.scoreOrCoin = scoreOrCoin;
 window.renderNavis = renderNavis;
 window.setRankText = setRankText;
 window.loadDefaultValues = loadDefaultValues;
