@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script       src="js/meter.js?v=52" defer></script>
+  <script src="../data/notice.js?v=52" defer></script>
+  <script        src="js/navi.js?v=52" defer></script>
+  <script        src="js/table.js?v=52" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=52">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>メーター表 - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）専用のコイン計算機．ぺんちゃん用">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<div id="notice-banner"></div>
+</header>
+
+<main>
+<div class="intro">
+メーター表用
+</div>
+
+<div>
+	<select id="date-select"></select>
+
+	<table id="meter-table" class="history">
+		<thead>
+			<tr>
+				<th>ランク</th>
+				<th>+2</th>
+				<th>+4</th>
+				<th>+6</th>
+			</tr>
+		</thead>
+		<tbody id="meter-tbody">
+		</tbody>
+	</table>
+</div>
+
+
+<p>ライブスコア vs. 確定値</p>
+<div>
+	<table id="livescore-table" class="history">
+		<thead>
+			<tr>
+				<th>ライブスコア</th>
+				<th>ランク</th>
+				<th>ポイント</th>
+			</tr>
+		</thead>
+		<tbody id="livescore-tbody">
+		</tbody>
+	</table>
+</div>
+
+</main>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
+
+
