@@ -108,47 +108,30 @@ function renderLiveScoreTable(ymd = '') {
 		ymd = select.value = Object.keys(presets).sort().reverse()[0];
 	}
 
-	const metrics = document.getElementById('result-metrics').value;
-	const format = document.getElementById('result-format').value;
-
-	const th = document.getElementById('th-metrics');
-	if (metrics.startsWith('coin')) {
-		th.textContent = '推定コイン';
-	} else {
-		th.textContent = 'ライブスコア';
-	}
-
 	// データを全部並べる
 	const results = Object.entries(presets[ymd])
 		.flatMap(([rank, data]) =>
 			Object.entries(data).map(([point, meter]) => [
 				rank,
-				point,
-				window.scoreOrCoin(meter, metrics, 'raw'),
-				window.scoreOrCoin(meter, metrics, format)
+				'+' + point,
+				window.scoreOrCoin(meter, 'score', 'raw'),
+				window.scoreOrCoin(meter, 'score', 'short'),
+				window.scoreOrCoin(meter, 'coin', 'comma')
 			])).sort((a, b) => b[2] - a[2]);
 
 	const tableBody = document.getElementById('livescore-tbody');
 	tableBody.innerHTML = '';
 
-	results.forEach(([rank, point, _, meter]) => {
+	results.forEach(([rank, point, _, score, coin]) => {
 
 		const row = document.createElement('tr');
 
 		// ランク名
-		const rankCell = document.createElement('td');
-		rankCell.textContent = rank;
-		row.appendChild(rankCell);
-
-		// 確定ポイント
-		const pointCell = document.createElement('td');
-		pointCell.textContent = `+${point}`;
-		row.appendChild(pointCell);
-
-		// メーター数値
-		const meterCell = document.createElement('td');
-		meterCell.textContent = meter;
-		row.appendChild(meterCell);
+		[rank, point, score, coin].forEach((val) => {
+			const cell = document.createElement('td');
+			cell.textContent = val;
+			row.appendChild(cell);
+		});
 
 		tableBody.appendChild(row);
 	});
