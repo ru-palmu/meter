@@ -15,7 +15,6 @@ const PAGE_SIZE = 20; // ページあたりの表示数
 
 // ランクフィルター
 const eventSelect = document.getElementById("eventFilter");
-const rankSelect = document.getElementById("rankFilter");
 
 eventSelect.innerHTML = "";
 const defaultEvent = document.createElement("option");
@@ -31,20 +30,6 @@ EVENT_ITEM.forEach(r => {
   EVENT_DIC[r.value] = [r.text, r.long || r.text]; // 辞書に追加
 });
 
-
-// ランク追加（先頭に「すべて」）
-rankSelect.innerHTML = "";
-const defaultRank = document.createElement("option");
-defaultRank.value = "";
-defaultRank.textContent = "すべて";
-rankSelect.appendChild(defaultRank);
-
-cand_rank.forEach(r => {
-  const opt = document.createElement("option");
-  opt.value = r;
-  opt.textContent = r;
-  rankSelect.appendChild(opt);
-});
 
 const events = EVENTS_LOCAL;
 
@@ -311,13 +296,6 @@ function updateUrl() {
     params.set("event", eventSelect.value);
   }
 
-  // rank パラメータの更新
-  if (rankSelect.value === "") {
-    params.delete("rank");
-  } else {
-    params.set("rank", rankSelect.value);
-  }
-
   if (document.getElementById("toggleView").checked) {
     params.set("eview", "card");
   } else {
@@ -333,7 +311,7 @@ function applyFilter(){
   // GET パラメータから絞り込み条件とセレクタの初期値を取得
   const params = new URLSearchParams(window.location.search);
   const eventVal = params.get("event") || "";
-  const rankVal = params.get("rank") || "";
+  const rankVal = selectedRank();
   const rankIndex = RANK_DIC[rankVal] ?? -1;
 
   const filtered = events.filter(ev=>{
@@ -352,7 +330,6 @@ function applyFilter(){
 	return false;
   });
   eventSelect.value = eventVal;
-  rankSelect.value = rankVal;
 
   const page_size = parseInt(params.get("page_size")) || PAGE_SIZE;
   let page = 1;
@@ -393,7 +370,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // フィルターイベント
   eventSelect.addEventListener("change", updateUrl);
-  rankSelect.addEventListener("change", updateUrl);
   // トグル切替
   document.getElementById("toggleView").addEventListener("change", updateUrl);
 
