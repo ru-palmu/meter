@@ -101,12 +101,16 @@ function renderMeterTableForDate(ymd = '') {
 }
 
 function renderLiveScoreTable(ymd = '') {
+
 	// ymd が妥当でなかったら，最新のものを採用する
 	if (!ymd || !(ymd in presets)) {
 		// 初期表示
 		const select = document.getElementById('date-select');
 		ymd = select.value = Object.keys(presets).sort().reverse()[0];
 	}
+
+	const title = document.getElementById('livescore-table-title');
+	title.textContent = `ライブスコアを降順に整列 (${ymd.slice(0,4)}/${ymd.slice(4,6)}/${ymd.slice(6,8)} ver)`;
 
 	// データを全部並べる
 	const results = Object.entries(presets[ymd])
@@ -122,19 +126,34 @@ function renderLiveScoreTable(ymd = '') {
 	const tableBody = document.getElementById('livescore-tbody');
 	tableBody.innerHTML = '';
 
-	results.forEach(([rank, point, _, score, coin]) => {
-
+	// データを半分に分割して表示
+	for (let i = 0; i < Math.ceil(results.length / 2); i++) {
 		const row = document.createElement('tr');
 
 		// ランク名
-		[rank, point, score, coin].forEach((val) => {
+		[results[i][0], results[i][1], results[i][3], results[i][4]].forEach((val) => {
 			const cell = document.createElement('td');
 			cell.textContent = val;
 			row.appendChild(cell);
 		});
 
+		// 空行 (区切り)
+		const sep = document.createElement('td');
+		sep.className = 'sep';
+		row.appendChild(sep);
+
+		// 2列目
+		const j = i + Math.ceil(results.length / 2);
+		if (j < results.length) {
+			[results[j][0], results[j][1], results[j][3], results[j][4]].forEach((val) => {
+				const cell = document.createElement('td');
+				cell.textContent = val;
+				row.appendChild(cell);
+			});
+		}
+
 		tableBody.appendChild(row);
-	});
+	}
 
 }
 

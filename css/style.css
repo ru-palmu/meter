@@ -250,6 +250,65 @@ body {
   margin: 10px 0;
 }
 
+/*******************************************************************
+ * スマホ用 table
+ *******************************************************************/
+
+.phone-frame {
+  width: 360px;              /* スマホ幅っぽい */
+  aspect-ratio: 9 / 16;     /* ← 縦横比固定 */
+  background: white;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+  overflow: hidden;         /* はみ出し防止 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phone-frame.with-title {
+  flex-direction: column;
+}
+
+table.livescore-border {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.livescore-border th {
+  font-size: 7px;
+  padding: 3px 8px;
+}
+
+.livescore-border td {
+  padding: 1px 8px;
+}
+
+.livescore-border th,
+.livescore-border td {
+  border: 1px solid #ccc;
+  text-align: right;
+}
+
+table.livescore-border tbody tr:nth-child(even) td:not(.sep) {
+  background-color: #e4f0dc;
+}
+
+
+.livescore-border .sep {
+	width: 5px;
+}
+
+
+.livescore-border td:nth-child(5),
+.livescore-border th:nth-child(5) {
+  border: none;         /* 完全に空白にする */
+  background: transparent;
+}
+
+
 
 /*******************************************************************
  * お知らせ
