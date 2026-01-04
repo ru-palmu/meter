@@ -315,6 +315,12 @@ table.livescore-border tbody tr:nth-child(even) td:not(.sep) {
 }
 
 
+/*-----------------------------------------------------------------*
+ * スマホ用 保証ボーダー比率テーブル
+ *
+ * 基準日のボーダーと現在のボーダーを比較
+ *-----------------------------------------------------------------*/
+
 .gborder-multiplier-title {
   font-size: 14px;
   font-weight: bold;
@@ -347,13 +353,13 @@ table.gborder-multiplier-table tr td.rank-cell {
 }
 
 .gborder-multiplier-table tr.value td {
-	padding-top: 5px;
-	padding-bottom: 2px;
+	padding-top: 4px;
+	padding-bottom: 1px;
 }
 
 .gborder-multiplier-table tr.multiplier td {
 	padding-top: 0px;
-	padding-bottom: 5px;
+	padding-bottom: 4px;
 	font-size: 0.85em;
 	color: #666;
 }
