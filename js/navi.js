@@ -28,7 +28,8 @@ function formatAsK(value) {
 
 function formatPalmu(value) {
   if (value < 10000) {
-	  return value;
+	  // カンマ区切りで
+	  return value.toLocaleString();
   } else if (value < 1000000) {
 	  return formatAsK(value) + "K";
   } else {

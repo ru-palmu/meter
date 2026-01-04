@@ -9,6 +9,13 @@ function updateUrl() {
 	  params.set('date', select.value);
   }
 
+  const select2 = document.getElementById('date-base-select');
+  if (select2.value === "") {
+	  params.delete('base');
+  } else {
+	  params.set('base', select2.value);
+  }
+
   const format = document.getElementById('result-format');
   if (format.value === "") {
 	  params.delete('format');
@@ -28,22 +35,34 @@ function updateUrl() {
 }
 
 
-function renderMeterTableDateSelect(date, metrics, format) {
+function renderMeterTableDateSelect(date, date_base, metrics, format) {
 	// date-select
 	const select = document.getElementById('date-select');
+	const select2 = document.getElementById('date-base-select');
     for (const ymd of Object.keys(presets).sort().reverse()) {
         const formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
-        const op = document.createElement('option');
-        op.value = ymd;
-        op.textContent = formatted;
-        select.appendChild(op);
+
+		[select, select2].forEach((sel) => {
+	        const op = document.createElement('option');
+			op.value = ymd;
+			op.textContent = formatted;
+			sel.appendChild(op);
+		});
     }
 
-	// 最新のものを選択状態にする
 	if (date && (date in presets)) {
+		// GET パラメータが妥当な値なら選択状態にする
 		select.value = date;
 	} else {
+		// 最新のものを選択状態にする
 		select.value = Object.keys(presets).sort().reverse()[0];
+	}
+	if (date_base && (date_base in presets)) {
+		// GET パラメータが妥当な値なら選択状態にする
+		select2.value = date_base;
+	} else {
+		// select と同じ値にする
+		select2.value = select.value;
 	}
 
 	[[format, 'result-format'], [metrics, 'result-metrics']].forEach(([val, id]) => {
@@ -57,8 +76,9 @@ function renderMeterTableDateSelect(date, metrics, format) {
 	});
 }
 
-function renderMeterTableForDate(ymd = '') {
+function renderMeterTableForDate() {
 	// ymd が妥当でなかったら，最新のものを採用する
+	let ymd = document.getElementById('date-select').value;
 	if (!ymd || !(ymd in presets)) {
 		// 初期表示
 		const select = document.getElementById('date-select');
@@ -100,9 +120,10 @@ function renderMeterTableForDate(ymd = '') {
 
 }
 
-function renderLiveScoreTable(ymd = '') {
-
+function renderLiveScoreTable() {
 	// ymd が妥当でなかったら，最新のものを採用する
+	// ライブスコアを降順に整列
+	let ymd = document.getElementById('date-select').value;
 	if (!ymd || !(ymd in presets)) {
 		// 初期表示
 		const select = document.getElementById('date-select');
@@ -157,6 +178,85 @@ function renderLiveScoreTable(ymd = '') {
 
 }
 
+
+// 確定値の変化
+function renderBorderMultiplierTable() {
+
+
+	const date_target = document.getElementById('date-select').value;
+	const date_base = document.getElementById('date-base-select').value;
+
+	document.getElementById('gborder-multiplier-title').innerText = "保証ボーダーの変化";
+	document.getElementById('gborder-multiplier-subtitle').innerText =
+		`(基準日: ${date_base}, 比較日: ${date_target})`;
+
+
+	[['base', '基準'], ['target', '比較']].forEach(([type, ymd]) => {
+		// const ymd_formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
+		const text = ymd;
+		['2', '4', '6'].forEach((point) => {
+			console.log(`gborder-multiplier-th-${type}-${point}`);
+			const th = document.getElementById(`gborder-multiplier-th-${type}${point}`);
+			th.textContent = text;
+		});
+	});
+
+	const base = presets[date_base];
+	const target = presets[date_target];
+
+	const tableBody = document.getElementById('gborder-multiplier-tbody');
+	cand_rank.toReversed().forEach((rank) => {
+
+		const row = document.createElement('tr');
+		row.className = 'value';
+
+		let row2 = null;
+		let rowspan = 1;
+		tableBody.appendChild(row);
+
+		if (base[rank] && target[rank]) {
+			// 比率が設定可能か
+			rowspan += 1;
+			row2 = document.createElement('tr');
+			row2.className = 'multiplier';
+			tableBody.appendChild(row2);
+
+			row.classList.add('has-multiplier');
+		}
+
+		// ランク名
+		const rankCell = document.createElement('td');
+		rankCell.textContent = rank;
+		rankCell.rowSpan = rowspan;
+		rankCell.className = 'rank-cell';
+		row.appendChild(rankCell);
+
+		[2, 4, 6].forEach((point) => {
+			const baseMeter = base[rank] ? base[rank][point] : null;
+			const targetMeter = target[rank] ? target[rank][point] : null;
+
+			const baseCell = document.createElement('td');
+			baseCell.textContent = baseMeter !== null ? window.scoreOrCoin(baseMeter, 'score', 'short') : '-';
+			row.appendChild(baseCell);
+
+			const targetCell = document.createElement('td');
+			targetCell.textContent = targetMeter !== null ? window.scoreOrCoin(targetMeter, 'score', 'short') : 'N/A';
+			row.appendChild(targetCell);
+
+			if (row2) {
+				const multiplierCell = document.createElement('td');
+				multiplierCell.colSpan = 2;
+				const multiplier = targetMeter / baseMeter;
+				multiplierCell.textContent = '(' + multiplier.toFixed(3) + ')';
+				row2.appendChild(multiplierCell);
+			}
+		});
+	});
+
+
+
+}
+
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
@@ -164,12 +264,14 @@ window.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   renderMeterTableDateSelect(
 	  params.get('date') || '',
+	  params.get('base') || '',
 	  params.get('metrics') || '',
 	  params.get('format') || '');
   renderMeterTableForDate();  // 初期表示
   renderLiveScoreTable();
+  renderBorderMultiplierTable();
 
-  document.getElementById('date-select').addEventListener('change', updateUrl);
-  document.getElementById('result-format').addEventListener('change', updateUrl);
-  document.getElementById('result-metrics').addEventListener('change', updateUrl);
+  ['date-select', 'date-base-select', 'result-format', 'result-metrics'].forEach((id) => {
+	  document.getElementById(id).addEventListener('change', updateUrl);
+  });
 });

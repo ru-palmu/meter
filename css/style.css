@@ -309,6 +309,49 @@ table.livescore-border tbody tr:nth-child(even) td:not(.sep) {
 }
 
 
+.gborder-multiplier-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+.gborder-multiplier-subtitle {
+  font-size: 12px;
+}
+
+table.gborder-multiplier-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+table.gborder-multiplier-table tr.value td:first-child {
+  font-weight: bold;
+}
+
+table.gborder-multiplier-table th,
+table.gborder-multiplier-table td {
+  border-left: none;
+  border-right: none;
+  text-align: center;
+}
+
+table.gborder-multiplier-table tr.value:not(.has-multiplier) td,
+table.gborder-multiplier-table tr.multiplier td,
+table.gborder-multiplier-table tr td.rank-cell {
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.gborder-multiplier-table tr.value td {
+	padding-top: 5px;
+	padding-bottom: 2px;
+}
+
+.gborder-multiplier-table tr.multiplier td {
+	padding-top: 0px;
+	padding-bottom: 5px;
+	font-size: 0.85em;
+	color: #666;
+}
+
 
 /*******************************************************************
  * お知らせ
