@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script       src="js/meter.js?v=54" defer></script>
+  <script src="../data/notice.js?v=54" defer></script>
+  <script        src="js/navi.js?v=54" defer></script>
+  <script        src="js/table.js?v=54" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=54">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>Xポスト用画像生成器 - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）専用のコイン計算機．ぺんちゃん用">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<div id="notice-banner"></div>
+</header>
+
+<main>
+<div class="intro">
+メーター表用
+</div>
+
+<div id="news_filter" class="filter-row">
+	<div class="filters">
+		<div class="filter-item">
+			<label for="result-metrics">表示内容</label>
+			<select id="result-metrics">
+				<option value="score">ライブスコア</option>
+				<option value="coin">コイン（改良モデル）</option>
+				<option value="coin_per3">コイン（従来モデル[÷3]）</option>
+			</select>
+		</div>
+		<div class="filter-item">
+			<label for="result-format">表示形式</label>
+			<select id="result-format">
+				<option value="comma">カンマ形式</option>
+				<option value="short">短縮形式</option>
+			</select>
+		</div>
+		<div class="filter-item">
+			<label for="date-select">更新日</label>
+			<select id="date-select"></select>
+		</div>
+		<div class="filter-item">
+			<label for="date-base-select">基準</label>
+			<select id="date-base-select"></select>
+		</div>
+	</div>
+</div>
+
+<div class="flex-container">
+	<div>
+		<p>確定値の変化</p>
+		<div class="phone-frame with-title">
+			<div class="gborder-multiplier-title" id="gborder-multiplier-title"></div>
+			<div class="gborder-multiplier-subtitle" id="gborder-multiplier-subtitle"></div>
+			<table id="gborder-multiplier-table" class="gborder-multiplier-table">
+				<thead>
+					<tr>
+						<th rowspan="2">ランク</th>
+						<th colspan="2">+2</th>
+						<th colspan="2">+4</th>
+						<th colspan="2">+6</th>
+					</tr>
+					<tr>
+						<th colspan="1" id="gborder-multiplier-th-base2"></th>
+						<th colspan="1" id="gborder-multiplier-th-target2"></th>
+						<th colspan="1" id="gborder-multiplier-th-base4"></th>
+						<th colspan="1" id="gborder-multiplier-th-target4"></th>
+						<th colspan="1" id="gborder-multiplier-th-base6"></th>
+						<th colspan="1" id="gborder-multiplier-th-target6"></th>
+					</tr>
+				</thead>
+				<tbody id="gborder-multiplier-tbody">
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div>
+		<p>降順に並べよう</p>
+
+
+		<div class="phone-frame with-title">
+			<div id="livescore-table-title"></div>
+			<table id="livescore-table" class="livescore-border">
+				<colgroup>
+					<col>
+					<col>
+					<col>
+					<col>
+					<col class="sep">
+					<col>
+					<col>
+					<col>
+					<col>
+				</colgroup>
+
+				<thead>
+					<tr>
+						<th>ランク</th>
+						<th>Pt.</th>
+						<th>スコア</th>
+						<th>コイン</th>
+						<th class="sep"></th>
+						<th>ランク</th>
+						<th>Pt.</th>
+						<th>スコア</th>
+						<th>コイン</th>
+					</tr>
+				</thead>
+				<tbody id="livescore-tbody">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+</main>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
+
+

@@ -43,10 +43,12 @@ function renderMeterTableDateSelect(date, date_base, metrics, format) {
         const formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
 
 		[select, select2].forEach((sel) => {
-	        const op = document.createElement('option');
-			op.value = ymd;
-			op.textContent = formatted;
-			sel.appendChild(op);
+			if (sel) {
+				const op = document.createElement('option');
+				op.value = ymd;
+				op.textContent = formatted;
+				sel.appendChild(op);
+			}
 		});
     }
 
@@ -57,12 +59,14 @@ function renderMeterTableDateSelect(date, date_base, metrics, format) {
 		// 最新のものを選択状態にする
 		select.value = Object.keys(presets).sort().reverse()[0];
 	}
-	if (date_base && (date_base in presets)) {
-		// GET パラメータが妥当な値なら選択状態にする
-		select2.value = date_base;
-	} else {
-		// select と同じ値にする
-		select2.value = select.value;
+	if (select2) {
+		if (date_base && (date_base in presets)) {
+			// GET パラメータが妥当な値なら選択状態にする
+			select2.value = date_base;
+		} else {
+			// select と同じ値にする
+			select2.value = select.value;
+		}
 	}
 
 	[[format, 'result-format'], [metrics, 'result-metrics']].forEach(([val, id]) => {
@@ -77,6 +81,12 @@ function renderMeterTableDateSelect(date, date_base, metrics, format) {
 }
 
 function renderMeterTableForDate() {
+	const tableBody = document.getElementById('meter-tbody');
+	if (!tableBody) {
+		console.log("meter-tbody not found");
+		return;
+	}
+
 	// ymd が妥当でなかったら，最新のものを採用する
 	let ymd = document.getElementById('date-select').value;
 	if (!ymd || !(ymd in presets)) {
@@ -85,7 +95,6 @@ function renderMeterTableForDate() {
 		ymd = select.value = Object.keys(presets).sort().reverse()[0];
 	}
 
-	const tableBody = document.getElementById('meter-tbody');
 	tableBody.innerHTML = '';
 
 	// ランクごとに
@@ -121,6 +130,11 @@ function renderMeterTableForDate() {
 }
 
 function renderLiveScoreTable() {
+	const title = document.getElementById('livescore-table-title');
+	if (!title) {
+		return;
+	}
+
 	// ymd が妥当でなかったら，最新のものを採用する
 	// ライブスコアを降順に整列
 	let ymd = document.getElementById('date-select').value;
@@ -130,7 +144,6 @@ function renderLiveScoreTable() {
 		ymd = select.value = Object.keys(presets).sort().reverse()[0];
 	}
 
-	const title = document.getElementById('livescore-table-title');
 	title.textContent = `ライブスコアを降順に整列 (${ymd.slice(0,4)}/${ymd.slice(4,6)}/${ymd.slice(6,8)} ver)`;
 
 	// データを全部並べる
@@ -181,7 +194,10 @@ function renderLiveScoreTable() {
 
 // 確定値の変化
 function renderBorderMultiplierTable() {
-
+	const tableBody = document.getElementById('gborder-multiplier-tbody');
+	if (!tableBody) {
+		return;
+	}
 
 	const date_target = document.getElementById('date-select').value;
 	const date_base = document.getElementById('date-base-select').value;
@@ -204,7 +220,6 @@ function renderBorderMultiplierTable() {
 	const base = presets[date_base];
 	const target = presets[date_target];
 
-	const tableBody = document.getElementById('gborder-multiplier-tbody');
 	cand_rank.toReversed().forEach((rank) => {
 
 		const row = document.createElement('tr');
@@ -272,6 +287,6 @@ window.addEventListener("DOMContentLoaded", () => {
   renderBorderMultiplierTable();
 
   ['date-select', 'date-base-select', 'result-format', 'result-metrics'].forEach((id) => {
-	  document.getElementById(id).addEventListener('change', updateUrl);
+	  document.getElementById(id)?.addEventListener('change', updateUrl);
   });
 });

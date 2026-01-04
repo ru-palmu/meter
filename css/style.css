@@ -254,6 +254,12 @@ body {
  * スマホ用 table
  *******************************************************************/
 
+div.flex-container {
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
 .phone-frame {
   width: 360px;              /* スマホ幅っぽい */
   aspect-ratio: 9 / 16;     /* ← 縦横比固定 */
