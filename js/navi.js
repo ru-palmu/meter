@@ -3,7 +3,9 @@
 
 const COMMON_PREFIX = 'meter_common_';
 
-const cand_rank = ["D", "C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "A4", "A5", "S", "SS"];
+const RANK_CUSTOM = "Z";
+
+const cand_rank = ["D", "C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "A4", "A5", "S", "SS", RANK_CUSTOM];
 
 const RANK_DIC = {}
 for (let i = 0; i < cand_rank.length; i++) {
@@ -12,6 +14,7 @@ for (let i = 0; i < cand_rank.length; i++) {
 
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
 const latestDate = Object.keys(presets).sort().reverse()[0];
+
 
 //////////////////////////////////////////////////
 // 共通関数
@@ -28,12 +31,12 @@ function formatAsK(value) {
 
 function formatPalmu(value) {
   if (value < 10000) {
-	  // カンマ区切りで
-	  return value.toLocaleString();
+    // カンマ区切りで
+    return value.toLocaleString();
   } else if (value < 1000000) {
-	  return formatAsK(value) + "K";
+    return formatAsK(value) + "K";
   } else {
-	  return (Math.floor(value / 10000) / 100).toFixed(2)+ "M";
+    return (Math.floor(value / 10000) / 100).toFixed(2)+ "M";
   }
 }
 
@@ -94,6 +97,8 @@ function setRankText(rank, elementId, prefix, suffix) {
   }
 }
 
+
+// session からデフォルト値を獲得する
 function loadDefaultValues(prefix, table) {
 	table.forEach(([session_id, elem_id]) => {
 		const elem = document.getElementById(elem_id);
@@ -135,6 +140,55 @@ function updateGuaranteedScore(selector, rank) {
 	document.getElementById("a2").dispatchEvent(new Event("input"));
 }
 
+function _getCustomGuaranteedScore(label, default_value) {
+	const v = Number(localStorage.getItem('CustomLiveScore' + label));
+	return Number.isInteger(v) && v > 0 ? v : default_value;
+}
+
+
+function updatePresetsCustomRank(values) {
+	// 辞書を更新
+	const child = presets[latestDate];
+	child[RANK_CUSTOM] = {
+		2: values[2],
+		4: values[4],
+		6: values[6],
+	}
+}
+
+function _loadCustomGuaranteedScore() {
+	const values = {
+		2: _getCustomGuaranteedScore('+2', 43950),
+		4: _getCustomGuaranteedScore('+4', 84990),
+		6: _getCustomGuaranteedScore('+6', 172990),
+	}
+	updatePresetsCustomRank(values);
+}
+
+_loadCustomGuaranteedScore();	// 初期化時に読み込み
+
+
+function saveCustomGuaranteedScores(rank, values) {
+	if (rank === RANK_CUSTOM) {
+		Object.entries(values).forEach(([k, v]) => {
+			// 正の整数だったら保存する
+			if (Number.isInteger(v) && v > 0) {
+				localStorage.setItem('CustomLiveScore+' + k, v);
+			}
+		});
+		updatePresetsCustomRank(values);
+	}
+}
+
+function labelGuaranteedScore(rank) {
+	if (rank === RANK_CUSTOM) {
+		return 'カスタムスコア';
+	} else {
+		return rank + '保証ボーダー';
+	}
+}
+
+// 保証ボーダーの入力欄とコピーエリアを挿入
 function insertGuaranteedScore(targetId, rank) {
     const container = document.getElementById(targetId);
     if (!container) {
@@ -149,38 +203,58 @@ function insertGuaranteedScore(targetId, rank) {
 
     // タイトル
     const titleSpan = document.createElement('span');
-    titleSpan.textContent = '保証ボーダー ';
-    const small = document.createElement('small');
 
-    // 保証ボーダーの日付セレクトボックス
-    const select = document.createElement('select');
-    select.id = 'date-select';
+    let select_id = '';
+    let title_copy = '';
 
-    for (const ymd of Object.keys(presets).sort().reverse()) {
-        // rank が存在しない日付はスキップ
-        if (!presets[ymd][rank]) {
-            continue;
-        }
+    title_copy = titleSpan.textContent = labelGuaranteedScore(rank);
 
-        const formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
-        const op = document.createElement('option');
-        op.value = ymd;
-        op.textContent = formatted;
-        select.appendChild(op);
+    if (rank !== RANK_CUSTOM) {
+      const small = document.createElement('small');
+
+      // 保証ボーダーの日付セレクトボックス
+      const select = document.createElement('select');
+      select_id = select.id = 'date-select';
+
+      for (const ymd of Object.keys(presets).sort().reverse()) {
+          // rank が存在しない日付はスキップ
+          if (!presets[ymd][rank]) {
+              continue;
+          }
+
+          const formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
+          const op = document.createElement('option');
+          op.value = ymd;
+          op.textContent = formatted;
+          select.appendChild(op);
+      }
+
+      small.appendChild(document.createTextNode('（確定値 '));
+      small.appendChild(select);
+      small.appendChild(document.createTextNode(' ver.）'));
+
+      titleSpan.appendChild(small);
     }
 
-    small.appendChild(document.createTextNode('（確定スコア '));
-    small.appendChild(select);
-    small.appendChild(document.createTextNode(' ver.）'));
-
-    titleSpan.appendChild(small);
     outerDiv.appendChild(titleSpan);
 
+    // 保証ボーダーの入力欄
+    renderGuaranteedScoreInputs(outerDiv);
+
+    // 保証ボーダーのコピーエリア
+    renderGuaranteedScoreCopyArea(outerDiv, title_copy);
+
+    container.appendChild(outerDiv);
+
+    return select_id;
+}
+
+function renderGuaranteedScoreInputs(outerDiv) {
     // 入力行
     const values = [
-        { id: 'a2', label: '+2', value: 43990 },
-        { id: 'a4', label: '+4', value: 84990 },
-        { id: 'a6', label: '+6', value: 172990 }
+        { id: 'a2', label: '+2', value: _getCustomGuaranteedScore('+2', 43950) },
+        { id: 'a4', label: '+4', value: _getCustomGuaranteedScore('+4', 84990) },
+        { id: 'a6', label: '+6', value: _getCustomGuaranteedScore('+6', 172990) },
     ];
 
     values.forEach(item => {
@@ -200,11 +274,13 @@ function insertGuaranteedScore(targetId, rank) {
         row.appendChild(input);
         outerDiv.appendChild(row);
     });
+}
 
+function renderGuaranteedScoreCopyArea(outerDiv, title_copy) {
     // コピーボタン
     const button = document.createElement('button');
     button.className = 'copy-button';
-    button.textContent = '📋確定スコアをコピー';
+    button.textContent = '📋' + title_copy + 'をコピー';
     button.setAttribute('onclick', "copyResult('scores')");
     outerDiv.appendChild(button);
 
@@ -217,11 +293,8 @@ function insertGuaranteedScore(targetId, rank) {
     textarea.rows = 1;
     textarea.textContent = '(スコア)';
     outerDiv.appendChild(textarea);
-
-    container.appendChild(outerDiv);
-
-    return select.id;
 }
+
 
 //////////////////////////////////////////////////
 // ナビゲーションのレンダリング
@@ -247,6 +320,22 @@ function renderNavis(navi_func, navi_rank, __footer) {
 	if (typeof PALMU_NOTICES !== "undefined") {
 		_renderNotices('notice-banner', PALMU_NOTICES);
 	}
+
+	renderDescriptionRankCustom(rank);
+}
+
+function renderDescriptionRankCustom(rank) {
+	if (rank !== RANK_CUSTOM) {
+		return ;
+	}
+	const spanCustom = document.getElementById("description-rank-custom");
+	if (!spanCustom) {
+		return ;
+	}
+
+	const label = labelGuaranteedScore(rank);
+	spanCustom.innerHTML = `ランク <strong>${RANK_CUSTOM}</strong> は，（変動）ボーダーを目標とする場合などで使用することを想定しています．
+	${label}で設定した値は，ローカルストレージに保存され，次回以降も利用できます．`
 }
 
 function _getCurrentPage() {
@@ -270,15 +359,21 @@ function _getQueryParam(name) {
   return url.searchParams.get(name);
 }
 
+function isValidRank(rank, date) {
+	return presets[date] && presets[date][rank];
+}
+
 // 選択されているランクを取得
 function selectedRank() {
   const presetFromURL = _getQueryParam("r");
-  let key = localStorage.getItem(COMMON_PREFIX + "selected_rank");
-  if (!key) {
-	  key = default_rank;
-  }
-  if (presetFromURL && presets[latestDate][presetFromURL]) {
+  let key = default_rank;
+  if (isValidRank(presetFromURL, latestDate)) {
     key = presetFromURL;
+  } else {
+    let kk = localStorage.getItem(COMMON_PREFIX + "selected_rank");
+    if (isValidRank(kk, latestDate)) {
+      key = kk;
+    }
   }
   return key;
 }
@@ -342,7 +437,7 @@ function _renderNaviFunc(page, target) {
 
 	const query = window.location.search;
 
-    const ul = document.createElement('ul');
+	const ul = document.createElement('ul');
 	ul.className = 'sub-tab-nav';
 
 	for (const p of pages) {
@@ -474,15 +569,15 @@ function _renderNotices(elementId, notices) {
 
   // 表示する項目を絞り込み
   const upcoming = notices.filter(n => {
-	const end = n.end ? new Date(n.end) : __noticeDate(n.date, 0);
-	const start = n.start ? new Date(n.start) : __noticeDate(n.date, 7);
+  const end = n.end ? new Date(n.end) : __noticeDate(n.date, 0);
+  const start = n.start ? new Date(n.start) : __noticeDate(n.date, 7);
 
-	// console.log([start.toISOString(), now.toISOString(), end.toISOString(), n.text, start <= now, now <= end]);
+  // console.log([start.toISOString(), now.toISOString(), end.toISOString(), n.text, start <= now, now <= end]);
     return start <= now && now <= end;
   });
   if (upcoming.length === 0) {
-	const a = __renderNoticeArchive();
-	banner.appendChild(a);
+    const a = __renderNoticeArchive();
+    banner.appendChild(a);
     return ;
   }
 
@@ -664,12 +759,12 @@ function setupTooltips() {
       const tooltip = document.createElement('div');
       tooltip.className = 'tooltip-box';
 
-	  let msg = tooltipText['msg'];
-	  if (tooltipText['page']) {
-		const currentParams = window.location.search;
-		const href = `about.html${currentParams}#${tooltipText['page']}`;
-		msg += `<br><a href="${href}">詳細</a>`;
-	  }
+      let msg = tooltipText['msg'];
+      if (tooltipText['page']) {
+        const currentParams = window.location.search;
+        const href = `about.html${currentParams}#${tooltipText['page']}`;
+        msg += `<br><a href="${href}">詳細</a>`;
+      }
 
       tooltip.innerHTML = msg;
       term.appendChild(tooltip);
@@ -690,17 +785,17 @@ function setupTooltips() {
 function hashChangeGlossary() {
   const hash = location.hash;
   if (!hash) {
-	return;
+    return;
   }
 
   // ハッシュが変更されたら，該当する用語をハイライト
   const dt = document.querySelector(`dl#glossary dt${hash}`);
   if (dt) {
-	dt.classList.add('highlighted');
+    dt.classList.add('highlighted');
 
-	setTimeout(() => {
-	  dt.classList.remove('highlighted');
-	}, 5000); // 5秒後にハイライトを消す
+    setTimeout(() => {
+      dt.classList.remove('highlighted');
+    }, 5000); // 5秒後にハイライトを消す
   }
 }
 
@@ -891,4 +986,5 @@ window.saveSessionArgs = saveSessionArgs;
 window.setupTooltips = setupTooltips;
 window.renderGlossary = renderGlossary;
 window.hashChangeGlossary = hashChangeGlossary;
+window.saveCustomGuaranteedScores = saveCustomGuaranteedScores;
 

@@ -8,29 +8,37 @@ function calculate(rank = '') {
   if (rank instanceof Event) {
     rank = '';
   }
-  // index.html
-  if (document.getElementById("live_score")) {
-    calculateLiveScoreToCoins(rank);
+  if (!rank) {
+    rank = selectedRank();
   }
 
-  // plan.html
-  if (document.getElementById("days") && typeof calculatePlans === 'function') {
-    calculatePlans(rank);
-  }
-
-  if (document.getElementById("scores")) {
-    setScores(rank);
-  }
-}
-
-function setScores(rank = '') {
   const a = {
     2: parseInt(document.getElementById("a2").value),
     4: parseInt(document.getElementById("a4").value),
     6: parseInt(document.getElementById("a6").value)
   };
 
-  const ret = `${rank}確定スコア +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
+  // index.html
+  if (document.getElementById("live_score")) {
+    calculateLiveScoreToCoins(a);
+  }
+
+  // plan.html
+  if (document.getElementById("days") && typeof calculatePlans === 'function') {
+    calculatePlans(a);
+  }
+
+  if (document.getElementById("scores")) {
+    setScores(rank, a);
+  }
+
+  saveCustomGuaranteedScores(rank, a);
+}
+
+// 「保証ボーダーをコピー」機能用の設定
+function setScores(rank = '', a) {
+  const label = labelGuaranteedScore(rank);
+  const ret = `${label} +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
   document.getElementById("scores").value = ret;
 }
 
@@ -50,13 +58,7 @@ function loadDefaultMeter() {
 }
 
 // 現在のライブスコアから確定スコアまでのコイン数を算出
-function calculateLiveScoreToCoins(__rank = '') {
-
-  const a = {
-    2: parseInt(document.getElementById("a2").value),
-    4: parseInt(document.getElementById("a4").value),
-    6: parseInt(document.getElementById("a6").value)
-  };
+function calculateLiveScoreToCoins(a) {
   let b = parseInt(document.getElementById("live_score").value);
 
   if (isNaN(b) || b === 0) {
@@ -69,10 +71,10 @@ function calculateLiveScoreToCoins(__rank = '') {
   if (format == 'all' || format.startsWith('easy')) {
     targets = [2, 4, 6];
   } else if (format.endsWith('x')) {
-	  // 2x, 4x, 6x
+    // 2x, 4x, 6x
     targets = [parseInt(format[0])];
   } else {
-	  // 2, 4, 6
+    // 2, 4, 6
     targets = [parseInt(format)];
   }
 
@@ -84,13 +86,13 @@ function calculateLiveScoreToCoins(__rank = '') {
     if (s < 20) {
         return '';
     }
-	if (format.startsWith('easy')) {
-	    return `${s.toLocaleString()}コインで+${i}確定`;
-	} else if (format.endsWith('x')) {
-	    return s;
-	} else {
-	    return `+${i}=${s.toLocaleString()}`;
-	}
+    if (format.startsWith('easy')) {
+        return `${s.toLocaleString()}コインで+${i}確定`;
+    } else if (format.endsWith('x')) {
+        return s;
+    } else {
+        return `+${i}=${s.toLocaleString()}`;
+    }
   });
 
   let help = '現在のスコア';
@@ -145,9 +147,8 @@ function copyResult(name) {
 
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
-
   if (typeof loadDefaultMeter === 'function') {
-	// plan.html からも呼ばれる
+    // plan.html からも呼ばれる
     loadDefaultMeter();
   }
   if (typeof loadDefaultPlan === 'function') {
@@ -163,12 +164,11 @@ window.addEventListener("DOMContentLoaded", () => {
   //   applyPreset(key);
   // }
   if (key) {
-
     [
       ['index_rank', 'ランク', 'での'],
 //      ['history_rank', 'ランク', 'の'],
     ].forEach(([id, prefix, suffix]) => {
-	  setRankText(key, id, prefix, suffix);
+       setRankText(key, id, prefix, suffix);
     });
   }
 

@@ -3,23 +3,20 @@
 const PLAN_PREFIX = 'meter_plan_';
 
 // 一週間のプランを計画する
-function calculatePlans() {
+function calculatePlans(values) {
 
 	const days = parseInt(document.getElementById("days").value);
 	const points = parseInt(document.getElementById("points").value);
 	const format = document.getElementById("result-format").value;
-	const a2 = parseInt(document.getElementById("a2").value);
-	const a4 = parseInt(document.getElementById("a4").value);
-	const a6 = parseInt(document.getElementById("a6").value);
 
 	_savePlanArgs(days, points, format);
 
 	// 配列で a の値を保持する
 	const costMap = {
 		1: [1, 0, 0],
-		2: [a2],
-		4: [a4],
-		6: [a6],
+		2: [values[2]],
+		4: [values[4]],
+		6: [values[6]],
 	};
 
 	[2, 4, 6].forEach(p => {

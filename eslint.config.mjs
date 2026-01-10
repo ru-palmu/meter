@@ -46,6 +46,8 @@ export default [
 		setRankText: "readonly",
 		setupTooltips: "readonly",
 		score2coin: "readonly",
+		labelGuaranteedScore: "readonly",
+		saveCustomGuaranteedScores: "readonly",
 	  },
     },
     rules: {
