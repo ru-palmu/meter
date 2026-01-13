@@ -13,9 +13,9 @@ function calculate(rank = '') {
   }
 
   const a = {
-    2: parseInt(document.getElementById("a2").value),
-    4: parseInt(document.getElementById("a4").value),
-    6: parseInt(document.getElementById("a6").value)
+    2: parseInt(document.getElementById("a2")?.value ?? '0'),
+    4: parseInt(document.getElementById("a4")?.value ?? '0'),
+    6: parseInt(document.getElementById("a6")?.value ?? '0')
   };
 
   // index.html
