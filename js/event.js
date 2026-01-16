@@ -320,7 +320,7 @@ function applyFilter(){
 		return false;
 	}
 
-	if (!rankVal) {
+	if (!rankVal || rankVal == window.RANK_CUSTOM) {
 		return true;
 	}
 

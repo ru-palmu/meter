@@ -998,4 +998,5 @@ window.renderGlossary = renderGlossary;
 window.hashChangeGlossary = hashChangeGlossary;
 window.saveCustomGuaranteedScores = saveCustomGuaranteedScores;
 window.getCandRank = getCandRank;
+window.RANK_CUSTOM = RANK_CUSTOM;
 
