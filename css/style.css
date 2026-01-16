@@ -364,6 +364,14 @@ table.gborder-multiplier-table tr td.rank-cell {
 	color: #666;
 }
 
+.gborder-multiplier-table tr.multiplier td.rate-decrease {
+	color: #3f5f8a;
+}
+
+.gborder-multiplier-table tr.multiplier td.rate-increase {
+	color: #666;
+}
+
 
 /*******************************************************************
  * お知らせ

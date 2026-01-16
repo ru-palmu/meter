@@ -83,7 +83,6 @@ function renderMeterTableDateSelect(date, date_base, metrics, format) {
 function renderMeterTableForDate() {
 	const tableBody = document.getElementById('meter-tbody');
 	if (!tableBody) {
-		console.log("meter-tbody not found");
 		return;
 	}
 
@@ -130,7 +129,6 @@ function renderMeterTableForDate() {
 function renderMeterKeepUpTableForDate() {
 	const tableBody = document.getElementById('meter-keepup-tbody');
 	if (!tableBody) {
-		console.log("meter-keepup-tbody not found");
 		return;
 	}
 
@@ -309,7 +307,6 @@ function renderBorderMultiplierTable() {
 		// const ymd_formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
 		const text = ymd;
 		['2', '4', '6'].forEach((point) => {
-			console.log(`gborder-multiplier-th-${type}-${point}`);
 			const th = document.getElementById(`gborder-multiplier-th-${type}${point}`);
 			th.textContent = text;
 		});
@@ -357,11 +354,19 @@ function renderBorderMultiplierTable() {
 			row.appendChild(targetCell);
 
 			if (row2) {
-				const multiplierCell = document.createElement('td');
-				multiplierCell.colSpan = 2;
-				const multiplier = targetMeter / baseMeter;
-				multiplierCell.textContent = '(' + multiplier.toFixed(3) + ')';
-				row2.appendChild(multiplierCell);
+				const percentChange  = (targetMeter - baseMeter) / baseMeter * 100;
+				const percentChangeCell = document.createElement('td');
+				percentChangeCell.colSpan = 2;
+
+				const sign = percentChange > 0 ? '+' : '';
+				percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
+				if (percentChange < 0) {
+					percentChangeCell.className = 'rate-decrease';
+				} else {
+					percentChangeCell.className = 'rate-increase';
+				}
+
+				row2.appendChild(percentChangeCell);
 			}
 		});
 	});
