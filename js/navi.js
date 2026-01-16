@@ -15,6 +15,11 @@ for (let i = 0; i < cand_rank.length; i++) {
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
 const latestDate = Object.keys(presets).sort().reverse()[0];
 
+function getCandRank() {
+	// RANK_CUSTOM 以外のランクを返す
+	return cand_rank.filter(r => r !== RANK_CUSTOM);
+}
+
 
 //////////////////////////////////////////////////
 // 共通関数
@@ -70,6 +75,10 @@ function scoreOrCoin(val, metrics, format) {
 		val = score2coin(val, 0, s2calgo);
 	}
 
+	return scoreToString(val, format);
+}
+
+function scoreToString(val, format) {
 	if (format === "comma") {
 		// カンマ区切り
 		return val.toLocaleString();
@@ -979,6 +988,7 @@ window.renderPagination = renderPagination;
 window.formatPalmu = formatPalmu;
 window.score2coin = score2coin;
 window.scoreOrCoin = scoreOrCoin;
+window.scoreToString = scoreToString;
 window.renderNavis = renderNavis;
 window.setRankText = setRankText;
 window.loadDefaultValues = loadDefaultValues;
@@ -987,4 +997,5 @@ window.setupTooltips = setupTooltips;
 window.renderGlossary = renderGlossary;
 window.hashChangeGlossary = hashChangeGlossary;
 window.saveCustomGuaranteedScores = saveCustomGuaranteedScores;
+window.getCandRank = getCandRank;
 

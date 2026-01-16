@@ -10,7 +10,7 @@ function updateUrl() {
   }
 
   const select2 = document.getElementById('date-base-select');
-  if (select2.value === "") {
+  if (!select2 || select2.value === "") {
 	  params.delete('base');
   } else {
 	  params.set('base', select2.value);
@@ -98,7 +98,7 @@ function renderMeterTableForDate() {
 	tableBody.innerHTML = '';
 
 	// ランクごとに
-	cand_rank.toReversed().forEach((rank) => {
+	window.getCandRank().toReversed().forEach((rank) => {
 
 		if (!(rank in presets[ymd])) {
 			// データがなければスキップ
@@ -125,9 +125,104 @@ function renderMeterTableForDate() {
 
 		tableBody.appendChild(row);
 	});
-
-
 }
+
+function renderMeterKeepUpTableForDate() {
+	const tableBody = document.getElementById('meter-keepup-tbody');
+	if (!tableBody) {
+		console.log("meter-keepup-tbody not found");
+		return;
+	}
+
+	// ymd が妥当でなかったら，最新のものを採用する
+	let ymd = document.getElementById('date-select').value;
+	if (!ymd || !(ymd in presets)) {
+		// 初期表示
+		const select = document.getElementById('date-select');
+		ymd = select.value = Object.keys(presets).sort().reverse()[0];
+	}
+
+	tableBody.innerHTML = '';
+
+	// ランクごとに
+	window.getCandRank().toReversed().forEach((rank) => {
+		if (!(rank in presets[ymd])) {
+			// データがなければスキップ
+			return;
+		}
+
+		const row = document.createElement('tr');
+
+		// ランク名
+		const rankCell = document.createElement('td');
+		rankCell.textContent = rank;
+		row.appendChild(rankCell);
+
+		const format = document.getElementById('result-format').value;
+		const metrics = document.getElementById('result-metrics').value;
+
+
+		/////////////////////////////////
+		// 何をもとにするか
+		/////////////////////////////////
+		const values = {};
+		[2, 4, 6].forEach((point) => {
+			const v = presets[ymd][rank][point];
+			if (metrics === 'score') {
+				values[point] = v;
+			} else if (metrics === 'coin') {
+				values[point] = score2coin(v, 0, 'normal');
+			} else {
+				values[point] = score2coin(v, 0, 'per3');
+			}
+		});
+
+		/////////////////////////////////
+		// キープ
+		/////////////////////////////////
+		[[2,2,2,2,2], [4,2,2], [4,4], [6]].forEach((plan) => {
+			const val = plan.reduce((acc, point) => acc + values[point], 0);
+			const meterCell = document.createElement('td');
+			meterCell.textContent = window.scoreToString(val, format);
+			row.appendChild(meterCell);
+		});
+
+		/////////////////////////////////
+		// ランクアップ
+		/////////////////////////////////
+		const lists = [
+			[4,4,4,4],
+			[6,4,4],
+			[4,4,4,2,2],
+			[6,6,2],
+			[6,4,2,2,2],
+			[4,4,2,2,2,2,2],
+			[6,2,2,2,2,2,2],
+		];
+		const result = lists.reduce(
+		  (best, arr) => {
+			const sum = arr.reduce((total, i) => total + (values[i] ?? 0), 0);
+
+			if (sum < best.sum) {
+			  return { array: arr, sum };
+			}
+			return best;
+		  },
+		  { array: null, sum: +Infinity }
+		);
+
+		const upPlan = document.createElement('td');
+		upPlan.textContent = result.array ? result.array.map((p) => `+${p}`).join(', ') : '-';
+		row.appendChild(upPlan);
+
+		const upValue = document.createElement('td');
+		upValue.textContent = window.scoreToString(result.sum, format);
+		row.appendChild(upValue);
+
+		tableBody.appendChild(row);
+	});
+}
+
 
 function renderLiveScoreTable() {
 	const title = document.getElementById('livescore-table-title');
@@ -146,8 +241,11 @@ function renderLiveScoreTable() {
 
 	title.textContent = `ライブスコアを降順に整列 (${ymd.slice(0,4)}/${ymd.slice(4,6)}/${ymd.slice(6,8)} ver)`;
 
+	const candRanks = new Set(window.getCandRank());
+
 	// データを全部並べる
 	const results = Object.entries(presets[ymd])
+	    .filter(([rank]) => candRanks.has(rank))
 		.flatMap(([rank, data]) =>
 			Object.entries(data).map(([point, meter]) => [
 				rank,
@@ -220,7 +318,7 @@ function renderBorderMultiplierTable() {
 	const base = presets[date_base];
 	const target = presets[date_target];
 
-	cand_rank.toReversed().forEach((rank) => {
+	window.getCandRank().toReversed().forEach((rank) => {
 
 		const row = document.createElement('tr');
 		row.className = 'value';
@@ -283,6 +381,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	  params.get('metrics') || '',
 	  params.get('format') || '');
   renderMeterTableForDate();  // 初期表示
+  renderMeterKeepUpTableForDate();  // 初期表示
   renderLiveScoreTable();
   renderBorderMultiplierTable();
 
