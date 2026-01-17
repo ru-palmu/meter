@@ -229,6 +229,10 @@ function _setChartHistorySize() {
 	canvas.height = legendHeight + axisHeight + Math.min(minGraphHeight, width);
 	canvas.width = width;
 	// console.log(width, canvas.height);
+	if (chartInstanceHistory) {
+		chartInstanceHistory.resize();
+		chartInstanceHistory.update();
+	}
 }
 
 function __renderHistoryGraphName(basis, metrics, rank) {
