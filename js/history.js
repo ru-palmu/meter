@@ -256,7 +256,6 @@ function __renderHistoryGraphName(basis, metrics, rank) {
 	return name
 }
 
-let drawCount = 0;
 function renderHistoryGraph() {
 	const elem = document.getElementById('chart-history');
 	if (!elem) {
@@ -271,7 +270,6 @@ function renderHistoryGraph() {
 
 	_setChartHistorySize();
 
-	drawCount += 1;
 	if (chartInstanceHistory) {
 		chartInstanceHistory.destroy(); // 既存のチャートを破棄
 	}
