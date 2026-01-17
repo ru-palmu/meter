@@ -35,7 +35,15 @@
 <div id="news_filter" class="filter-row">
 	<div class="filters">
 		<div class="filter-item">
-			<label for="result-metrics">表示内容</label>
+			<label for="result-basis">表示基準</label>
+			<select id="result-basis">
+				<option value="border">保証ボーダー（確定値）</option>
+				<option value="rank-keep">ランクキープ・プラン</option>
+				<option value="rank-up">ランクアップ・プラン</option>
+			</select>
+		</div>
+		<div class="filter-item">
+			<label for="result-metrics">表示単位</label>
 			<select id="result-metrics">
 				<option value="score">ライブスコア</option>
 				<option value="coin">コイン（改良モデル）</option>
@@ -43,31 +51,24 @@
 			</select>
 		</div>
 		<div class="filter-item">
-			<label for="result-format">表示形式</label>
+			<label for="result-format">数値表記</label>
 			<select id="result-format">
-				<option value="short">短縮形式</option>
-				<option value="comma">カンマ形式</option>
+				<option value="short">短縮表記</option>
+				<option value="comma">カンマ区切り</option>
 			</select>
 		</div>
 	</div>
 </div>
 
 <br>
+<!-- Table for history data -->
 <table class="history">
-<thead>
-<tr>
-  <th>date</th>
-  <th>+2</th>
-  <th>+4</th>
-  <th>+6</th>
-  <th>4/2</th>
-  <th>6/2</th>
-</tr>
+<thead id="history-thead">
 </thead>
 <tbody id="history-tbody"></tbody>
 </table>
 
-
+<!-- Chart for history data -->
 <div id="chart-history-container">
 	<canvas id="chart-history"></canvas>
 </div>
