@@ -298,6 +298,12 @@ function renderBorderMultiplierTable() {
 	const date_target = document.getElementById('date-select').value;
 	const date_base = document.getElementById('date-base-select').value;
 
+	if (date_target <= date_base) {
+		// 比較日が基準日より前なら何もしない
+		document.getElementById('gborder-multiplier-title').innerText = "比較日には基準日より新しい日付を選択してください。";
+		return;
+	}
+
 	document.getElementById('gborder-multiplier-title').innerText = "保証ボーダーの変化";
 	document.getElementById('gborder-multiplier-subtitle').innerText =
 		`(基準日: ${date_base}, 比較日: ${date_target})`;
@@ -340,6 +346,18 @@ function renderBorderMultiplierTable() {
 		rankCell.rowSpan = rowspan;
 		rankCell.className = 'rank-cell';
 		row.appendChild(rankCell);
+		let	classRank = ''
+		if (rank[0] == 'S') {
+			classRank = 'rank-s';
+		} else if (rank[0] == 'B') {
+			classRank = 'rank-b';
+		} else if (rank[0] == 'D') {
+			classRank = 'rank-d';
+		}
+		if (classRank) {
+			row.classList.add('rank-s');
+			row2.classList.add('rank-s');
+		}
 
 		[2, 4, 6].forEach((point) => {
 			const baseMeter = base[rank] ? base[rank][point] : null;
@@ -351,6 +369,7 @@ function renderBorderMultiplierTable() {
 
 			const targetCell = document.createElement('td');
 			targetCell.textContent = targetMeter !== null ? window.scoreOrCoin(targetMeter, 'score', 'short') : 'N/A';
+			targetCell.className = targetMeter !== null ? 'target-cell' : 'na-cell';
 			row.appendChild(targetCell);
 
 			if (row2) {

@@ -352,9 +352,19 @@ table.gborder-multiplier-table tr td.rank-cell {
 	border-bottom: 1px solid #e0e0e0;
 }
 
+table.gborder-multiplier-table tr.rank-s,
+table.gborder-multiplier-table tr.rank-b,
+table.gborder-multiplier-table tr.rank-d {
+	background-color: #f7fbf7;
+}
+
 .gborder-multiplier-table tr.value td {
 	padding-top: 4px;
 	padding-bottom: 1px;
+}
+
+.gborder-multiplier-table tr.value td.target-cell {
+	font-weight: bold;
 }
 
 .gborder-multiplier-table tr.multiplier td {
