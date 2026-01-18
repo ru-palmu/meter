@@ -1,14 +1,19 @@
 // history.html 用
 
 
-function updateUrl() {
-  const params = new URLSearchParams(window.location.search);
-
-  [
+const HISTORY_SELECTORS = [
 	  ['result-format', 'format'],
 	  ['result-metrics', 'metrics'],
 	  ['result-basis', 'basis'],
-  ].forEach(([elemId, paramName]) => {
+	  ['result-end', 'end'],
+	  ['result-count', 'count'],
+];
+
+function updateUrl() {
+  // リダイレクトする
+  const params = new URLSearchParams(window.location.search);
+
+  HISTORY_SELECTORS.forEach(([elemId, paramName]) => {
 	  const elem = document.getElementById(elemId);
 	  if (elem.value === "") {
 		  params.delete(paramName);
@@ -117,7 +122,7 @@ function __plan2scoreOrcoin(plan, preset, metrics) {
 
 // preset を出力 (for 履歴 history.html)
 // 保証ボーダーの履歴
-function renderBorderHistory() {
+function __renderBorderHistory(sortedDates) {
   const tbody = document.getElementById("history-tbody");
   if (!tbody) {
     return ;
@@ -126,9 +131,7 @@ function renderBorderHistory() {
 
   const rank = selectedRank();
 
-  const sortedDates = Object.keys(presets).sort().reverse();
   // score or coin のフォーマットを取得
-
   const basis = document.getElementById("result-basis").value || '';
   const metrics = document.getElementById("result-metrics").value || '';
   const format = document.getElementById("result-format").value || '';
@@ -256,7 +259,7 @@ function __renderHistoryGraphName(basis, metrics, rank) {
 	return name
 }
 
-function renderHistoryGraph() {
+function __renderHistoryGraph(sortedDates) {
 	const elem = document.getElementById('chart-history');
 	if (!elem) {
 		console.warn("chart-history element not found");
@@ -284,7 +287,6 @@ function renderHistoryGraph() {
 	const labels = [];
 	const datas = {};
 
-
 	const basis = document.getElementById("result-basis").value;
 
 	// プラン. min を取り除く
@@ -306,7 +308,7 @@ function renderHistoryGraph() {
 		});
 	}
 
-	for (const date of Object.keys(presets).sort()) {
+	for (const date of sortedDates) {
 		const gd = presets[date][rank];
 		if (!gd) {
 			continue;
@@ -449,19 +451,50 @@ function copyHistory(dateStr) {
   document.body.removeChild(textarea);
 }
 
+function __renderHistoryResultEnd() {
+	const sortedDates = Object.keys(presets).sort().reverse();
+
+	// セレクタに設定
+	const select = document.getElementById("result-end");
+	sortedDates.forEach(date => {
+		const option = document.createElement("option");
+		option.value = date;
+		// YYYYMMDD を YYYY/MM/DD に変換
+		option.textContent = `${date.slice(0,4)}/${date.slice(4,6)}/${date.slice(6,8)}`;
+		select.appendChild(option);
+	});
+}
+
 function renderHistories() {
-	renderBorderHistory();
-	renderHistoryGraph();
+
+	const sortedDates = Object.keys(presets).sort();
+	// 終了日を確認
+	const endDate = document.getElementById("result-end").value || sortedDates[0];
+	const endIdx = sortedDates.indexOf(endDate);
+
+	let displayDates = sortedDates;
+	if (document.getElementById("result-count").value !== 'all') {
+
+		const count = parseInt(document.getElementById("result-count").value) || 10;
+		const startIdx = Math.max(0, endIdx - count + 1);
+
+		displayDates = sortedDates.slice(startIdx, endIdx + 1);
+	}
+	__renderHistoryGraph(displayDates);
+	// reverse() が破壊的メソッドなので，
+	// <table> があと
+	__renderBorderHistory(displayDates.reverse());
 }
 
 window.addEventListener("DOMContentLoaded", () => {
 
+	__renderHistoryResultEnd();
+
   	const params = new URLSearchParams(window.location.search);
-	[[params.get('format') || '', 'result-format'],
-	 [params.get('basis') || '', 'result-basis'],
-	 [params.get('metrics') || '', 'result-metrics']].forEach(([val, id]) => {
+	HISTORY_SELECTORS.forEach(([elemId, paramName]) => {
+		const val = params.get(paramName) || '';
 		if (val) {
-			const select = document.getElementById(id);
+			const select = document.getElementById(elemId);
 			// 妥当な値なら選択状態にする
 			if ([...select.options].some((op) => op.value === val)) {
 				select.value = val;
@@ -474,7 +507,8 @@ window.addEventListener("DOMContentLoaded", () => {
 	renderNavis("navi_func", "navi_rank", "footer");
 	setRankText(selectedRank(), "history_rank", "ランク", "の");
 
-	['result-basis', 'result-metrics', 'result-format'].forEach(id => {
+	// 変更されたら，リダイレクトしたい
+	HISTORY_SELECTORS.forEach(([id, _]) => {
       document.getElementById(id)?.addEventListener('input', updateUrl);
       document.getElementById(id)?.addEventListener('change', updateUrl);
     });
