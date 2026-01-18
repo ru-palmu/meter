@@ -445,6 +445,16 @@ function _renderNaviFunc(page, target) {
 	];
 
 	const query = window.location.search;
+	const params = new URLSearchParams(query);
+
+	const picks = new URLSearchParams();
+	['r'].forEach(k => {
+		const v = params.get(k);
+		if (v) {
+			picks.set(k, v);
+		}
+	});
+	const query_str = picks.toString() ? `?${picks.toString()}` : '';
 
 	const ul = document.createElement('ul');
 	ul.className = 'sub-tab-nav';
@@ -456,7 +466,7 @@ function _renderNaviFunc(page, target) {
 			li.classList.add('active');
 		}
 		const a = document.createElement('a');
-		a.href = `${p.url}${query}`;
+		a.href = `${p.url}${query_str}`;
 		a.textContent = p.name;
 		li.appendChild(a);
 		ul.appendChild(li);
