@@ -176,6 +176,12 @@ function _loadCustomGuaranteedScore() {
 
 _loadCustomGuaranteedScore();	// 初期化時に読み込み
 
+// 「保証ボーダーをコピー」機能用の設定
+function setScores(rank = '', a) {
+  const label = labelGuaranteedScore(rank);
+  const ret = `${label} +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
+  document.getElementById("scores").value = ret;
+}
 
 function saveCustomGuaranteedScores(rank, values) {
 	if (rank === RANK_CUSTOM) {
@@ -285,6 +291,21 @@ function renderGuaranteedScoreInputs(outerDiv) {
     });
 }
 
+// コピーボタン
+function copyResult(name) {
+  const textarea = document.getElementById(name);
+  textarea.select();
+
+  try {
+    document.execCommand('copy');
+  } catch (err) {
+    alert("コピーに失敗しました: " + err);
+  }
+
+  textarea.setSelectionRange(0, 0); // 選択解除
+}
+
+
 function renderGuaranteedScoreCopyArea(outerDiv, title_copy) {
     // コピーボタン
     const button = document.createElement('button');
@@ -331,6 +352,7 @@ function renderNavis(navi_func, navi_rank, __footer) {
 	}
 
 	renderDescriptionRankCustom(rank);
+	return rank;
 }
 
 function renderDescriptionRankCustom(rank) {
@@ -720,9 +742,8 @@ const glossary = {
 		index: "ユーザーランク",
 		dt: "ユーザーランク",
 		dd: "" +
-"<p>ユーザーランクは，D, C1, C2, C3, B1, B2, B3, A1, A2, A3, S の全部で11ランクに分かれています" +
-"（2025年9月より，<a href='https://note.com/palmu/n/nc513b02e0bf6'>14ランク</a>に変更される予定です）．" +
-"D が最も低いランクで，S が最も高いランクです．" +
+"<p>ユーザーランクは，D, C1, C2, C3, B1, B2, B3, A1, A2, A3, A4, A5, S, SS の全部で14ランクに分かれています．" +
+"D が最も低いランクで，SS が最も高いランクです．" +
 "<p>ライバーのユーザーランクはプロフィール（配信画面の左上，ライバーの名前をタップ）から確認できます．" +
 "<p><div class='img'><img src='img/profile.png' alt='プロフィールの例' width='70%'></div>" +
 "<p>ユーザーランクは，ランク更新期間である 7 日感に獲得した<span class='term' data-term='point'>デイリーランクポイント</span>の合計に応じて" +
@@ -1009,4 +1030,6 @@ window.hashChangeGlossary = hashChangeGlossary;
 window.saveCustomGuaranteedScores = saveCustomGuaranteedScores;
 window.getCandRank = getCandRank;
 window.RANK_CUSTOM = RANK_CUSTOM;
+window.copyResult = copyResult;
+window.setScores = setScores;
 

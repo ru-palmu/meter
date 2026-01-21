@@ -21,12 +21,6 @@ export default [
 		presets: "readonly",
 		default_rank: "readonly",
 
-		// plan.js
-		calculatePlans: "readonly",
-		loadDefaultPlan: "readonly",
-
-		// coin.js
-		copyResult: "readonly",
 
 		// Chart.js
 		Chart: "readonly",
@@ -48,6 +42,8 @@ export default [
 		score2coin: "readonly",
 		labelGuaranteedScore: "readonly",
 		saveCustomGuaranteedScores: "readonly",
+		copyResult: "readonly",
+		setScores: "readonly",
 	  },
     },
     rules: {

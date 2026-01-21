@@ -9,7 +9,7 @@ const HISTORY_SELECTORS = [
 	  ['result-count', 'count'],
 ];
 
-function updateUrl() {
+function updateUrlHistory() {
   // リダイレクトする
   const params = new URLSearchParams(window.location.search);
 
@@ -509,8 +509,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	// 変更されたら，リダイレクトしたい
 	HISTORY_SELECTORS.forEach(([id, _]) => {
-      document.getElementById(id)?.addEventListener('input', updateUrl);
-      document.getElementById(id)?.addEventListener('change', updateUrl);
+      document.getElementById(id)?.addEventListener('input', updateUrlHistory);
+      document.getElementById(id)?.addEventListener('change', updateUrlHistory);
     });
 
 	setupTooltips()

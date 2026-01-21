@@ -2,8 +2,26 @@
 
 const PLAN_PREFIX = 'meter_plan_';
 
+
 // 一週間のプランを計画する
-function calculatePlans(values) {
+function calculatePlans() {
+
+	const a = {
+		2: parseInt(document.getElementById("a2")?.value ?? '0'),
+		4: parseInt(document.getElementById("a4")?.value ?? '0'),
+		6: parseInt(document.getElementById("a6")?.value ?? '0')
+	};
+
+	const rank = selectedRank();
+	_calculetePlans(a, rank);
+	if (document.getElementById("scores")) {
+		setScores(rank, a);
+	}
+
+	saveCustomGuaranteedScores(rank, a);
+}
+
+function _calculetePlans(values, rank) {
 
 	const days = parseInt(document.getElementById("days").value);
 	const points = parseInt(document.getElementById("points").value);
@@ -88,7 +106,6 @@ function calculatePlans(values) {
 		document.getElementById("result-format").value = 'coin';
 	}
 
-	const rank = selectedRank();
 	const sort_idx = showCond[1];
 	rawPlans.sort((a, b) => a[1][sort_idx] - b[1][sort_idx]);
 	let result = rank + ": " + days + "日で +" + points + "\nプラン";
@@ -137,6 +154,24 @@ function loadDefaultPlan() {
 	loadDefaultValues(PLAN_PREFIX, table);
 }
 
-window.calculatePlans = calculatePlans;
-window.loadDefaultPlan = loadDefaultPlan;
+
+
+// HTML パース完了後に発火
+window.addEventListener("DOMContentLoaded", () => {
+  loadDefaultPlan();
+
+  renderNavis("navi_func", "navi_rank", "footer");
+
+  // 入力変更時に自動計算
+  ['a2', 'a4', 'a6', 'result-format', 'days', 'points'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', calculatePlans, undefined);
+  });
+
+  // 初回計算
+  calculatePlans();
+
+  renderGlossary();
+  setupTooltips();
+  window.tableHeaderFixer();
+});
 

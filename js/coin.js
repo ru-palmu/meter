@@ -19,14 +19,7 @@ function calculate(rank = '') {
   };
 
   // index.html
-  if (document.getElementById("live_score")) {
-    calculateLiveScoreToCoins(a);
-  }
-
-  // plan.html
-  if (document.getElementById("days") && typeof calculatePlans === 'function') {
-    calculatePlans(a);
-  }
+  calculateLiveScoreToCoins(a);
 
   if (document.getElementById("scores")) {
     setScores(rank, a);
@@ -35,12 +28,6 @@ function calculate(rank = '') {
   saveCustomGuaranteedScores(rank, a);
 }
 
-// 「保証ボーダーをコピー」機能用の設定
-function setScores(rank = '', a) {
-  const label = labelGuaranteedScore(rank);
-  const ret = `${label} +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
-  document.getElementById("scores").value = ret;
-}
 
 // 出力形式を保存する
 function _saveMeterArgs(format) {
@@ -130,50 +117,25 @@ function calculateLiveScoreToCoins(a) {
   document.getElementById("result-placeholder").value = help + help2;
 }
 
-// コピーボタン
-function copyResult(name) {
-  const textarea = document.getElementById(name);
-  textarea.select();
-
-  try {
-    document.execCommand('copy');
-  } catch (err) {
-    alert("コピーに失敗しました: " + err);
-  }
-
-  textarea.setSelectionRange(0, 0); // 選択解除
-}
-
 
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
-  if (typeof loadDefaultMeter === 'function') {
-    // plan.html からも呼ばれる
-    loadDefaultMeter();
-  }
-  if (typeof loadDefaultPlan === 'function') {
-    loadDefaultPlan();
-  }
+  loadDefaultMeter();
 
-  renderNavis("navi_func", "navi_rank", "footer");
+  const user_rank = renderNavis("navi_func", "navi_rank", "footer");
 
-  // GETパラメータ r で指定されたランクをチェックする
-  const key = selectedRank();
-
-  // if (document.getElementById("a2")) {
-  //   applyPreset(key);
-  // }
-  if (key) {
+  if (user_rank) {
+	// 表示改善. ランクが決定しているときはランク表示を追加
     [
       ['index_rank', 'ランク', 'での'],
 //      ['history_rank', 'ランク', 'の'],
     ].forEach(([id, prefix, suffix]) => {
-       setRankText(key, id, prefix, suffix);
+       setRankText(user_rank, id, prefix, suffix);
     });
   }
 
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'days', 'points', 'result_format'].forEach(id => {
+  ['a2', 'a4', 'a6', 'result-format', 'live_score'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
 
@@ -186,10 +148,4 @@ window.addEventListener("DOMContentLoaded", () => {
   window.tableHeaderFixer();
 });
 
-if (document.getElementById("glossary")) {
-	window.addEventListener("hashchange", () => {
-		hashChangeGlossary();
-	});
-}
 
-window.copyResult = copyResult;
