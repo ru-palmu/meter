@@ -44,6 +44,9 @@ export default [
 		saveCustomGuaranteedScores: "readonly",
 		copyResult: "readonly",
 		setScores: "readonly",
+		insertGuaranteedScore: "readonly",
+		updateGuaranteedScore: "readonly",
+		updateUrl: "readonly",
 	  },
     },
     rules: {

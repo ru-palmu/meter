@@ -126,6 +126,30 @@ function saveSessionArgs(prefix, table) {
 	});
 }
 
+function updateUrl(table) {
+	// セレクタを選んだらリダイレクトする
+  const params = new URLSearchParams(window.location.search);
+
+  table.forEach((item) => {
+	  const elemId = item[0];
+	  const paramName = item[1];
+
+	  const elem = document.getElementById(elemId);
+	  if (!elem) {
+		  console.log(`Element not found: ${elemId}`);
+		  return ;
+	  }
+	  if (elem.value === "") {
+		  params.delete(paramName);
+	  } else {
+		  params.set(paramName, elem.value);
+	  }
+  });
+
+  // 更新したクエリでリダイレクト
+  window.location.href = window.location.pathname + "?" + params.toString();
+}
+
 
 //////////////////////////////////////////////////
 // 確定スコアの描画
@@ -336,15 +360,7 @@ function renderNavis(navi_func, navi_rank, __footer) {
 	const rank = selectedRank();
 	localStorage.setItem(COMMON_PREFIX + "selected_rank", rank);
 	_renderNaviRank(rank, navi_rank);
-	const selector = insertGuaranteedScore("guaranteed-score", rank);
-	if (selector) {
-		updateGuaranteedScore(selector, rank);
-	}
-	document.addEventListener('change', (event) => {
-		if (event.target && event.target.id === selector) {
-			updateGuaranteedScore(selector, rank);
-		}
-	});
+
 	appendCurrentQueryToLinks('append-query')
 	_renderFooter();
 	if (typeof PALMU_NOTICES !== "undefined") {
@@ -1032,4 +1048,7 @@ window.getCandRank = getCandRank;
 window.RANK_CUSTOM = RANK_CUSTOM;
 window.copyResult = copyResult;
 window.setScores = setScores;
+window.insertGuaranteedScore = insertGuaranteedScore;
+window.updateGuaranteedScore = updateGuaranteedScore;
+window.updateUrl = updateUrl;
 

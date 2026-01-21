@@ -2,6 +2,18 @@
 
 const PLAN_PREFIX = 'meter_plan_';
 
+const PLAN_SELECTORS = [
+	// [html-id, url-param]
+	['days', 'days'],
+	['points', 'points'],
+	['result-format', 'format'],
+	['date-select', 'date'],
+];
+
+function _updateUrlPlan() {
+	return updateUrl(PLAN_SELECTORS);
+}
+
 
 // 一週間のプランを計画する
 function calculatePlans() {
@@ -144,27 +156,38 @@ function _savePlanArgs(days, points, format) {
 	saveSessionArgs(PLAN_PREFIX, table);
 }
 
-// n 日後に x ポイントの選択除法をセッションから取得する
-function loadDefaultPlan() {
-	const table = [
-		['days', 'days'],
-		['points', 'points'],
-		['format', 'result-format'],
-	];
-	loadDefaultValues(PLAN_PREFIX, table);
-}
-
-
 
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
-  loadDefaultPlan();
 
   renderNavis("navi_func", "navi_rank", "footer");
 
+  const rank = selectedRank();
+  const selector = insertGuaranteedScore("guaranteed-score", rank);
+
+  const params = new URLSearchParams(window.location.search);
+  PLAN_SELECTORS.forEach(([elemId, paramName]) => {
+		const val = params.get(paramName) || '';
+		if (val) {
+			const select = document.getElementById(elemId);
+			// 妥当な値なら選択状態にする
+			if ([...select.options].some((op) => op.value === val)) {
+				select.value = val;
+			}
+		}
+  });
+  if (selector) {
+    updateGuaranteedScore(selector, rank);
+  }
+
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'result-format', 'days', 'points'].forEach(id => {
+  ['a2', 'a4', 'a6'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculatePlans, undefined);
+  });
+
+  PLAN_SELECTORS.forEach(([id, _]) => {
+    document.getElementById(id)?.addEventListener('input', _updateUrlPlan);
+    document.getElementById(id)?.addEventListener('change', _updateUrlPlan);
   });
 
   // 初回計算

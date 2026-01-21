@@ -1,37 +1,15 @@
 
-function updateUrl() {
-  const params = new URLSearchParams(window.location.search);
+const TABLE_SELECTORS = [
+	// [html-id, url-param]
+	['date-select', 'date'],
+	['date-base-select', 'base'],
+	['result-format', 'format'],
+	['result-metrics', 'metrics'],
+];
 
-  const select = document.getElementById('date-select');
-  if (select.value === "") {
-	  params.delete('date');
-  } else {
-	  params.set('date', select.value);
-  }
 
-  const select2 = document.getElementById('date-base-select');
-  if (!select2 || select2.value === "") {
-	  params.delete('base');
-  } else {
-	  params.set('base', select2.value);
-  }
-
-  const format = document.getElementById('result-format');
-  if (format.value === "") {
-	  params.delete('format');
-  } else {
-	  params.set('format', format.value);
-  }
-
-  const metrics = document.getElementById('result-metrics');
-  if (metrics.value === "") {
-	  params.delete('metrics');
-  } else {
-	  params.set('metrics', metrics.value);
-  }
-
-  // 更新したクエリでリダイレクト
-  window.location.href = window.location.pathname + "?" + params.toString();
+function _updateUrlTable() {
+	return updateUrl(TABLE_SELECTORS);
 }
 
 
@@ -389,9 +367,6 @@ function renderBorderMultiplierTable() {
 			}
 		});
 	});
-
-
-
 }
 
 // HTML パース完了後に発火
@@ -410,6 +385,6 @@ window.addEventListener("DOMContentLoaded", () => {
   renderBorderMultiplierTable();
 
   ['date-select', 'date-base-select', 'result-format', 'result-metrics'].forEach((id) => {
-	  document.getElementById(id)?.addEventListener('change', updateUrl);
+	  document.getElementById(id)?.addEventListener('change', _updateUrlTable);
   });
 });

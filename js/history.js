@@ -9,24 +9,9 @@ const HISTORY_SELECTORS = [
 	  ['result-count', 'count'],
 ];
 
-function updateUrlHistory() {
-  // リダイレクトする
-  const params = new URLSearchParams(window.location.search);
-
-  HISTORY_SELECTORS.forEach(([elemId, paramName]) => {
-	  const elem = document.getElementById(elemId);
-	  if (elem.value === "") {
-		  params.delete(paramName);
-	  } else {
-		  params.set(paramName, elem.value);
-	  }
-  });
-
-  // 更新したクエリでリダイレクト
-  window.location.href = window.location.pathname + "?" + params.toString();
+function _updateUrlHistory() {
+  updateUrl(HISTORY_SELECTORS);
 }
-
-
 
 // 縦線描画プラグイン, borderDates は日付の配列
 function verticalLinesBetweenPlugin(borderDates) {
@@ -509,8 +494,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	// 変更されたら，リダイレクトしたい
 	HISTORY_SELECTORS.forEach(([id, _]) => {
-      document.getElementById(id)?.addEventListener('input', updateUrlHistory);
-      document.getElementById(id)?.addEventListener('change', updateUrlHistory);
+      document.getElementById(id)?.addEventListener('input', _updateUrlHistory);
+      document.getElementById(id)?.addEventListener('change', _updateUrlHistory);
     });
 
 	setupTooltips()

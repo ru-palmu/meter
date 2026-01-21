@@ -286,7 +286,7 @@ function _renderEventCards(data) {
   });
 }
 
-function updateUrl() {
+function _updateUrlEvent() {
   const params = new URLSearchParams(window.location.search);
 
   // event パラメータの更新
@@ -369,9 +369,9 @@ window.addEventListener("DOMContentLoaded", () => {
   applyFilter();
 
   // フィルターイベント
-  eventSelect.addEventListener("change", updateUrl);
+  eventSelect.addEventListener("change", _updateUrlEvent);
   // トグル切替
-  document.getElementById("toggleView").addEventListener("change", updateUrl);
+  document.getElementById("toggleView").addEventListener("change", _updateUrlEvent);
 
   document.getElementById("modal-close").addEventListener("click", () => {
 	  closeModal();

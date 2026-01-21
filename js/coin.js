@@ -124,6 +124,16 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const user_rank = renderNavis("navi_func", "navi_rank", "footer");
 
+  const selector = insertGuaranteedScore("guaranteed-score", user_rank);
+  if (selector) {
+    updateGuaranteedScore(selector, user_rank);
+  }
+  document.addEventListener('change', (event) => {
+    if (event.target && event.target.id === selector) {
+      updateGuaranteedScore(selector, user_rank);
+    }
+  });
+
   if (user_rank) {
 	// 表示改善. ランクが決定しているときはランク表示を追加
     [
