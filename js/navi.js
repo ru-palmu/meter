@@ -146,9 +146,22 @@ function updateUrl(table) {
 	  }
   });
 
+  // スクロール位置を保存
+  sessionStorage.setItem('scrollY', window.scrollY);
+
   // 更新したクエリでリダイレクト
   window.location.href = window.location.pathname + "?" + params.toString();
 }
+
+// スクロール位置を復元
+window.addEventListener('load', () => {
+	const y = sessionStorage.getItem('scrollY');
+	if (y !== null) {
+		window.scrollTo(0, parseInt(y, 10));
+		sessionStorage.removeItem('scrollY'); // 一度使ったら消す
+	}
+});
+
 
 
 //////////////////////////////////////////////////
