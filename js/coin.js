@@ -1,8 +1,17 @@
 // 本体:
-// ライブスコアから確定スコアまでのコイン数算出 or
-// プラン計算
-//
+// ライブスコアから確定スコアまでのコイン数算出
 const METER_PREFIX = 'meter_meter_';
+
+const METER_INPUT_SELECT = [
+	// [session-id, html-id]
+	['format', 'result-format'],
+	['live_score', 'live_score'],
+	['date', 'date-select'],
+];
+
+function updateUrlMeter() {
+	return updateUrl([]);
+}
 
 function calculate(rank = '') {
   if (rank instanceof Event) {
@@ -25,23 +34,29 @@ function calculate(rank = '') {
     setScores(rank, a);
   }
 
+  _saveMeterArgs();
   saveCustomGuaranteedScores(rank, a);
 }
 
 
 // 出力形式を保存する
-function _saveMeterArgs(format) {
-	const table = [
-		['format', format],
-	];
+function _saveMeterArgs() {
+	const table = [];
+	METER_INPUT_SELECT.forEach(([session_id, html_id]) => {
+		const elm = document.getElementById(html_id);
+		if (!elm) {
+			return;
+		}
+		const value = elm.value;
+		if (value !== null && value !== undefined) {
+			table.push([session_id, value]);
+		}
+	});
 	saveSessionArgs(METER_PREFIX, table);
 }
 
 function loadDefaultMeter() {
-	const table = [
-		['format', 'result-format'],
-	];
-	loadDefaultValues(METER_PREFIX, table);
+	loadDefaultValues(METER_PREFIX, METER_INPUT_SELECT);
 }
 
 // 現在のライブスコアから確定スコアまでのコイン数を算出
@@ -53,7 +68,6 @@ function calculateLiveScoreToCoins(a) {
   }
 
   const format = document.getElementById("result-format").value;
-  _saveMeterArgs(format);
   let targets = [];
   if (format == 'all' || format.startsWith('easy')) {
     targets = [2, 4, 6];
@@ -120,19 +134,20 @@ function calculateLiveScoreToCoins(a) {
 
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
-  loadDefaultMeter();
 
   const user_rank = renderNavis("navi_func", "navi_rank", "footer");
 
-  const selector = insertGuaranteedScore("guaranteed-score", user_rank);
-  if (selector) {
-    updateGuaranteedScore(selector, user_rank);
-  }
-  document.addEventListener('change', (event) => {
-    if (event.target && event.target.id === selector) {
-      updateGuaranteedScore(selector, user_rank);
+  const selector_id = insertGuaranteedScore("guaranteed-score", user_rank);
+  loadDefaultMeter();
+  if (selector_id) {
+    updateGuaranteedScore(selector_id, user_rank);
+    const select = document.getElementById(selector_id);
+    if (select) {
+      select.addEventListener('change', () => {
+        updateGuaranteedScore(selector_id, user_rank);
+      });
     }
-  });
+  }
 
   if (user_rank) {
 	// 表示改善. ランクが決定しているときはランク表示を追加
@@ -159,3 +174,4 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+window.updateUrlMeter = updateUrlMeter;

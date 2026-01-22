@@ -33,7 +33,7 @@
 <label id="score_label">現在のライブスコア: </label><input type="number" id="live_score" value="0"><br><br>
 
 <div class="output-block">
-<button class="copy-button" onclick="copyResult('result')">📋コピー</button>
+<button class="copy-button" onclick="onCopyAndRedirect('result', updateUrlMeter)">📋コピー</button>
 <select id="result-format">
 	<option value="easy">標準（全部）＋改良モデル</option>
 	<option value="easy_per3">標準（全部）＋従来モデル[÷3]</option>
@@ -51,7 +51,7 @@
 
 <br>
 <div>
-<button class="copy-button" onclick="copyResult('result-placeholder')">📋表示の説明をコピー</button>
+<button class="copy-button" onclick="onCopyAndRedirect('result-placeholder', updateUrlMeter)">📋表示の説明をコピー</button>
 <textarea class="copy-output" id="result-placeholder" readonly cols="40" rows="1" placeholder=""></textarea>
 </div>
 

@@ -162,14 +162,43 @@ window.addEventListener('load', () => {
 	}
 });
 
+function applyParamToElement(elemId, paramName, params) {
+	const val = params.get(paramName) || '';
+	if (val) {
+		const el = document.getElementById(elemId);
+		if (!el) {
+			return;
+		}
+
+		switch (el.tagName) {
+		case 'SELECT':
+			// 妥当な値なら選択状態にする
+			if ([...el.options].some((op) => op.value === val)) {
+				el.value = val;
+			}
+			break;
+		case 'INPUT':
+		case 'TEXTAREA':
+			el.value = val;
+			break;
+		}
+	}
+}
+
+function applyParamsToFormControls(table) {
+	const params = new URLSearchParams(window.location.search);
+	table.forEach((item) => {
+		applyParamToElement(item[0], item[1], params);
+	});
+}
 
 
 //////////////////////////////////////////////////
 // 確定スコアの描画
 //////////////////////////////////////////////////
 //
-function updateGuaranteedScore(selector, rank) {
-	const select = document.getElementById(selector);
+function updateGuaranteedScore(selector_id, rank) {
+	const select = document.getElementById(selector_id);
 	if (!select) {
 		return;
 	}
@@ -291,7 +320,7 @@ function insertGuaranteedScore(targetId, rank) {
     outerDiv.appendChild(titleSpan);
 
     // 保証ボーダーの入力欄
-    renderGuaranteedScoreInputs(outerDiv);
+    _renderGuaranteedScoreInputs(outerDiv, rank != RANK_CUSTOM);
 
     // 保証ボーダーのコピーエリア
     renderGuaranteedScoreCopyArea(outerDiv, title_copy);
@@ -301,7 +330,7 @@ function insertGuaranteedScore(targetId, rank) {
     return select_id;
 }
 
-function renderGuaranteedScoreInputs(outerDiv) {
+function _renderGuaranteedScoreInputs(outerDiv, readonly) {
     // 入力行
     const values = [
         { id: 'a2', label: '+2', value: _getCustomGuaranteedScore('+2', 43950) },
@@ -321,6 +350,7 @@ function renderGuaranteedScoreInputs(outerDiv) {
         input.type = 'number';
         input.id = item.id;
         input.value = item.value;
+        input.readOnly = readonly;
 
         row.appendChild(label);
         row.appendChild(input);
@@ -329,17 +359,16 @@ function renderGuaranteedScoreInputs(outerDiv) {
 }
 
 // コピーボタン
-function copyResult(name) {
-  const textarea = document.getElementById(name);
-  textarea.select();
+async function copyResult(id) {
+  const text = document.getElementById(id).value
+    ?? document.getElementById(id).innerText;
 
-  try {
-    document.execCommand('copy');
-  } catch (err) {
-    alert("コピーに失敗しました: " + err);
-  }
+  await navigator.clipboard.writeText(text);
+}
 
-  textarea.setSelectionRange(0, 0); // 選択解除
+async function onCopyAndRedirect(id, redirectFunc) {
+	await copyResult(id);
+	return redirectFunc();
 }
 
 
@@ -1060,8 +1089,10 @@ window.saveCustomGuaranteedScores = saveCustomGuaranteedScores;
 window.getCandRank = getCandRank;
 window.RANK_CUSTOM = RANK_CUSTOM;
 window.copyResult = copyResult;
+window.onCopyAndRedirect = onCopyAndRedirect;
 window.setScores = setScores;
 window.insertGuaranteedScore = insertGuaranteedScore;
 window.updateGuaranteedScore = updateGuaranteedScore;
 window.updateUrl = updateUrl;
+window.applyParamsToFormControls = applyParamsToFormControls;
 

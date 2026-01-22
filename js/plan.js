@@ -19,9 +19,9 @@ function _updateUrlPlan() {
 function calculatePlans() {
 
 	const a = {
-		2: parseInt(document.getElementById("a2")?.value ?? '0'),
-		4: parseInt(document.getElementById("a4")?.value ?? '0'),
-		6: parseInt(document.getElementById("a6")?.value ?? '0')
+		2: parseInt(document.getElementById("a2")?.value ?? '100'),
+		4: parseInt(document.getElementById("a4")?.value ?? '200'),
+		6: parseInt(document.getElementById("a6")?.value ?? '600')
 	};
 
 	const rank = selectedRank();
@@ -162,22 +162,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   renderNavis("navi_func", "navi_rank", "footer");
 
+  // セレクタの準備. applyParamsToFormControls 前に実施
   const rank = selectedRank();
-  const selector = insertGuaranteedScore("guaranteed-score", rank);
+  const selector_id = insertGuaranteedScore("guaranteed-score", rank);
 
-  const params = new URLSearchParams(window.location.search);
-  PLAN_SELECTORS.forEach(([elemId, paramName]) => {
-		const val = params.get(paramName) || '';
-		if (val) {
-			const select = document.getElementById(elemId);
-			// 妥当な値なら選択状態にする
-			if ([...select.options].some((op) => op.value === val)) {
-				select.value = val;
-			}
-		}
-  });
-  if (selector) {
-    updateGuaranteedScore(selector, rank);
+  applyParamsToFormControls(PLAN_SELECTORS);
+
+  if (selector_id) {
+    updateGuaranteedScore(selector_id, rank);
   }
 
   // 入力変更時に自動計算

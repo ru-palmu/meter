@@ -475,18 +475,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	__renderHistoryResultEnd();
 
-  	const params = new URLSearchParams(window.location.search);
-	HISTORY_SELECTORS.forEach(([elemId, paramName]) => {
-		const val = params.get(paramName) || '';
-		if (val) {
-			const select = document.getElementById(elemId);
-			// 妥当な値なら選択状態にする
-			if ([...select.options].some((op) => op.value === val)) {
-				select.value = val;
-			}
-		}
-	});
-
+	applyParamsToFormControls(HISTORY_SELECTORS);
 
 	renderHistories();
 	renderNavis("navi_func", "navi_rank", "footer");

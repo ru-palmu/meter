@@ -47,6 +47,8 @@ export default [
 		insertGuaranteedScore: "readonly",
 		updateGuaranteedScore: "readonly",
 		updateUrl: "readonly",
+		applyParamsToFormControls: "readonly",
+
 	  },
     },
     rules: {
