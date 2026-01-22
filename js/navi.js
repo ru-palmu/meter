@@ -351,6 +351,9 @@ function _renderGuaranteedScoreInputs(outerDiv, readonly) {
         input.id = item.id;
         input.value = item.value;
         input.readOnly = readonly;
+        if (readonly) {
+            input.className = 'guaranteed-score-readonly';
+        }
 
         row.appendChild(label);
         row.appendChild(input);
