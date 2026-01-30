@@ -49,6 +49,9 @@ export default [
 		updateUrl: "readonly",
 		applyParamsToFormControls: "readonly",
 
+		// table.js
+		copyImage: "readonly",
+		html2canvas: "readonly",
 	  },
     },
     rules: {

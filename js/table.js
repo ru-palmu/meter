@@ -369,6 +369,24 @@ function renderBorderMultiplierTable() {
 	});
 }
 
+async function copyImage(uid) {
+  const target = document.getElementById(uid);
+
+  const canvas = await html2canvas(target, {
+    scale: window.devicePixelRatio,
+    backgroundColor: null,
+  });
+
+  canvas.toBlob(async (blob) => {
+    await navigator.clipboard.write([
+      new ClipboardItem({ "image/png": blob })
+    ]);
+    alert("クリップボードにコピーしました");
+  });
+}
+
+window.copyImage = copyImage;
+
 // HTML パース完了後に発火
 window.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
@@ -388,3 +406,5 @@ window.addEventListener("DOMContentLoaded", () => {
 	  document.getElementById(id)?.addEventListener('change', _updateUrlTable);
   });
 });
+
+

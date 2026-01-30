@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script       src="js/meter.js?v=59" defer></script>
   <script src="../data/notice.js?v=59" defer></script>
   <script        src="js/navi.js?v=59" defer></script>
@@ -58,8 +59,8 @@
 
 <div class="flex-container">
 	<div>
-		<p>確定値の変化</p>
-		<div class="phone-frame with-title">
+		<p>確定値の変化 <button onclick="copyImage('gborder-mul')">コピー</button></p>
+		<div class="phone-frame with-title" id="gborder-mul">
 			<div class="gborder-multiplier-title" id="gborder-multiplier-title"></div>
 			<div class="gborder-multiplier-subtitle" id="gborder-multiplier-subtitle"></div>
 			<table id="gborder-multiplier-table" class="gborder-multiplier-table">
@@ -86,10 +87,10 @@
 	</div>
 
 	<div>
-		<p>降順に並べよう</p>
+		<p>降順に並べよう <button onclick="copyImage('livescore-table-order')">コピー</button></p>
 
 
-		<div class="phone-frame with-title">
+		<div class="phone-frame with-title" id="livescore-table-order">
 			<div id="livescore-table-title"></div>
 			<table id="livescore-table" class="livescore-border">
 				<colgroup>
