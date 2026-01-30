@@ -256,22 +256,65 @@ body {
 
 div.flex-container {
 	display: flex;
-	gap: 20px;
+	gap: 50px;
 	flex-wrap: wrap;
 }
 
+/* 外側：影・L字・撮影ガイド */
+.phone-frame-wrap {
+	position: relative;
+	width: 360px;
+	aspect-ratio: 9 / 16;     /* ← 縦横比固定 */
+	overflow: visible;         /* はみ出し防止 */
+}
+
+
+/* L字は外側に */
+.phone-frame-wrap::before,
+.phone-frame-wrap::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #4aa3df;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* 左上 */
+.phone-frame-wrap::before {
+  top: -6px;
+  left: -6px;
+  border-right: none;
+  border-bottom: none;
+}
+
+/* 右下 */
+.phone-frame-wrap::after {
+  bottom: -6px;
+  right: -32px;
+  border-left: none;
+  border-top: none;
+}
+
+
 .phone-frame {
-  width: 360px;              /* スマホ幅っぽい */
-  aspect-ratio: 9 / 16;     /* ← 縦横比固定 */
+  /* width: 360px; */             /* スマホ幅っぽい */
+  position: static;
+  width: 100%;
+  height: 100%;
   background: white;
   border-radius: 16px;
   padding: 12px;
   box-shadow: 0 0 20px rgba(0,0,0,0.15);
   overflow: hidden;         /* はみ出し防止 */
+  /*
   display: flex;
   justify-content: center;
   align-items: center;
+  */
 }
+
 
 .phone-frame.with-title {
   flex-direction: column;
