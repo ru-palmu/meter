@@ -166,7 +166,7 @@ function __renderBorderHistory(sortedDates) {
 		td.textContent = window.scoreToString(sum, format);
 		tr.appendChild(td);
 	  });
-	  mintd.className = 'decrease';
+	  mintd.className = 'minimum';
     } else {
       [2, 4, 6].forEach(point => {
         const val = a1[point];

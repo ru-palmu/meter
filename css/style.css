@@ -667,10 +667,19 @@ table.history tbody tr:hover {
 }
 
 table.history td.decrease {
-  background-color: #fbeaea;
+  /* background-color: #f6dddd; */
+  background-color: rgba(246, 221, 221, 0.75);
   color: #000;
   font-weight: bold;
 }
+
+table.history td.minimum {
+  /* background-color: #e3ecf5; */
+  background-color: rgba(227, 236, 245, 0.75);
+  color: #1f3b5c;
+  font-weight: bold;
+}
+
 
 table.history tr.separator td {
   border-bottom: 1px dashed #ff9800; /* オレンジの線 */
