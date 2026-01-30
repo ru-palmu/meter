@@ -97,11 +97,7 @@ function reanderBorderHistoryThead(basis) {
 }
 
 function __plan2scoreOrcoin(plan, preset, metrics) {
-	return [...plan].reduce((acc, ch) => {
-		const score = preset[parseInt(ch)] ?? 0;
-		const val = _scoreOrCoinHistory(score, metrics, "raw");
-		return acc + val;
-	}, 0);
+	return window.plan2scoreOrcoin(plan, preset, metrics);
 }
 
 

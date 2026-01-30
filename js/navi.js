@@ -89,6 +89,14 @@ function scoreToString(val, format) {
 	}
 }
 
+function plan2scoreOrcoin(plan, preset, metrics) {
+	return [...plan].reduce((acc, ch) => {
+		const score = preset[parseInt(ch)] ?? 0;
+		const val = scoreOrCoin(score, metrics, "raw");
+		return acc + val;
+	}, 0);
+}
+
 
 // 現在時刻取得．未使用
 function __getCurrentTime() {
@@ -1098,4 +1106,5 @@ window.insertGuaranteedScore = insertGuaranteedScore;
 window.updateGuaranteedScore = updateGuaranteedScore;
 window.updateUrl = updateUrl;
 window.applyParamsToFormControls = applyParamsToFormControls;
+window.plan2scoreOrcoin = plan2scoreOrcoin;
 

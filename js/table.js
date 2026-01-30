@@ -7,6 +7,22 @@ const TABLE_SELECTORS = [
 	['result-metrics', 'metrics'],
 ];
 
+const PLANS_KEEP = [
+	"2222211",
+	"4221111",
+	"4411111",
+	"6111111",
+];
+
+const PLANS_UP = [
+	"4444111",
+	"6441111",
+	"4442211",
+	"6621111",
+	"6422211",
+	"4422222",
+	"6222222",
+];
 
 function _updateUrlTable() {
 	return updateUrl(TABLE_SELECTORS);
@@ -104,101 +120,6 @@ function renderMeterTableForDate() {
 	});
 }
 
-function renderMeterKeepUpTableForDate() {
-	const tableBody = document.getElementById('meter-keepup-tbody');
-	if (!tableBody) {
-		return;
-	}
-
-	// ymd が妥当でなかったら，最新のものを採用する
-	let ymd = document.getElementById('date-select').value;
-	if (!ymd || !(ymd in presets)) {
-		// 初期表示
-		const select = document.getElementById('date-select');
-		ymd = select.value = Object.keys(presets).sort().reverse()[0];
-	}
-
-	tableBody.innerHTML = '';
-
-	// ランクごとに
-	window.getCandRank().toReversed().forEach((rank) => {
-		if (!(rank in presets[ymd])) {
-			// データがなければスキップ
-			return;
-		}
-
-		const row = document.createElement('tr');
-
-		// ランク名
-		const rankCell = document.createElement('td');
-		rankCell.textContent = rank;
-		row.appendChild(rankCell);
-
-		const format = document.getElementById('result-format').value;
-		const metrics = document.getElementById('result-metrics').value;
-
-
-		/////////////////////////////////
-		// 何をもとにするか
-		/////////////////////////////////
-		const values = {};
-		[2, 4, 6].forEach((point) => {
-			const v = presets[ymd][rank][point];
-			if (metrics === 'score') {
-				values[point] = v;
-			} else if (metrics === 'coin') {
-				values[point] = score2coin(v, 0, 'normal');
-			} else {
-				values[point] = score2coin(v, 0, 'per3');
-			}
-		});
-
-		/////////////////////////////////
-		// キープ
-		/////////////////////////////////
-		[[2,2,2,2,2], [4,2,2], [4,4], [6]].forEach((plan) => {
-			const val = plan.reduce((acc, point) => acc + values[point], 0);
-			const meterCell = document.createElement('td');
-			meterCell.textContent = window.scoreToString(val, format);
-			row.appendChild(meterCell);
-		});
-
-		/////////////////////////////////
-		// ランクアップ
-		/////////////////////////////////
-		const lists = [
-			[4,4,4,4],
-			[6,4,4],
-			[4,4,4,2,2],
-			[6,6,2],
-			[6,4,2,2,2],
-			[4,4,2,2,2,2,2],
-			[6,2,2,2,2,2,2],
-		];
-		const result = lists.reduce(
-		  (best, arr) => {
-			const sum = arr.reduce((total, i) => total + (values[i] ?? 0), 0);
-
-			if (sum < best.sum) {
-			  return { array: arr, sum };
-			}
-			return best;
-		  },
-		  { array: null, sum: +Infinity }
-		);
-
-		const upPlan = document.createElement('td');
-		upPlan.textContent = result.array ? result.array.map((p) => `+${p}`).join(', ') : '-';
-		row.appendChild(upPlan);
-
-		const upValue = document.createElement('td');
-		upValue.textContent = window.scoreToString(result.sum, format);
-		row.appendChild(upValue);
-
-		tableBody.appendChild(row);
-	});
-}
-
 
 function renderLiveScoreTable() {
 	const title = document.getElementById('livescore-table-title');
@@ -265,6 +186,40 @@ function renderLiveScoreTable() {
 
 }
 
+function _setClassRank(row, row2, rank) {
+	let	classRank = ''
+	if (rank[0] == 'S') {
+		classRank = 'rank-s';
+	} else if (rank[0] == 'B') {
+		classRank = 'rank-b';
+	} else if (rank[0] == 'D') {
+		classRank = 'rank-d';
+	}
+	if (classRank) {
+		row.classList.add('rank-s');
+		if (row2) {
+			row2.classList.add('rank-s');
+		}
+	}
+}
+
+function __plan2scoreOrcoin(plan, preset, metrics) {
+	return window.plan2scoreOrcoin(plan, preset, metrics);
+}
+
+function evalPlans(plans, preset, metrics) {
+	// 最小となるプランを探す
+	let minTotal = Infinity;
+	let minPlan = null;
+	plans.forEach((plan) => {
+		const total = __plan2scoreOrcoin(plan, preset, metrics);
+		if (total < minTotal) {
+			minTotal = total;
+			minPlan = plan;
+		}
+	});
+	return [minTotal, minPlan];
+}
 
 // 確定値の変化
 function renderBorderMultiplierTable() {
@@ -324,18 +279,7 @@ function renderBorderMultiplierTable() {
 		rankCell.rowSpan = rowspan;
 		rankCell.className = 'rank-cell';
 		row.appendChild(rankCell);
-		let	classRank = ''
-		if (rank[0] == 'S') {
-			classRank = 'rank-s';
-		} else if (rank[0] == 'B') {
-			classRank = 'rank-b';
-		} else if (rank[0] == 'D') {
-			classRank = 'rank-d';
-		}
-		if (classRank) {
-			row.classList.add('rank-s');
-			row2.classList.add('rank-s');
-		}
+		_setClassRank(row, row2, rank);
 
 		[2, 4, 6].forEach((point) => {
 			const baseMeter = base[rank] ? base[rank][point] : null;
@@ -369,6 +313,115 @@ function renderBorderMultiplierTable() {
 	});
 }
 
+// ランクキープ・ランクアップに必要なコインの変化
+function renderKeeupCoinMultiplierTable() {
+	const tableBody = document.getElementById('keeupcoin-multiplier-tbody');
+	if (!tableBody) {
+		return;
+	}
+
+	const date_target = document.getElementById('date-select').value;
+	const date_base = document.getElementById('date-base-select').value;
+
+	if (date_target <= date_base) {
+		// 比較日が基準日より前なら何もしない
+		document.getElementById('keeupcoin-multiplier-title').innerText = "比較日には基準日より新しい日付を選択してください。";
+		return;
+	}
+
+	document.getElementById('keeupcoin-multiplier-title').innerText = "ランクキープ・アップに必要なコイン数の変化";
+	document.getElementById('keeupcoin-multiplier-subtitle').innerText =
+		`(基準日: ${date_base}, 比較日: ${date_target})`;
+
+
+	const base = presets[date_base];
+	const target = presets[date_target];
+
+	window.getCandRank().toReversed().forEach((rank) => {
+
+		const row = document.createElement('tr');
+		row.className = 'value';
+
+		let row2 = null;
+		let rowspan = 1;
+		tableBody.appendChild(row);
+
+		if (base[rank] && target[rank]) {
+			// 比率が設定可能か
+			rowspan += 1;
+			row2 = document.createElement('tr');
+			row2.className = 'multiplier';
+			tableBody.appendChild(row2);
+
+			row.classList.add('has-multiplier');
+		}
+
+		// ランク名
+		const rankCell = document.createElement('td');
+		rankCell.textContent = rank;
+		rankCell.rowSpan = rowspan;
+		rankCell.className = 'rank-cell';
+		row.appendChild(rankCell);
+		_setClassRank(row, row2, rank);
+
+		const format = document.getElementById('result-format').value;
+		const metrics = 'coin';
+
+		// キープ
+		const keep_base = base[rank] ? evalPlans(PLANS_KEEP, base[rank], metrics, format) : ['-', '-'];
+		const keep_targ = target[rank] ? evalPlans(PLANS_KEEP, target[rank], metrics, format) : ['-', '-'];
+		const up_base = base[rank] ? evalPlans(PLANS_UP, base[rank], metrics, format) : ['-', '-'];
+		const up_targ = target[rank] ? evalPlans(PLANS_UP, target[rank], metrics, format) : ['-', '-'];
+
+		[[keep_base[0], keep_targ[0], keep_targ[1]],
+		 [up_base[0], up_targ[0], up_targ[1]],
+		].forEach((values) => {
+			const basecell = document.createElement('td');
+			if (values[0] === '-') {
+				basecell.className = 'na-cell';
+				basecell.textContent = values[0];
+			} else {
+				basecell.textContent = window.scoreToString(values[0], format);
+			}
+			row.appendChild(basecell);
+
+			const targetcell = document.createElement('td');
+			if (values[1] === '-') {
+				targetcell.textContent = values[1];
+				targetcell.className = 'na-cell';
+			} else {
+				targetcell.textContent = window.scoreToString(values[1], format);
+				targetcell.className = 'target-cell';
+			}
+			row.appendChild(targetcell);
+
+			const plancell = document.createElement('td');
+			plancell.textContent = values[2];
+			plancell.className = 'plan-cell';
+			row.appendChild(plancell);
+
+			if (row2) {
+				const percentChange  = (values[1] - values[0]) / values[0] * 100;
+				const percentChangeCell = document.createElement('td');
+				percentChangeCell.colSpan = 2;
+
+				const sign = percentChange > 0 ? '+' : '';
+				percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
+				if (percentChange < 0) {
+					percentChangeCell.className = 'rate-decrease';
+				} else {
+					percentChangeCell.className = 'rate-increase';
+				}
+
+				row2.appendChild(percentChangeCell);
+
+				row2.appendChild(document.createElement('td')); // キープ・アップの区切り
+			}
+		});
+	});
+}
+
+
 async function copyImage(uid) {
   const target = document.getElementById(uid);
 
@@ -398,9 +451,9 @@ window.addEventListener("DOMContentLoaded", () => {
 	  params.get('metrics') || '',
 	  params.get('format') || '');
   renderMeterTableForDate();  // 初期表示
-  renderMeterKeepUpTableForDate();  // 初期表示
   renderLiveScoreTable();
   renderBorderMultiplierTable();
+  renderKeeupCoinMultiplierTable();
 
   ['date-select', 'date-base-select', 'result-format', 'result-metrics'].forEach((id) => {
 	  document.getElementById(id)?.addEventListener('change', _updateUrlTable);

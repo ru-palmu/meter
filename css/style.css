@@ -410,6 +410,11 @@ table.gborder-multiplier-table tr.rank-d {
 	font-weight: bold;
 }
 
+.gborder-multiplier-table tr.value td.plan-cell {
+    color: #555;
+	font-size: 0.9em;
+}
+
 .gborder-multiplier-table tr.multiplier td {
 	padding-top: 0px;
 	padding-bottom: 4px;
