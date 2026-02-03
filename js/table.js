@@ -284,14 +284,18 @@ function renderBorderMultiplierTable() {
 		[2, 4, 6].forEach((point) => {
 			const baseMeter = base[rank] ? base[rank][point] : null;
 			const targetMeter = target[rank] ? target[rank][point] : null;
+			const cname = `point-${point}`;
 
 			const baseCell = document.createElement('td');
 			baseCell.textContent = baseMeter !== null ? window.scoreOrCoin(baseMeter, 'score', 'short') : '-';
+			baseCell.classList.add(cname);
+			baseCell.classList.add('separator-left');
 			row.appendChild(baseCell);
 
 			const targetCell = document.createElement('td');
 			targetCell.textContent = targetMeter !== null ? window.scoreOrCoin(targetMeter, 'score', 'short') : 'N/A';
 			targetCell.className = targetMeter !== null ? 'target-cell' : 'na-cell';
+			targetCell.classList.add(cname);
 			row.appendChild(targetCell);
 
 			if (row2) {
@@ -306,6 +310,8 @@ function renderBorderMultiplierTable() {
 				} else {
 					percentChangeCell.className = 'rate-increase';
 				}
+				percentChangeCell.classList.add(cname);
+				percentChangeCell.classList.add('separator-left');
 
 				row2.appendChild(percentChangeCell);
 			}
@@ -373,16 +379,19 @@ function renderKeeupCoinMultiplierTable() {
 		const up_base = base[rank] ? evalPlans(PLANS_UP, base[rank], metrics, format) : ['-', '-'];
 		const up_targ = target[rank] ? evalPlans(PLANS_UP, target[rank], metrics, format) : ['-', '-'];
 
-		[[keep_base[0], keep_targ[0], keep_targ[1]],
-		 [up_base[0], up_targ[0], up_targ[1]],
+		[[keep_base[0], keep_targ[0], keep_targ[1], 'keep'],
+		 [up_base[0], up_targ[0], up_targ[1], 'up'],
 		].forEach((values) => {
+			const cname = values[3];
 			const basecell = document.createElement('td');
+			basecell.className = 'separator-left';
 			if (values[0] === '-') {
-				basecell.className = 'na-cell';
+				basecell.classList.add('na-cell');
 				basecell.textContent = values[0];
 			} else {
 				basecell.textContent = window.scoreToString(values[0], format);
 			}
+			basecell.classList.add(cname);
 			row.appendChild(basecell);
 
 			const targetcell = document.createElement('td');
@@ -393,11 +402,13 @@ function renderKeeupCoinMultiplierTable() {
 				targetcell.textContent = window.scoreToString(values[1], format);
 				targetcell.className = 'target-cell';
 			}
+			targetcell.classList.add(cname);
 			row.appendChild(targetcell);
 
 			const plancell = document.createElement('td');
 			plancell.textContent = values[2];
 			plancell.className = 'plan-cell';
+			plancell.classList.add(cname);
 			row.appendChild(plancell);
 
 			if (row2) {
@@ -412,10 +423,14 @@ function renderKeeupCoinMultiplierTable() {
 				} else {
 					percentChangeCell.className = 'rate-increase';
 				}
+				percentChangeCell.classList.add('separator-left');
+				percentChangeCell.classList.add(cname);
 
 				row2.appendChild(percentChangeCell);
 
-				row2.appendChild(document.createElement('td')); // キープ・アップの区切り
+				const nullcell = document.createElement('td')
+				nullcell.className = cname;
+				row2.appendChild(nullcell); // キープ・アップの区切り
 			}
 		});
 	});

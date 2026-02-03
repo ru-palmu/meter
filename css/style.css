@@ -358,6 +358,7 @@ table.livescore-border tbody tr:nth-child(even) td:not(.sep) {
 }
 
 
+
 /*-----------------------------------------------------------------*
  * スマホ用 保証ボーダー比率テーブル
  *
@@ -388,6 +389,14 @@ table.gborder-multiplier-table td {
   border-right: none;
   text-align: center;
 }
+
+table.gborder-multiplier-table .separator-left {
+/*
+  border-left: 1px solid rgba(143, 191, 143, 0.45);
+*/
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
 
 table.gborder-multiplier-table tr.value:not(.has-multiplier) td,
 table.gborder-multiplier-table tr.multiplier td,
@@ -428,6 +437,19 @@ table.gborder-multiplier-table tr.rank-d {
 
 .gborder-multiplier-table tr.multiplier td.rate-increase {
 	color: #666;
+}
+
+/* 列グループ：ランクキープ */
+table.gborder-multiplier-table td.keep,
+table.gborder-multiplier-table td.point-2,
+table.gborder-multiplier-table td.point-6 {
+	background-color: rgba(180, 160, 80, 0.05);
+}
+
+/* 列グループ：ランクアップ */
+table.gborder-multiplier-table td.up,
+table.gborder-multiplier-table td.point-4 {
+	// background-color: rgba(100, 180, 120, 0.08);
 }
 
 
