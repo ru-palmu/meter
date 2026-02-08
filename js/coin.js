@@ -35,7 +35,7 @@ function calculate(rank = '') {
   }
 
   const border_type = document.getElementById("border-type")?.value;
-  if (border_type === 'dynamic') {
+  if (border_type !== 'guranteed') {
 	calculateDynamicScores(rank, a, b);
   } else {
     calculateLiveScoreToCoins(a, b);
