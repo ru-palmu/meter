@@ -35,7 +35,7 @@ function calculate(rank = '') {
   }
 
   const border_type = document.getElementById("border-type")?.value;
-  if (border_type !== 'guranteed') {
+  if (border_type === 'dynamic') {
 	calculateDynamicScores(rank, a, b);
   } else {
     calculateLiveScoreToCoins(a, b);
@@ -87,7 +87,6 @@ function calculateDynamicScores(rank, a, b) {
 
 
   a['g'] = parseInt(document.getElementById("dynamic-border-value")?.value ?? '0');
-  console.log("calculateDynamicScores:", a);
 
   const s2calgo = format.endsWith('_per3') ? 'per3' : 'normal';
 
@@ -228,14 +227,6 @@ function __getTodayString() {
 
 function _dynamicBorderSetup(user_rank, selector) {
 	const div_border = document.getElementById("dynamic-border-value-container");
-	if (div_border) {
-		selector.addEventListener('change', () => {
-			console.log("changed dynamic border type (div):", selector.value, (selector.value !== 'dynamic'));
-			div_border.hidden = (selector.value !== 'dynamic');
-		});
-		div_border.hidden = (selector.value !== 'dynamic');
-	}
-
 
 	// 日付確認して，前日保存分の情報は削除する
 	const dkey = 'dynamic-border-date-' + user_rank;
@@ -243,7 +234,6 @@ function _dynamicBorderSetup(user_rank, selector) {
 	const today = __getTodayString();
 	const tkey = 'dynamic-border-type-' + user_rank;
 	const vkey = 'dynamic-border-value-' + user_rank;
-	console.log("_dynamicBorderSetup:", saved_date, today);
 	if (saved_date !== today) {
 		// 日付が異なるなら保存情報を削除
 		localStorage.removeItem(tkey);
@@ -251,14 +241,19 @@ function _dynamicBorderSetup(user_rank, selector) {
 	}
 
 	const border_type = localStorage.getItem(tkey);
-	selector.value = border_type ? border_type : 'guaranteed';
+	if (selector instanceof HTMLSelectElement) {
+		selector.value = border_type ? border_type : 'guaranteed';
 
-	console.log("_dynamicBorderSetup2:", selector.value);
-	selector.addEventListener('change', () => {
-		console.log("changed dynamic border type:", selector.value);
-		localStorage.setItem(tkey, selector.value);
-		localStorage.setItem(dkey, today);
-	});
+		selector.addEventListener('change', () => {
+			localStorage.setItem(tkey, selector.value);
+			localStorage.setItem(dkey, today);
+		});
+
+		selector.addEventListener('change', () => {
+			div_border.hidden = (selector.value !== 'dynamic');
+		});
+		div_border.hidden = (selector.value !== 'dynamic');
+	}
 
 	const input_value = document.getElementById("dynamic-border-value");
 	if (input_value) {
@@ -267,7 +262,6 @@ function _dynamicBorderSetup(user_rank, selector) {
 			input_value.value = border_value;
 		}
 		input_value.addEventListener('input', () => {
-			console.log("changed dynamic border value:", input_value.value);
 			localStorage.setItem(vkey, input_value.value);
 			localStorage.setItem(dkey, today);
 		});
