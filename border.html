@@ -30,17 +30,23 @@
 </div>
 
 <div class="input-block">
-	<label for="border-type">使用するボーダー: </label>
-	<select id="border-type">
-		<option value="guaranteed">【確定値】保証ボーダー</option>
-		<option value="dynamic">【変動値】ボーダー</option>
-	</select>
-	<div class="dynamic-border" id="dynamic-border-value-container" hidden>
-		<label for="dynamic-border-value">目標値: </label>
-		<input type="number" id="dynamic-border-value" value="0">
+	<div class="meter-field">
+		<label for="border-type">使用するボーダー: </label>
+		<select id="border-type">
+			<option value="guaranteed">【確定値】保証ボーダー</option>
+			<option value="dynamic">【変動値】ボーダー</option>
+		</select>
 	</div>
-
-	<label id="score_label">現在のライブスコア: </label><input type="number" id="live_score" value="0">
+	<div id="dynamic-border-value-container" hidden>
+		<div class="meter-field">
+			<label for="dynamic-border-value">目標値: </label>
+			<input type="number" id="dynamic-border-value" value="0">
+		</div>
+	</div>
+	<div class="meter-field score">
+		<label id="score_label">現在のライブスコア: </label>
+		<input type="number" id="live_score" value="0">
+	</div>
 </div>
 
 <br><br>

@@ -119,18 +119,20 @@ function calculateDynamicScores(rank, a, b) {
     ret = b + '→🪙';
     is_hitokoto_comment = true;
     help += '→🪙';
-    help2 += '+' + targets[0] + 'に必要なコイン数';
-  } else if (targets.length == 1) {
+    help2 += '変動+' + targets[0] + 'に必要なコイン数';
+  } else if (targets.length == 1 || format == 'all') {
 	// +2, +4, +6 のみ
-    ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
+    ret += ' / ' + formatAsK(a['g']) + 'k';
     help += ' / 目標値';
-    help2 += '+' + targets[0] + '=目標値に必要なコイン数';
-  } else if (format == 'all') {
-    help2 += '+2=確定+2に必要なコイン数, +4=確定+4に..., +6=確定+6に...';
+	if (format == 'all') {
+	    help2 += '目標値=目標値に必要なコイン数';
+	} else {
+	    help2 += '変動+' + targets[0] + '=目標値に必要なコイン数';
+	}
   } else {
 	// やさしいひょうじ
 	ret = '現在のスコア ' + ret;
-    help2 += '約xxxコイン数で+2確定, ...';
+    help2 += '約xxxコイン数で目標値達成';
   }
   if (!is_hitokoto_comment) {
     ret += ' 🪙 ';
@@ -226,11 +228,14 @@ function __getTodayString() {
 
 function _dynamicBorderSetup(user_rank, selector) {
 	const div_border = document.getElementById("dynamic-border-value-container");
-	selector.addEventListener('change', () => {
-		console.log("changed dynamic border type (div):", selector.value);
-		div_border.hidden = selector.value !== 'dynamic';
-	});
-	div_border.hidden = selector.value !== 'dynamic';
+	if (div_border) {
+		selector.addEventListener('change', () => {
+			console.log("changed dynamic border type (div):", selector.value, (selector.value !== 'dynamic'));
+			div_border.hidden = (selector.value !== 'dynamic');
+		});
+		div_border.hidden = (selector.value !== 'dynamic');
+	}
+
 
 	// 日付確認して，前日保存分の情報は削除する
 	const dkey = 'dynamic-border-date-' + user_rank;
