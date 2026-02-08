@@ -43,7 +43,7 @@ export default [
 		labelGuaranteedScore: "readonly",
 		saveCustomGuaranteedScores: "readonly",
 		copyResult: "readonly",
-		setScores: "readonly",
+		setForGuaranteedScoreCopy: "readonly",
 		insertGuaranteedScore: "readonly",
 		updateGuaranteedScore: "readonly",
 		updateUrl: "readonly",

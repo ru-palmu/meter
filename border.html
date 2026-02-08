@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script       src="js/meter.js?v=59" defer></script>
+  <script src="../data/notice.js?v=59" defer></script>
+  <script        src="js/navi.js?v=59" defer></script>
+  <script        src="js/coin.js?v=59" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=59">
+  <link rel="icon" href="favicon.ico" type="image/icon">
+  <title>確定スコアまでの必要コイン数 - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）専用のコイン計算機．ライブスコアを入力するだけで確定スコアまでに必要なコイン数を自動で計算できます．">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<div id="notice-banner"></div>
+</header>
+
+<main>
+<div class="intro">
+	<span class="term" data-term="score">ライブスコア</span>から，<span id="index_rank"></span><span class="term" data-term="border">保証ボーダー</span>までに必要な<span class="term" data-term="coin">コイン数</span>（参考値）を計算します．最初に<a href="bys.html">コイン数算出の前提条件</a>を確認してください．
+	<span id="description-rank-custom"></span>
+</div>
+
+<div class="input-block">
+	<label for="border-type">使用するボーダー: </label>
+	<select id="border-type">
+		<option value="guaranteed">【確定値】保証ボーダー</option>
+		<option value="dynamic">【変動値】ボーダー</option>
+	</select>
+	<div class="dynamic-border" id="dynamic-border-value-container" hidden>
+		<label for="dynamic-score">目標値: </label>
+		<input type="number" id="dynamic-border-value" value="0">
+	</div>
+
+	<label id="score_label">現在のライブスコア: </label><input type="number" id="live_score" value="0">
+</div>
+
+<br><br>
+
+<div class="output-block">
+<button class="copy-button" onclick="onCopyAndRedirect('result', updateUrlMeter)">📋コピー</button>
+<select id="result-format">
+	<option value="easy">標準（全部）＋改良モデル</option>
+	<option value="easy_per3">標準（全部）＋従来モデル[÷3]</option>
+	<option value="all">シンプル（全部）＋改良モデル</option>
+	<option value="2">シンプル（+2 のみ）＋改良モデル</option>
+	<option value="4">シンプル（+4 のみ）＋改良モデル</option>
+	<option value="6">シンプル（+6 のみ）＋改良モデル</option>
+	<option value="2x">一言コメ（+2 のみ）＋改良モデル</option>
+	<option value="4x">一言コメ（+4 のみ）＋改良モデル</option>
+	<option value="6x">一言コメ（+6 のみ）＋改良モデル</option>
+</select>
+
+<textarea class="copy-output" id="result" readonly cols="40" rows="1" placeholder=""></textarea>
+</div>
+
+<br>
+<div>
+<button class="copy-button" onclick="onCopyAndRedirect('result-placeholder', updateUrlMeter)">📋表示の説明をコピー</button>
+<textarea class="copy-output" id="result-placeholder" readonly cols="40" rows="1" placeholder=""></textarea>
+</div>
+
+<div id="guaranteed-score"></div>
+
+<span class="sub-title">使い方</span>
+  <p>
+  <a href="https://x.com/ru_palmu/status/1979435586030329963">動画での解説</a>
+  </p>
+
+<p>
+ライバーの場合はサブ端末で利用することをおすすめします．
+もしくは，リスナーに協力してもらって，チャット欄に残コイン数を入力してもらうのが良いと思います．
+</p>
+
+<div class="help-container">
+  <div class="help-image-area">
+    <img src="img/help-meter.png" alt="操作手順">
+  </div>
+
+  <div class="help">
+    <ol>
+      <li>最初に一番上のタブから，<span class="term" data-term="rank">ランク</span>を選択してください．</li>
+      <li>+2/+4/+6 の<span class="term" data-term="border">保証ボーダー</span>が正しいことを確認してください．正しくなければ修正してください．</li>
+      <li>現在の<span class="term" data-term="score">ライブスコア</span>を入力してください．保証ボーダーまでに必要な<span class="term" data-term="coin">コイン数</span>が計算されます．</li>
+      <li>+4だけ等, 特定の<span class="term" data-term="point">ポイント</span>のみが必要など出力を変更したい場合は，出力形式を選択してください．</li>
+      <li>（リスナーなら，「コピー」ボタンを押下して，Palmu のチャットに貼り付けてください．）</li>
+    </ol>
+  </div>
+
+</div>
+
+<p><span class="term" data-term="score">ライブスコア</span>から<span class="term" data-term="coin">コイン数</span>の算出方法は，２種類あります．どちらの方法でも，コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．</p>
+<ul class="help">
+	<li>改良モデル[標準]: 調査により得られたデータをもとに，より正確にコイン数を推定します．詳細は，「<a href="livescore.html">ライブスコアの算出式について</a>」を参照してください．</li>
+	<li>従来モデル[÷3]: ライブスコアを 3 で割った値をコイン数とします．</li>
+</ul>
+
+<span class="sub-title">注意事項</span>
+
+<ul class="help">
+	<li><span class="term" data-term="border">保証ボーダー</span>（確定スコア）は手動で更新しているため，最新になっていなかったり，間違った値になっている可能性があります．
+改善要望・不具合報告は，<a href="https://github.com/ru-palmu/meter/issues">GitHub</a> または <a href="https://x.com/ru_palmu">X</a> までお願いします．</li>
+</ul>
+
+<span class="sub-title">ご参考</span>
+
+<ul class="help">
+	<li><a href="https://note.com/palmu/n/nc853285c3db3">【たいむず（2024/10）】ライブスコアの導入</a> <a href="https://note.com/palmu/n/nc853285c3db3#f469e53e-1e96-4c56-8de5-476f1ed9d6f8">6. ライブスコアの算出ロジックについて</a> (2024/09/24)</li>
+</ul>
+
+</main>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
+

@@ -251,10 +251,14 @@ function _loadCustomGuaranteedScore() {
 _loadCustomGuaranteedScore();	// 初期化時に読み込み
 
 // 「保証ボーダーをコピー」機能用の設定
-function setScores(rank = '', a) {
+function setForGuaranteedScoreCopy(score_id, rank = '', a = null) {
+  const target = document.getElementById(score_id);
+  if (!target) {
+	return;
+  }
   const label = labelGuaranteedScore(rank);
   const ret = `${label} +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
-  document.getElementById("scores").value = ret;
+  target.value = ret;
 }
 
 function saveCustomGuaranteedScores(rank, values) {
@@ -1101,7 +1105,7 @@ window.getCandRank = getCandRank;
 window.RANK_CUSTOM = RANK_CUSTOM;
 window.copyResult = copyResult;
 window.onCopyAndRedirect = onCopyAndRedirect;
-window.setScores = setScores;
+window.setForGuaranteedScoreCopy = setForGuaranteedScoreCopy;
 window.insertGuaranteedScore = insertGuaranteedScore;
 window.updateGuaranteedScore = updateGuaranteedScore;
 window.updateUrl = updateUrl;
