@@ -302,7 +302,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'dynamic-score', 'border-type'].forEach(id => {
+  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'dynamic-border-value', 'border-type'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
 
