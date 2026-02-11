@@ -27,7 +27,7 @@ function calculatePlans() {
 	const rank = selectedRank();
 	_calculetePlans(a, rank);
 
-    setForGuaranteedScoreCopy('scores', rank, a);
+	setForGuaranteedScoreCopy('scores', rank, a);
 	saveCustomGuaranteedScores(rank, a);
 }
 

@@ -30,7 +30,12 @@
 </div>
 
 
-<label id="score_label">現在のライブスコア: </label><input type="number" id="live_score" value="0"><br><br>
+<div class="input-block">
+	<div class="meter-field score">
+		<label id="score_label">現在のライブスコア: </label>
+		<input type="number" id="live_score" value="0">
+	</div>
+</div>
 
 <div class="output-block">
 <button class="copy-button" onclick="onCopyAndRedirect('result', updateUrlMeter)">📋コピー</button>

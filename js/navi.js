@@ -438,7 +438,7 @@ function renderDescriptionRankCustom(rank) {
 	}
 
 	const label = labelGuaranteedScore(rank);
-	spanCustom.innerHTML = `ランク <strong>${RANK_CUSTOM}</strong> は，（変動）ボーダーを目標とする場合などで使用することを想定しています．
+	spanCustom.innerHTML = `ランク <strong>${RANK_CUSTOM}</strong> は，保証ボーダーが誤っていた場合などで使用することを想定しています．
 	${label}で設定した値は，ローカルストレージに保存され，次回以降も利用できます．`
 }
 
@@ -531,7 +531,8 @@ function _renderNaviFunc(page, target) {
 	}
 
 	const pages = [
-		{ id: "index", name: "メーター", url: "index.html" },
+		{ id: "index", name: "確定値", url: "index.html" },
+		{ id: "border", name: "変動値", url: "border.html" },
 		{ id: "plan", name: "プラン", url: "plan.html" },
 		{ id: "history", name: "履歴", url: "history.html" },
 		{ id: "schedule", name: "予定表", url: "schedule.html" },

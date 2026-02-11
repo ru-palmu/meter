@@ -10,7 +10,7 @@
   <script src="js/ga.js" async></script>
   <link rel="stylesheet" href="css/style.css?v=62">
   <link rel="icon" href="favicon.ico" type="image/icon">
-  <title>確定スコアまでの必要コイン数 - パルムの計算機 for Palmu</title>
+  <title>変動スコアまでの必要コイン数 - パルムの計算機 for Palmu</title>
   <meta name="description" content="Palmu（パルム）専用のコイン計算機．ライブスコアを入力するだけで確定スコアまでに必要なコイン数を自動で計算できます．">
 
 </head>
@@ -25,37 +25,23 @@
 
 <main>
 <div class="intro">
-	<span class="term" data-term="score">ライブスコア</span>から，<span id="index_rank"></span><span class="term" data-term="border">保証ボーダー</span>までに必要な<span class="term" data-term="coin">コイン数</span>（参考値）を計算します．最初に<a href="bys.html">コイン数算出の前提条件</a>を確認してください．
-	<span id="description-rank-custom"></span>
-	<br><br>
-	<div>
-		その日の使い始めのときに適した順序．「セレクタ」→「目標値」→「ライブスコア」. いったん目標値を決めた後は編集するのは「ライブスコア」が中心になるので，入力部を探す必要があるかも．
-		でも，ライブスコアの直下に必要コイン数がでるのは良いかも．<br>
-		「使用するボーダー」で，「変動値」を選択すると，目標値を入力できるようになる．
-	</div>
+	<span class="term" data-term="score">ライブスコア</span>から，（変動）ボーダーまでに必要な<span class="term" data-term="coin">コイン数</span>（参考値）を計算します．
+	ランク毎に異なる目標値を設定できます．設定した値は日付が変わるまで保存されます．
+
+	最初に<a href="bys.html">コイン数算出の前提条件</a>を確認してください．
 </div>
 
 <div class="input-block">
-	<div class="meter-field">
-		<label for="border-type">使用するボーダー: </label>
-		<select id="border-type">
-			<option value="guaranteed">【確定値】保証ボーダー</option>
-			<option value="dynamic">【変動値】ボーダー</option>
-		</select>
-	</div>
-	<div id="dynamic-border-value-container" hidden>
-		<div class="meter-field">
-			<label for="dynamic-border-value">目標値: </label>
-			<input type="number" id="dynamic-border-value" value="0">
-		</div>
-	</div>
 	<div class="meter-field score">
 		<label id="score_label">現在のライブスコア: </label>
 		<input type="number" id="live_score" value="0">
 	</div>
+	<input type="hidden" id="border-type" value="dynamic">
+	<div class="meter-field">
+		<label for="dynamic-border-value">目標値: </label>
+		<input type="number" id="dynamic-border-value" value="0">
+	</div>
 </div>
-
-<br><br>
 
 <div class="output-block">
 <button class="copy-button" onclick="onCopyAndRedirect('result', updateUrlMeter)">📋コピー</button>
