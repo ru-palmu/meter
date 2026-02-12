@@ -36,12 +36,12 @@ function calculate(rank = '') {
 
   const border_type = document.getElementById("border-type")?.value;
   if (border_type === 'dynamic') {
-	calculateDynamicScores(rank, a, b);
+    calculateDynamicScores(rank, a, b);
   } else {
     calculateLiveScoreToCoins(a, b);
   }
 
-	// 保証ボーダーをコピー機能
+  // 保証ボーダーをコピー機能
   setForGuaranteedScoreCopy('scores', rank, a);
 
   _saveMeterArgs();
@@ -99,11 +99,11 @@ function calculateDynamicScores(rank, a, b) {
     if (format.startsWith('easy')) {
         return `${s.toLocaleString()}コインで目標値達成`;
     } else if (format.endsWith('x')) {
-		// 一言
+        // 一言
         return s;
     } else if (targets.length == 1) {
         return `変動+${targets[0]}=${s.toLocaleString()}`;
-	} else {
+    } else {
         return `目標値=${s.toLocaleString()}`;
     }
   });
@@ -114,28 +114,28 @@ function calculateDynamicScores(rank, a, b) {
   let ret = b.toLocaleString();
   let is_hitokoto_comment = false;
   if (format.endsWith('x')) {	// 一言コメント用 15文字以内
-	// 2x, 4x, 6x
+    // 2x, 4x, 6x
     ret = b + '→🪙';
     is_hitokoto_comment = true;
     help += '→🪙';
     help2 += '変動+' + targets[0] + 'に必要なコイン数';
   } else if (targets.length == 1 || format == 'all') {
-	// +2, +4, +6 のみ
+    // +2, +4, +6 のみ
     ret += ' / ' + formatAsK(a['g']) + 'k';
     help += ' / 目標値';
-	if (format == 'all') {
-	    help2 += '目標値=目標値に必要なコイン数';
-	} else {
-	    help2 += '変動+' + targets[0] + '=目標値に必要なコイン数';
-	}
+    if (format == 'all') {
+        help2 += '目標値=目標値に必要なコイン数';
+    } else {
+        help2 += '変動+' + targets[0] + '=目標値に必要なコイン数';
+    }
   } else {
-	// やさしいひょうじ
-	ret = '現在のスコア ' + ret;
+    // やさしいひょうじ
+    ret = '現在のスコア ' + ret;
     help2 += '約xxxコイン数で目標値達成';
   }
   if (!is_hitokoto_comment) {
     ret += ' 🪙 ';
-	help += ' 🪙 ';
+    help += ' 🪙 ';
   }
 
   ret += results.filter(s => s !== "").join(', ');
@@ -184,26 +184,26 @@ function calculateLiveScoreToCoins(a, b) {
   let ret = b.toLocaleString();
   let is_hitokoto_comment = false;
   if (format.endsWith('x')) {
-	// 2x, 4x, 6x
+    // 2x, 4x, 6x
     ret = b + '→🪙';
     is_hitokoto_comment = true;
     help += '→🪙';
     help2 += '+' + targets[0] + 'に必要なコイン数';
   } else if (targets.length == 1) {
-	// +2, +4, +6 のみ
+    // +2, +4, +6 のみ
     ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
     help += ' / 保証ボーダー';
     help2 += '+' + targets[0] + '=確定+' + targets[0] + 'に必要なコイン数';
   } else if (format == 'all') {
     help2 += '+2=確定+2に必要なコイン数, +4=確定+4に..., +6=確定+6に...';
   } else {
-	// やさしいひょうじ
-	ret = '現在のスコア ' + ret;
+    // やさしいひょうじ
+    ret = '現在のスコア ' + ret;
     help2 += '約xxxコイン数で+2確定, ...';
   }
   if (!is_hitokoto_comment) {
     ret += ' 🪙 ';
-	help += ' 🪙 ';
+    help += ' 🪙 ';
   }
 
   ret += results.filter(s => s !== "").join(', ');
@@ -287,11 +287,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const border_type = document.getElementById("border-type");
   if (border_type) {
-	_dynamicBorderSetup(user_rank, border_type);
+    _dynamicBorderSetup(user_rank, border_type);
   }
 
   if (user_rank) {
-	// 表示改善. ランクが決定しているときはランク表示を追加
+    // 表示改善. ランクが決定しているときはランク表示を追加
     [
       ['index_rank', 'ランク', 'での'],
 //      ['history_rank', 'ランク', 'の'],

@@ -53,12 +53,12 @@ function _calculetePlans(values, rank) {
 	});
 
 	const rawPlans = [];
-  /**
-   * 再帰関数：すべての有効なプランを探索する
-   * @param {number} dayIndex - 今が何日目か（0からスタート）
-   * @param {number[]} currentPlan - 現在のプラン（例：[6,2,2]）
-   * @param {number} currentTotalPoints - 現在の合計ポイント数
-   */
+	/**
+	 * 再帰関数：すべての有効なプランを探索する
+	 * @param {number} dayIndex - 今が何日目か（0からスタート）
+	 * @param {number[]} currentPlan - 現在のプラン（例：[6,2,2]）
+	 * @param {number} currentTotalPoints - 現在の合計ポイント数
+	 */
 
 	function dfs(currentPlan, restDays, restPoints, scorecoin) {
 		if (restDays <= 0) {	// 指定日数に達した

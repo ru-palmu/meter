@@ -135,23 +135,23 @@ function saveSessionArgs(prefix, table) {
 }
 
 function updateUrl(table) {
-	// セレクタを選んだらリダイレクトする
+    // セレクタを選んだらリダイレクトする
   const params = new URLSearchParams(window.location.search);
 
   table.forEach((item) => {
-	  const elemId = item[0];
-	  const paramName = item[1];
+      const elemId = item[0];
+      const paramName = item[1];
 
-	  const elem = document.getElementById(elemId);
-	  if (!elem) {
-		  console.log(`Element not found: ${elemId}`);
-		  return ;
-	  }
-	  if (elem.value === "") {
-		  params.delete(paramName);
-	  } else {
-		  params.set(paramName, elem.value);
-	  }
+      const elem = document.getElementById(elemId);
+      if (!elem) {
+          console.log(`Element not found: ${elemId}`);
+          return ;
+      }
+      if (elem.value === "") {
+          params.delete(paramName);
+      } else {
+          params.set(paramName, elem.value);
+      }
   });
 
   // スクロール位置を保存
@@ -254,7 +254,7 @@ _loadCustomGuaranteedScore();	// 初期化時に読み込み
 function setForGuaranteedScoreCopy(score_id, rank = '', a = null) {
   const target = document.getElementById(score_id);
   if (!target) {
-	return;
+    return;
   }
   const label = labelGuaranteedScore(rank);
   const ret = `${label} +2=${formatAsK(a[2])}k, +4=${formatAsK(a[4])}k, +6=${formatAsK(a[6])}k`;
