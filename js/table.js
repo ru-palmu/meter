@@ -101,19 +101,15 @@ function renderMeterTableForDate() {
 		const row = document.createElement('tr');
 
 		// ランク名
-		const rankCell = document.createElement('td');
-		rankCell.textContent = rank;
-		row.appendChild(rankCell);
+		_createTableData(row, rank, []);
 
 		const format = document.getElementById('result-format').value;
 		const metrics = document.getElementById('result-metrics').value;
 
 		// メーター数値
 		['2', '4', '6'].forEach((point) => {
-			const meterCell = document.createElement('td');
 			const val = presets[ymd][rank][point];
-			meterCell.textContent = window.scoreOrCoin(val, metrics, format);
-			row.appendChild(meterCell);
+			_createTableData(row, window.scoreOrCoin(val, metrics, format), []);
 		});
 
 		tableBody.appendChild(row);
@@ -161,9 +157,7 @@ function renderLiveScoreTable() {
 
 		// ランク名
 		[results[i][0], results[i][1], results[i][3], results[i][4]].forEach((val) => {
-			const cell = document.createElement('td');
-			cell.textContent = val;
-			row.appendChild(cell);
+			_createTableData(row, val, []);
 		});
 
 		// 空行 (区切り)
@@ -175,9 +169,7 @@ function renderLiveScoreTable() {
 		const j = i + Math.ceil(results.length / 2);
 		if (j < results.length) {
 			[results[j][0], results[j][1], results[j][3], results[j][4]].forEach((val) => {
-				const cell = document.createElement('td');
-				cell.textContent = val;
-				row.appendChild(cell);
+				_createTableData(row, val, []);
 			});
 		}
 
@@ -186,7 +178,10 @@ function renderLiveScoreTable() {
 
 }
 
-function _setClassRank(row, row2, rank) {
+function _setClassRankCell(row, row2, rank) {
+	const rankCell = _createTableData(row, rank, ['rank-cell']);
+	rankCell.rowSpan = (row2 == null) ? 1 : 2;
+
 	let	classRank = ''
 	if (rank[0] == 'S') {
 		classRank = 'rank-s';
@@ -261,12 +256,10 @@ function renderBorderMultiplierTable() {
 		row.className = 'value';
 
 		let row2 = null;
-		let rowspan = 1;
 		tableBody.appendChild(row);
 
 		if (base[rank] && target[rank]) {
 			// 比率が設定可能か
-			rowspan += 1;
 			row2 = document.createElement('tr');
 			row2.className = 'multiplier';
 			tableBody.appendChild(row2);
@@ -275,48 +268,24 @@ function renderBorderMultiplierTable() {
 		}
 
 		// ランク名
-		const rankCell = document.createElement('td');
-		rankCell.textContent = rank;
-		rankCell.rowSpan = rowspan;
-		rankCell.className = 'rank-cell';
-		row.appendChild(rankCell);
-		_setClassRank(row, row2, rank);
+		_setClassRankCell(row, row2, rank);
 
 		[2, 4, 6].forEach((point) => {
 			const baseMeter = base[rank] ? base[rank][point] : null;
 			const targetMeter = target[rank] ? target[rank][point] : null;
 			const cname = `point-${point}`;
 
-			const baseCell = document.createElement('td');
-			baseCell.textContent = baseMeter !== null ? window.scoreOrCoin(baseMeter, 'score', 'short') : '-';
-			baseCell.classList.add(cname);
-			baseCell.classList.add('separator-left');
-			row.appendChild(baseCell);
+			_createTableData(row,
+				baseMeter !== null ? window.scoreOrCoin(baseMeter, 'score', 'short') : '-',
+				[cname, 'separator-left']);
 
-			const targetCell = document.createElement('td');
-			targetCell.textContent = targetMeter !== null ? window.scoreOrCoin(targetMeter, 'score', 'short') : 'N/A';
-			targetCell.className = targetMeter !== null ? 'target-cell' : 'na-cell';
-			targetCell.classList.add(cname);
-			row.appendChild(targetCell);
+			_createTableData(row,
+				targetMeter !== null ? window.scoreOrCoin(targetMeter, 'score', 'short') : 'N/A',
+				[targetMeter !== null ? 'target-cell' : 'na-cell', cname]);
 
 			if (row2) {
 				const percentChange  = (targetMeter - baseMeter) / baseMeter * 100;
-				const percentChangeCell = document.createElement('td');
-				percentChangeCell.colSpan = 2;
-
-				const sign = percentChange > 0 ? '+' : '';
-				percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
-				if (percentChange < 0) {
-					percentChangeCell.className = 'rate-decrease';
-				} else if (percentChange > 0) {
-					percentChangeCell.className = 'rate-increase';
-					increased[point].push([rank, percentChange, percentChangeCell]);
-				} else {
-					percentChangeCell.className = 'rate-zero';
-				}
-				percentChangeCell.classList.add(cname);
-				percentChangeCell.classList.add('separator-left');
-
+				const percentChangeCell = _createPercentChangeCell(percentChange, increased, point, cname);
 				row2.appendChild(percentChangeCell);
 			}
 		});
@@ -324,23 +293,7 @@ function renderBorderMultiplierTable() {
 
 
 	// 上位10%, 上位30%, それ以外で色分け
-	[2, 4, 6].forEach((point) => {
-		increased[point].sort((a, b) => b[1] - a[1]); // 降順
-		const n10 = Math.ceil(increased[point].length / 10);
-		const n30 = Math.ceil(increased[point].length * 3 / 10);
-		increased[point].forEach((item, index) => {
-			const cell = item[2];
-			if (index < n10) {
-				cell.classList.add('level-3');
-			} else if (index < n30) {
-				cell.classList.add('level-2');
-			} else {
-				cell.classList.add('level-1');
-			}
-		});
-	});
-
-
+	_setPercentChangeClass([2, 4, 6], increased);
 }
 
 // ランクキープ・ランクアップに必要なコインの変化
@@ -374,12 +327,10 @@ function renderKeeupCoinMultiplierTable() {
 		row.className = 'value';
 
 		let row2 = null;
-		let rowspan = 1;
 		tableBody.appendChild(row);
 
 		if (base[rank] && target[rank]) {
 			// 比率が設定可能か
-			rowspan += 1;
 			row2 = document.createElement('tr');
 			row2.className = 'multiplier';
 			tableBody.appendChild(row2);
@@ -388,12 +339,7 @@ function renderKeeupCoinMultiplierTable() {
 		}
 
 		// ランク名
-		const rankCell = document.createElement('td');
-		rankCell.textContent = rank;
-		rankCell.rowSpan = rowspan;
-		rankCell.className = 'rank-cell';
-		row.appendChild(rankCell);
-		_setClassRank(row, row2, rank);
+		_setClassRankCell(row, row2, rank);
 
 		const format = document.getElementById('result-format').value;
 		const metrics = 'coin';
@@ -430,29 +376,11 @@ function renderKeeupCoinMultiplierTable() {
 			targetcell.classList.add(cname);
 			row.appendChild(targetcell);
 
-			const plancell = document.createElement('td');
-			plancell.textContent = values[2];
-			plancell.className = 'plan-cell';
-			plancell.classList.add(cname);
-			row.appendChild(plancell);
+			_createTableData(row, values[2], [cname, 'plan-cell']);
 
 			if (row2) {
 				const percentChange  = (values[1] - values[0]) / values[0] * 100;
-				const percentChangeCell = document.createElement('td');
-				percentChangeCell.colSpan = 2;
-
-				const sign = percentChange > 0 ? '+' : '';
-				percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
-				if (percentChange < 0) {
-					percentChangeCell.className = 'rate-decrease';
-				} else if (percentChange > 0) {
-					percentChangeCell.className = 'rate-increase';
-					increased[values[3]].push([rank, percentChange, percentChangeCell]);
-				} else {
-					percentChangeCell.className = 'rate-zero';
-				}
-				percentChangeCell.classList.add('separator-left');
-				percentChangeCell.classList.add(cname);
+				const percentChangeCell = _createPercentChangeCell(percentChange, increased, values[3], cname);
 
 				row2.appendChild(percentChangeCell);
 
@@ -464,7 +392,42 @@ function renderKeeupCoinMultiplierTable() {
 	});
 
 	// 上位10%, 上位30%, それ以外で色分け
-	['keep', 'up'].forEach((point) => {
+	_setPercentChangeClass(['keep', 'up'], increased);
+}
+
+
+function _createTableData(row, text, classNames) {
+	const cell = document.createElement('td');
+	cell.textContent = text;
+	classNames.forEach((cname) => {
+		cell.classList.add(cname);
+	});
+	row.appendChild(cell);
+	return cell;
+}
+
+function _createPercentChangeCell(percentChange, increased, key, cname) {
+	const percentChangeCell = document.createElement('td');
+	percentChangeCell.colSpan = 2;
+
+	const sign = percentChange > 0 ? '+' : '';
+	percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
+	if (percentChange < 0) {
+		percentChangeCell.className = 'rate-decrease';
+	} else if (percentChange > 0) {
+		percentChangeCell.className = 'rate-increase';
+		increased[key].push([key, percentChange, percentChangeCell]);
+	} else {
+		percentChangeCell.className = 'rate-zero';
+	}
+	percentChangeCell.classList.add('separator-left');
+	percentChangeCell.classList.add(cname);
+
+	return percentChangeCell
+}
+
+function _setPercentChangeClass(args, increased) {
+	args.forEach((point) => {
 		increased[point].sort((a, b) => b[1] - a[1]); // 降順
 		const n10 = Math.ceil(increased[point].length / 10);
 		const n30 = Math.ceil(increased[point].length * 3 / 10);
