@@ -431,12 +431,76 @@ table.gborder-multiplier-table tr.rank-d {
 	color: #666;
 }
 
+
+/* =========================
+   変化率 共通
+========================= */
+.gborder-multiplier-table tr.multiplier td.rate-increase,
 .gborder-multiplier-table tr.multiplier td.rate-decrease {
-	color: #3f5f8a;
+/*
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 2px 6px;
+    letter-spacing: 0.3px;
+*/
+    background-color: transparent;   /* 列色を生かす */
+    font-weight: 600;
+    padding: 2px 6px;
+
 }
 
-.gborder-multiplier-table tr.multiplier td.rate-increase {
-	color: #666;
+/* =========================
+   厳しくなった（increase）
+========================= */
+table.gborder-multiplier-table tr.multiplier td.rate-increase {
+	/* 強めの赤 */
+/*
+    color: #c62828;
+    background-color: rgba(198, 40, 40, 0.10);
+    border-bottom: 2px solid #c62828;
+*/
+    color: #c62828;
+}
+
+
+.gborder-multiplier-table td.rate-increase::before {
+    content: "▲ ";
+    font-size: 0.8em;
+}
+
+/* 弱 */
+table.gborder-multiplier-table tr.multiplier td.rate-increase.level-1 { color: #ef9a9a; }
+
+/* 中 */
+table.gborder-multiplier-table tr.multiplier td.rate-increase.level-2 { color: #ef5350; }
+
+/* 強 */
+table.gborder-multiplier-table tr.multiplier td.rate-increase.level-3 { color: #d32f2f; }
+
+
+/* =========================
+   緩くなった（decrease）
+========================= */
+table.gborder-multiplier-table tr.multiplier td.rate-decrease {
+	/* 視認性高めの青 */
+/*
+    background-color: rgba(21, 101, 192, 0.10);
+    border-bottom: 2px solid #1565c0;
+*/
+    color: #1565c0;
+}
+
+.gborder-multiplier-table td.rate-decrease::before {
+    content: "▼ ";
+    font-size: 0.8em;
+}
+
+/* =========================
+   変化なし（必要なら追加）
+========================= */
+.gborder-multiplier-table td.rate-zero {
+    color: #666;
+    font-size: 0.8em;
 }
 
 /* 列グループ：ランクキープ */
@@ -449,7 +513,7 @@ table.gborder-multiplier-table td.point-6 {
 /* 列グループ：ランクアップ */
 table.gborder-multiplier-table td.up,
 table.gborder-multiplier-table td.point-4 {
-	// background-color: rgba(100, 180, 120, 0.08);
+	/* background-color: rgba(100, 180, 120, 0.08); */
 }
 
 

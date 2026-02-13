@@ -254,6 +254,7 @@ function renderBorderMultiplierTable() {
 	const base = presets[date_base];
 	const target = presets[date_target];
 
+	const increased = {2: [], 4: [], 6: []};
 	window.getCandRank().toReversed().forEach((rank) => {
 
 		const row = document.createElement('tr');
@@ -307,8 +308,11 @@ function renderBorderMultiplierTable() {
 				percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
 				if (percentChange < 0) {
 					percentChangeCell.className = 'rate-decrease';
-				} else {
+				} else if (percentChange > 0) {
 					percentChangeCell.className = 'rate-increase';
+					increased[point].push([rank, percentChange, percentChangeCell]);
+				} else {
+					percentChangeCell.className = 'rate-zero';
 				}
 				percentChangeCell.classList.add(cname);
 				percentChangeCell.classList.add('separator-left');
@@ -317,6 +321,26 @@ function renderBorderMultiplierTable() {
 			}
 		});
 	});
+
+
+	// 上位10%, 上位30%, それ以外で色分け
+	[2, 4, 6].forEach((point) => {
+		increased[point].sort((a, b) => b[1] - a[1]); // 降順
+		const n10 = Math.ceil(increased[point].length / 10);
+		const n30 = Math.ceil(increased[point].length * 3 / 10);
+		increased[point].forEach((item, index) => {
+			const cell = item[2];
+			if (index < n10) {
+				cell.classList.add('level-3');
+			} else if (index < n30) {
+				cell.classList.add('level-2');
+			} else {
+				cell.classList.add('level-1');
+			}
+		});
+	});
+
+
 }
 
 // ランクキープ・ランクアップに必要なコインの変化
@@ -343,6 +367,7 @@ function renderKeeupCoinMultiplierTable() {
 	const base = presets[date_base];
 	const target = presets[date_target];
 
+	const increased = {'keep': [], 'up': []};
 	window.getCandRank().toReversed().forEach((rank) => {
 
 		const row = document.createElement('tr');
@@ -420,8 +445,11 @@ function renderKeeupCoinMultiplierTable() {
 				percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
 				if (percentChange < 0) {
 					percentChangeCell.className = 'rate-decrease';
-				} else {
+				} else if (percentChange > 0) {
 					percentChangeCell.className = 'rate-increase';
+					increased[values[3]].push([rank, percentChange, percentChangeCell]);
+				} else {
+					percentChangeCell.className = 'rate-zero';
 				}
 				percentChangeCell.classList.add('separator-left');
 				percentChangeCell.classList.add(cname);
@@ -431,6 +459,23 @@ function renderKeeupCoinMultiplierTable() {
 				const nullcell = document.createElement('td')
 				nullcell.className = cname;
 				row2.appendChild(nullcell); // キープ・アップの区切り
+			}
+		});
+	});
+
+	// 上位10%, 上位30%, それ以外で色分け
+	['keep', 'up'].forEach((point) => {
+		increased[point].sort((a, b) => b[1] - a[1]); // 降順
+		const n10 = Math.ceil(increased[point].length / 10);
+		const n30 = Math.ceil(increased[point].length * 3 / 10);
+		increased[point].forEach((item, index) => {
+			const cell = item[2];
+			if (index < n10) {
+				cell.classList.add('level-3');
+			} else if (index < n30) {
+				cell.classList.add('level-2');
+			} else {
+				cell.classList.add('level-1');
 			}
 		});
 	});
