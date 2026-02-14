@@ -442,8 +442,8 @@ table.gborder-multiplier-table tr.rank-d {
     border-radius: 4px;
     padding: 2px 6px;
     letter-spacing: 0.3px;
+    background-color: transparent;   /* 列色を生かす
 */
-    background-color: transparent;   /* 列色を生かす */
     font-weight: 600;
     padding: 2px 6px;
 

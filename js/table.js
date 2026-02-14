@@ -411,7 +411,7 @@ function _createPercentChangeCell(percentChange, increased, key, cname) {
 	percentChangeCell.colSpan = 2;
 
 	const sign = percentChange > 0 ? '+' : '';
-	percentChangeCell.textContent = '(' + sign + percentChange.toFixed(1) + '%)';
+	percentChangeCell.textContent = sign + percentChange.toFixed(1) + '%';
 	if (percentChange < 0) {
 		percentChangeCell.className = 'rate-decrease';
 	} else if (percentChange > 0) {
