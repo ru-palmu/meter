@@ -482,6 +482,19 @@ function selectedRank() {
   return key;
 }
 
+
+function _marshmallow() {
+	const li = document.createElement('li');
+	li.className = 'sub-tab';
+
+	const a = document.createElement('a');
+	a.href = 'https://marshmallow-qa.com/fcbapahukbveobw?t=mZ9AzD&utm_medium=url_text&utm_source=promotion';
+	a.textContent = '質問箱';
+	li.appendChild(a);
+	return li
+}
+
+
 // X へのシェアボタンを生成
 function _shareX() {
   // Xでシェアボタンを追加
@@ -568,10 +581,10 @@ function _renderNaviFunc(page, target) {
 		ul.appendChild(li);
 	}
 
-	const li = _shareX();
-	if (li) {
+	// マシュマロ, X へのシェアボタン
+	[_marshmallow(), _shareX()].forEach(li => {
 		ul.appendChild(li);
-	}
+	});
 
 	container.innerHTML = '';
 	_renderTabNaviWrapper(container, ul);
