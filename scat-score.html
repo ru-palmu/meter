@@ -43,10 +43,10 @@
 		</a>
 	</blockquote>
 
-	<p>上の散布図は，横軸がコイン数（ギフト数），縦軸が倍率（＝ライブスコア÷コイン数）の実測値を表しています．
+	<p>上の散布図は，横軸がコイン数（ギフト数），縦軸がはね率（＝ライブスコア÷コイン数）の実測値を表しています．
 	縦軸の値は 3 になると信じられていたものです．</p>
 
-	<p>黄色点がいくつかのグループに分かれていることがわかります．右図（上図）は，左図（下図）のグループ毎に名前をつけたものです．</p>
+	<p>黄色点がいくつかのグループに分かれていることがわかります．右図（上図）は，左図（下図）の<a name="group">グループ</a>毎に名前をつけたものです．</p>
 
 	<ul>
 		<li>赤線の周辺にある黄色点を「跳ねている」グループと呼びます．Z グループとします．</li>
@@ -57,14 +57,28 @@
 	<p>同一のコイン数で高いライブスコアを得ているのが「Zグループ」で，
 	それが，「枠の資産」を管理する上で目指すべきところになります．</p>
 
+	<p>なぜ，「Zグループ」にたどり着かずに，詰まってしまうのでしょうか．</p>
+
+	<p>それは，<a href="bys.html#livescore">ライブスコアを構成する要素</a>のうち，コイン数以外の要素が不足しているからだと考えられます．
+	特に，詰まりを解消するのに特に有効なのは，コイン人数です．
+	本ページでは，コイン人数とはね率の関係について説明します．</p>
+
+
 <span class="sub-title">散布図からわかること</span>
 
-<p>存在しているデータに基づく推測であり，必ずしも正しいとは限りませんが，
-おおよそ，6 人以上が 100 コイン以上を投げると，Z グループに入ると言えます．</p>
+<p>存在しているデータに基づく情報であり，必ずしも正しいとは限りませんが，
+<u>視聴時間やコメント・スーパーライクが十分</u>にあり，さらに，
+<ul class="help">
+	<li><strong>4 人以上</strong>が 合計 100 コイン以上のギフトを投げる，かつ</li>
+	<li><strong>8 人以上</strong>がギフトを投げる</li>
+</ul>の 2つの条件を満たすと，<u><a href="#group">Z グループ</a>に入る</u>と言えます．
+「ギフトを投げる人が 8 人」には，「合計100コイン以上のギフトを投げた 4 人」が含まれているので，
+例えば，10 コインが 4 人，100 コインが 4 人の合計 8 人がギフトを投げる場合も Z グループになります．
+</p>
 
 <p>
-なお， 「100コイン以上」とは，「10コインのコインを 10 回投げた」場合も含まれます．
-それぞれの人が投げた合計のコイン数に対して考えます．
+なお， 「100コイン以上」とは，合計のコイン数が 100コイン以上であり，
+「10コインのコインを 10 回投げた」場合も含まれます．
 </p>
 
 <p>より確実に Z グループ，あるいは A グループに入るための条件を以下に示します．</p>
@@ -75,19 +89,20 @@
 	<li>15,000ライブスコア以上で，以下の条件を満たすと「跳ねている」Zグループに入る
 		<ul class="scat-score-aligned-list">
 			<li>10人以上，10コイン以上投げる，かつ</li>
-			<li>7人以上，100コイン以上投げる，かつ</li>
-			<li>5人以上，1,000コイン以上投げる</li>
+			<li>6人以上，100コイン以上投げる，かつ</li>
+			<li>4人以上，1,000コイン以上投げる</li>
 		</ul>
 	</li>
 	<li>15,000ライブスコア以上で，以下の条件を満たすとA グループに入る
 		<ul class="scat-score-aligned-list">
 			<li>7人以上，10コイン以上投げる，かつ</li>
 			<li>4人以上，100コイン以上投げる</li>
+			<li>3人以上，1,000コイン以上投げる</li>
 		</ul>
 	</li>
 </ul>
 
-<p>上記は十分条件であって，この条件を満たさないと必ずしも跳ねない，あるいはAグループに入らないわけではありません．</p>
+<p>上記は 95% 以上の確率で該当グループに入る十分条件であって，この条件を満たさないと必ずしも跳ねない，あるいはAグループに入らないわけではありません．</p>
 
 <p>また，300 コインを投げた人は，10コイン以上投げた人と，100コイン以上投げた人の両方に加算されます．
 例を以下に示します．</p>
@@ -134,7 +149,7 @@
 
 <p>
 実データは、前日の「ライバーランキング」の「ライブスコア」を利用しています。ライブスコアの順位と数値が得られ、さらにトップファンから前日投げられたコイン数の合計を計算します。
-黄色の点はそれらのデータを横軸「コイン数」、右縦軸「倍率＝ライブスコア÷コイン数」としてプロットしたものです。
+黄色の点はそれらのデータを横軸「コイン数」、右縦軸「はね率＝ライブスコア÷コイン数」としてプロットしたものです。
 </p>
 
 <span class="sub-title">コイン人数とライブスコアの関係について</span>
@@ -174,8 +189,8 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
 <!-- generated by coin-scatter.sh -->
 
 <p><a href="#ge15k">15k コイン数以上 (A帯, S帯)</a>，<a href="#le20k">↓20k コイン数以下 (D帯, C帯, B帯)</a></p>
-<p>以下の表は，15,000 コイン数以上のときの倍率の散布図です．</p>
-<!-- データ件数: 4327 -->
+<p>以下の表は，15,000 コイン数以上のときのはね率の散布図です．</p>
+<!-- データ件数: 9140 -->
 <table class="scatter-table" id="ge15k">
   <thead>
     <tr>
@@ -232,30 +247,30 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
     <tr>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">24</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">7</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">8</td>
-      <td class="scatter-cell">14</td>
-      <td class="scatter-cell">57</td>
-      <td class="scatter-cell">48</td>
-      <td class="scatter-cell">17</td>
-      <td class="scatter-cell">16</td>
+      <td class="scatter-cell">19</td>
+      <td class="scatter-cell">47</td>
+      <td class="scatter-cell">96</td>
+      <td class="scatter-cell">98</td>
+      <td class="scatter-cell">49</td>
+      <td class="scatter-cell">53</td>
     </tr>
     <tr>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.111</td>
+      <td class="scatter-cell">0.889</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.364</td>
-      <td class="scatter-cell">0.636</td>
-      <td class="scatter-cell">0.413</td>
-      <td class="scatter-cell">0.348</td>
-      <td class="scatter-cell">0.123</td>
-      <td class="scatter-cell">0.116</td>
+      <td class="scatter-cell">0.288</td>
+      <td class="scatter-cell">0.712</td>
+      <td class="scatter-cell">0.324</td>
+      <td class="scatter-cell">0.331</td>
+      <td class="scatter-cell">0.166</td>
+      <td class="scatter-cell">0.179</td>
     </tr>
     <tr>
       <td class="scatter-cell" rowspan="3">2</td>
@@ -265,31 +280,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
     </tr>
     <tr>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">3</td>
-      <td class="scatter-cell">9</td>
-      <td class="scatter-cell">7</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">43</td>
+      <td class="scatter-cell">6</td>
       <td class="scatter-cell">17</td>
-      <td class="scatter-cell">4</td>
-      <td class="scatter-cell">174</td>
-      <td class="scatter-cell">64</td>
-      <td class="scatter-cell">16</td>
-      <td class="scatter-cell">4</td>
+      <td class="scatter-cell">21</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">102</td>
+      <td class="scatter-cell">44</td>
+      <td class="scatter-cell">11</td>
+      <td class="scatter-cell">321</td>
+      <td class="scatter-cell">151</td>
+      <td class="scatter-cell">48</td>
+      <td class="scatter-cell">8</td>
     </tr>
     <tr>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.158</td>
-      <td class="scatter-cell">0.474</td>
-      <td class="scatter-cell">0.368</td>
+      <td class="scatter-cell">0.136</td>
+      <td class="scatter-cell">0.386</td>
+      <td class="scatter-cell">0.477</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.672</td>
-      <td class="scatter-cell">0.266</td>
-      <td class="scatter-cell">0.062</td>
-      <td class="scatter-cell">0.674</td>
-      <td class="scatter-cell">0.248</td>
-      <td class="scatter-cell">0.062</td>
-      <td class="scatter-cell">0.016</td>
+      <td class="scatter-cell">0.650</td>
+      <td class="scatter-cell">0.280</td>
+      <td class="scatter-cell">0.070</td>
+      <td class="scatter-cell">0.608</td>
+      <td class="scatter-cell">0.286</td>
+      <td class="scatter-cell">0.091</td>
+      <td class="scatter-cell">0.015</td>
     </tr>
     <tr>
       <td class="scatter-cell" rowspan="3">3</td>
@@ -299,30 +314,30 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
     </tr>
     <tr>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">17</td>
-      <td class="scatter-cell">14</td>
-      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">42</td>
+      <td class="scatter-cell">38</td>
+      <td class="scatter-cell">7</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">75</td>
-      <td class="scatter-cell">14</td>
-      <td class="scatter-cell">2</td>
-      <td class="scatter-cell">313</td>
-      <td class="scatter-cell">39</td>
-      <td class="scatter-cell">8</td>
+      <td class="scatter-cell">163</td>
+      <td class="scatter-cell">46</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">625</td>
+      <td class="scatter-cell">80</td>
+      <td class="scatter-cell">18</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.515</td>
-      <td class="scatter-cell">0.424</td>
-      <td class="scatter-cell">0.061</td>
+      <td class="scatter-cell">0.483</td>
+      <td class="scatter-cell">0.437</td>
+      <td class="scatter-cell">0.080</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.824</td>
-      <td class="scatter-cell">0.154</td>
-      <td class="scatter-cell">0.022</td>
-      <td class="scatter-cell">0.869</td>
-      <td class="scatter-cell">0.108</td>
-      <td class="scatter-cell">0.022</td>
+      <td class="scatter-cell">0.769</td>
+      <td class="scatter-cell">0.217</td>
+      <td class="scatter-cell">0.014</td>
+      <td class="scatter-cell">0.864</td>
+      <td class="scatter-cell">0.111</td>
+      <td class="scatter-cell">0.025</td>
       <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
@@ -332,31 +347,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-4gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">13</td>
-      <td class="scatter-cell">23</td>
-      <td class="scatter-cell">9</td>
-      <td class="scatter-cell">3</td>
-      <td class="scatter-cell">144</td>
-      <td class="scatter-cell">22</td>
+      <td class="scatter-cell">25</td>
+      <td class="scatter-cell">53</td>
+      <td class="scatter-cell">32</td>
+      <td class="scatter-cell">6</td>
+      <td class="scatter-cell">298</td>
+      <td class="scatter-cell">54</td>
+      <td class="scatter-cell">4</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">389</td>
-      <td class="scatter-cell">11</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">765</td>
+      <td class="scatter-cell">30</td>
+      <td class="scatter-cell">4</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.271</td>
-      <td class="scatter-cell">0.479</td>
-      <td class="scatter-cell">0.188</td>
-      <td class="scatter-cell">0.062</td>
-      <td class="scatter-cell">0.867</td>
-      <td class="scatter-cell">0.133</td>
+      <td class="scatter-cell">0.216</td>
+      <td class="scatter-cell">0.457</td>
+      <td class="scatter-cell">0.276</td>
+      <td class="scatter-cell">0.052</td>
+      <td class="scatter-cell">0.837</td>
+      <td class="scatter-cell">0.152</td>
+      <td class="scatter-cell">0.011</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.973</td>
-      <td class="scatter-cell">0.028</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.957</td>
+      <td class="scatter-cell">0.038</td>
+      <td class="scatter-cell">0.005</td>
       <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
@@ -366,31 +381,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-5gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">40</td>
-      <td class="scatter-cell">39</td>
+      <td class="scatter-cell">89</td>
+      <td class="scatter-cell">87</td>
+      <td class="scatter-cell">13</td>
       <td class="scatter-cell">3</td>
-      <td class="scatter-cell">1</td>
-      <td class="scatter-cell">181</td>
-      <td class="scatter-cell">15</td>
+      <td class="scatter-cell">367</td>
+      <td class="scatter-cell">30</td>
       <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">373</td>
-      <td class="scatter-cell">4</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">799</td>
+      <td class="scatter-cell">10</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.482</td>
-      <td class="scatter-cell">0.470</td>
-      <td class="scatter-cell">0.036</td>
+      <td class="scatter-cell">0.464</td>
+      <td class="scatter-cell">0.453</td>
+      <td class="scatter-cell">0.068</td>
+      <td class="scatter-cell">0.016</td>
+      <td class="scatter-cell">0.920</td>
+      <td class="scatter-cell">0.075</td>
+      <td class="scatter-cell">0.005</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.986</td>
       <td class="scatter-cell">0.012</td>
-      <td class="scatter-cell">0.914</td>
-      <td class="scatter-cell">0.076</td>
-      <td class="scatter-cell">0.010</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.989</td>
-      <td class="scatter-cell">0.011</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.001</td>
       <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
@@ -400,31 +415,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-6gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">60</td>
-      <td class="scatter-cell">37</td>
-      <td class="scatter-cell">5</td>
+      <td class="scatter-cell">127</td>
+      <td class="scatter-cell">63</td>
+      <td class="scatter-cell">12</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">212</td>
-      <td class="scatter-cell">8</td>
+      <td class="scatter-cell">428</td>
+      <td class="scatter-cell">11</td>
+      <td class="scatter-cell">3</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">370</td>
+      <td class="scatter-cell">759</td>
+      <td class="scatter-cell">2</td>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.588</td>
-      <td class="scatter-cell">0.363</td>
-      <td class="scatter-cell">0.049</td>
+      <td class="scatter-cell">0.629</td>
+      <td class="scatter-cell">0.312</td>
+      <td class="scatter-cell">0.059</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.964</td>
-      <td class="scatter-cell">0.036</td>
+      <td class="scatter-cell">0.968</td>
+      <td class="scatter-cell">0.025</td>
+      <td class="scatter-cell">0.007</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.997</td>
+      <td class="scatter-cell">0.996</td>
       <td class="scatter-cell">0.003</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.001</td>
       <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
@@ -434,31 +449,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-7gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">95</td>
-      <td class="scatter-cell">22</td>
-      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">223</td>
+      <td class="scatter-cell">55</td>
+      <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">230</td>
-      <td class="scatter-cell">5</td>
-      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">486</td>
+      <td class="scatter-cell">10</td>
+      <td class="scatter-cell">3</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">341</td>
-      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">658</td>
+      <td class="scatter-cell">2</td>
       <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.805</td>
-      <td class="scatter-cell">0.186</td>
-      <td class="scatter-cell">0.008</td>
+      <td class="scatter-cell">0.796</td>
+      <td class="scatter-cell">0.196</td>
+      <td class="scatter-cell">0.007</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.975</td>
-      <td class="scatter-cell">0.021</td>
-      <td class="scatter-cell">0.004</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.991</td>
-      <td class="scatter-cell">0.003</td>
+      <td class="scatter-cell">0.974</td>
+      <td class="scatter-cell">0.020</td>
       <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.994</td>
+      <td class="scatter-cell">0.003</td>
+      <td class="scatter-cell">0.003</td>
       <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
@@ -468,26 +483,26 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-8gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">130</td>
-      <td class="scatter-cell">15</td>
+      <td class="scatter-cell">286</td>
+      <td class="scatter-cell">30</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">516</td>
       <td class="scatter-cell">1</td>
+      <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">262</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">1</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">267</td>
+      <td class="scatter-cell">564</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.890</td>
-      <td class="scatter-cell">0.103</td>
-      <td class="scatter-cell">0.007</td>
+      <td class="scatter-cell">0.897</td>
+      <td class="scatter-cell">0.094</td>
+      <td class="scatter-cell">0.009</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.996</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.994</td>
+      <td class="scatter-cell">0.002</td>
       <td class="scatter-cell">0.004</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
@@ -502,30 +517,30 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-9gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">138</td>
-      <td class="scatter-cell">9</td>
+      <td class="scatter-cell">298</td>
+      <td class="scatter-cell">17</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">205</td>
+      <td class="scatter-cell">459</td>
+      <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">258</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">524</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.932</td>
-      <td class="scatter-cell">0.061</td>
-      <td class="scatter-cell">0.007</td>
+      <td class="scatter-cell">0.943</td>
+      <td class="scatter-cell">0.054</td>
+      <td class="scatter-cell">0.003</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.996</td>
+      <td class="scatter-cell">0.004</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">1.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.998</td>
+      <td class="scatter-cell">0.002</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
     </tr>
@@ -536,22 +551,22 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-10gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">174</td>
-      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">373</td>
+      <td class="scatter-cell">7</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">248</td>
+      <td class="scatter-cell">495</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">215</td>
+      <td class="scatter-cell">460</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.994</td>
-      <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.982</td>
+      <td class="scatter-cell">0.018</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
@@ -570,23 +585,23 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-11gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">174</td>
+      <td class="scatter-cell">370</td>
+      <td class="scatter-cell">5</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">225</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">460</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">172</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">366</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.994</td>
-      <td class="scatter-cell">0.006</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.984</td>
+      <td class="scatter-cell">0.013</td>
+      <td class="scatter-cell">0.003</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
@@ -604,30 +619,30 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-12gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">184</td>
-      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">362</td>
+      <td class="scatter-cell">6</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">216</td>
+      <td class="scatter-cell">433</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">158</td>
+      <td class="scatter-cell">324</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.995</td>
-      <td class="scatter-cell">0.005</td>
+      <td class="scatter-cell">0.984</td>
+      <td class="scatter-cell">0.016</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.994</td>
-      <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.997</td>
+      <td class="scatter-cell">0.003</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
     </tr>
@@ -638,22 +653,22 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-13gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">162</td>
+      <td class="scatter-cell">346</td>
+      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">379</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">182</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">142</td>
+      <td class="scatter-cell">289</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">1.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.994</td>
+      <td class="scatter-cell">0.006</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
@@ -672,26 +687,26 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-14gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">177</td>
+      <td class="scatter-cell">377</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">176</td>
+      <td class="scatter-cell">355</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">108</td>
+      <td class="scatter-cell">240</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.994</td>
-      <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.997</td>
+      <td class="scatter-cell">0.003</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.994</td>
-      <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.997</td>
+      <td class="scatter-cell">0.003</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
@@ -706,15 +721,15 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-15gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">185</td>
+      <td class="scatter-cell">348</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">173</td>
+      <td class="scatter-cell">336</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">105</td>
+      <td class="scatter-cell">208</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
@@ -740,38 +755,38 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-16+gifters.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">2563</td>
+      <td class="scatter-cell">5356</td>
+      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">3568</td>
+      <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">1641</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">653</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">1582</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.999</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">1.000</td>
+      <td class="scatter-cell">0.999</td>
+      <td class="scatter-cell">0.001</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">1.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.999</td>
+      <td class="scatter-cell">0.001</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
     </tr>
   </tbody>
 </table>
 <p><a href="#ge15k">↑15k コイン数以上 (A帯, S帯)</a>，<a href="#le20k">↓20k コイン数以下 (D帯, C帯, B帯)</a></p>
-<p>以下の表は，20,000 コイン数以下のときの倍率の散布図です．</p>
-<!-- データ件数: 5982 -->
+<p>以下の表は，20,000 コイン数以下のときのはね率の散布図です．</p>
+<!-- データ件数: 11194 -->
 <table class="scatter-table" id="le20k">
   <thead>
     <tr>
@@ -828,30 +843,30 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
     <tr>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">20</td>
-      <td class="scatter-cell">394</td>
+      <td class="scatter-cell">39</td>
+      <td class="scatter-cell">552</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">2</td>
-      <td class="scatter-cell">246</td>
-      <td class="scatter-cell">1042</td>
-      <td class="scatter-cell">453</td>
-      <td class="scatter-cell">553</td>
-      <td class="scatter-cell">390</td>
-      <td class="scatter-cell">449</td>
+      <td class="scatter-cell">382</td>
+      <td class="scatter-cell">1437</td>
+      <td class="scatter-cell">961</td>
+      <td class="scatter-cell">1195</td>
+      <td class="scatter-cell">788</td>
+      <td class="scatter-cell">881</td>
     </tr>
     <tr>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.002</td>
-      <td class="scatter-cell">0.048</td>
-      <td class="scatter-cell">0.949</td>
+      <td class="scatter-cell">0.066</td>
+      <td class="scatter-cell">0.932</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.002</td>
-      <td class="scatter-cell">0.191</td>
-      <td class="scatter-cell">0.808</td>
-      <td class="scatter-cell">0.246</td>
-      <td class="scatter-cell">0.300</td>
-      <td class="scatter-cell">0.211</td>
-      <td class="scatter-cell">0.243</td>
+      <td class="scatter-cell">0.001</td>
+      <td class="scatter-cell">0.210</td>
+      <td class="scatter-cell">0.789</td>
+      <td class="scatter-cell">0.251</td>
+      <td class="scatter-cell">0.312</td>
+      <td class="scatter-cell">0.206</td>
+      <td class="scatter-cell">0.230</td>
     </tr>
     <tr>
       <td class="scatter-cell" rowspan="3">2</td>
@@ -861,31 +876,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
     </tr>
     <tr>
       <td class="scatter-cell">3</td>
-      <td class="scatter-cell">58</td>
-      <td class="scatter-cell">163</td>
-      <td class="scatter-cell">446</td>
-      <td class="scatter-cell">21</td>
-      <td class="scatter-cell">557</td>
-      <td class="scatter-cell">459</td>
-      <td class="scatter-cell">320</td>
-      <td class="scatter-cell">667</td>
-      <td class="scatter-cell">292</td>
-      <td class="scatter-cell">112</td>
-      <td class="scatter-cell">26</td>
+      <td class="scatter-cell">122</td>
+      <td class="scatter-cell">266</td>
+      <td class="scatter-cell">631</td>
+      <td class="scatter-cell">27</td>
+      <td class="scatter-cell">1093</td>
+      <td class="scatter-cell">735</td>
+      <td class="scatter-cell">435</td>
+      <td class="scatter-cell">1388</td>
+      <td class="scatter-cell">734</td>
+      <td class="scatter-cell">261</td>
+      <td class="scatter-cell">85</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.004</td>
-      <td class="scatter-cell">0.087</td>
-      <td class="scatter-cell">0.243</td>
-      <td class="scatter-cell">0.666</td>
-      <td class="scatter-cell">0.015</td>
-      <td class="scatter-cell">0.410</td>
-      <td class="scatter-cell">0.338</td>
-      <td class="scatter-cell">0.236</td>
-      <td class="scatter-cell">0.608</td>
-      <td class="scatter-cell">0.266</td>
-      <td class="scatter-cell">0.102</td>
-      <td class="scatter-cell">0.024</td>
+      <td class="scatter-cell">0.003</td>
+      <td class="scatter-cell">0.119</td>
+      <td class="scatter-cell">0.260</td>
+      <td class="scatter-cell">0.617</td>
+      <td class="scatter-cell">0.012</td>
+      <td class="scatter-cell">0.477</td>
+      <td class="scatter-cell">0.321</td>
+      <td class="scatter-cell">0.190</td>
+      <td class="scatter-cell">0.562</td>
+      <td class="scatter-cell">0.297</td>
+      <td class="scatter-cell">0.106</td>
+      <td class="scatter-cell">0.034</td>
     </tr>
     <tr>
       <td class="scatter-cell" rowspan="3">3</td>
@@ -895,31 +910,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
     </tr>
     <tr>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">164</td>
-      <td class="scatter-cell">265</td>
-      <td class="scatter-cell">311</td>
-      <td class="scatter-cell">10</td>
-      <td class="scatter-cell">547</td>
-      <td class="scatter-cell">223</td>
-      <td class="scatter-cell">51</td>
+      <td class="scatter-cell">335</td>
+      <td class="scatter-cell">474</td>
+      <td class="scatter-cell">443</td>
+      <td class="scatter-cell">18</td>
+      <td class="scatter-cell">1149</td>
       <td class="scatter-cell">441</td>
-      <td class="scatter-cell">68</td>
-      <td class="scatter-cell">22</td>
-      <td class="scatter-cell">5</td>
+      <td class="scatter-cell">101</td>
+      <td class="scatter-cell">1006</td>
+      <td class="scatter-cell">156</td>
+      <td class="scatter-cell">56</td>
+      <td class="scatter-cell">16</td>
     </tr>
     <tr>
       <td class="scatter-cell">0.001</td>
-      <td class="scatter-cell">0.221</td>
-      <td class="scatter-cell">0.358</td>
-      <td class="scatter-cell">0.420</td>
-      <td class="scatter-cell">0.012</td>
-      <td class="scatter-cell">0.658</td>
-      <td class="scatter-cell">0.268</td>
-      <td class="scatter-cell">0.061</td>
-      <td class="scatter-cell">0.823</td>
-      <td class="scatter-cell">0.127</td>
-      <td class="scatter-cell">0.041</td>
-      <td class="scatter-cell">0.009</td>
+      <td class="scatter-cell">0.267</td>
+      <td class="scatter-cell">0.378</td>
+      <td class="scatter-cell">0.354</td>
+      <td class="scatter-cell">0.011</td>
+      <td class="scatter-cell">0.672</td>
+      <td class="scatter-cell">0.258</td>
+      <td class="scatter-cell">0.059</td>
+      <td class="scatter-cell">0.815</td>
+      <td class="scatter-cell">0.126</td>
+      <td class="scatter-cell">0.045</td>
+      <td class="scatter-cell">0.013</td>
     </tr>
     <tr>
       <td class="scatter-cell" rowspan="3">4</td>
@@ -928,31 +943,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-4gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">46</td>
-      <td class="scatter-cell">256</td>
-      <td class="scatter-cell">220</td>
-      <td class="scatter-cell">137</td>
-      <td class="scatter-cell">503</td>
-      <td class="scatter-cell">133</td>
-      <td class="scatter-cell">13</td>
+      <td class="scatter-cell">105</td>
+      <td class="scatter-cell">524</td>
+      <td class="scatter-cell">388</td>
+      <td class="scatter-cell">183</td>
+      <td class="scatter-cell">1169</td>
+      <td class="scatter-cell">272</td>
+      <td class="scatter-cell">24</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">505</td>
+      <td class="scatter-cell">29</td>
       <td class="scatter-cell">2</td>
-      <td class="scatter-cell">218</td>
-      <td class="scatter-cell">14</td>
-      <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.070</td>
-      <td class="scatter-cell">0.388</td>
-      <td class="scatter-cell">0.334</td>
-      <td class="scatter-cell">0.208</td>
-      <td class="scatter-cell">0.773</td>
-      <td class="scatter-cell">0.204</td>
-      <td class="scatter-cell">0.020</td>
-      <td class="scatter-cell">0.003</td>
-      <td class="scatter-cell">0.940</td>
-      <td class="scatter-cell">0.060</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.087</td>
+      <td class="scatter-cell">0.437</td>
+      <td class="scatter-cell">0.323</td>
+      <td class="scatter-cell">0.152</td>
+      <td class="scatter-cell">0.796</td>
+      <td class="scatter-cell">0.185</td>
+      <td class="scatter-cell">0.016</td>
+      <td class="scatter-cell">0.002</td>
+      <td class="scatter-cell">0.942</td>
+      <td class="scatter-cell">0.054</td>
+      <td class="scatter-cell">0.004</td>
       <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
@@ -962,31 +977,31 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-5gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">134</td>
-      <td class="scatter-cell">268</td>
-      <td class="scatter-cell">137</td>
-      <td class="scatter-cell">67</td>
-      <td class="scatter-cell">476</td>
-      <td class="scatter-cell">51</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">143</td>
-      <td class="scatter-cell">1</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">306</td>
+      <td class="scatter-cell">558</td>
+      <td class="scatter-cell">210</td>
+      <td class="scatter-cell">89</td>
+      <td class="scatter-cell">972</td>
+      <td class="scatter-cell">91</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">334</td>
+      <td class="scatter-cell">5</td>
+      <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.221</td>
-      <td class="scatter-cell">0.442</td>
-      <td class="scatter-cell">0.226</td>
-      <td class="scatter-cell">0.111</td>
-      <td class="scatter-cell">0.903</td>
-      <td class="scatter-cell">0.097</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.993</td>
-      <td class="scatter-cell">0.007</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.263</td>
+      <td class="scatter-cell">0.480</td>
+      <td class="scatter-cell">0.181</td>
+      <td class="scatter-cell">0.077</td>
+      <td class="scatter-cell">0.909</td>
+      <td class="scatter-cell">0.085</td>
+      <td class="scatter-cell">0.003</td>
+      <td class="scatter-cell">0.003</td>
+      <td class="scatter-cell">0.979</td>
+      <td class="scatter-cell">0.015</td>
+      <td class="scatter-cell">0.006</td>
       <td class="scatter-cell">0.000</td>
     </tr>
     <tr>
@@ -996,32 +1011,32 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-6gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">207</td>
-      <td class="scatter-cell">220</td>
-      <td class="scatter-cell">67</td>
-      <td class="scatter-cell">41</td>
-      <td class="scatter-cell">306</td>
-      <td class="scatter-cell">18</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">459</td>
+      <td class="scatter-cell">431</td>
+      <td class="scatter-cell">105</td>
+      <td class="scatter-cell">47</td>
+      <td class="scatter-cell">678</td>
+      <td class="scatter-cell">32</td>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">70</td>
+      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">167</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">1</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.387</td>
-      <td class="scatter-cell">0.411</td>
-      <td class="scatter-cell">0.125</td>
-      <td class="scatter-cell">0.077</td>
-      <td class="scatter-cell">0.942</td>
-      <td class="scatter-cell">0.055</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.440</td>
+      <td class="scatter-cell">0.414</td>
+      <td class="scatter-cell">0.101</td>
+      <td class="scatter-cell">0.045</td>
+      <td class="scatter-cell">0.951</td>
+      <td class="scatter-cell">0.045</td>
+      <td class="scatter-cell">0.001</td>
       <td class="scatter-cell">0.003</td>
-      <td class="scatter-cell">0.972</td>
-      <td class="scatter-cell">0.014</td>
+      <td class="scatter-cell">0.988</td>
+      <td class="scatter-cell">0.006</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.014</td>
+      <td class="scatter-cell">0.006</td>
     </tr>
     <tr>
       <td class="scatter-cell" rowspan="3">7</td>
@@ -1030,30 +1045,30 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-7gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">224</td>
-      <td class="scatter-cell">144</td>
-      <td class="scatter-cell">31</td>
-      <td class="scatter-cell">14</td>
-      <td class="scatter-cell">242</td>
-      <td class="scatter-cell">11</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">519</td>
+      <td class="scatter-cell">286</td>
+      <td class="scatter-cell">44</td>
+      <td class="scatter-cell">20</td>
+      <td class="scatter-cell">536</td>
+      <td class="scatter-cell">19</td>
+      <td class="scatter-cell">3</td>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">36</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">90</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.542</td>
-      <td class="scatter-cell">0.349</td>
-      <td class="scatter-cell">0.075</td>
+      <td class="scatter-cell">0.597</td>
+      <td class="scatter-cell">0.329</td>
+      <td class="scatter-cell">0.051</td>
+      <td class="scatter-cell">0.023</td>
+      <td class="scatter-cell">0.959</td>
       <td class="scatter-cell">0.034</td>
-      <td class="scatter-cell">0.953</td>
-      <td class="scatter-cell">0.043</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.004</td>
-      <td class="scatter-cell">1.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.005</td>
+      <td class="scatter-cell">0.002</td>
+      <td class="scatter-cell">0.989</td>
+      <td class="scatter-cell">0.011</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
     </tr>
@@ -1064,27 +1079,27 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-8gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">220</td>
-      <td class="scatter-cell">91</td>
-      <td class="scatter-cell">19</td>
-      <td class="scatter-cell">8</td>
-      <td class="scatter-cell">201</td>
-      <td class="scatter-cell">4</td>
+      <td class="scatter-cell">493</td>
+      <td class="scatter-cell">168</td>
+      <td class="scatter-cell">24</td>
+      <td class="scatter-cell">12</td>
+      <td class="scatter-cell">432</td>
+      <td class="scatter-cell">5</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">17</td>
+      <td class="scatter-cell">32</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.651</td>
-      <td class="scatter-cell">0.269</td>
-      <td class="scatter-cell">0.056</td>
-      <td class="scatter-cell">0.024</td>
-      <td class="scatter-cell">0.980</td>
-      <td class="scatter-cell">0.020</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.707</td>
+      <td class="scatter-cell">0.241</td>
+      <td class="scatter-cell">0.034</td>
+      <td class="scatter-cell">0.017</td>
+      <td class="scatter-cell">0.986</td>
+      <td class="scatter-cell">0.011</td>
+      <td class="scatter-cell">0.002</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
@@ -1098,30 +1113,30 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-9gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">202</td>
-      <td class="scatter-cell">49</td>
-      <td class="scatter-cell">8</td>
-      <td class="scatter-cell">8</td>
-      <td class="scatter-cell">131</td>
-      <td class="scatter-cell">2</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">452</td>
+      <td class="scatter-cell">87</td>
+      <td class="scatter-cell">11</td>
       <td class="scatter-cell">10</td>
+      <td class="scatter-cell">294</td>
+      <td class="scatter-cell">5</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">20</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.757</td>
-      <td class="scatter-cell">0.184</td>
-      <td class="scatter-cell">0.030</td>
-      <td class="scatter-cell">0.030</td>
-      <td class="scatter-cell">0.985</td>
-      <td class="scatter-cell">0.015</td>
+      <td class="scatter-cell">0.807</td>
+      <td class="scatter-cell">0.155</td>
+      <td class="scatter-cell">0.020</td>
+      <td class="scatter-cell">0.018</td>
+      <td class="scatter-cell">0.983</td>
+      <td class="scatter-cell">0.017</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.909</td>
-      <td class="scatter-cell">0.091</td>
+      <td class="scatter-cell">0.952</td>
+      <td class="scatter-cell">0.048</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
     </tr>
@@ -1132,26 +1147,26 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-10gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">217</td>
-      <td class="scatter-cell">25</td>
-      <td class="scatter-cell">8</td>
-      <td class="scatter-cell">5</td>
-      <td class="scatter-cell">101</td>
-      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">463</td>
+      <td class="scatter-cell">47</td>
+      <td class="scatter-cell">10</td>
+      <td class="scatter-cell">7</td>
+      <td class="scatter-cell">227</td>
+      <td class="scatter-cell">3</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">12</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.851</td>
-      <td class="scatter-cell">0.098</td>
-      <td class="scatter-cell">0.031</td>
-      <td class="scatter-cell">0.020</td>
-      <td class="scatter-cell">0.981</td>
+      <td class="scatter-cell">0.879</td>
+      <td class="scatter-cell">0.089</td>
       <td class="scatter-cell">0.019</td>
+      <td class="scatter-cell">0.013</td>
+      <td class="scatter-cell">0.987</td>
+      <td class="scatter-cell">0.013</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">1.000</td>
@@ -1166,28 +1181,28 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-11gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">176</td>
-      <td class="scatter-cell">27</td>
-      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">366</td>
+      <td class="scatter-cell">53</td>
+      <td class="scatter-cell">7</td>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">75</td>
+      <td class="scatter-cell">154</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">3</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.854</td>
-      <td class="scatter-cell">0.131</td>
-      <td class="scatter-cell">0.010</td>
-      <td class="scatter-cell">0.005</td>
-      <td class="scatter-cell">0.974</td>
-      <td class="scatter-cell">0.013</td>
+      <td class="scatter-cell">0.857</td>
+      <td class="scatter-cell">0.124</td>
+      <td class="scatter-cell">0.016</td>
+      <td class="scatter-cell">0.002</td>
+      <td class="scatter-cell">0.987</td>
+      <td class="scatter-cell">0.006</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.013</td>
+      <td class="scatter-cell">0.006</td>
       <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
@@ -1200,29 +1215,29 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-12gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">140</td>
-      <td class="scatter-cell">13</td>
+      <td class="scatter-cell">319</td>
+      <td class="scatter-cell">21</td>
+      <td class="scatter-cell">4</td>
       <td class="scatter-cell">3</td>
-      <td class="scatter-cell">2</td>
-      <td class="scatter-cell">51</td>
+      <td class="scatter-cell">105</td>
       <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.886</td>
-      <td class="scatter-cell">0.082</td>
-      <td class="scatter-cell">0.019</td>
-      <td class="scatter-cell">0.013</td>
-      <td class="scatter-cell">0.981</td>
-      <td class="scatter-cell">0.019</td>
+      <td class="scatter-cell">0.919</td>
+      <td class="scatter-cell">0.061</td>
+      <td class="scatter-cell">0.012</td>
+      <td class="scatter-cell">0.009</td>
+      <td class="scatter-cell">0.991</td>
+      <td class="scatter-cell">0.009</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
@@ -1234,11 +1249,11 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-13gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">126</td>
-      <td class="scatter-cell">5</td>
+      <td class="scatter-cell">274</td>
+      <td class="scatter-cell">11</td>
       <td class="scatter-cell">2</td>
       <td class="scatter-cell">1</td>
-      <td class="scatter-cell">38</td>
+      <td class="scatter-cell">75</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">2</td>
       <td class="scatter-cell">0</td>
@@ -1248,13 +1263,13 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.940</td>
-      <td class="scatter-cell">0.037</td>
-      <td class="scatter-cell">0.015</td>
+      <td class="scatter-cell">0.951</td>
+      <td class="scatter-cell">0.038</td>
       <td class="scatter-cell">0.007</td>
-      <td class="scatter-cell">0.950</td>
+      <td class="scatter-cell">0.003</td>
+      <td class="scatter-cell">0.974</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.050</td>
+      <td class="scatter-cell">0.026</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
@@ -1268,11 +1283,11 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-14gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">103</td>
-      <td class="scatter-cell">2</td>
+      <td class="scatter-cell">220</td>
       <td class="scatter-cell">3</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">36</td>
+      <td class="scatter-cell">4</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">53</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
@@ -1282,10 +1297,10 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.954</td>
-      <td class="scatter-cell">0.019</td>
-      <td class="scatter-cell">0.028</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.965</td>
+      <td class="scatter-cell">0.013</td>
+      <td class="scatter-cell">0.018</td>
+      <td class="scatter-cell">0.004</td>
       <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
@@ -1302,29 +1317,29 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-15gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">87</td>
+      <td class="scatter-cell">172</td>
       <td class="scatter-cell">1</td>
+      <td class="scatter-cell">3</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">36</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">19</td>
       <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.989</td>
-      <td class="scatter-cell">0.011</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.972</td>
+      <td class="scatter-cell">0.006</td>
+      <td class="scatter-cell">0.017</td>
+      <td class="scatter-cell">0.006</td>
       <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">1.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
@@ -1336,13 +1351,13 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell" colspan="4"><img class="scatter-img" src="img/livescore/1000coin-16+gifters_dc.png"></td>
     </tr>
     <tr>
-      <td class="scatter-cell">380</td>
-      <td class="scatter-cell">5</td>
-      <td class="scatter-cell">2</td>
-      <td class="scatter-cell">2</td>
-      <td class="scatter-cell">56</td>
-      <td class="scatter-cell">0</td>
-      <td class="scatter-cell">0</td>
+      <td class="scatter-cell">741</td>
+      <td class="scatter-cell">26</td>
+      <td class="scatter-cell">21</td>
+      <td class="scatter-cell">14</td>
+      <td class="scatter-cell">117</td>
+      <td class="scatter-cell">1</td>
+      <td class="scatter-cell">1</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
       <td class="scatter-cell">0</td>
@@ -1350,13 +1365,13 @@ N 人数 M コインは，N 人が M コイン以上投げた場合を黒丸表�
       <td class="scatter-cell">0</td>
     </tr>
     <tr>
-      <td class="scatter-cell">0.977</td>
-      <td class="scatter-cell">0.013</td>
-      <td class="scatter-cell">0.005</td>
-      <td class="scatter-cell">0.005</td>
-      <td class="scatter-cell">1.000</td>
-      <td class="scatter-cell">0.000</td>
-      <td class="scatter-cell">0.000</td>
+      <td class="scatter-cell">0.924</td>
+      <td class="scatter-cell">0.032</td>
+      <td class="scatter-cell">0.026</td>
+      <td class="scatter-cell">0.017</td>
+      <td class="scatter-cell">0.983</td>
+      <td class="scatter-cell">0.008</td>
+      <td class="scatter-cell">0.008</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
       <td class="scatter-cell">0.000</td>
