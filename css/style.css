@@ -358,6 +358,29 @@ table.livescore-border tbody tr:nth-child(even) td:not(.sep) {
 }
 
 
+.livescore-border td.increased {
+  color: #ff2800;
+}
+.livescore-border td.decreased {
+  color: #1565c0;
+}
+
+.livescore-border td.increased.level-1 {
+  color: #ef9a9a;
+}
+.livescore-border td.increased.level-2 {
+  color: #ef5350;
+}
+.livescore-border td.increased.level-3 {
+  color: #d32f2f;
+}
+
+
+.livescore-border-note {
+  color: #555;
+  font-size: 0.7em;
+  margin-left: 2em;
+}
 
 /*-----------------------------------------------------------------*
  * スマホ用 保証ボーダー比率テーブル
@@ -371,6 +394,8 @@ table.livescore-border tbody tr:nth-child(even) td:not(.sep) {
 }
 .gborder-multiplier-subtitle {
   font-size: 12px;
+  margin-left: 2em;
+  color: #666;
 }
 
 table.gborder-multiplier-table {

@@ -15,9 +15,9 @@ for (let i = 0; i < cand_rank.length; i++) {
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
 const latestDate = Object.keys(presets).sort().reverse()[0];
 
-function getCandRank() {
+function getCandRank(group = '') {
 	// RANK_CUSTOM 以外のランクを返す
-	return cand_rank.filter(r => r !== RANK_CUSTOM);
+	return cand_rank.filter(r => r !== RANK_CUSTOM && (group == '' || group.includes(r[0])));
 }
 
 

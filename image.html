@@ -47,12 +47,21 @@
 			</select>
 		</div>
 		<div class="filter-item">
-			<label for="date-select">更新日</label>
+			<label for="date-select">更新日 (対象日)</label>
 			<select id="date-select"></select>
 		</div>
 		<div class="filter-item">
-			<label for="date-base-select">基準</label>
+			<label for="date-base-select">基準日</label>
 			<select id="date-base-select"></select>
+		</div>
+		<div class="filter-item">
+			<label for="rank-group">ランク</label>
+			<select id="rank-group">
+				<option value="ASBCD">すべて</option>
+				<option value="AS">AS帯</option>
+				<option value="B">B帯</option>
+				<option value="C">C帯</option>
+			</select>
 		</div>
 	</div>
 </div>
@@ -118,7 +127,12 @@
 
 		<div class="phone-frame-wrap">
 		<div class="phone-frame with-title" id="livescore-table-order">
-			<div id="livescore-table-title"></div>
+			<div>
+				<span id="livescore-table-title"></span>
+				<small>[<span id="livescore-table-title-date"></span>]</small>
+				<br>
+				<span id="livescore-table-title-note" class="livescore-border-note"></span>
+			</div>
 			<table id="livescore-table" class="livescore-border">
 				<colgroup>
 					<col>

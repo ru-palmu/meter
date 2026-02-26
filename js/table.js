@@ -5,6 +5,7 @@ const TABLE_SELECTORS = [
 	['date-base-select', 'base'],
 	['result-format', 'format'],
 	['result-metrics', 'metrics'],
+	['rank-group', 'rankgroup'],
 ];
 
 const PLANS_KEEP = [
@@ -29,7 +30,7 @@ function _updateUrlTable() {
 }
 
 
-function renderMeterTableDateSelect(date, date_base, metrics, format) {
+function __renderMeterTableDateSelect(date, date_base, metrics, format, rankgroup) {
 	// date-select
 	const select = document.getElementById('date-select');
 	const select2 = document.getElementById('date-base-select');
@@ -63,7 +64,7 @@ function renderMeterTableDateSelect(date, date_base, metrics, format) {
 		}
 	}
 
-	[[format, 'result-format'], [metrics, 'result-metrics']].forEach(([val, id]) => {
+	[[format, 'result-format'], [metrics, 'result-metrics'], [rankgroup, 'rank-group']].forEach(([val, id]) => {
 		if (val) {
 			const select = document.getElementById(id);
 			// 妥当な値なら選択状態にする
@@ -131,12 +132,22 @@ function renderLiveScoreTable() {
 		const select = document.getElementById('date-select');
 		ymd = select.value = Object.keys(presets).sort().reverse()[0];
 	}
+	const date_base = document.getElementById('date-base-select').value;
+	title.textContent = `ライブスコアを降順に整列`
 
-	title.textContent = `ライブスコアを降順に整列 (${ymd.slice(0,4)}/${ymd.slice(4,6)}/${ymd.slice(6,8)} ver)`;
+	const title_date = document.getElementById('livescore-table-title-date');
+	title_date.textContent = `${ymd.slice(0,4)}/${ymd.slice(4,6)}/${ymd.slice(6,8)} ver`;
 
-	const candRanks = new Set(window.getCandRank());
+	if (date_base && ymd > date_base) {
+		const note = document.getElementById('livescore-table-title-note');
+		note.textContent = `(${date_base.slice(0,4)}/${date_base.slice(4,6)}/${date_base.slice(6,8)} と比較して高くなっていたら赤強調)`;
+	}
+
+	const rank_group = document.getElementById('rank-group');
+	const candRanks = new Set(window.getCandRank(rank_group ? rank_group.value : ''));
 
 	// データを全部並べる
+	const base = presets[date_base] || {};
 	const results = Object.entries(presets[ymd])
 	    .filter(([rank]) => candRanks.has(rank))
 		.flatMap(([rank, data]) =>
@@ -145,19 +156,32 @@ function renderLiveScoreTable() {
 				'+' + point,
 				window.scoreOrCoin(meter, 'score', 'raw'),
 				window.scoreOrCoin(meter, 'score', 'short'),
-				window.scoreOrCoin(meter, 'coin', 'comma')
+				window.scoreOrCoin(meter, 'coin', 'comma'),
+				base[rank] && base[rank][point] ? meter / base[rank][point] : 1.0,
+				[],
 			])).sort((a, b) => b[2] - a[2]);
 
 	const tableBody = document.getElementById('livescore-tbody');
 	tableBody.innerHTML = '';
 
+	// 基準日と比較して高くなったもので，かつ比率が1.0より大きいものを抽出して降順に整列
+	_hightlightTopsLivescoreBorder(results, 5, 6);
+
+	const two_column = results.length > 7 * 3;
+
 	// データを半分に分割して表示
-	for (let i = 0; i < Math.ceil(results.length / 2); i++) {
+	for (let i = 0; i < (two_column ? Math.ceil(results.length / 2) : results.length); i++) {
 		const row = document.createElement('tr');
 
 		// ランク名
-		[results[i][0], results[i][1], results[i][3], results[i][4]].forEach((val) => {
-			_createTableData(row, val, []);
+		[results[i][0], results[i][1], results[i][3], results[i][4]].forEach((val, idx) => {
+			const clsNames = [];
+			if (idx == 3) {
+				for (const cls of results[i][6]) {
+					clsNames.push(cls);
+				}
+			}
+			_createTableData(row, val, clsNames);
 		});
 
 		// 空行 (区切り)
@@ -167,14 +191,45 @@ function renderLiveScoreTable() {
 
 		// 2列目
 		const j = i + Math.ceil(results.length / 2);
-		if (j < results.length) {
-			[results[j][0], results[j][1], results[j][3], results[j][4]].forEach((val) => {
-				_createTableData(row, val, []);
+		if (two_column && j < results.length) {
+			[results[j][0], results[j][1], results[j][3], results[j][4]].forEach((val, idx) => {
+				const clsNames = [];
+				if (idx == 3) {
+					for (const cls of results[i][6]) {
+						clsNames.push(cls);
+					}
+				}
+				_createTableData(row, val, clsNames);
 			});
 		}
 
 		tableBody.appendChild(row);
 	}
+
+}
+
+function _hightlightTopsLivescoreBorder(results, n, clsN) {
+	const rets = [...results]
+		.filter(a => a[n] > 1.0)
+		.sort((a, b) => b[n] - a[n]);
+	const n10 = Math.ceil(rets.length / 10);
+	const n30 = Math.ceil(rets.length * 3 / 10);
+	rets.forEach((item, index) => {
+		item[clsN].push('increased');
+		if (index < n10) {
+			item[clsN].push('level-3');
+		} else if (index < n30) {
+			item[clsN].push('level-2');
+		} else {
+			item[clsN].push('level-1');
+		}
+	});
+
+	const dec = [...results]
+		.filter(a => a[n] < 1.0);
+	dec.forEach((item) => {
+		item[clsN].push('decreased');
+	});
 
 }
 
@@ -227,17 +282,17 @@ function renderBorderMultiplierTable() {
 	const date_base = document.getElementById('date-base-select').value;
 
 	if (date_target <= date_base) {
-		// 比較日が基準日より前なら何もしない
-		document.getElementById('gborder-multiplier-title').innerText = "比較日には基準日より新しい日付を選択してください。";
+		// 対象日が基準日より前なら何もしない
+		document.getElementById('gborder-multiplier-title').innerText = "対象日には基準日より新しい日付を選択してください。";
 		return;
 	}
 
 	document.getElementById('gborder-multiplier-title').innerText = "保証ボーダーの変化";
 	document.getElementById('gborder-multiplier-subtitle').innerText =
-		`(基準日: ${date_base}, 比較日: ${date_target})`;
+		`(基準日: ${date_base}, 対象日: ${date_target})`;
 
 
-	[['base', '基準'], ['target', '比較']].forEach(([type, ymd]) => {
+	[['base', '基準'], ['target', '対象']].forEach(([type, ymd]) => {
 		// const ymd_formatted = `${ymd.slice(0, 4)}/${ymd.slice(4, 6)}/${ymd.slice(6, 8)}`;
 		const text = ymd;
 		['2', '4', '6'].forEach((point) => {
@@ -307,14 +362,14 @@ function renderKeeupCoinMultiplierTable() {
 	const date_base = document.getElementById('date-base-select').value;
 
 	if (date_target <= date_base) {
-		// 比較日が基準日より前なら何もしない
-		document.getElementById('keeupcoin-multiplier-title').innerText = "比較日には基準日より新しい日付を選択してください。";
+		// 対象日が基準日より前なら何もしない
+		document.getElementById('keeupcoin-multiplier-title').innerText = "対象日には基準日より新しい日付を選択してください。";
 		return;
 	}
 
 	document.getElementById('keeupcoin-multiplier-title').innerText = "ランクキープ・アップに必要なコイン数の変化";
 	document.getElementById('keeupcoin-multiplier-subtitle').innerText =
-		`(基準日: ${date_base}, 比較日: ${date_target})`;
+		`(基準日: ${date_base}, 対象日: ${date_target})`;
 
 
 	const base = presets[date_base];
@@ -468,17 +523,18 @@ window.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
 
   const params = new URLSearchParams(window.location.search);
-  renderMeterTableDateSelect(
+  __renderMeterTableDateSelect(
 	  params.get('date') || '',
 	  params.get('base') || '',
 	  params.get('metrics') || '',
-	  params.get('format') || '');
+	  params.get('format') || '',
+      params.get('rankgroup') || '');
   renderMeterTableForDate();  // 初期表示
   renderLiveScoreTable();
   renderBorderMultiplierTable();
   renderKeeupCoinMultiplierTable();
 
-  ['date-select', 'date-base-select', 'result-format', 'result-metrics'].forEach((id) => {
+  TABLE_SELECTORS.forEach(([id, _]) => {
 	  document.getElementById(id)?.addEventListener('change', _updateUrlTable);
   });
 });
