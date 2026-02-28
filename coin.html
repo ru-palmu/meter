@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script       src="js/meter.js?v=65" defer></script>
+  <script src="../data/notice.js?v=65" defer></script>
+  <script        src="js/navi.js?v=65" defer></script>
+  <script        src="js/coin.js?v=65" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=65">
+  <link rel="icon" href="/favicon.ico">
+  <title>コイン数からライブスコア - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）専用のコイン計算機．ライブスコアを入力するだけで確定スコア（メーター，確定値）までに必要なコイン数を自動で計算できます．">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<div id="notice-banner"></div>
+</header>
+
+<main>
+<div class="intro">
+
+	コイン数を入力として，期待するライブスコアを算出します．
+	この値より小さければ，なにかしらの条件で詰まっています．
+</div>
+
+
+<div class="input-block">
+	<div class="meter-field score">
+		<label id="score_label">コイン数: </label>
+		<input type="number" id="coin" value="0">
+	</div>
+</div>
+
+期待するライブスコア
+<div class="output-block">
+<textarea class="copy-output" id="result" readonly cols="40" rows="1" placeholder=""></textarea>
+</div>
+
+
+</main>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
+

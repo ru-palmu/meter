@@ -45,17 +45,22 @@ function formatPalmu(value) {
   }
 }
 
-function score2coin_orig(score) {
-	const a0 = 3.040719436589159;
-	const b0 = 0;
-	const a1 = 2.6950897058012684;
-	const b1 = 15531.441501008434;
-	const a2 = 2.5483011271896387;
-	const b2 = 41958.68833499996;
-	const model = [[b0, a0], [b1, a1], [b2, a2]];
+const RU_MODEL_BA = [
+	[0, 3.040719436589159],
+	[15531.441501008434, 2.6950897058012684],
+	[41958.68833499996, 2.5483011271896387],
+];
 
+function score2coin_orig(score) {
+	const model = RU_MODEL_BA;
 	return Math.max(...model.map(([b, a]) => (score - b) / a));
 }
+
+function coin2score(coin) {
+	const model = RU_MODEL_BA;
+	return Math.min(...model.map(([b, a]) => coin * a + b));
+}
+
 
 // ライブスコアに相当するコイン数を算出する．
 // ギフトの最小値が 10 のため, 1の位を切り上げ.
@@ -1104,6 +1109,7 @@ function tableHeaderFixer() {
 window.tableHeaderFixer = tableHeaderFixer;
 window.renderPagination = renderPagination;
 window.formatPalmu = formatPalmu;
+window.coin2score = coin2score;
 window.score2coin = score2coin;
 window.scoreOrCoin = scoreOrCoin;
 window.scoreToString = scoreToString;

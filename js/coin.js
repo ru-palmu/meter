@@ -14,6 +14,19 @@ function updateUrlMeter() {
 }
 
 function calculate(rank = '') {
+
+  const coinInput = document.getElementById("coin");
+  if (coinInput) {
+	const coinValue = parseInt(coinInput.value);
+	if (!isNaN(coinValue) && coinValue > 0) {
+	  // コイン数が正の整数の場合は、ライブスコアに反映
+	  const livescore = window.coin2score(coinValue);
+	  document.getElementById("result").value = Math.floor(livescore);
+	  return ;
+	}
+  }
+
+
   if (rank instanceof Event) {
     rank = '';
   }
@@ -301,7 +314,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'dynamic-border-value', 'border-type'].forEach(id => {
+  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'coin', 'dynamic-border-value', 'border-type'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculate, undefined);
   });
 
