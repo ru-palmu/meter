@@ -176,7 +176,7 @@ function renderLiveScoreTable() {
 		// ランク名
 		[results[i][0], results[i][1], results[i][3], results[i][4]].forEach((val, idx) => {
 			const clsNames = [];
-			if (idx == 3) {
+			if (idx == 3 || idx == 2) {
 				for (const cls of results[i][6]) {
 					clsNames.push(cls);
 				}
@@ -194,8 +194,8 @@ function renderLiveScoreTable() {
 		if (two_column && j < results.length) {
 			[results[j][0], results[j][1], results[j][3], results[j][4]].forEach((val, idx) => {
 				const clsNames = [];
-				if (idx == 3) {
-					for (const cls of results[i][6]) {
+				if (idx == 3 || idx == 2) {
+					for (const cls of results[j][6]) {
 						clsNames.push(cls);
 					}
 				}
@@ -205,17 +205,14 @@ function renderLiveScoreTable() {
 
 		tableBody.appendChild(row);
 	}
-
 }
 
-function _hightlightTopsLivescoreBorder(results, n, clsN) {
-	const rets = [...results]
-		.filter(a => a[n] > 1.0)
-		.sort((a, b) => b[n] - a[n]);
+
+function _hightlightTopsLivescoreBorderSetLevel(rets, clsN, incdec) {
 	const n10 = Math.ceil(rets.length / 10);
 	const n30 = Math.ceil(rets.length * 3 / 10);
 	rets.forEach((item, index) => {
-		item[clsN].push('increased');
+		item[clsN].push(incdec);
 		if (index < n10) {
 			item[clsN].push('level-3');
 		} else if (index < n30) {
@@ -224,13 +221,24 @@ function _hightlightTopsLivescoreBorder(results, n, clsN) {
 			item[clsN].push('level-1');
 		}
 	});
+}
 
-	const dec = [...results]
-		.filter(a => a[n] < 1.0);
-	dec.forEach((item) => {
-		item[clsN].push('decreased');
+function _hightlightTopsLivescoreBorder(results, n, clsN) {
+	const increases = results
+		.filter(a => a[n] > 1.0)
+		.sort((a, b) => b[n] - a[n]);
+	_hightlightTopsLivescoreBorderSetLevel(increases, clsN, 'increased');
+
+	const decreases = results
+		.filter(a => a[n] < 1.0)
+		.sort((a, b) => b[n] - a[n]);
+	_hightlightTopsLivescoreBorderSetLevel(decreases, clsN, 'decreased');
+
+	const zeros = results
+		.filter(a => a[n] == 1.0);
+	zeros.forEach((item) => {
+		item[clsN].push('no-change');
 	});
-
 }
 
 function _setClassRankCell(row, row2, rank) {
