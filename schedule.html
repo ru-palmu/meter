@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script       src="js/meter.js?v=66" defer></script>
+  <script       src="js/_event_title.js?v=66" defer></script>
   <script src="../data/notice.js?v=66" defer></script>
   <script        src="js/navi.js?v=66" defer></script>
   <script    src="js/schedule.js?v=66" defer></script>
@@ -86,10 +88,12 @@
         <tr>
           <th class="date">日付</th>
           <th class="weekday">曜<br>日</th>
+          <th class="event">イ<br>ベ</th>
           <th class="skipRemain">ス<br>キ<br>カ</th>
           <th class="point">pt</th>
           <th class="total">合<br>計</th>
           <th class="rank">ラ<br>ン<br>ク</th>
+
           <!-- <th class="restDay">残</th> -->
           <th class="memo">メモ</th>
         </tr>
@@ -103,6 +107,7 @@
         <tr>
           <th class="date">日付</th>
           <th class="weekday">曜<br>日</th>
+          <th class="event">イ<br>ベ</th>
           <th class="point">pt</th>
           <!-- <th class="restDay">残</th> -->
           <th class="memo">メモ</th>

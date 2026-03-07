@@ -8,6 +8,8 @@ const POINT_OPTIONS = ["+0", "+1", "+2", "+4", "+6", "ス"];
 const DISTRIBUTE_SKIP_CARDS_DAY = 1; // 月曜日(0)
 const DISTRIBUTE_EVENT_DAY = 1; //  イベント終了日
 
+const EVENT_STATE_DOW = 2; // 火曜日(2)にイベントが切り替わる
+
 const MAX_SKIP_CARDS = 10; // スキップカードの最大数
 
 const RANK_UP_POINT = 18; // ランクアップに必要なポイント数
@@ -125,7 +127,7 @@ function getToday() {
 function _getDateDiff(n) {
   const d = new Date();
   d.setDate(d.getDate() - n);
-  return d.toISOString().split("T")[0];
+  return dateToStr(d);
 }
 
 // 表示対象の期間を返す
@@ -143,6 +145,103 @@ function dateToStr(d) {
   return d.toISOString().split("T")[0];
 }
 
+function createEventSelectors(dateStr, dow, sep) {
+  const tdEvent = document.createElement("td");
+  tdEvent.className = "td-event-title";
+  tdEvent.rowSpan = (dow == sep) ? 7 : (sep + 7 - dow) % 7;
+  if (dow != sep) {
+    // 前の起点曜日を求める
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() - ((dow + 7 - sep) % 7));
+    dateStr = dateToStr(d);
+  }
+  tdEvent.id = "fevent_" + dateStr;
+  return tdEvent;
+}
+
+function createEventSelectorsPast(dateStr, dow, sep) {
+  const tdEvent = document.createElement("td");
+  tdEvent.className = "td-event-title";
+  tdEvent.rowSpan = (dow == sep - 1) ? 7 : ((dow - sep + 8) % 7);
+  if (dow != sep) {
+    // 前の sep 曜日を求める
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() - (dow + 7 - sep) % 7);
+    dateStr = dateToStr(d);
+  }
+  tdEvent.id = "pevent_" + dateStr;
+  return tdEvent;
+}
+
+
+
+function setupEventTitles() {
+  const events_common = [
+    ['TBC', 'トップバナー', 'トップバナー'],
+    ['SUC', 'ステップアップ', 'ステップアップ'],
+    ['EDSC', '毎日配信', '毎日配信'],
+  ];
+  for (const td of document.getElementsByClassName("td-event-title")) {
+    const dateStr = td.id.replace("pevent_", "").replace("fevent_", "");
+    const prefix = td.id[0];
+    const events = window.EVENT_TITLES[dateStr] || [];
+    if (events.length > 0) {
+      const selector_div = document.createElement("div");
+      selector_div.className = "event-selector";
+      td.appendChild(selector_div);
+
+      const select = document.createElement("select");
+      select.className = "event-select";
+      select.id = prefix + "event_select_" + dateStr;
+      selector_div.appendChild(select);
+
+      const defaultOpt = document.createElement("option");
+      defaultOpt.value = "";
+      defaultOpt.textContent = "";
+      select.appendChild(defaultOpt);
+
+      [...events, ...events_common].forEach((ev) => {
+        const opt = document.createElement("option");
+        // リストなら，１番目の要素を使う
+        let ev_text = ev;
+        if (Array.isArray(ev)) {
+          if (ev.length == 3) {
+            ev_text = ev[2];
+            ev = ev[0];
+          } else {
+            ev_text = ev[1];
+            ev = ev[1];
+          }
+        }
+        opt.value = ev;
+        opt.textContent = ev_text;
+        select.appendChild(opt);
+      })
+
+      const val = __getScheduleLocalStorage("event_" + dateStr);
+      if (val) {
+        select.value = val;
+      }
+
+      td.appendChild(select);
+
+      select.onchange = () => {
+        const idx = select.selectedIndex;
+        const text = select.options[idx].text;
+        __setScheduleLocalStorage("event_" + dateStr, text);
+        const ido = ((td.id[0] == 'f') ? "p" : "f") + "event_select_" + dateStr;
+        const other_td = document.getElementById(ido);
+        if (other_td) {
+          other_td.value = select.value;
+        }
+      }
+    }
+  }
+}
+
+
+
+
 // --- スケジュール表の生成 ---
 function generateSchedule() {
   const tbody = document.getElementById("scheduleBody");
@@ -153,6 +252,7 @@ function generateSchedule() {
   const today = getToday();
 
   let d = new Date(start);
+  let first_row = true;
   while (d <= end) {
     const dateStr = dateToStr(d);
     const dow = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
@@ -190,12 +290,18 @@ function generateSchedule() {
     }
     tr.appendChild(tdWeek);
 
+    // イベント
+    if (d.getDay() == EVENT_STATE_DOW || first_row) { // 火曜日ならイベント情報を表示
+      const tdEvent = createEventSelectors(dateStr, d.getDay(), EVENT_STATE_DOW);
+      tr.appendChild(tdEvent);
+      first_row = false;
+    }
+
     // スキップカード残数
     const tdSkipRemain = document.createElement("td");
     tdSkipRemain.className = "skipRemain";
     tr.appendChild(tdSkipRemain);
     if (scheduleData[dateStr]?.skipRemain) tdSkipRemain.value = scheduleData[dateStr].skipRemain;
-
 
     // ポイント
     const tdPoint = document.createElement("td");
@@ -274,6 +380,7 @@ function generateSchedulePast() {
   let event = false;  // イベントの切り替わりで背景色を変えるためのフラグ
 
   const d = end;
+  let first_row = true;
   while (dateToStr(d) >= start) {
     const dateStr = dateToStr(d);
     const dow = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
@@ -290,7 +397,7 @@ function generateSchedulePast() {
         tr.classList.add("event0");
       }
     }
-    if (d.getDay() === DISTRIBUTE_EVENT_DAY) {
+    if (d.getDay() === EVENT_STATE_DOW) {
       event = !event;
     }
 
@@ -305,6 +412,13 @@ function generateSchedulePast() {
     tdWeek.className = "weekday";
     tdWeek.textContent = dow;
     tr.appendChild(tdWeek);
+
+    // イベント
+    if (d.getDay() == EVENT_STATE_DOW - 1 || first_row) { // 月曜日ならイベント情報を表示
+      const tdEvent = createEventSelectorsPast(dateStr, d.getDay(), EVENT_STATE_DOW);
+      tr.appendChild(tdEvent);
+      first_row = false;
+    }
 
     // ポイント
     const tdPoint = document.createElement("td");
@@ -618,6 +732,7 @@ function setupEvents() {
   });
 }
 
+
 // --- DOMContentLoaded ---
 document.addEventListener("DOMContentLoaded", () => {
   renderNavis("navi_func", "navi_rank", "footer");
@@ -673,6 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadInitialSettings();
   generateSchedule();
   generateSchedulePast();
+  setupEventTitles();
   setupEvents();
   updateTotals();
 });
