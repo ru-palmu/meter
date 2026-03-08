@@ -228,7 +228,7 @@ function setupEventTitles() {
       select.onchange = () => {
         const idx = select.selectedIndex;
         const text = select.options[idx].text;
-        __setScheduleLocalStorage("event_" + dateStr, text);
+        __setScheduleLocalStorage("event_" + dateStr, select.value);
         const ido = ((td.id[0] == 'f') ? "p" : "f") + "event_select_" + dateStr;
         const other_td = document.getElementById(ido);
         if (other_td) {
