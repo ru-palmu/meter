@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script       src="js/meter.js?v=67" defer></script>
   <script       src="js/event_title.js?v=67" defer></script>
   <script src="../data/notice.js?v=67" defer></script>
@@ -66,9 +67,13 @@
     <input type="radio" id="rankChangeUp"   name="rankChange" value="Up"  >アップ
   </div>
 
+  <input type="button" id="makePng" value="スクショ" onclick="makePng()">
+
   <span id="schedule_debug_buttons"></span>
   <script src="js/debug.js" defer></script>
 </fieldset>
+
+
 
 <div class="toggle-wrapper">
   <input type="checkbox" id="schedule-toggle" checked>
@@ -150,6 +155,38 @@
 </ul>
 
 
+<span class="sub-title" id="exp">実験中</span>
+
+<ul class="help">
+  <li>カレンダー画像生成機能を実験的に追加しました．「生成」ボタンを押すと，予定表の内容を画像として保存できます．</li>
+  <li>開始曜日を選択できます．</li>
+  <li>ご意見・ご要望あれば，<a href="https://x.com/ru_palmu">X</a> (DM可) や<a href="https://marshmallow-qa.com/fcbapahukbveobw?t=mZ9AzD&utm_medium=url_text&utm_source=promotion">匿名質問箱</a>などでお知らせください．</li>
+  <li>縦をスマホサイズにしたいところですが，タイムアップ</li>
+</ul>
+
+<fieldset>
+  <legend>カレンダー画像生成</legend>
+
+  <div class="input-group">
+    <label for="cal-dow">開始曜日</label>
+    <select id="cal-dow">
+      <option value="0" selected>日曜日</option>
+      <option value="1">月曜日</option>
+      <option value="2">火曜日</option>
+      <option value="3">水曜日</option>
+      <option value="4">木曜日</option>
+      <option value="5">金曜日</option>
+      <option value="6">土曜日</option>
+      <option value="7">日曜日</option>
+    </select>
+  </div>
+
+  <input type="button" id="btn-cal" value="生成">
+</fieldset>
+
+<table><tr><td>
+  <div id="div-canvas"></div>
+</td></tr></table>
 </main>
 
 <footer id="footer"></footer>

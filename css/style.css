@@ -1267,6 +1267,189 @@ legend {
   border-bottom: 1px solid #ccc;
 }
 
+/*==================================================
+ * スケジューラ・カレンダー
+ *=================================================*/
+
+div.div-canvas {
+	border-collapse: collapse;
+	width: 100%;
+	max-width: 360px;
+	font-size: 14px;
+	table-layout: fixed;
+	position: static;
+}
+
+table.scheduler_month {
+	border-collapse: collapse;
+	width: 100%;
+	max-width: 360px;
+	font-size: 14px;
+	table-layout: fixed;
+}
+
+table.scheduler_month th,
+table.scheduler_month td {
+	width: 50px;
+	border-spacing: 0;
+}
+
+table.scheduler_month th {
+	border: 1px solid #ccc;
+	padding: 0.1px;
+	background: #dfeee7;
+	color: #2f4f4f;
+}
+
+table.scheduler_month td {
+	overflow: hidden;
+	padding: 0px;
+}
+
+table.scheduler_month td.date {
+	font-weight: bold;
+	font-size: 15px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+table.scheduler_month th.Sun,
+table.scheduler_month td.date.Sun {
+	color: #e57373; /* 赤系 */
+}
+
+table.scheduler_month th.Sat,
+table.scheduler_month td.date.Sat {
+	color: #64b5f6; /* 青系 */
+}
+
+
+table.scheduler_month td.event,
+table.scheduler_month td.rank,
+table.scheduler_month td.point {
+	height: 10px;
+}
+
+table.scheduler_month tr.memo td {
+  padding-bottom: 0px;
+}
+
+/** 最後は下パディングなし **/
+table.scheduler_month tr.memo:last-child td {
+	padding-bottom: 0px;
+}
+
+table.scheduler_month td.rank span.rank {
+	display: block;
+	background-color: #9cd6ea; /* 水色系 */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+	color: white;
+	padding: 0 0;
+	/* margin-top: 1px; */
+	font-size: 12px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+  	text-align: center;
+	overflow: hidden;
+
+	transform: translateZ(0);
+	transform: translate3d(0, 0, 0);
+
+	position: relative;
+}
+
+
+table.scheduler_month td.event span.event {
+	display: block;
+	background-color: #f6a5b6; /* ピンク系 */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+	color: white;
+	padding: 0 0;
+	/* margin-top: 1px; */
+	font-size: 11px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+  	text-align: center;
+	overflow: hidden;
+
+	transform: translateZ(0);
+}
+
+
+table.scheduler_month td.event span.event.start,
+table.scheduler_month td.rank span.rank.start {
+	border-top-left-radius: 9999px;
+	border-bottom-left-radius: 9999px;
+}
+table.scheduler_month td.event span.event.end,
+table.scheduler_month td.rank span.rank.end {
+	border-top-right-radius: 9999px;
+	border-bottom-right-radius: 9999px;
+}
+
+table.scheduler_month td.rank span.rank.rank-up::after {
+	content: "↗";
+	color: #4caf50;
+	font-weight: bold;
+	position: absolute;
+	right: 6px;
+}
+table.scheduler_month td.rank span.rank.rank-down::after {
+	content: "↘";
+	color: #4caf50;
+	font-weight: bold;
+	position: absolute;
+	right: 6px;
+}
+table.scheduler_month td.rank span.rank.rank-keep::after {
+	content: "→";
+	color: #4caf50;
+	position: absolute;
+	right: 6px;
+}
+
+
+table.scheduler_month td.point span.point {
+	font-size: 11px;
+	display: block;
+	width: 90%;
+	margin: 0 auto;
+	padding: 0 0;
+	text-align: center;
+
+	background-color: #ffe08a;
+	border-radius: 9999px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+	overflow: hidden;
+}
+
+table.scheduler_month td.point span.point.p1 {
+	background: none;
+}
+table.scheduler_month td.point span.point.skip {
+	background: #d8d8d8;
+}
+
+table.scheduler_month td.memo {
+	overflow: hidden;
+}
+
+.text2 {
+  font-size: 11px;
+  line-height: 1.2;
+  height: calc(1.2em * 2);
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  word-break: break-word;
+}
 
 /***************************************************
  * 個別: event.html

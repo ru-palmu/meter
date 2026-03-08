@@ -226,8 +226,6 @@ function setupEventTitles() {
       td.appendChild(select);
 
       select.onchange = () => {
-        const idx = select.selectedIndex;
-        const text = select.options[idx].text;
         __setScheduleLocalStorage("event_" + dateStr, select.value);
         const ido = ((td.id[0] == 'f') ? "p" : "f") + "event_select_" + dateStr;
         const other_td = document.getElementById(ido);
@@ -271,6 +269,7 @@ function generateSchedule() {
         tr.classList.add("event0");
       }
     }
+    tr.id = "row_" + dateStr;
     if (d.getDay() === DISTRIBUTE_EVENT_DAY) {
       event = !event;
     }
@@ -711,6 +710,273 @@ function updateTotals() {
   }
 }
 
+//////////////////////////////////////////////////////////
+// スクショ画像を保存するための関数
+//////////////////////////////////////////////////////////
+//
+//
+function __getEventName(day) {
+  const d = new Date(day);
+  // 前の火曜日を求める
+  const dow = d.getDay();
+  d.setDate(d.getDate() - ((dow + 7 - EVENT_STATE_DOW) % 7));
+  const dateStr = dateToStr(d);
+  let ev = __getScheduleLocalStorage("event_" + dateStr);
+  const events = window.EVENT_TITLES[dateStr] || [];
+  events.forEach((e) => {
+    if (Array.isArray(e)) {
+      if (e.length == 3) {
+        if (e[0] == ev) {
+          ev = e[2];
+          return ev;
+        }
+      } else {
+        if (e[1] == ev) {
+          ev = e[1];
+          return ev;
+        }
+      }
+    }
+  });
+
+  return ev
+}
+
+function makeTdEventBand(nowDay, dow, sep, j) {
+
+  const tdEvent = document.createElement("td");
+  tdEvent.className = "event";
+
+  const spanEvent = document.createElement("span");
+  spanEvent.className = "event";
+
+  // 月曜日までの帯
+  if (dow == "Tue") {
+    tdEvent.colSpan = 7 - j;
+    spanEvent.classList.add("start");
+  }
+  if (j == 0) {
+    tdEvent.colSpan = (9 - sep - 1) % 7 + 1;
+    spanEvent.classList.add("end");
+  }
+
+  const ev = __getEventName(nowDay)
+  if (ev) {
+    spanEvent.textContent = ev;
+    tdEvent.appendChild(spanEvent);
+  }
+  return tdEvent;
+}
+
+function makeTdRankBand(nowDay, dateStr, j) {
+  const tdRank = document.createElement("td");
+  tdRank.className = "rank";
+
+  let k = 1
+  let end = false;
+  let classRankMove = '';
+  for (k = 0; k < 7 - j; k++) {
+    const d = new Date(nowDay);
+    d.setDate(d.getDate() + k);
+    const dstr = dateToStr(d);
+    if (scheduleData[dstr]?.separator) {
+      end = true;
+
+      if (scheduleData[dstr].total < 12) {
+
+        classRankMove = 'rank-down';
+      } else {
+        const d1 = new Date(d);
+        d1.setDate(d1.getDate() + 1);
+        const d1str = dateToStr(d1);
+        if (scheduleData[dstr].total >= 18 && (
+            scheduleData[d1str]?.rank != scheduleData[dstr]?.rank ||
+            scheduleData[dstr]?.rank == 'SS')) {
+          classRankMove = 'rank-up';
+        } else {
+          // ランクダウン直後なら 18ポイントとってもランクアップできない
+          classRankMove = 'rank-keep';
+        }
+
+      }
+      tdRank.classList.add("date" + dstr);
+
+
+      break;
+    }
+  }
+  tdRank.colSpan = k + 1;
+
+  if (scheduleData[dateStr]?.rank) {
+    const span = document.createElement("span");
+    span.className = "rank";
+    span.textContent = scheduleData[dateStr]?.rank;
+
+    tdRank.appendChild(span);
+
+    if (classRankMove) {
+      span.classList.add(classRankMove);
+    }
+    if (end) {
+      span.classList.add("end");
+    } else {
+      const d = new Date(nowDay);
+      d.setDate(d.getDate() - 1);
+      const dstr = dateToStr(d);
+      if (scheduleData[dstr]?.separator) {
+        span.classList.add("start");
+      }
+    }
+  }
+  return tdRank;
+}
+
+function makeTdPoint(dateStr) {
+  const tdPoint = document.createElement("td");
+  tdPoint.className = "point";
+  const spanPoint = document.createElement("span");
+  if (scheduleData[dateStr]?.point) {
+    spanPoint.textContent = scheduleData[dateStr].point;
+    if (scheduleData[dateStr].total && scheduleData[dateStr].point != "ス") {
+      spanPoint.textContent += " (" + scheduleData[dateStr].total;
+      // spanPoint.textContent += ", " + scheduleData[dateStr].restDay;
+      spanPoint.textContent += ")";
+    }
+    spanPoint.className = "point";
+    spanPoint.classList.add(scheduleData[dateStr].point.replace("+", "p").replace("ス", "skip"));
+
+    tdPoint.appendChild(spanPoint);
+  }
+  return tdPoint;
+}
+
+function _makeTdMemo(dateStr) {
+  const tdMemo = document.createElement("td");
+  tdMemo.className = "memo";
+
+  const div = document.createElement("div");
+  div.className = "memo";
+  div.classList.add("text2");
+
+  div.textContent = scheduleData[dateStr]?.memo || " ";
+  tdMemo.appendChild(div);
+
+  return tdMemo;
+}
+
+/**
+ *
+ * sep: 左端の曜日
+ */
+function makePng(id_canvas, sep) {
+  const div = document.getElementById(id_canvas);
+  if (!div) {
+    return
+  }
+  div.innerHTML = "";
+
+  const table = document.createElement("table");
+  table.className = "scheduler_month";
+  div.appendChild(table);
+
+  const thead = document.createElement("thead");
+  table.appendChild(thead);
+
+  const headerRow = document.createElement("tr");
+  thead.appendChild(headerRow);
+
+  for (let j = 0; j < 7; j++) {
+    const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][(sep + j) % 7];
+    const th = document.createElement("th");
+    th.textContent = day;
+    th.className = day;
+    headerRow.appendChild(th);
+  }
+
+  const today = getToday();
+  const dow = new Date(today).getDay();
+  const nowDay = new Date(today);
+  // 火曜日を起点にして、表示する月の最初の火曜日の日付を求める
+  nowDay.setDate(nowDay.getDate() - ((dow + 7 - sep) % 7)); // 4週間分前から表示
+
+  let new_rank_week = true;
+
+  for (let i = 0; i < 4; i++) {
+    const trs = {};
+    ['date', 'event', 'rank', 'point', 'memo'].forEach((cls) => {
+      const tr = document.createElement("tr");
+      table.appendChild(tr);
+      tr.className = cls;
+      trs[cls] = tr;
+    });
+
+    for (let j = 0; j < 7; j++) {
+      const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][(sep + j) % 7];
+      const tdDate = document.createElement("td");
+      const dateStr = dateToStr(nowDay);
+      tdDate.textContent = nowDay.getDate();
+      tdDate.className = day;
+      tdDate.classList.add("date");
+      if (dateStr === today) {
+        tdDate.classList.add("today");
+      }
+      trs['date'].appendChild(tdDate);
+
+      ////////////////////////////////////
+      // イベント帯
+      ////////////////////////////////////
+      if (day == "Tue" || j == 0) {
+        const tdEvent = makeTdEventBand(nowDay, day, sep, j);
+        trs['event'].appendChild(tdEvent);
+      }
+
+      ////////////////////////////////////
+      // ポイント
+      ////////////////////////////////////
+      const tdPoint = makeTdPoint(dateStr);
+      trs['point'].appendChild(tdPoint);
+
+      ////////////////////////////////////
+      // ランク帯
+      ////////////////////////////////////
+      if (j == 0 || new_rank_week) {
+        const tdRankBand = makeTdRankBand(nowDay, dateStr, j);
+        if (tdRankBand) {
+          trs['rank'].appendChild(tdRankBand);
+        }
+      }
+      new_rank_week = scheduleData[dateStr]?.separator;
+
+      const tdMemo = _makeTdMemo(dateStr);
+      trs['memo'].appendChild(tdMemo);
+
+      nowDay.setDate(nowDay.getDate() + 1);
+    }
+  }
+
+  if (true) {
+    html2canvas(div, {
+      scale: 2,
+    }).then((canvas) => {
+
+      const resized = document.createElement("canvas");
+      resized.width = canvas.width / 2;
+      resized.height = canvas.height / 2;
+
+      const ctx = resized.getContext("2d");
+      ctx.drawImage(canvas, 0, 0, resized.width, resized.height);
+
+      const imgData = resized.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = "table_screenshot.png";
+      link.click();
+    });
+  }
+}
+
+
+
 // --- イベント登録 ---
 function setupEvents() {
   // スキップカード残数変更時
@@ -791,6 +1057,16 @@ document.addEventListener("DOMContentLoaded", () => {
   setupEventTitles();
   setupEvents();
   updateTotals();
+
+  // for (let i = 0; i < 1; i++) {
+  //   makePng("div-canvas" + i, i);
+  // }
+});
+
+
+document.getElementById("btn-cal").addEventListener("click", () => {
+  const dow = document.getElementById("cal-dow").value;
+  makePng("div-canvas", parseInt(dow));
 });
 
 /* vim: set et ts=2 sts=2 sw=2 et: */
