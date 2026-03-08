@@ -768,7 +768,7 @@ function makeTdEventBand(nowDay, dow, sep, j) {
   return tdEvent;
 }
 
-function makeTdRankBand(nowDay, dateStr, j) {
+function makeTdRankBand(nowDay, dateStr, today, j) {
   const tdRank = document.createElement("td");
   tdRank.className = "rank";
 
@@ -779,6 +779,10 @@ function makeTdRankBand(nowDay, dateStr, j) {
     const d = new Date(nowDay);
     d.setDate(d.getDate() + k);
     const dstr = dateToStr(d);
+    if (dstr == today && k > 0) {
+      k--;
+      break;
+    }
     if (scheduleData[dstr]?.separator) {
       end = true;
 
@@ -823,7 +827,7 @@ function makeTdRankBand(nowDay, dateStr, j) {
       const d = new Date(nowDay);
       d.setDate(d.getDate() - 1);
       const dstr = dateToStr(d);
-      if (scheduleData[dstr]?.separator) {
+      if (scheduleData[dstr]?.separator || today == dateStr) {
         span.classList.add("start");
       }
     }
@@ -899,7 +903,7 @@ function makePng(id_canvas, sep) {
   // 火曜日を起点にして、表示する月の最初の火曜日の日付を求める
   nowDay.setDate(nowDay.getDate() - ((dow + 7 - sep) % 7)); // 4週間分前から表示
 
-  let new_rank_week = true;
+  let new_rank_week = (7 + dow - sep) % 7;
 
   for (let i = 0; i < 4; i++) {
     const trs = {};
@@ -939,13 +943,15 @@ function makePng(id_canvas, sep) {
       ////////////////////////////////////
       // ランク帯
       ////////////////////////////////////
-      if (j == 0 || new_rank_week) {
-        const tdRankBand = makeTdRankBand(nowDay, dateStr, j);
+      if (j == 0 || j == new_rank_week) {
+        const tdRankBand = makeTdRankBand(nowDay, dateStr, today, j);
         if (tdRankBand) {
           trs['rank'].appendChild(tdRankBand);
         }
       }
-      new_rank_week = scheduleData[dateStr]?.separator;
+      if (scheduleData[dateStr]?.separator) {
+        new_rank_week = (j + 1) % 7;
+      }
 
       const tdMemo = _makeTdMemo(dateStr);
       trs['memo'].appendChild(tdMemo);
