@@ -787,7 +787,6 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
       end = true;
 
       if (scheduleData[dstr].total < 12) {
-
         classRankMove = 'rank-down';
       } else {
         const d1 = new Date(d);
@@ -801,11 +800,8 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
           // ランクダウン直後なら 18ポイントとってもランクアップできない
           classRankMove = 'rank-keep';
         }
-
       }
       tdRank.classList.add("date" + dstr);
-
-
       break;
     }
   }
@@ -854,7 +850,7 @@ function makeTdPoint(dateStr) {
   return tdPoint;
 }
 
-function _makeTdMemo(dateStr) {
+function _makeTdMemo(dateStr, isMemo) {
   const tdMemo = document.createElement("td");
   tdMemo.className = "memo";
 
@@ -862,26 +858,53 @@ function _makeTdMemo(dateStr) {
   div.className = "memo";
   div.classList.add("text2");
 
-  div.textContent = scheduleData[dateStr]?.memo || " ";
+  if (isMemo) {
+    const str = scheduleData[dateStr]?.memo || " ";
+    if (!str.startsWith(" ") && !str.startsWith("　")) {
+      div.textContent = str;
+    }
+  }
   tdMemo.appendChild(div);
 
   return tdMemo;
+}
+
+function makeCopyright(year) {
+	const copyright = document.createElement("div");
+  copyright.className = "copyright";
+  const sp1 = "&nbsp;".repeat(5);
+  const sp2 = "&nbsp;".repeat(1);
+  copyright.innerHTML = `ぱ(る)むの計算機 ${sp1} © ${year} ${sp2} (る)`;
+  return copyright;
 }
 
 /**
  *
  * sep: 左端の曜日
  */
-function makePng(id_canvas, sep) {
-  const div = document.getElementById(id_canvas);
-  if (!div) {
+function makePng(id_canvas, sep, do_image_download, isMemo) {
+  const canvas = document.getElementById(id_canvas);
+  if (!canvas) {
     return
   }
-  div.innerHTML = "";
+  canvas.innerHTML = "";
+
+  const div = document.createElement("div");
+  div.className = "calendar-wrapper";
+  canvas.appendChild(div);
+
+  const title = document.createElement("div");
+  title.className = "calendar-title";
+  const today = getToday();
+  title.textContent = `${today.slice(0, 4)}年${today.slice(5, 7)}月`;
+  div.appendChild(title);
 
   const table = document.createElement("table");
   table.className = "scheduler_month";
   div.appendChild(table);
+
+	const copyright = makeCopyright(today.slice(0, 4));
+  div.appendChild(copyright);
 
   const thead = document.createElement("thead");
   table.appendChild(thead);
@@ -897,7 +920,6 @@ function makePng(id_canvas, sep) {
     headerRow.appendChild(th);
   }
 
-  const today = getToday();
   const dow = new Date(today).getDay();
   const nowDay = new Date(today);
   // 火曜日を起点にして、表示する月の最初の火曜日の日付を求める
@@ -923,6 +945,8 @@ function makePng(id_canvas, sep) {
       tdDate.classList.add("date");
       if (dateStr === today) {
         tdDate.classList.add("today");
+      } else if (i == 0 && dateStr < today) {
+        tdDate.classList.add("past");
       }
       trs['date'].appendChild(tdDate);
 
@@ -948,20 +972,22 @@ function makePng(id_canvas, sep) {
         if (tdRankBand) {
           trs['rank'].appendChild(tdRankBand);
         }
+        new_rank_week = -1;
       }
       if (scheduleData[dateStr]?.separator) {
+        // 開始タグ
         new_rank_week = (j + 1) % 7;
       }
 
-      const tdMemo = _makeTdMemo(dateStr);
+      const tdMemo = _makeTdMemo(dateStr, isMemo);
       trs['memo'].appendChild(tdMemo);
 
       nowDay.setDate(nowDay.getDate() + 1);
     }
   }
 
-  if (true) {
-    html2canvas(div, {
+  if (do_image_download) {
+    html2canvas(canvas, {
       scale: 2,
     }).then((canvas) => {
 
@@ -1067,12 +1093,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // for (let i = 0; i < 1; i++) {
   //   makePng("div-canvas" + i, i);
   // }
+  makePng("div-canvas", 0, false, true);
 });
 
 
 document.getElementById("btn-cal").addEventListener("click", () => {
   const dow = document.getElementById("cal-dow").value;
-  makePng("div-canvas", parseInt(dow));
+  const isMemo = document.getElementById("cal-memo-enable").checked;
+  makePng("div-canvas", parseInt(dow), true, isMemo);
 });
 
 /* vim: set et ts=2 sts=2 sw=2 et: */
