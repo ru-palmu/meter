@@ -1281,6 +1281,9 @@ legend {
   display: flex;
   align-items: center;      /* 縦中央 */
   justify-content: center;  /* 横中央 */
+
+  border: 1px solid #ccc;
+  background-color: #f0f8f4;
 }
 
 .calender-wrapper {
@@ -1432,6 +1435,7 @@ table.scheduler_month td.rank span.rank.rank-up::after {
 	position: absolute;
 	right: 6px;
 }
+
 table.scheduler_month td.rank span.rank.rank-down::after {
 	content: "↘";
 	color: #4caf50;
@@ -1439,6 +1443,7 @@ table.scheduler_month td.rank span.rank.rank-down::after {
 	position: absolute;
 	right: 6px;
 }
+
 table.scheduler_month td.rank span.rank.rank-keep::after {
 	content: "→";
 	color: #4caf50;
@@ -1486,6 +1491,91 @@ table.scheduler_month td.memo {
 
   word-break: break-word;
 }
+
+/*==================================================
+ * スケジューラ・配信スケジュール 7 日くらい
+ *=================================================*/
+
+div.wschedule-title {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.day-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: white;
+  padding: 8px 5px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.day-row .point {
+  border: 1px solid #eee;
+  min-width: 15px;
+  text-align: center;
+  padding: 4px 6px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #ffe08a;
+}
+
+.day-row .point.p1 {
+  background: none;
+}
+
+.day-row .point.skip {
+  background: #d8d8d8;
+  color: #555;
+}
+
+.day-row .date {
+  width: 40px;
+  font-weight: bold;
+}
+
+.day-row .weekday {
+  width: 12px;
+  font-weight: normal;
+  font-size: 10px;
+
+}
+
+.day-row .date.Sat,
+.day-row .weekday.Sat {
+  color: #3a7bd5;
+}
+.day-row .date.Sun,
+.day-row .weekday.Sun {
+  color: #e55353;
+}
+
+.day-row .rank {
+  border: 1px solid #eee;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.day-row .updown {
+  width: 20px;
+  color: #4caf50;
+}
+
+.day-row .memo {
+  width: 200px;
+  flex: 1;
+  text-align: left;
+}
+
 
 /***************************************************
  * 個別: event.html

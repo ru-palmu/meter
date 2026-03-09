@@ -878,11 +878,120 @@ function makeCopyright(year) {
   return copyright;
 }
 
+
+function formatMMDD(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${mm}/${dd}`;
+}
+
+function makeSchedulePngRow(nowDay, isMemo) {
+  const weekJP = ["日", "月", "火", "水", "木", "金", "土"];
+  const weekEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const dstr = dateToStr(nowDay);
+  const dow = nowDay.getDay();
+
+  const tr = document.createElement("div");
+  tr.className = "day-row";
+
+  const tdPoint = document.createElement("div");
+  tdPoint.className = "point";
+  tdPoint.classList.add(scheduleData[dstr]?.point.replace("+", "p").replace("ス", "skip") || "p1");
+  tdPoint.textContent = scheduleData[dstr]?.point || "+1";
+  tr.appendChild(tdPoint);
+
+  const tdDate = document.createElement("div");
+  tdDate.className = "date";
+  tdDate.classList.add(weekEN[dow]);
+  // mm/dd
+  tdDate.textContent = formatMMDD(nowDay);
+  tr.appendChild(tdDate);
+
+  const tdWeek = document.createElement("div");
+  tdWeek.className = "weekday";
+  tdWeek.textContent = weekJP[dow];
+  tdWeek.classList.add(weekEN[dow]);
+  tr.appendChild(tdWeek);
+
+  const tdRank = document.createElement("div");
+  tdRank.className = "rank";
+  tdRank.textContent = scheduleData[dstr]?.rank || 0;
+  tr.appendChild(tdRank);
+
+  const tdUpDown = document.createElement("div");
+  tdUpDown.className = "updown";
+  if (scheduleData[dstr]?.separator) {
+    console.log(dstr, "separator", scheduleData[dstr]?.total);
+    if (scheduleData[dstr]?.total < 12) {
+      tdUpDown.textContent = "↓";
+    } else {
+      const d1 = new Date(nowDay);
+      d1.setDate(d1.getDate() + 1);
+      const d1str = dateToStr(d1);
+      if (scheduleData[dstr].total >= 18 && (
+          scheduleData[d1str]?.rank != scheduleData[dstr]?.rank ||
+          scheduleData[dstr]?.rank == 'SS')) {
+        tdUpDown.textContent = "↑";
+      } else {
+        // ランクダウン直後なら 18ポイントとってもランクアップできない
+        tdUpDown.textContent = "→";
+      }
+    }
+  }
+  tr.appendChild(tdUpDown);
+
+  const tdMemo = document.createElement("div");
+  tdMemo.className = "memo";
+  const str = scheduleData[dstr]?.memo || " ";
+  if (isMemo && !str.startsWith(" ") && !str.startsWith("　")) {
+    tdMemo.textContent = str;
+  }
+  tr.appendChild(tdMemo);
+  return tr;
+}
+
+// days 分のスケジュール表
+function makeSchedulePng(id_canvas, days, isMemo) {
+
+  const canvas = document.getElementById(id_canvas);
+  if (!canvas) {
+    return
+  }
+  canvas.innerHTML = "";
+
+  const div = document.createElement("div");
+  div.className = "calendar-wrapper";
+  canvas.appendChild(div);
+
+  const title = document.createElement("div");
+  title.className = "wschedule-title";
+  title.textContent = "配信スケジュール";
+  div.appendChild(title);
+
+  const today = getToday();
+  const nowDay = new Date(today);
+  const startDay = new Date(nowDay);
+
+  for (let i = 0; i < days; i++) {
+    const tr = makeSchedulePngRow(nowDay, isMemo);
+    div.appendChild(tr);
+
+    nowDay.setDate(nowDay.getDate() + 1);
+  }
+
+  nowDay.setDate(nowDay.getDate() - 1);
+  title.textContent = `${formatMMDD(startDay)} - ${formatMMDD(nowDay)} 配信スケジュール`;
+
+	const copyright = makeCopyright(today.slice(0, 4));
+  div.appendChild(copyright);
+}
+
 /**
- *
+ * 4週間分のカレンダー
  * sep: 左端の曜日
  */
-function makePng(id_canvas, sep, do_image_download, isMemo) {
+function makeCalPng(id_canvas, sep, isMemo) {
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
     return
@@ -985,26 +1094,6 @@ function makePng(id_canvas, sep, do_image_download, isMemo) {
       nowDay.setDate(nowDay.getDate() + 1);
     }
   }
-
-  if (do_image_download) {
-    html2canvas(canvas, {
-      scale: 2,
-    }).then((canvas) => {
-
-      const resized = document.createElement("canvas");
-      resized.width = canvas.width / 2;
-      resized.height = canvas.height / 2;
-
-      const ctx = resized.getContext("2d");
-      ctx.drawImage(canvas, 0, 0, resized.width, resized.height);
-
-      const imgData = resized.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = imgData;
-      link.download = "table_screenshot.png";
-      link.click();
-    });
-  }
 }
 
 
@@ -1091,16 +1180,53 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTotals();
 
   // for (let i = 0; i < 1; i++) {
-  //   makePng("div-canvas" + i, i);
+  //   makeCalPng("div-canvas" + i, i);
   // }
-  makePng("div-canvas", 0, false, true);
+  // makeSchedulePng("div-canvas", 11, true);
 });
 
+function calTypeChange() {
+  const val = document.querySelector('input[name="cal-type"]:checked').value;
+  const mode = (val == "cal");
+
+  document.getElementById("cal-dow-group").style.display = (mode ? "block" : "none");
+  document.getElementById("cal-days-group").style.display = (mode ? "none" : "block");
+}
+
+calTypeChange();
 
 document.getElementById("btn-cal").addEventListener("click", () => {
-  const dow = document.getElementById("cal-dow").value;
+  const val = document.querySelector('input[name="cal-type"]:checked').value;
   const isMemo = document.getElementById("cal-memo-enable").checked;
-  makePng("div-canvas", parseInt(dow), true, isMemo);
+  if (val == "cal") {
+    const dow = document.getElementById("cal-dow").value;
+    makeCalPng("div-canvas", parseInt(dow), isMemo);
+  } else {
+    const days = document.getElementById("cal-days").value;
+    makeSchedulePng("div-canvas", parseInt(days), isMemo);
+  }
+
+  if (true) {
+    const canvas = document.getElementById("div-canvas");
+    html2canvas(canvas, {
+      scale: 2,
+    }).then((canvas) => {
+
+      const resized = document.createElement("canvas");
+      resized.width = canvas.width / 2;
+      resized.height = canvas.height / 2;
+
+      const ctx = resized.getContext("2d");
+      ctx.drawImage(canvas, 0, 0, resized.width, resized.height);
+
+      const imgData = resized.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = "table_screenshot.png";
+      link.click();
+    });
+    canvas.innerHTML = "";
+  }
 });
 
 /* vim: set et ts=2 sts=2 sw=2 et: */
