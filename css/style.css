@@ -1535,7 +1535,7 @@ div.wschedule-title {
 }
 
 .day-row .date {
-  width: 40px;
+  width: 47px;
   font-weight: bold;
 }
 
@@ -1543,7 +1543,6 @@ div.wschedule-title {
   width: 12px;
   font-weight: normal;
   font-size: 10px;
-
 }
 
 .day-row .date.Sat,
@@ -1571,7 +1570,7 @@ div.wschedule-title {
 }
 
 .day-row .memo {
-  width: 200px;
+  width: 180px;
   flex: 1;
   text-align: left;
 }
