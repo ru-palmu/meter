@@ -5,6 +5,13 @@ const SCHEDULE_PREFIX = 'meter_schedule_';
 // --- 定数 ---
 const POINT_OPTIONS = ["+0", "+1", "+2", "+4", "+6", "ス"];
 
+const EVENT_COMMON = [
+    ['TBC', 'トップバナー', 'トップバナー'],
+    ['SUC', 'ステップアップ', 'ステップアップ'],
+    ['EDSC', '毎日配信', '毎日配信'],
+];
+
+
 // スキップカードを配布するのは月曜日
 const DISTRIBUTE_SKIP_CARDS_DAY = 1; // 月曜日(0)
 const DISTRIBUTE_EVENT_DAY = 1; //  イベント終了日
@@ -174,14 +181,23 @@ function createEventSelectorsPast(dateStr, dow, sep) {
   return tdEvent;
 }
 
+function _eventOptionTV(ev) {
+  let ev_text = ev;
+  if (Array.isArray(ev)) {
+    if (ev.length == 3) {
+      ev_text = ev[2];
+      ev = ev[0];
+    } else {
+      ev_text = ev[1];
+      ev = ev[1];
+    }
+  }
+  return { value: ev, text: ev_text };
+}
 
 
 function setupEventTitles() {
-  const events_common = [
-    ['TBC', 'トップバナー', 'トップバナー'],
-    ['SUC', 'ステップアップ', 'ステップアップ'],
-    ['EDSC', '毎日配信', '毎日配信'],
-  ];
+  const events_common = EVENT_COMMON;
   for (const td of document.getElementsByClassName("td-event-title")) {
     const dateStr = td.id.replace("pevent_", "").replace("fevent_", "");
     const prefix = td.id[0];
@@ -204,18 +220,9 @@ function setupEventTitles() {
       [...events, ...events_common].forEach((ev) => {
         const opt = document.createElement("option");
         // リストなら，１番目の要素を使う
-        let ev_text = ev;
-        if (Array.isArray(ev)) {
-          if (ev.length == 3) {
-            ev_text = ev[2];
-            ev = ev[0];
-          } else {
-            ev_text = ev[1];
-            ev = ev[1];
-          }
-        }
-        opt.value = ev;
-        opt.textContent = ev_text;
+        const ev_value = _eventOptionTV(ev);
+        opt.value = ev_value.value;
+        opt.textContent = ev_value.text;
         select.appendChild(opt);
       })
 
@@ -724,19 +731,12 @@ function __getEventName(day) {
   const dateStr = dateToStr(d);
   let ev = __getScheduleLocalStorage("event_" + dateStr);
   const events = window.EVENT_TITLES[dateStr] || [];
-  events.forEach((e) => {
-    if (Array.isArray(e)) {
-      if (e.length == 3) {
-        if (e[0] == ev) {
-          ev = e[2];
-          return ev;
-        }
-      } else {
-        if (e[1] == ev) {
-          ev = e[1];
-          return ev;
-        }
-      }
+
+  [...events, ...EVENT_COMMON].forEach((e) => {
+    const ee =  _eventOptionTV(e);
+    if (ee.value == ev) {
+      ev = ee.text;
+      return ev;
     }
   });
 
@@ -769,6 +769,24 @@ function makeTdEventBand(nowDay, dow, sep, j) {
   return tdEvent;
 }
 
+function rankMove(nowDay, dstr) {
+  if (scheduleData[dstr].total < 12) {
+    return ['rank-down', '↘'];
+  }
+  const d1 = new Date(nowDay);
+  d1.setDate(d1.getDate() + 1);
+  const d1str = dateToStr(d1);
+  if (scheduleData[dstr].total >= 18 && (
+      scheduleData[d1str]?.rank != scheduleData[dstr]?.rank ||
+      scheduleData[dstr]?.rank == 'SS')) {
+    return ['rank-up', '↗'];
+  } else {
+    // ランクダウン直後なら 18ポイントとってもランクアップできない
+    return ['rank-keep', '→'];
+  }
+}
+
+
 function makeTdRankBand(nowDay, dateStr, today, j) {
   const tdRank = document.createElement("td");
   tdRank.className = "rank";
@@ -786,22 +804,7 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
     }
     if (scheduleData[dstr]?.separator) {
       end = true;
-
-      if (scheduleData[dstr].total < 12) {
-        classRankMove = 'rank-down';
-      } else {
-        const d1 = new Date(d);
-        d1.setDate(d1.getDate() + 1);
-        const d1str = dateToStr(d1);
-        if (scheduleData[dstr].total >= 18 && (
-            scheduleData[d1str]?.rank != scheduleData[dstr]?.rank ||
-            scheduleData[dstr]?.rank == 'SS')) {
-          classRankMove = 'rank-up';
-        } else {
-          // ランクダウン直後なら 18ポイントとってもランクアップできない
-          classRankMove = 'rank-keep';
-        }
-      }
+      classRankMove = rankMove(d, dstr)[0];
       tdRank.classList.add("date" + dstr);
       break;
     }
@@ -839,9 +842,12 @@ function makeTdPoint(dateStr) {
   if (scheduleData[dateStr]?.point) {
     spanPoint.textContent = scheduleData[dateStr].point;
     if (scheduleData[dateStr].total && scheduleData[dateStr].point != "ス") {
-      spanPoint.textContent += " (" + scheduleData[dateStr].total;
+      const spanTotal = document.createElement("span");
+      spanTotal.className = "total";
+      spanTotal.textContent = " (" + scheduleData[dateStr].total;
       // spanPoint.textContent += ", " + scheduleData[dateStr].restDay;
-      spanPoint.textContent += ")";
+      spanTotal.textContent += ")";
+      spanPoint.appendChild(spanTotal);
     }
     spanPoint.className = "point";
     spanPoint.classList.add(scheduleData[dateStr].point.replace("+", "p").replace("ス", "skip"));
@@ -886,6 +892,8 @@ function formatMMDD(d) {
   return `${mm}/${dd}`;
 }
 
+// 1日分の行を作る
+// 日付（曜日）・ランク・ポイント・メモ
 function makeSchedulePngRow(nowDay, isMemo) {
   const weekJP = ["日", "月", "火", "水", "木", "金", "土"];
   const weekEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -896,52 +904,69 @@ function makeSchedulePngRow(nowDay, isMemo) {
   const tr = document.createElement("div");
   tr.className = "day-row";
 
-  const tdPoint = document.createElement("div");
-  tdPoint.className = "point";
-  tdPoint.classList.add(scheduleData[dstr]?.point.replace("+", "p").replace("ス", "skip") || "p1");
-  tdPoint.textContent = scheduleData[dstr]?.point || "+1";
-  tr.appendChild(tdPoint);
-
+  //////////////////////////////////
+  // 日付と曜日
+  //////////////////////////////////
   const tdDate = document.createElement("div");
   tdDate.className = "date";
   tdDate.classList.add(weekEN[dow]);
   // mm/dd
   tdDate.textContent = formatMMDD(nowDay);
+
+  const tdWeek = document.createElement("span");
+  tdWeek.className = "weekday";
+  tdWeek.textContent = ' ' + weekJP[dow];
+  tdWeek.classList.add(weekEN[dow]);
+  tdDate.appendChild(tdWeek);
+
   tr.appendChild(tdDate);
 
-  const tdWeek = document.createElement("div");
-  tdWeek.className = "weekday";
-  tdWeek.textContent = weekJP[dow];
-  tdWeek.classList.add(weekEN[dow]);
-  tr.appendChild(tdWeek);
-
+  //////////////////////////////////
+  // ランク
+  //////////////////////////////////
   const tdRank = document.createElement("div");
   tdRank.className = "rank";
   tdRank.textContent = scheduleData[dstr]?.rank || 0;
   tr.appendChild(tdRank);
 
-  const tdUpDown = document.createElement("div");
-  tdUpDown.className = "updown";
   if (scheduleData[dstr]?.separator) {
-    console.log(dstr, "separator", scheduleData[dstr]?.total);
-    if (scheduleData[dstr]?.total < 12) {
-      tdUpDown.textContent = "↓";
-    } else {
-      const d1 = new Date(nowDay);
-      d1.setDate(d1.getDate() + 1);
-      const d1str = dateToStr(d1);
-      if (scheduleData[dstr].total >= 18 && (
-          scheduleData[d1str]?.rank != scheduleData[dstr]?.rank ||
-          scheduleData[dstr]?.rank == 'SS')) {
-        tdUpDown.textContent = "↑";
-      } else {
-        // ランクダウン直後なら 18ポイントとってもランクアップできない
-        tdUpDown.textContent = "→";
-      }
-    }
-  }
-  tr.appendChild(tdUpDown);
+    const tdUpDown = document.createElement("span");
+    const classRankMove = rankMove(nowDay, dstr);
+    tdUpDown.className = "arrow";
+    tdUpDown.classList.add(classRankMove[0]);
+    tdUpDown.textContent = classRankMove[1];
 
+    tdRank.appendChild(tdUpDown);
+  }
+
+
+  //////////////////////////////////
+  // ポイント
+  //////////////////////////////////
+  const tdPoint = document.createElement("div");
+  tdPoint.className = "point";
+  const pointClass = scheduleData[dstr]?.point.replace("+", "p").replace("ス", "skip") || "p1";
+  tdPoint.classList.add(pointClass);
+
+  const spanPoint = document.createElement("span");
+  spanPoint.className = "daily";
+  spanPoint.textContent = scheduleData[dstr]?.point || "+1";
+  spanPoint.classList.add(pointClass);
+  tdPoint.appendChild(spanPoint);
+
+  const spanTotalPoint = document.createElement("span");
+  spanTotalPoint.className = "total";
+  if (scheduleData[dstr]?.total) {
+    spanTotalPoint.textContent = ' (' + scheduleData[dstr].total + ')';
+  }
+  tdPoint.appendChild(spanTotalPoint);
+
+  tr.appendChild(tdPoint);
+
+
+  //////////////////////////////////
+  // メモ
+  //////////////////////////////////
   const tdMemo = document.createElement("div");
   tdMemo.className = "memo";
   const str = scheduleData[dstr]?.memo || " ";
@@ -1182,9 +1207,12 @@ document.addEventListener("DOMContentLoaded", () => {
   //   makeCalPng("div-canvas" + i, i);
   // }
   if (cal_debug) {
-    // makeSchedulePng("div-canvas", 11, true);
     document.getElementById("div-canvas").style.display = "flex";
-    makeCalPng("div-canvas", 0, true);
+    if (true) {
+      makeCalPng("div-canvas", 0, true);
+    } else {
+      makeSchedulePng("div-canvas", 13, true);
+    }
   }
 });
 
@@ -1192,8 +1220,8 @@ function calTypeChange() {
   const val = document.querySelector('input[name="cal-type"]:checked').value;
   const mode = (val == "cal");
 
-  document.getElementById("cal-dow-group").style.display = (mode ? "block" : "none");
-  document.getElementById("cal-days-group").style.display = (mode ? "none" : "block");
+  document.getElementById("cal-dow-group").style.display = (mode ? "flex" : "none");
+  document.getElementById("cal-days-group").style.display = (mode ? "none" : "flex");
 }
 
 calTypeChange();
@@ -1211,7 +1239,7 @@ document.getElementById("btn-cal").addEventListener("click", () => {
 
   if (true) {
     const canvas = document.getElementById("div-canvas");
-    canvas.style.display = "block";
+    canvas.style.display = "flex";
     html2canvas(canvas, {
       scale: 2,
     }).then((canvas) => {
@@ -1226,7 +1254,7 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       const imgData = resized.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = imgData;
-      link.download = "table_screenshot.png";
+      link.download = "ru-schedule-" + val + ".png";
       link.click();
     });
     canvas.innerHTML = "";

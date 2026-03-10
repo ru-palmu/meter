@@ -1274,9 +1274,10 @@ legend {
 .phone-frame-calendar {
   width: 360px;
   aspect-ratio: 9 / 16;     /* ← 縦横比固定 */
+  min-height: 640px;
 
   box-sizing: border-box;
-  padding: 10px;
+  padding: 5px;
 
   display: none;
   align-items: center;      /* 縦中央 */
@@ -1286,7 +1287,7 @@ legend {
   background-color: #f0f8f4;
 }
 
-.calender-wrapper {
+.calendar-wrapper {
   width: 100%;
 }
 
@@ -1310,7 +1311,7 @@ div.calendar-title {
   text-align: center;
   font-size: 11px;
   color: #888;
-  margin-top: 32px;
+  margin-top: 15px;
 }
 
 table.scheduler_month {
@@ -1373,13 +1374,15 @@ table.scheduler_month td.point {
 }
 
 table.scheduler_month tr.memo td {
-  padding-bottom: 0px;
+	padding-bottom: 0px;
+	overflow: hidden;
 }
 
 /** 最後は下パディングなし **/
 table.scheduler_month tr.memo:last-child td {
 	padding-bottom: 0px;
 }
+
 
 table.scheduler_month td.rank span.rank {
 	display: block;
@@ -1399,9 +1402,6 @@ table.scheduler_month td.rank span.rank {
 	text-overflow: ellipsis;
   	text-align: center;
 	overflow: hidden;
-
-	transform: translateZ(0);
-	transform: translate3d(0, 0, 0);
 
 	position: relative;
 }
@@ -1486,8 +1486,9 @@ table.scheduler_month td.point span.point.skip {
 	background: #e0e0e0;
 }
 
-table.scheduler_month td.memo {
-	overflow: hidden;
+table.scheduler_month td.point span.point .total {
+	font-size: 9.5px;
+	color: #999;
 }
 
 .text2 {
@@ -1519,15 +1520,64 @@ div.wschedule-title {
 .day-row {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   background: white;
-  padding: 8px 5px;
+  padding: 1px 4px;
   border-radius: 10px;
   margin-bottom: 6px;
   font-size: 14px;
 }
 
 .day-row .point {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 22px;
+  padding: 3px 5px;
+
+  border: 1px solid #eee;
+  border-radius: 10px;
+
+  border-radius: 999px;   /* ←ここだけ変更 */
+  font-variant-numeric: tabular-nums;
+}
+
+/* デイリー（主役） */
+.point .daily {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 累計（補助） */
+.point .total {
+  font-size: 10px;
+  line-height: 1;
+  color: #777;
+}
+
+/* がんばる */
+.point.p2,
+.point.p4,
+.point.p6 {
+  background: #ffe08a;
+}
+
+.point.p2 .daily { font-weight: 700; }
+.point.p4 .daily { font-weight: 800; }
+.point.p6 .daily { font-weight: 900; }
+
+/* skip */
+.point.skip {
+  background: #d8d8d8;
+  color: #555;
+}
+
+
+
+.day-row span.point {
   border: 1px solid #eee;
   min-width: 15px;
   text-align: center;
@@ -1538,22 +1588,21 @@ div.wschedule-title {
   background-color: #ffe08a;
 }
 
-.day-row .point.p1 {
+.day-row span.point.p1 {
   background: none;
 }
 
-.day-row .point.skip {
+.day-row span.point.skip {
   background: #d8d8d8;
   color: #555;
 }
 
 .day-row .date {
-  width: 47px;
+  width: 63px;
   font-weight: bold;
 }
 
 .day-row .weekday {
-  width: 12px;
   font-weight: normal;
   font-size: 10px;
 }
@@ -1576,16 +1625,50 @@ div.wschedule-title {
   line-height: 24px;
   font-size: 12px;
   font-weight: bold;
+  position: relative;
 }
+
+.day-row .rank .arrow {
+  position: absolute;
+  right: -3px;
+  bottom: -5px;
+
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.day-row .rank .arrow.rank-up {
+	color: #2e7d32;
+}
+
+.day-row .rank .arrow.rank-keep {
+	color: #777;
+}
+
+.day-row .rank .arrow.rank-down {
+	color: #c62828;
+}
+
+
 .day-row .updown {
   width: 20px;
   color: #4caf50;
 }
 
 .day-row .memo {
-  width: 180px;
+  width: auto;
   flex: 1;
   text-align: left;
+  color: #555;
+  opacity: 0.85;
+
+  overflow: hidden;
+  display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+
+  font-size: 11px;
+  line-height: 1.2;
 }
 
 
