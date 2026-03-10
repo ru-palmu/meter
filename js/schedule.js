@@ -1123,8 +1123,27 @@ function makeCalPng(id_canvas, sep, weekn, isMemo) {
       nowDay.setDate(nowDay.getDate() + 1);
     }
   }
+
+  nowDay.setDate(nowDay.getDate() - 1);
+  title.textContent = _makeTitle(today, nowDay);
 }
 
+function _makeTitle(startDayStr, endDay) {
+  const endMonth = endDay.getMonth() + 1;
+  const endYear = endDay.getFullYear();
+  const startMonth = parseInt(startDayStr.slice(5, 7));
+  const startYear = parseInt(startDayStr.slice(0, 4));
+  let title = `${startYear}/${String(startMonth).padStart(2, '0')}`;
+  if (startYear == endYear) {
+    if (startMonth != endMonth) {
+      title += `〜${String(endMonth).padStart(2, '0')}`;
+    }
+  } else {
+    title += `〜${endYear}/${String(endMonth).padStart(2, '0')}`;
+  }
+  title += " スケジュール";
+  return title;
+}
 
 
 // --- イベント登録 ---
@@ -1211,11 +1230,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // }
   if (cal_debug) {
     document.getElementById("div-canvas").style.display = "flex";
-    if (true) {
-      makeCalPng("div-canvas", 0, 5, true);
-    } else {
-      makeSchedulePng("div-canvas", 13, true);
-    }
+    makeCalPng("div-canvas", 0, 5, true);
+
+    document.getElementById("div-canvas2").style.display = "flex";
+    makeSchedulePng("div-canvas2", 13, true);
   }
 });
 

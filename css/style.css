@@ -1316,7 +1316,7 @@ div.calendar-title {
 .copyright {
   text-align: center;
   font-size: 11px;
-  color: #888;
+  color: #999;
   margin-top: 15px;
 }
 
@@ -1361,13 +1361,17 @@ table.scheduler_month td.date.past {
 }
 
 table.scheduler_month th.Sun,
-table.scheduler_month td.date.Sun {
+table.scheduler_month td.date.Sun,
+.day-row .date.Sun,
+.day-row .weekday.Sun {
 /*	color: #e57373; /* 赤系 */
 	color: #d64a4a;
 }
 
 table.scheduler_month th.Sat,
-table.scheduler_month td.date.Sat {
+table.scheduler_month td.date.Sat,
+.day-row .date.Sat,
+.day-row .weekday.Sat {
 /*	color: #64b5f6; /* 青系 */
 	color:  #2f6fd6;
 }
@@ -1419,7 +1423,7 @@ table.scheduler_month td.event span.event {
 	background-color: #f6a9c3; /* ピンク系 */
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 
-	color: white;
+	color: #7a1f2b;
 	padding: 0 0;
 	margin: 0 2px;
 	/* margin-top: 1px; */
@@ -1491,8 +1495,10 @@ table.scheduler_month td.point span.point {
 table.scheduler_month td.point span.point.p1 {
 	background: none;
 }
-table.scheduler_month td.point span.point.skip {
-	background: #e0e0e0;
+table.scheduler_month td.point span.point.skip,
+.day-row span.point.skip {
+	background: #f0f0f0;
+    color: #555;
 }
 
 table.scheduler_month td.point span.point .total {
@@ -1501,7 +1507,7 @@ table.scheduler_month td.point span.point .total {
 }
 
 .text2 {
-  font-size: 11px;
+  font-size: 7px;
   line-height: 1.2;
   height: calc(1.2em * 2);
 
@@ -1543,44 +1549,43 @@ div.wschedule-title {
   align-items: center;
   justify-content: center;
 
-  min-width: 22px;
+  min-width: 18px;
   padding: 3px 5px;
 
   border: 1px solid #eee;
-  border-radius: 10px;
+  border-radius: 4px;
 
-  border-radius: 999px;   /* ←ここだけ変更 */
   font-variant-numeric: tabular-nums;
 }
 
 /* デイリー（主役） */
-.point .daily {
+.day-row .point .daily {
   font-size: 13px;
   font-weight: 700;
   line-height: 1;
 }
 
 /* 累計（補助） */
-.point .total {
+.day-row .point .total {
   font-size: 10px;
   line-height: 1;
   color: #777;
 }
 
 /* がんばる */
-.point.p2,
-.point.p4,
-.point.p6 {
+.day-row .point.p2,
+.day-row .point.p4,
+.day-row .point.p6 {
   background: #ffe08a;
 }
 
-.point.p2 .daily { font-weight: 700; }
-.point.p4 .daily { font-weight: 800; }
-.point.p6 .daily { font-weight: 900; }
+.day-row .point.p2 .daily { font-weight: 700; }
+.day-row .point.p4 .daily { font-weight: 800; }
+.day-row .point.p6 .daily { font-weight: 900; }
 
 /* skip */
-.point.skip {
-  background: #d8d8d8;
+.day-row .point.skip {
+  background: #f0f0f0;
   color: #555;
 }
 
@@ -1600,29 +1605,17 @@ div.wschedule-title {
   background: none;
 }
 
-.day-row span.point.skip {
-  background: #d8d8d8;
-  color: #555;
-}
 
 .day-row .date {
   width: 63px;
   font-weight: bold;
+  text-align: center;
 }
 
 .day-row .weekday {
   font-weight: normal;
   font-size: 10px;
-  vertical-align: bottom;
-}
-
-.day-row .date.Sat,
-.day-row .weekday.Sat {
-  color: #3a7bd5;
-}
-.day-row .date.Sun,
-.day-row .weekday.Sun {
-  color: #e55353;
+  vertical-align: text-bottom;
 }
 
 .day-row .rank {
