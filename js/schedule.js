@@ -791,7 +791,7 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
   const tdRank = document.createElement("td");
   tdRank.className = "rank";
 
-  let k = 1
+  let k = 0
   let end = false;
   let classRankMove = '';
   for (k = 0; k < 7 - j; k++) {
@@ -1107,7 +1107,11 @@ function makeCalPng(id_canvas, sep, isMemo) {
         if (tdRankBand) {
           trs['rank'].appendChild(tdRankBand);
         }
-        new_rank_week = -1;
+        new_rank_week = j + tdRankBand.colSpan;
+        if (new_rank_week > 7) {
+          new_rank_week = -1;
+        }
+        // console.log(j, new_rank_week, dateStr, tdRankBand.colSpan, "pos2");
       }
       if (scheduleData[dateStr]?.separator) {
         // 開始タグ
