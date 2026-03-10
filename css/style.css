@@ -1278,7 +1278,7 @@ legend {
   box-sizing: border-box;
   padding: 10px;
 
-  display: flex;
+  display: none;
   align-items: center;      /* 縦中央 */
   justify-content: center;  /* 横中央 */
 
@@ -1346,6 +1346,7 @@ table.scheduler_month td.date {
 	font-size: 15px;
 	text-align: center;
 	margin-top: 10px;
+	color: #222;
 }
 
 table.scheduler_month td.date.past {
@@ -1354,12 +1355,14 @@ table.scheduler_month td.date.past {
 
 table.scheduler_month th.Sun,
 table.scheduler_month td.date.Sun {
-	color: #e57373; /* 赤系 */
+/*	color: #e57373; /* 赤系 */
+	color: #d64a4a;
 }
 
 table.scheduler_month th.Sat,
 table.scheduler_month td.date.Sat {
-	color: #64b5f6; /* 青系 */
+/*	color: #64b5f6; /* 青系 */
+	color:  #2f6fd6;
 }
 
 
@@ -1380,10 +1383,15 @@ table.scheduler_month tr.memo:last-child td {
 
 table.scheduler_month td.rank span.rank {
 	display: block;
+/*
+	color: #0b4f63;
 	background-color: #9cd6ea; /* 水色系 */
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 
-	color: white;
+	background-color: #bfe6c8;
+	color: #1f5e2a;
+
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+	font-weight: 600;
 	padding: 0 0;
 	/* margin-top: 1px; */
 	font-size: 12px;
@@ -1401,7 +1409,7 @@ table.scheduler_month td.rank span.rank {
 
 table.scheduler_month td.event span.event {
 	display: block;
-	background-color: #f6a5b6; /* ピンク系 */
+	background-color: #f6a9c3; /* ピンク系 */
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 
 	color: white;
@@ -1428,27 +1436,32 @@ table.scheduler_month td.rank span.rank.end {
 	border-bottom-right-radius: 9999px;
 }
 
-table.scheduler_month td.rank span.rank.rank-up::after {
-	content: "↗";
-	color: #4caf50;
-	font-weight: bold;
+table.scheduler_month td.rank span.rank.rank-up::after,
+table.scheduler_month td.rank span.rank.rank-down::after,
+table.scheduler_month td.rank span.rank.rank-keep::after {
+	color: #2e7d32;
+	font-weight: 1000;
+	font-size: 14px;
 	position: absolute;
 	right: 6px;
+	top: 50%;
+	transform: translateY(-50%);
+	text-shadow:
+		-1px -1px 0 white,
+		 1px -1px 0 white,
+		-1px  1px 0 white,
+		 1px  1px 0 white;
+}
+table.scheduler_month td.rank span.rank.rank-up::after {
+	content: "↗";
 }
 
 table.scheduler_month td.rank span.rank.rank-down::after {
 	content: "↘";
-	color: #4caf50;
-	font-weight: bold;
-	position: absolute;
-	right: 6px;
 }
 
 table.scheduler_month td.rank span.rank.rank-keep::after {
 	content: "→";
-	color: #4caf50;
-	position: absolute;
-	right: 6px;
 }
 
 
@@ -1470,7 +1483,7 @@ table.scheduler_month td.point span.point.p1 {
 	background: none;
 }
 table.scheduler_month td.point span.point.skip {
-	background: #d8d8d8;
+	background: #e0e0e0;
 }
 
 table.scheduler_month td.memo {

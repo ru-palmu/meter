@@ -1,3 +1,4 @@
+const cal_debug = false;
 
 const SCHEDULE_PREFIX = 'meter_schedule_';
 
@@ -1168,8 +1169,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 100);
 
     });
-
-
   });
 
   loadInitialSettings();
@@ -1182,7 +1181,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // for (let i = 0; i < 1; i++) {
   //   makeCalPng("div-canvas" + i, i);
   // }
-  // makeSchedulePng("div-canvas", 11, true);
+  if (cal_debug) {
+    // makeSchedulePng("div-canvas", 11, true);
+    document.getElementById("div-canvas").style.display = "flex";
+    makeCalPng("div-canvas", 0, true);
+  }
 });
 
 function calTypeChange() {
@@ -1208,6 +1211,7 @@ document.getElementById("btn-cal").addEventListener("click", () => {
 
   if (true) {
     const canvas = document.getElementById("div-canvas");
+    canvas.style.display = "block";
     html2canvas(canvas, {
       scale: 2,
     }).then((canvas) => {
@@ -1226,6 +1230,7 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       link.click();
     });
     canvas.innerHTML = "";
+    canvas.style.display = "none";
   }
 });
 
