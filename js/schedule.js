@@ -823,13 +823,12 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
     }
     if (end) {
       span.classList.add("end");
-    } else {
-      const d = new Date(nowDay);
-      d.setDate(d.getDate() - 1);
-      const dstr = dateToStr(d);
-      if (scheduleData[dstr]?.separator || today == dateStr) {
-        span.classList.add("start");
-      }
+    }
+    const d = new Date(nowDay);
+    d.setDate(d.getDate() - 1);
+    const dstr = dateToStr(d);
+    if (scheduleData[dstr]?.separator || today == dateStr) {
+      span.classList.add("start");
     }
   }
   return tdRank;
@@ -1017,7 +1016,7 @@ function makeSchedulePng(id_canvas, days, isMemo) {
  * 4週間分のカレンダー
  * sep: 左端の曜日
  */
-function makeCalPng(id_canvas, sep, isMemo) {
+function makeCalPng(id_canvas, sep, weekn, isMemo) {
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
     return
@@ -1062,7 +1061,7 @@ function makeCalPng(id_canvas, sep, isMemo) {
 
   let new_rank_week = (7 + dow - sep) % 7;
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < weekn; i++) {
     const trs = {};
     ['date', 'event', 'rank', 'point', 'memo'].forEach((cls) => {
       const tr = document.createElement("tr");
@@ -1213,7 +1212,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cal_debug) {
     document.getElementById("div-canvas").style.display = "flex";
     if (true) {
-      makeCalPng("div-canvas", 0, true);
+      makeCalPng("div-canvas", 0, 5, true);
     } else {
       makeSchedulePng("div-canvas", 13, true);
     }
@@ -1222,10 +1221,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function calTypeChange() {
   const val = document.querySelector('input[name="cal-type"]:checked').value;
-  const mode = (val == "cal");
+  const mode = (val == "month");
 
-  document.getElementById("cal-dow-group").style.display = (mode ? "flex" : "none");
-  document.getElementById("cal-days-group").style.display = (mode ? "none" : "flex");
+  const show = "block";
+  document.getElementById("cal-dow-group").style.display = (mode ? show : "none");
+  document.getElementById("cal-month-line-group").style.display = (mode ? show : "none");
+  document.getElementById("cal-days-group").style.display = (mode ? "none" : show);
 }
 
 calTypeChange();
@@ -1233,9 +1234,10 @@ calTypeChange();
 document.getElementById("btn-cal").addEventListener("click", () => {
   const val = document.querySelector('input[name="cal-type"]:checked').value;
   const isMemo = document.getElementById("cal-memo-enable").checked;
-  if (val == "cal") {
+  if (val == "month") {
     const dow = document.getElementById("cal-dow").value;
-    makeCalPng("div-canvas", parseInt(dow), isMemo);
+    const weekn = document.getElementById("cal-month-line").value;
+    makeCalPng("div-canvas", parseInt(dow), parseInt(weekn), isMemo);
   } else {
     const days = document.getElementById("cal-days").value;
     makeSchedulePng("div-canvas", parseInt(days), isMemo);
@@ -1243,6 +1245,15 @@ document.getElementById("btn-cal").addEventListener("click", () => {
 
   if (true) {
     const canvas = document.getElementById("div-canvas");
+    const size = document.querySelector('input[name="cal-size"]:checked').value;
+    if (size == "full") {
+      canvas.style.minHeight = "640px";
+      canvas.style.aspectRatio = "9 / 16";
+    } else {
+      canvas.style.minHeight = "";
+      canvas.style.aspectRatio = "auto";
+    }
+
     canvas.style.display = "flex";
     html2canvas(canvas, {
       scale: 2,
@@ -1258,11 +1269,19 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       const imgData = resized.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = imgData;
-      link.download = "ru-schedule-" + val + ".png";
+
+      // ファイル名に日付を追加
+      const d = new Date().toISOString().replace(/[-:T]/g, "");
+      const datetime = d.slice(0, 8) + '_' + d.slice(8, 14);
+
+      link.download = `ru-schedule-${val}-${datetime}.png`;
       link.click();
     });
-    canvas.innerHTML = "";
-    canvas.style.display = "none";
+
+    if (!cal_debug) {
+      canvas.innerHTML = "";
+      canvas.style.display = "none";
+    }
   }
 });
 

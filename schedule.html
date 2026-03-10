@@ -169,8 +169,8 @@
 
   <div class="input-group" onchange="calTypeChange()">
     <label for="cal-type">種別</label>
-    <input type="radio" id="cal-type-cal" name="cal-type" value="cal" checked>月間スケジュール
-    <input type="radio" id="cal-type-week" name="cal-type" value="week">週間スケジュール
+    <input type="radio" id="cal-type-month" name="cal-type" value="month" checked>月間スケジュール
+    <input type="radio" id="cal-type-week"  name="cal-type" value="week">週間スケジュール
   </div>
   <div class="input-group" id="cal-dow-group">
     <label for="cal-dow">開始曜日</label>
@@ -182,6 +182,15 @@
       <option value="4">木曜日</option>
       <option value="5">金曜日</option>
       <option value="6">土曜日</option>
+    </select>
+  </div>
+  <div class="input-group" id="cal-month-line-group">
+    <label for="cal-month-line">表示行数</label>
+    <select id="cal-month-line">
+      <option value="2">2行 (14日分)</option>
+      <option value="3">3行 (21日分)</option>
+      <option value="4" selected>4行 (28日分)</option>
+      <option value="5">5行 (35日分)</option>
     </select>
   </div>
   <div class="input-group" id="cal-days-group">
@@ -200,6 +209,13 @@
   </div>
 
   <div class="input-group">
+    <label for="cal-size">画像サイズ</label>
+    <input type="radio" name="cal-size" value="full" checked> スマホサイズ
+    <input type="radio" name="cal-size" value="min"> 最小サイズ (上下余白を削ります)
+  </div>
+
+  <div class="input-group">
+    <label>オプション</label>
     <input type="checkbox" id="cal-memo-enable" checked>メモ表示 (1文字目が空白のメモは非表示)
   </div>
 
