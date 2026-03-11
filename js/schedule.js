@@ -1327,6 +1327,11 @@ document.getElementById("btn-cal").addEventListener("click", () => {
     targets.push(["div-canvas2", val == "month" ? "week" : "month"]);
   }
 
+  const today = getToday();
+  if (!scheduleData[today]?.rank) {
+    updateTotals();
+  }
+
   targets.forEach(([vid, vv]) => {
     if (vv == "month") {
       const dow = document.getElementById("cal-dow").value;
