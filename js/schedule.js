@@ -769,9 +769,72 @@ function makeTdEventBand(nowDay, dow, sep, j) {
   return tdEvent;
 }
 
+function svgToImg(svg) {
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
+  const url = URL.createObjectURL(svgBlob);
+  const img = new Image();
+  img.src = url;
+  return img;
+}
+
+function createArrow(direction, size = 16, strokeColor = 'green', outlineColor = 'white') {
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", size);
+  svg.setAttribute("height", size);
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.classList.add("arrow");
+  // svg.style.position = "absolute";
+  // svg.style.right = "1px";
+  // svg.style.top = "50%";
+  // svg.style.transform = "translateY(-50%)";
+
+  // 太い縁取り用の線
+  function createLine(x1, y1, x2, y2, width, color) {
+    const line = document.createElementNS(svgNS, "line");
+    line.setAttribute("x1", x1);
+    line.setAttribute("y1", y1);
+    line.setAttribute("x2", x2);
+    line.setAttribute("y2", y2);
+    line.setAttribute("stroke", color);
+    line.setAttribute("stroke-width", width);
+    line.setAttribute("stroke-linecap", "round");
+    svg.appendChild(line);
+  }
+
+  let lines;
+  if (direction === "up-right") {
+    // 右上矢印
+    lines = [
+      [2,14,14,2], [10,2,14,2], [14,2,14,6]
+    ];
+  } else if (direction === "down-right") {
+    // 右下矢印
+    lines = [
+      [2,2,14,14], [10,14,14,14], [14,10,14,14]
+    ];
+  } else if (direction === "right") {
+    // 右矢印
+    lines = [
+      [0,8,16,8], [10,4,16,8], [10,12,16,8]
+    ];
+  } else {
+    console.error("Unknown arrow direction:", direction);
+    return null;
+  }
+
+  // 縁取り（太い線）
+  lines.forEach(l => createLine(...l, 4, outlineColor));
+  // 本体（細い線）
+  lines.forEach(l => createLine(...l, 2, strokeColor));
+  return svg;
+}
+
+
 function rankMove(nowDay, dstr) {
   if (scheduleData[dstr].total < 12) {
-    return ['rank-down', '↘'];
+    return ['rank-down', 'down-right', '#c62828'];
   }
   const d1 = new Date(nowDay);
   d1.setDate(d1.getDate() + 1);
@@ -779,10 +842,10 @@ function rankMove(nowDay, dstr) {
   if (scheduleData[dstr].total >= 18 && (
       scheduleData[d1str]?.rank != scheduleData[dstr]?.rank ||
       scheduleData[dstr]?.rank == 'SS')) {
-    return ['rank-up', '↗'];
+    return ['rank-up', 'up-right', '#2e7d32'];
   } else {
     // ランクダウン直後なら 18ポイントとってもランクアップできない
-    return ['rank-keep', '→'];
+    return ['rank-keep', 'right', '#777'];
   }
 }
 
@@ -793,7 +856,7 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
 
   let k = 0
   let end = false;
-  let classRankMove = '';
+  let classRankMove = null;
   for (k = 0; k < 7 - j; k++) {
     const d = new Date(nowDay);
     d.setDate(d.getDate() + k);
@@ -804,7 +867,7 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
     }
     if (scheduleData[dstr]?.separator) {
       end = true;
-      classRankMove = rankMove(d, dstr)[0];
+      classRankMove = rankMove(d, dstr);
       tdRank.classList.add("date" + dstr);
       break;
     }
@@ -819,7 +882,12 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
     tdRank.appendChild(span);
 
     if (classRankMove) {
-      span.classList.add(classRankMove);
+      const arrow = createArrow(classRankMove[1], 14);
+      const img = svgToImg(arrow);
+      img.classList.add('arrow');
+      img.classList.add(classRankMove[0]);
+      span.classList.add(classRankMove[0]);
+      span.appendChild(img);
     }
     if (end) {
       span.classList.add("end");
@@ -929,13 +997,13 @@ function makeSchedulePngRow(nowDay, isMemo) {
   tr.appendChild(tdRank);
 
   if (scheduleData[dstr]?.separator) {
-    const tdUpDown = document.createElement("span");
     const classRankMove = rankMove(nowDay, dstr);
-    tdUpDown.className = "arrow";
-    tdUpDown.classList.add(classRankMove[0]);
-    tdUpDown.textContent = classRankMove[1];
-
-    tdRank.appendChild(tdUpDown);
+    const arrow = createArrow(classRankMove[1], 10, classRankMove[2]);
+    const img = svgToImg(arrow);
+    arrow.classList.add(classRankMove[0]);
+    img.classList.add('arrow');
+    img.classList.add(classRankMove[0]);
+    tdRank.appendChild(img);
   }
 
 

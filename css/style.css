@@ -1311,6 +1311,7 @@ div.calendar-title {
 	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 10px;
+	letter-spacing: normal;
 }
 
 .copyright {
@@ -1448,12 +1449,8 @@ table.scheduler_month td.rank span.rank.end {
 	border-bottom-right-radius: 9999px;
 }
 
-table.scheduler_month td.rank span.rank.rank-up::after,
-table.scheduler_month td.rank span.rank.rank-down::after,
-table.scheduler_month td.rank span.rank.rank-keep::after {
+table.scheduler_month td.rank .arrow {
 	color: #2e7d32;
-	font-weight: 1000;
-	font-size: 14px;
 	position: absolute;
 	right: 1px;
 	top: 50%;
@@ -1465,17 +1462,6 @@ table.scheduler_month td.rank span.rank.rank-keep::after {
 		 1px  1px 0 white;
 }
 
-table.scheduler_month td.rank span.rank.rank-up::after {
-	content: "↗";
-}
-
-table.scheduler_month td.rank span.rank.rank-down::after {
-	content: "↘";
-}
-
-table.scheduler_month td.rank span.rank.rank-keep::after {
-	content: "→";
-}
 
 
 table.scheduler_month td.point span.point {
@@ -1615,7 +1601,7 @@ div.wschedule-title {
 .day-row .weekday {
   font-weight: normal;
   font-size: 10px;
-  vertical-align: text-bottom;
+  vertical-align: middle;
 }
 
 .day-row .rank {
@@ -1633,28 +1619,7 @@ div.wschedule-title {
 .day-row .rank .arrow {
   position: absolute;
   right: -3px;
-  bottom: -5px;
-
-  font-size: 10px;
-  font-weight: bold;
-}
-
-.day-row .rank .arrow.rank-up {
-	color: #2e7d32;
-}
-
-.day-row .rank .arrow.rank-keep {
-	color: #777;
-}
-
-.day-row .rank .arrow.rank-down {
-	color: #c62828;
-}
-
-
-.day-row .updown {
-  width: 20px;
-  color: #4caf50;
+  bottom: -4px;
 }
 
 .day-row .memo {
