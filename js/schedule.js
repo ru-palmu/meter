@@ -953,6 +953,13 @@ function makeCopyright(year) {
   return copyright;
 }
 
+function formatYYYYMMDD(d) {
+  const yy = String(d.getFullYear());
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yy}/${mm}/${dd}`;
+
+}
 
 function formatMMDD(d) {
   const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -1059,8 +1066,7 @@ function makeWeekPng(id_canvas, days, isMemo) {
   canvas.appendChild(div);
 
   const title = document.createElement("div");
-  title.className = "wschedule-title";
-  title.textContent = "配信スケジュール";
+  title.className = "sch-week-title";
   div.appendChild(title);
 
   const today = getToday();
@@ -1074,8 +1080,17 @@ function makeWeekPng(id_canvas, days, isMemo) {
     nowDay.setDate(nowDay.getDate() + 1);
   }
 
+  // 期間をタイトルに設定
+  title.textContent = '';
+  const span_title_date = document.createElement("span");
+  span_title_date.className = "date";
   nowDay.setDate(nowDay.getDate() - 1);
-  title.textContent = `${formatMMDD(startDay)} - ${formatMMDD(nowDay)} 配信スケジュール`;
+  span_title_date.textContent = `${formatYYYYMMDD(startDay)}〜${formatMMDD(nowDay)}`;
+  title.appendChild(span_title_date);
+
+  const span_title_rest = document.createElement("span");
+  span_title_rest.textContent = " スケジュール";
+  title.appendChild(span_title_rest);
 
 	const copyright = makeCopyright(today.slice(0, 4));
   div.appendChild(copyright);
@@ -1097,7 +1112,7 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
   canvas.appendChild(div);
 
   const title = document.createElement("div");
-  title.className = "calendar-title";
+  title.className = "sch-month-title";
   const today = getToday();
   title.textContent = `${today.slice(0, 4)}年${today.slice(5, 7)}月`;
   div.appendChild(title);
@@ -1194,10 +1209,10 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
   }
 
   nowDay.setDate(nowDay.getDate() - 1);
-  title.textContent = _makeTitle(today, nowDay);
+  _makeTitle(title, today, nowDay);
 }
 
-function _makeTitle(startDayStr, endDay) {
+function _makeTitle(div_title, startDayStr, endDay) {
   const endMonth = endDay.getMonth() + 1;
   const endYear = endDay.getFullYear();
   const startMonth = parseInt(startDayStr.slice(5, 7));
@@ -1210,7 +1225,17 @@ function _makeTitle(startDayStr, endDay) {
   } else {
     title += `〜${endYear}/${String(endMonth).padStart(2, '0')}`;
   }
-  title += " スケジュール";
+
+  const span = document.createElement("span");
+  span.className = "date";
+  span.textContent = title;
+
+  const span_sch = document.createElement("span");
+  span_sch.textContent = " スケジュール";
+
+  div_title.textContent = "";
+  div_title.appendChild(span);
+  div_title.appendChild(span_sch);
   return title;
 }
 

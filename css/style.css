@@ -1270,7 +1270,7 @@ legend {
 }
 
 /*==================================================
- * スケジューラ・カレンダー
+ * 月間スケジューラ・
  *=================================================*/
 
 .phone-frame-calendar {
@@ -1306,12 +1306,16 @@ div.div-canvas {
 	position: static;
 }
 
-div.calendar-title {
+div.sch-week-title,
+div.sch-month-title {
 	text-align: center;
-	font-size: 20px;
+	font-size: 19px;
 	font-weight: bold;
-	margin-bottom: 10px;
-	letter-spacing: normal;
+	margin-bottom: 9px;
+}
+
+div.clendar-title .date {
+	font-family: monospace;
 }
 
 .copyright {
@@ -1386,6 +1390,7 @@ table.scheduler_month td.point {
 
 table.scheduler_month tr.memo td {
 	padding-bottom: 5px;
+	padding-right: 4px;
 	overflow: hidden;
 }
 
@@ -1508,15 +1513,8 @@ table.scheduler_month td.point span.point .total {
 }
 
 /*==================================================
- * スケジューラ・配信スケジュール 7 日くらい
+ * 週間スケジューラ
  *=================================================*/
-
-div.wschedule-title {
-	text-align: center;
-	font-size: 20px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
 
 .day-row {
   display: flex;
