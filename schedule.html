@@ -158,8 +158,7 @@
 <span class="sub-title" id="exp">実験中</span>
 
 <ul class="help">
-  <li>カレンダー画像生成機能を実験的に追加しました．「生成」ボタンを押すと，予定表の内容を画像として保存できます．</li>
-  <li>ランクが 0 になることがあります．リロードして再度生成してください</li>
+  <li>スケジュール画像生成機能を実験的に追加しました．「生成」ボタンを押すと，予定表の内容を画像として保存できます．</li>
   <li>ご意見・ご要望あれば，<a href="https://x.com/ru_palmu">X</a> (DM可) や<a href="https://marshmallow-qa.com/fcbapahukbveobw?t=mZ9AzD&utm_medium=url_text&utm_source=promotion">匿名質問箱</a>などでお知らせください．仮公開中のいまなら対応可能な場合が多いです</li>
   <li>SS+ 表示は未対応</li>
 </ul>
@@ -172,40 +171,44 @@
     <input type="radio" id="cal-type-month" name="cal-type" value="month" checked>月間スケジュール
     <input type="radio" id="cal-type-week"  name="cal-type" value="week">週間スケジュール
   </div>
-  <div class="input-group" id="cal-dow-group">
-    <label for="cal-dow">開始曜日</label>
-    <select id="cal-dow">
-      <option value="0" selected>日曜日</option>
-      <option value="1">月曜日</option>
-      <option value="2">火曜日</option>
-      <option value="3">水曜日</option>
-      <option value="4">木曜日</option>
-      <option value="5">金曜日</option>
-      <option value="6">土曜日</option>
-    </select>
+  <div id="sch-month-group">
+    <div class="input-group" id="cal-dow-group">
+      <label for="cal-dow">開始曜日</label>
+      <select id="cal-dow">
+        <option value="0" selected>日曜日</option>
+        <option value="1">月曜日</option>
+        <option value="2">火曜日</option>
+        <option value="3">水曜日</option>
+        <option value="4">木曜日</option>
+        <option value="5">金曜日</option>
+        <option value="6">土曜日</option>
+      </select>
+    </div>
+    <div class="input-group" id="cal-month-line-group">
+      <label for="cal-month-line">表示行数</label>
+      <select id="cal-month-line">
+        <option value="2">2行 (14日分)</option>
+        <option value="3">3行 (21日分)</option>
+        <option value="4" selected>4行 (28日分)</option>
+        <option value="5">5行 (35日分)</option>
+      </select>
+    </div>
   </div>
-  <div class="input-group" id="cal-month-line-group">
-    <label for="cal-month-line">表示行数</label>
-    <select id="cal-month-line">
-      <option value="2">2行 (14日分)</option>
-      <option value="3">3行 (21日分)</option>
-      <option value="4" selected>4行 (28日分)</option>
-      <option value="5">5行 (35日分)</option>
-    </select>
-  </div>
-  <div class="input-group" id="cal-days-group">
-    <label for="cal-days">表示日数</label>
-    <select id="cal-days">
-      <option value="3">3日</option>
-      <option value="4">4日</option>
-      <option value="5">5日</option>
-      <option value="6">6日</option>
-      <option value="7" selected>7日</option>
-      <option value="8">8日</option>
-      <option value="9">9日</option>
-      <option value="10">10日</option>
-      <option value="11">11日</option>
-    </select>
+  <div id="sch-week-group">
+    <div class="input-group" id="cal-days-group">
+      <label for="cal-days">表示日数</label>
+      <select id="cal-days">
+        <option value="3">3日</option>
+        <option value="4">4日</option>
+        <option value="5">5日</option>
+        <option value="6">6日</option>
+        <option value="7" selected>7日</option>
+        <option value="8">8日</option>
+        <option value="9">9日</option>
+        <option value="10">10日</option>
+        <option value="11">11日</option>
+      </select>
+    </div>
   </div>
 
   <div class="input-group">

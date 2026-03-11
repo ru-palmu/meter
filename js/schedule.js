@@ -1337,9 +1337,8 @@ function calTypeChange() {
   const mode = (val == "month");
 
   const show = "block";
-  document.getElementById("cal-dow-group").style.display = (mode ? show : "none");
-  document.getElementById("cal-month-line-group").style.display = (mode ? show : "none");
-  document.getElementById("cal-days-group").style.display = (mode ? "none" : show);
+  document.getElementById("sch-month-group").style.display = (mode ? show : "none");
+  document.getElementById("sch-week-group").style.display = (mode ? "none" : show);
 }
 
 
