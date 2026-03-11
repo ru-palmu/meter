@@ -1285,15 +1285,18 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       ctx.drawImage(canvas, 0, 0, resized.width, resized.height);
 
       const imgData = resized.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = imgData;
+
+      document.getElementById("preview").src = imgData;
+
+      // const link = document.createElement("a");
+      // link.href = imgData;
 
       // ファイル名に日付を追加
-      const d = new Date().toISOString().replace(/[-:T]/g, "");
-      const datetime = d.slice(0, 8) + '_' + d.slice(8, 14);
-
-      link.download = `ru-schedule-${val}-${datetime}.png`;
-      link.click();
+      // const d = new Date().toISOString().replace(/[-:T]/g, "");
+      // const datetime = d.slice(0, 8) + '_' + d.slice(8, 14);
+      // 
+      // link.download = `ru-schedule-${val}-${datetime}.png`;
+      // link.click();
     });
 
     if (!cal_debug) {
