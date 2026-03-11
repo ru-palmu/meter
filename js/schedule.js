@@ -214,7 +214,7 @@ function setupEventTitles() {
 
       const defaultOpt = document.createElement("option");
       defaultOpt.value = "";
-      defaultOpt.textContent = "";
+      defaultOpt.textContent = "不参加";
       select.appendChild(defaultOpt);
 
       [...events, ...events_common].forEach((ev) => {
@@ -468,6 +468,7 @@ function generateSchedulePast() {
 function saveSchedule() {
   const data = {};  // メモリ載せておく用
   const data_for_save = {}; // 全部
+
 
   ///////////////////////////////////////////////
   // 未来分
@@ -961,7 +962,7 @@ function formatMMDD(d) {
 
 // 1日分の行を作る
 // 日付（曜日）・ランク・ポイント・メモ
-function makeSchedulePngRow(nowDay, isMemo) {
+function makeWeekPngRow(nowDay, isMemo) {
   const weekJP = ["日", "月", "火", "水", "木", "金", "土"];
   const weekEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -1045,7 +1046,7 @@ function makeSchedulePngRow(nowDay, isMemo) {
 }
 
 // days 分のスケジュール表
-function makeSchedulePng(id_canvas, days, isMemo) {
+function makeWeekPng(id_canvas, days, isMemo) {
 
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
@@ -1067,7 +1068,7 @@ function makeSchedulePng(id_canvas, days, isMemo) {
   const startDay = new Date(nowDay);
 
   for (let i = 0; i < days; i++) {
-    const tr = makeSchedulePngRow(nowDay, isMemo);
+    const tr = makeWeekPngRow(nowDay, isMemo);
     div.appendChild(tr);
 
     nowDay.setDate(nowDay.getDate() + 1);
@@ -1084,7 +1085,7 @@ function makeSchedulePng(id_canvas, days, isMemo) {
  * 4週間分のカレンダー
  * sep: 左端の曜日
  */
-function makeCalPng(id_canvas, sep, weekn, isMemo) {
+function makeMonthPng(id_canvas, sep, weekn, isMemo) {
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
     return
@@ -1294,14 +1295,15 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTotals();
 
   // for (let i = 0; i < 1; i++) {
-  //   makeCalPng("div-canvas" + i, i);
+  //   makeMonthPng("div-canvas" + i, i);
   // }
+  calTypeChange();
   if (cal_debug) {
     document.getElementById("div-canvas").style.display = "flex";
-    makeCalPng("div-canvas", 0, 5, true);
+    makeMonthPng("div-canvas", 0, 5, true);
 
     document.getElementById("div-canvas2").style.display = "flex";
-    makeSchedulePng("div-canvas2", 13, true);
+    makeWeekPng("div-canvas2", 13, true);
   }
 });
 
@@ -1315,19 +1317,26 @@ function calTypeChange() {
   document.getElementById("cal-days-group").style.display = (mode ? "none" : show);
 }
 
-calTypeChange();
 
 document.getElementById("btn-cal").addEventListener("click", () => {
   const val = document.querySelector('input[name="cal-type"]:checked').value;
   const isMemo = document.getElementById("cal-memo-enable").checked;
-  if (val == "month") {
-    const dow = document.getElementById("cal-dow").value;
-    const weekn = document.getElementById("cal-month-line").value;
-    makeCalPng("div-canvas", parseInt(dow), parseInt(weekn), isMemo);
-  } else {
-    const days = document.getElementById("cal-days").value;
-    makeSchedulePng("div-canvas", parseInt(days), isMemo);
+  const targets = [];
+  targets.push(["div-canvas", val]);
+  if (cal_debug) {
+    targets.push(["div-canvas2", val == "month" ? "week" : "month"]);
   }
+
+  targets.forEach(([vid, vv]) => {
+    if (vv == "month") {
+      const dow = document.getElementById("cal-dow").value;
+      const weekn = document.getElementById("cal-month-line").value;
+      makeMonthPng(vid, parseInt(dow), parseInt(weekn), isMemo);
+    } else {
+      const days = document.getElementById("cal-days").value;
+      makeWeekPng(vid, parseInt(days), isMemo);
+    }
+  });
 
   if (true) {
     const canvas = document.getElementById("div-canvas");
