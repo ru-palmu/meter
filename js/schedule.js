@@ -1288,15 +1288,31 @@ document.getElementById("btn-cal").addEventListener("click", () => {
 
       document.getElementById("preview").src = imgData;
 
-      // const link = document.createElement("a");
-      // link.href = imgData;
+      const div = document.getElementById("div-preview-download");
+      div.innerHTML = "";
+      const button = document.createElement("button");
+      button.textContent = "画像を保存";
+      div.appendChild(button);
+      const span = document.createElement("span");
+      span.textContent = "(ダウンロードが始まらない場合は，画像の長押しを利用してください)";
+      div.appendChild(span);
 
-      // ファイル名に日付を追加
-      // const d = new Date().toISOString().replace(/[-:T]/g, "");
-      // const datetime = d.slice(0, 8) + '_' + d.slice(8, 14);
-      // 
-      // link.download = `ru-schedule-${val}-${datetime}.png`;
-      // link.click();
+      button.addEventListener("click", () => {
+        const img = document.getElementById("preview");
+        if (!img.src) {
+          return;
+        }
+
+        const link = document.createElement("a");
+        link.href = img.src;
+
+        // ファイル名に日付を追加
+        const d = new Date().toISOString().replace(/[-:T]/g, "");
+        const datetime = d.slice(0, 8) + '_' + d.slice(8, 14);
+
+        link.download = `ru-schedule-${val}-${datetime}.png`;
+        link.click();
+      });
     });
 
     if (!cal_debug) {
