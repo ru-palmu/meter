@@ -1369,12 +1369,12 @@ document.getElementById("btn-cal").addEventListener("click", () => {
 
   if (true) {
     const canvas = document.getElementById("div-canvas");
-    const size = document.querySelector('input[name="cal-size"]:checked').value;
-    if (size == "full") {
+    const size = document.querySelector('input[name="cal-size"]:checked')?.value;
+    if (size != "min") {
       canvas.style.minHeight = "640px";
       canvas.style.aspectRatio = "9 / 16";
     } else {
-      canvas.style.minHeight = "";
+      canvas.style.minHeight = "auto";
       canvas.style.aspectRatio = "auto";
     }
 
