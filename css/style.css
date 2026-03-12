@@ -1270,7 +1270,7 @@ legend {
 }
 
 /*==================================================
- * 月間スケジューラ・
+ * 月間スケジューラ・画像生成
  *=================================================*/
 
 .phone-frame-calendar {
@@ -1312,9 +1312,11 @@ div.sch-month-title {
 	font-size: 19px;
 	font-weight: bold;
 	margin-bottom: 9px;
+	white-space: nowrap;
 }
 
-div.clendar-title .date {
+div.sch-week-title, .date,
+div.sch-month-title .date {
 	font-family: monospace;
 }
 
@@ -1392,6 +1394,7 @@ table.scheduler_month tr.memo td {
 	padding-bottom: 5px;
 	padding-right: 4px;
 	overflow: hidden;
+	color: #444;
 }
 
 /** 最後は下パディングなし **/
@@ -1513,7 +1516,7 @@ table.scheduler_month td.point span.point .total {
 }
 
 /*==================================================
- * 週間スケジューラ
+ * 週間スケジューラ・画像生成
  *=================================================*/
 
 .day-row {
@@ -1624,7 +1627,7 @@ table.scheduler_month td.point span.point .total {
   width: auto;
   flex: 1;
   text-align: left;
-  color: #555;
+  color: #444;
   opacity: 0.85;
 
   overflow: hidden;
