@@ -1053,7 +1053,7 @@ function makeWeekPngRow(nowDay, isMemo) {
 }
 
 // days 分のスケジュール表
-function makeWeekPng(id_canvas, days, isMemo) {
+function makeWeekPng(id_canvas, start, days, isMemo) {
 
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
@@ -1071,6 +1071,10 @@ function makeWeekPng(id_canvas, days, isMemo) {
 
   const today = getToday();
   const nowDay = new Date(today);
+  if (start > 0) {
+    nowDay.setDate(nowDay.getDate() + start);
+  }
+
   const startDay = new Date(nowDay);
 
   for (let i = 0; i < days; i++) {
@@ -1322,6 +1326,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // for (let i = 0; i < 1; i++) {
   //   makeMonthPng("div-canvas" + i, i);
   // }
+  calInit();
   calTypeChange();
   if (cal_debug) {
     document.getElementById("div-canvas").style.display = "flex";
@@ -1331,6 +1336,29 @@ document.addEventListener("DOMContentLoaded", () => {
     makeWeekPng("div-canvas2", 13, true);
   }
 });
+
+function calInit() {
+	const select = document.getElementById("cal-start-day");
+	const today = new Date();
+
+  const labels = ["今日", "明日", "明後日"];
+  const d = new Date(today);
+	for (let i = 0; i <= 7; i++) {
+		d.setDate(today.getDate() + i);
+
+		const mm = d.getMonth() + 1;
+		const dd = d.getDate();
+
+		const label = labels[i] || `${i}日後`;
+		const option = document.createElement("option");
+		option.value = i;
+		option.textContent = `${label} (${mm}/${dd})`;
+
+		if (i === 0) option.selected = true;
+
+		select.appendChild(option);
+	}
+}
 
 function calTypeChange() {
   const val = document.querySelector('input[name="cal-type"]:checked').value;
@@ -1363,7 +1391,8 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       makeMonthPng(vid, parseInt(dow), parseInt(weekn), isMemo);
     } else {
       const days = document.getElementById("cal-days").value;
-      makeWeekPng(vid, parseInt(days), isMemo);
+      const start = document.getElementById("cal-start-day").value;
+      makeWeekPng(vid, parseInt(start), parseInt(days), isMemo);
     }
   });
 
