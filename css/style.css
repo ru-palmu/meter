@@ -1308,11 +1308,42 @@ div.div-canvas {
 
 div.sch-week-title,
 div.sch-month-title {
+	position: relative;
+	background-color: #c9b49a;
+	border-radius: 12px;
+	padding: 10px 20px 10px 40px;
+	color: #333;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);	/* 立体感 */
+
 	text-align: center;
 	font-size: 19px;
 	font-weight: bold;
 	margin-bottom: 9px;
 	white-space: nowrap;
+}
+
+div.sch-month-title .mini-char-left,
+div.sch-week-title  .mini-char-left {
+	position: absolute;
+	top: 50%;
+	left: 10px;
+	transform: translateY(-50%);
+	width: 40px;
+	height: auto;
+	margin-right: 10px;
+	pointer-events: none;
+}
+
+div.sch-month-title .mini-char-upper-right,
+div.sch-week-title  .mini-char-upper-right {
+	position: absolute;
+	right: 10px;
+	bottom: 100%;
+	margin-bottom: -2px;
+
+	width: 30px;
+	height: auto;
+	pointer-events: none;
 }
 
 div.sch-week-title, .date,
@@ -1321,11 +1352,32 @@ div.sch-month-title .date {
 }
 
 .copyright {
+  position: relative;
   text-align: center;
   font-size: 11px;
   color: #999;
   margin-top: 15px;
 }
+
+.copyright .mini-char {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-40%);
+  width: 10px;
+  height: auto;
+  pointer-events: none;
+}
+
+.copyright .mini-char.left {
+  width: 30px;
+  left: 10px;
+}
+
+.copyright .mini-char.right {
+  width: 30px;
+  right: 10px;
+}
+
 
 table.scheduler_month {
 	border-collapse: collapse;
