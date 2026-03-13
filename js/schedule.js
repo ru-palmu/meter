@@ -986,7 +986,7 @@ function formatMMDD(d) {
 
 // 1日分の行を作る
 // 日付（曜日）・ランク・ポイント・メモ
-function makeWeekPngRow(nowDay, isMemo) {
+function makeWeekPngRow(nowDay, isMemo, memoSize) {
   const weekJP = ["日", "月", "火", "水", "木", "金", "土"];
   const weekEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -1064,13 +1064,14 @@ function makeWeekPngRow(nowDay, isMemo) {
   const str = scheduleData[dstr]?.memo || " ";
   if (isMemo && !str.startsWith(" ") && !str.startsWith("　")) {
     tdMemo.textContent = str;
+    tdMemo.classList.add(memoSize);
   }
   tr.appendChild(tdMemo);
   return tr;
 }
 
 // days 分のスケジュール表
-function makeWeekPng(id_canvas, start, days, isMemo) {
+function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
 
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
@@ -1099,7 +1100,7 @@ function makeWeekPng(id_canvas, start, days, isMemo) {
   dayrows.style.setProperty('--days', days);
   div.appendChild(dayrows);
   for (let i = 0; i < days; i++) {
-    const tr = makeWeekPngRow(nowDay, isMemo);
+    const tr = makeWeekPngRow(nowDay, isMemo, memoSize);
     dayrows.appendChild(tr);
 
     nowDay.setDate(nowDay.getDate() + 1);
@@ -1121,7 +1122,6 @@ function makeWeekPng(id_canvas, start, days, isMemo) {
   img2.className = "mini-char-upper-right";
   img2.alt = "ミニキャラ"
   title.appendChild(img2);
-
 
 
 	const copyright = makeCopyright(today.slice(0, 4));
@@ -1373,7 +1373,7 @@ document.addEventListener("DOMContentLoaded", () => {
     makeMonthPng("div-canvas", 0, 5, true);
 
     document.getElementById("div-canvas2").style.display = "flex";
-    makeWeekPng("div-canvas2", 3, 13, true);
+    makeWeekPng("div-canvas2", 3, 13, true, "medium");
   }
 });
 
@@ -1432,7 +1432,8 @@ document.getElementById("btn-cal").addEventListener("click", () => {
     } else {
       const days = document.getElementById("cal-days").value;
       const start = document.getElementById("cal-start-day").value;
-      makeWeekPng(vid, parseInt(start), parseInt(days), isMemo);
+      const memoSize = document.getElementById("cal-memo-size").value;
+      makeWeekPng(vid, parseInt(start), parseInt(days), isMemo, memoSize);
     }
   });
 

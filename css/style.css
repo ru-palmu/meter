@@ -1311,7 +1311,7 @@ div.sch-month-title {
 	position: relative;
 	background-color: #c9b49a;
 	border-radius: 12px;
-	padding: 7px 20px 7px 40px;
+	padding: 7px 20px 7px 20px;
 	color: #333;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);	/* 立体感 */
 
@@ -1693,6 +1693,15 @@ table.scheduler_month td.point span.point .total {
   line-height: 1.2;
 }
 
+.day-row .memo.small {
+  font-size: 11px;
+}
+.day-row .memo.medium {
+  font-size: 13px;
+}
+.day-row .memo.large {
+  font-size: 16px;
+}
 
 /***************************************************
  * 個別: event.html
