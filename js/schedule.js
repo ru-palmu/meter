@@ -1473,7 +1473,9 @@ document.getElementById("btn-cal").addEventListener("click", () => {
 
       const imgData = resized.toDataURL("image/png");
 
-      document.getElementById("preview").src = imgData;
+      const previewDiv = document.getElementById("preview")
+      previewDiv.src = imgData;
+      previewDiv.style.width = "360px";
 
       const div = document.getElementById("div-preview-download");
       div.innerHTML = "";
@@ -1481,7 +1483,7 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       button.textContent = "画像を保存";
       div.appendChild(button);
       const span = document.createElement("span");
-      span.textContent = "(ダウンロードが始まらない場合は，画像の長押しを利用してください)";
+      span.textContent = "(iOS等ダウンロードが始まらない場合は，画像の長押しを利用してください)";
       div.appendChild(span);
 
       button.addEventListener("click", () => {

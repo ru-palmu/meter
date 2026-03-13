@@ -1333,6 +1333,8 @@ div.sch-month-title .mini-char-upper-left,
 div.sch-week-title  .mini-char-upper-left {
 	position: absolute;
 	left: 5px;
+	bottom: 0%;
+	margin-bottom: +0px;
 
 	width: 25px;
 	height: auto;
