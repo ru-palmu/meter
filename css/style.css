@@ -1316,11 +1316,18 @@ div.sch-month-title {
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);	/* 立体感 */
 
 	text-align: center;
-	font-size: 19px;
+	font-size: 16px;
 	font-weight: bold;
 	margin-bottom: 9px;
 	white-space: nowrap;
 }
+
+div.sch-week-title .date,
+div.sch-month-title .date {
+	font-size: 19px;
+	font-family: monospace;
+}
+
 
 div.sch-month-title .mini-char-upper-left,
 div.sch-week-title  .mini-char-upper-left {
@@ -1342,11 +1349,6 @@ div.sch-week-title  .mini-char-upper-right {
 	width: 30px;
 	height: auto;
 	pointer-events: none;
-}
-
-div.sch-week-title, .date,
-div.sch-month-title .date {
-	font-family: monospace;
 }
 
 .copyright {
