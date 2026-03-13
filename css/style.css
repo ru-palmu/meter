@@ -1589,7 +1589,7 @@ table.scheduler_month td.point span.point .total {
   justify-content: center;
 
   min-width: 18px;
-  padding: 3px 5px;
+  padding: 3px 4px 6px 4px;
 
   border: 1px solid #eee;
   border-radius: 4px;
@@ -1608,6 +1608,7 @@ table.scheduler_month td.point span.point .total {
 .day-row .point .total {
   font-size: 10px;
   line-height: 1;
+  margin-top: 3px;
   color: #777;
 }
 
@@ -1658,22 +1659,63 @@ table.scheduler_month td.point span.point .total {
 }
 
 .day-row .rank {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border: 1px solid #eee;
+  border-radius: 50%;
+
   width: 24px;
   height: 24px;
-  border-radius: 50%;
-  text-align: center;
   line-height: 24px;
+
   font-size: 12px;
   font-weight: bold;
+
   position: relative;
+
+  background-color: #fff;
+  color: #333;
+
+  text-align: center;
 }
+
+.day-row .rank.rank-up-after {
+  border-color: #4CAF50;
+  background-color: #E8F5E9;
+  color: #2E7D32;
+  border-width: 3px;
+}
+.day-row .rank.rank-keep-after {
+  border-color: #888;
+  background-color: #FFF;
+  color: #333;
+}
+.day-row .rank.rank-down-after {
+  border-color: #FF9800;        /* オレンジ系 */
+  background-color: #FFF3E0;    /* 薄オレンジ背景 */
+  color: #E65100;
+  border-width: 1px;
+}
+
 
 .day-row .rank .arrow {
   position: absolute;
   right: -3px;
-  bottom: -4px;
 }
+
+.day-row .rank .arrow.rank-down-before {
+  bottom: -2px;
+}
+.day-row .rank .arrow.rank-up-before {
+  bottom: +4px;
+}
+.day-row .rank .arrow.rank-keep-before {
+  bottom: +0px;
+}
+
 
 .day-row .memo {
   width: auto;

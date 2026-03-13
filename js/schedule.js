@@ -835,7 +835,7 @@ function createArrow(direction, size = 16, strokeColor = 'green', outlineColor =
 
 function rankMove(nowDay, dstr) {
   if (scheduleData[dstr].total < 12) {
-    return ['rank-down', 'down-right', '#c62828'];
+    return ['rank-down', 'down-right', '#FF9800'];
   }
   const d1 = new Date(nowDay);
   d1.setDate(d1.getDate() + 1);
@@ -986,7 +986,7 @@ function formatMMDD(d) {
 
 // 1日分の行を作る
 // 日付（曜日）・ランク・ポイント・メモ
-function makeWeekPngRow(nowDay, isMemo, memoSize) {
+function makeWeekPngRow(nowDay, isMemo, memoSize, rank_class) {
   const weekJP = ["日", "月", "火", "水", "木", "金", "土"];
   const weekEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -1018,16 +1018,20 @@ function makeWeekPngRow(nowDay, isMemo, memoSize) {
   //////////////////////////////////
   const tdRank = document.createElement("div");
   tdRank.className = "rank";
+  if (rank_class) {
+    tdRank.classList.add(rank_class + '-after');
+  }
   tdRank.textContent = scheduleData[dstr]?.rank || 0;
   tr.appendChild(tdRank);
 
+  let classRankMove = ['', ''];
   if (scheduleData[dstr]?.separator) {
-    const classRankMove = rankMove(nowDay, dstr);
+    classRankMove = rankMove(nowDay, dstr);
     const arrow = createArrow(classRankMove[1], 10, classRankMove[2]);
     const img = svgToImg(arrow);
     arrow.classList.add(classRankMove[0]);
     img.classList.add('arrow');
-    img.classList.add(classRankMove[0]);
+    img.classList.add(classRankMove[0] + "-before");
     tdRank.appendChild(img);
   }
 
@@ -1067,7 +1071,8 @@ function makeWeekPngRow(nowDay, isMemo, memoSize) {
     tdMemo.classList.add(memoSize);
   }
   tr.appendChild(tdMemo);
-  return tr;
+  classRankMove[2] = tr;
+  return classRankMove
 }
 
 // days 分のスケジュール表
@@ -1099,9 +1104,11 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
   dayrows.className = "week-day-rows";
   dayrows.style.setProperty('--days', days);
   div.appendChild(dayrows);
+  let nx_class = '';
   for (let i = 0; i < days; i++) {
-    const tr = makeWeekPngRow(nowDay, isMemo, memoSize);
-    dayrows.appendChild(tr);
+    const tx = makeWeekPngRow(nowDay, isMemo, memoSize, nx_class);
+    dayrows.appendChild(tx[2]);
+    nx_class = tx[0];
 
     nowDay.setDate(nowDay.getDate() + 1);
   }
