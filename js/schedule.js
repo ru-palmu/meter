@@ -117,7 +117,7 @@ function loadInitialSettings() {
   document.getElementById("rankChange" + savedRankChange).checked = true;
 }
 
-const TODAY_DIFF = -0;
+const TODAY_DIFF = +0;
 
 // 昨日の日付をyyyy-mm-ddで返す
 function getYesterday() {
@@ -953,8 +953,8 @@ function makeCopyright(year) {
   imgl.className = "mini-char";
   imgl.classList.add("left");
 
-  const sp = " "; // "\u00A0";
-  const sp1 = sp.repeat(5);
+  const sp = "\u00A0 "; // "\u00A0";
+  const sp1 = sp.repeat(2);
   const sp2 = sp.repeat(1);
   const text = document.createTextNode(`ぱ(る)むの計算機 ${sp1} © ${year} ${sp2} (る)`);
 
@@ -1106,8 +1106,7 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
     nowDay.setDate(nowDay.getDate() + 1);
   }
 
-  // 期間をタイトルに設定
-  title.textContent = '';
+
   const span_title_date = document.createElement("span");
   span_title_date.className = "date";
   nowDay.setDate(nowDay.getDate() - 1);
@@ -1117,15 +1116,24 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
   const span_title_rest = document.createTextNode(" スケジュール");
   title.appendChild(span_title_rest);
 
-  const img2 = document.createElement("img");
-  img2.src = "img/cal-ru2.png";
-  img2.className = "mini-char-upper-right";
-  img2.alt = "ミニキャラ"
-  title.appendChild(img2);
-
+  setTitleIcons(title);
 
 	const copyright = makeCopyright(today.slice(0, 4));
   div.appendChild(copyright);
+}
+
+function setTitleIcons(title) {
+  const imgr = document.createElement("img");
+  imgr.src = "img/cal-ru2.png";
+  imgr.className = "mini-char-upper-right";
+  imgr.alt = "ミニキャラ"
+  title.appendChild(imgr);
+
+  const imgl = document.createElement("img");
+  imgl.src = "img/cal-ru-ul.png";
+  imgl.className = "mini-char-upper-left";
+  imgl.alt = "ミニキャラ"
+  title.appendChild(imgl);
 }
 
 /**
@@ -1258,17 +1266,6 @@ function _makeTitle(div_title, startDayStr, endDay) {
     title += `〜${endYear}/${String(endMonth).padStart(2, '0')}`;
   }
 
-  const img = document.createElement("img");
-  img.src = "img/cal-ru1.png";
-  img.className = "mini-char-left";
-  img.alt = "ミニキャラ"
-
-  const img2 = document.createElement("img");
-  img2.src = "img/cal-ru2.png";
-  img2.className = "mini-char-upper-right";
-  img2.alt = "ミニキャラ"
-
-
   const span = document.createElement("span");
   span.className = "date";
   span.textContent = title;
@@ -1276,8 +1273,16 @@ function _makeTitle(div_title, startDayStr, endDay) {
   const span_sch = document.createTextNode(" スケジュール");
 
   div_title.textContent = "";
-  //div_title.appendChild(img);
-  div_title.appendChild(img2);
+  setTitleIcons(div_title);
+
+  const img2 = document.createElement("img");
+  img2.src = "img/cal-ru2.png";
+  img2.className = "mini-char-upper-right";
+  img2.alt = "ミニキャラ"
+
+
+
+
   div_title.appendChild(span);
   div_title.appendChild(span_sch);
   return title;

@@ -92,7 +92,8 @@ async function initAnalytics() {
   }
 }
 
-if (location.protocol !== 'file:') {
+if (location.protocol !== 'file:' &&
+	window.location.hostname !== 'localhost') {
 	// ページ読み込み時に自動実行
 	initAnalytics();
 }
