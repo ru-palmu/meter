@@ -1311,7 +1311,7 @@ div.sch-month-title {
 	position: relative;
 	background-color: #c9b49a;
 	border-radius: 12px;
-	padding: 10px 20px 10px 40px;
+	padding: 7px 20px 7px 40px;
 	color: #333;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);	/* 立体感 */
 
@@ -1571,15 +1571,17 @@ table.scheduler_month td.point span.point .total {
  * 週間スケジューラ・画像生成
  *=================================================*/
 
-.day-row {
+.week-day-rows .day-row {
   display: flex;
+  box-sizing: border-box;	/* padding 込の height 計算 */
   align-items: center;
   gap: 2px;
   background: white;
-  padding: 1px 4px;
+  padding: 0px 4px;
   border-radius: 10px;
   margin-bottom: 6px;
   font-size: 14px;
+  height: clamp(33px, calc(429px / var(--days)), 55px);
 }
 
 .day-row .point {

@@ -1094,9 +1094,13 @@ function makeWeekPng(id_canvas, start, days, isMemo) {
 
   const startDay = new Date(nowDay);
 
+  const dayrows = document.createElement("div");
+  dayrows.className = "week-day-rows";
+  dayrows.style.setProperty('--days', days);
+  div.appendChild(dayrows);
   for (let i = 0; i < days; i++) {
     const tr = makeWeekPngRow(nowDay, isMemo);
-    div.appendChild(tr);
+    dayrows.appendChild(tr);
 
     nowDay.setDate(nowDay.getDate() + 1);
   }
