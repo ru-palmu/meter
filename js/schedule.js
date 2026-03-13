@@ -1450,9 +1450,8 @@ document.getElementById("btn-cal").addEventListener("click", () => {
 
     canvas.style.display = "flex";
     html2canvas(canvas, {
-      scale: 2,
+      scale: 4,
     }).then((canvas) => {
-
       const resized = document.createElement("canvas");
       resized.width = canvas.width / 2;
       resized.height = canvas.height / 2;
