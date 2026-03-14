@@ -689,6 +689,16 @@ function __renderNoticeArchive() {
 	return a;
 }
 
+window.setGtagNotice = function(n, a, type) {
+  if (n.track) {
+    a.dataset.track = 'share_x';
+    a.dataset.from = type;
+  } else {
+    a.dataset.track = type;
+    a.dataset.to = n.kind.code;
+  }
+}
+
 /**
  * 指定した要素に1週間以内のお知らせを表示
  * 日付だけ、または日時（YYYY-MM-DD or YYYY-MM-DDTHH:MM）に対応
@@ -740,6 +750,8 @@ function _renderNotices(elementId, notices) {
       const a = document.createElement('a');
       a.href = n.url;
       a.textContent = displayText;
+      window.setGtagNotice(n, a, 'notice');
+
       li.appendChild(a);
     } else {
       li.appendChild(document.createTextNode(displayText));
