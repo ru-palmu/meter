@@ -1,4 +1,4 @@
-const cal_debug = false;
+let cal_debug = false;
 
 const SCHEDULE_PREFIX = 'meter_schedule_';
 
@@ -883,6 +883,7 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
     tdRank.appendChild(span);
 
     if (classRankMove) {
+      // 矢印をランク帯の最後似追加
       const arrow = createArrow(classRankMove[1], 14);
       const img = svgToImg(arrow);
       img.classList.add('arrow');
@@ -944,28 +945,49 @@ function _makeTdMemo(dateStr, isMemo) {
   return tdMemo;
 }
 
+function addMiniCharStyle(parentElement, pngs, classnames) {
+  for (let n = pngs.length - 1; n >= 0; n--) {
+    if (Math.random() * (n + 1) < 1) {
+      addMiniChar(parentElement, [pngs[n][0]], [...classnames, ...pngs[n][1]]);
+      return ;
+    }
+  }
+}
+
+function addMiniChar(parentElement, pngs, classnames) {
+  if (Math.random() < 0.20) {
+    return ;
+  }
+
+  const img = document.createElement("img");
+  img.src = pngs[Math.floor(Math.random() * pngs.length)];
+  img.className = classnames.join(' ');
+  parentElement.appendChild(img);
+  return img;
+}
+
+
+
 function makeCopyright(year) {
 	const copyright = document.createElement("div");
   copyright.className = "copyright";
-
-  const imgl = document.createElement("img");
-  imgl.src = "img/cal-ru-dl.png";
-  imgl.className = "mini-char";
-  imgl.classList.add("left");
 
   const sp = "\u00A0 "; // "\u00A0";
   const sp1 = sp.repeat(2);
   const sp2 = sp.repeat(1);
   const text = document.createTextNode(`ぱ(る)むの計算機 ${sp1} © ${year} ${sp2} (る)`);
 
-  const imgr = document.createElement("img");
-  imgr.src = "img/cal-ru-dr.png";
-  imgr.className = "mini-char";
-  imgr.classList.add("right");
-
-  copyright.appendChild(imgl);
+  addMiniChar(copyright, [
+    "img/cal-ru-dl.png",
+    "img/cal-ru-dl2.png",
+  ], ["mini-char", "left"]);
   copyright.appendChild(text);
-  copyright.appendChild(imgr);
+  addMiniChar(copyright, [
+    "img/cal-ru-dr.png",
+    "img/cal-ru-dr2.png",
+    "img/cal-ru-dr3.png",
+    "img/cal-ru-dr4.png",
+  ], ["mini-char", "right"]);
 
   return copyright;
 }
@@ -1089,7 +1111,6 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
   canvas.appendChild(div);
 
   const title = document.createElement("div");
-  title.className = "sch-week-title";
   div.appendChild(title);
 
   const today = getToday();
@@ -1113,34 +1134,40 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
     nowDay.setDate(nowDay.getDate() + 1);
   }
 
-
-  const span_title_date = document.createElement("span");
-  span_title_date.className = "date";
   nowDay.setDate(nowDay.getDate() - 1);
-  span_title_date.textContent = `${formatYYYYMMDD(startDay)}〜${formatMMDD(nowDay)}`;
-  title.appendChild(span_title_date);
-
-  const span_title_rest = document.createTextNode(" スケジュール");
-  title.appendChild(span_title_rest);
-
+  _makeWeekTitle(title, startDay, nowDay);
   setTitleIcons(title);
 
 	const copyright = makeCopyright(today.slice(0, 4));
   div.appendChild(copyright);
 }
 
-function setTitleIcons(title) {
-  const imgr = document.createElement("img");
-  imgr.src = "img/cal-ru2.png";
-  imgr.className = "mini-char-upper-right";
-  imgr.alt = "ミニキャラ"
-  title.appendChild(imgr);
 
-  const imgl = document.createElement("img");
-  imgl.src = "img/cal-ru-ul.png";
-  imgl.className = "mini-char-upper-left";
-  imgl.alt = "ミニキャラ"
-  title.appendChild(imgl);
+function _makeWeekTitle(title, startDay, endDay) {
+  title.className = "sch-week-title";
+  const span_title_date = document.createElement("span");
+  span_title_date.className = "date";
+  span_title_date.textContent = `${formatYYYYMMDD(startDay)}〜${formatMMDD(endDay)}`;
+  title.appendChild(span_title_date);
+
+  const span_title_rest = document.createTextNode(" スケジュール");
+  title.appendChild(span_title_rest);
+}
+
+
+function setTitleIcons(title) {
+  addMiniCharStyle(title, [
+    ["img/cal-ru-ul.png", []],
+    ["img/cal-ru-ul2.png", ['mini-char2']],
+    ["img/cal-ru-ul3.png", ['mini-char3']],
+  ], ["mini-char-upper-left"]);
+
+  addMiniCharStyle(title, [
+    ["img/cal-ru-ur.png", []],
+    ["img/cal-ru-ur2.png", ['mini-char2']],
+    ["img/cal-ru-ur3.png", ['mini-char3']],
+    ["img/cal-ru-ur4.png", ['mini-char4']],
+  ], ["mini-char-upper-right"]);
 }
 
 /**
@@ -1159,7 +1186,6 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
   canvas.appendChild(div);
 
   const title = document.createElement("div");
-  title.className = "sch-month-title";
   const today = getToday();
 
   div.appendChild(title);
@@ -1256,10 +1282,14 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
   }
 
   nowDay.setDate(nowDay.getDate() - 1);
-  _makeTitle(title, today, nowDay);
+  _makeMonthTitle(title, today, nowDay);
+  setTitleIcons(title);
 }
 
-function _makeTitle(div_title, startDayStr, endDay) {
+function _makeMonthTitle(div_title, startDayStr, endDay) {
+  // startDayStr: YYYY-MM-DD 形式文字列
+  // endDay: Date オブジェクト
+  div_title.className = "sch-month-title";
   const endMonth = endDay.getMonth() + 1;
   const endYear = endDay.getFullYear();
   const startMonth = parseInt(startDayStr.slice(5, 7));
@@ -1280,16 +1310,6 @@ function _makeTitle(div_title, startDayStr, endDay) {
   const span_sch = document.createTextNode(" スケジュール");
 
   div_title.textContent = "";
-  setTitleIcons(div_title);
-
-  const img2 = document.createElement("img");
-  img2.src = "img/cal-ru2.png";
-  img2.className = "mini-char-upper-right";
-  img2.alt = "ミニキャラ"
-
-
-
-
   div_title.appendChild(span);
   div_title.appendChild(span_sch);
   return title;
@@ -1380,14 +1400,70 @@ document.addEventListener("DOMContentLoaded", () => {
   // }
   calInit();
   calTypeChange();
-  if (cal_debug) {
-    document.getElementById("div-canvas").style.display = "flex";
-    makeMonthPng("div-canvas", 0, 5, true);
 
-    document.getElementById("div-canvas2").style.display = "flex";
-    makeWeekPng("div-canvas2", 3, 13, true, "medium");
+  // GET パラメータに debug=1 があればデバッグ用の画像を表示
+  cal_debug = new URLSearchParams(window.location.search).get("debug") === "1";
+  if (cal_debug) {
+    debugTable();
   }
 });
+
+function _debugTitles(div) {
+
+  // monthly
+  [
+    ["2025-12-01", "2026-01-15"],
+    ["2025-12-01", "2025-12-15"],
+    ["2026-03-20", "2026-04-15"],
+  ].forEach(([s, e]) => {
+    const title = document.createElement("div");
+    _makeMonthTitle(title, s, new Date(e));
+    setTitleIcons(title);
+    div.appendChild(title);
+  });
+
+  // weekly
+  [
+    ["2025-12-28", "2026-01-07"],
+    ["2025-12-01", "2025-12-15"],
+    ["2026-03-30", "2026-04-05"],
+  ].forEach(([s, e]) => {
+    const title = document.createElement("div");
+    _makeWeekTitle(title, new Date(s), new Date(e));
+    setTitleIcons(title);
+    div.appendChild(title);
+  });
+
+
+}
+
+function debugTable() {
+  const table = document.getElementById("debug-img-table");
+  const row = document.createElement("tr");
+  table.appendChild(row);
+
+  for (let i = 0; i < 3; i++) {
+    const cell = document.createElement("td");
+    row.appendChild(cell);
+
+    const div = document.createElement("div");
+    div.id = "div-canvas" + (i + 1);
+    div.style.display = "flex";
+    div.className = "phone-frame-calendar";
+    cell.appendChild(div);
+
+    if (i == 0) {
+      const div2 = document.createElement("div");
+      div2.className = "calendar-wrapper";
+      div.appendChild(div2);
+      _debugTitles(div2);
+    } else if (i == 1) {
+      makeMonthPng(div.id, 0, 5, true);
+    } else if (i == 2) {
+      makeWeekPng(div.id, 3, 13, true, "medium");
+    }
+  }
+}
 
 function calInit() {
 	const select = document.getElementById("cal-start-day");
