@@ -35,9 +35,9 @@ function initGA() {
   try {
     loadAsyncScript(`${GA_SCRIPT}?id=${GA_MEASUREMENT_ID}`);
     window.dataLayer = window.dataLayer || [];
-    function gtag(){ window.dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', GA_MEASUREMENT_ID);
+    window.gtag = function(){ window.dataLayer.push(arguments);}
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID);
   } catch (e) {
     console.warn("initGA failed", e);
   }

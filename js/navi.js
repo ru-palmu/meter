@@ -487,7 +487,6 @@ function selectedRank() {
   return key;
 }
 
-
 function _marshmallow() {
 	const li = document.createElement('li');
 	li.className = 'sub-tab';
@@ -495,6 +494,8 @@ function _marshmallow() {
 	const a = document.createElement('a');
 	a.href = 'https://marshmallow-qa.com/fcbapahukbveobw?t=mZ9AzD&utm_medium=url_text&utm_source=promotion';
 	a.textContent = '質問箱';
+	a.dataset.track = 'marshmallow';
+	a.dataset.from = 'navi';
 	li.appendChild(a);
 	return li
 }
@@ -513,6 +514,8 @@ function _shareX() {
   shareA.style.display = 'flex';
   shareA.style.alignItems = 'center';
   shareA.style.gap = '4px';
+  shareA.dataset.track = 'share_x';
+  shareA.dataset.from = 'navi';
 
   // SVGアイコン（公式Xロゴ）
   const svgNS = "http://www.w3.org/2000/svg";
@@ -1104,6 +1107,17 @@ function tableHeaderFixer() {
 		offset += row.getBoundingClientRect().height;
 	});
 }
+
+document.addEventListener("click", (e) => {
+
+  const a = e.target.closest("a[data-track]");
+  if (!a) return;
+
+  window.gtag("event", a.dataset.track, {
+    from: a.dataset.from
+  });
+
+});
 
 
 window.tableHeaderFixer = tableHeaderFixer;
