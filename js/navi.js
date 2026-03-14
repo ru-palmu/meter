@@ -689,14 +689,14 @@ function __renderNoticeArchive() {
 	return a;
 }
 
-window.setGtagNotice = function(n, a, type) {
+window.setGtagNotice = function(n, a, from) {
   if (n.track) {
-    a.dataset.track = 'share_x';
-    a.dataset.from = type;
+    a.dataset.track = n.track;
   } else {
-    a.dataset.track = type;
+    a.dataset.track = 'link-click'
     a.dataset.to = n.kind.code;
   }
+  a.dataset.from = from;
 }
 
 /**
@@ -794,11 +794,11 @@ function _renderFooter() {
 
   const year = new Date().getFullYear(); // ← 現在の年を取得
 
-  const aopt = 'target="_blank" rel="noopener"';
+  const aopt = 'target="_blank" rel="noopener" data-track="link-click" data-from="footer"';
   footer.innerHTML = `
     <div class="footer-content">
       © ${year} (る) |
-      <a href="https://github.com/ru-palmu/meter/" ${aopt}>GitHub</a>, <a href="https://x.com/ru_palmu" ${aopt}>X</a>
+      <a href="https://github.com/ru-palmu/meter/" ${aopt} data-to="github">GitHub</a>, <a href="https://x.com/ru_palmu" ${aopt} data-to="x">X</a>
     </div>
   `;
 }
@@ -1125,10 +1125,16 @@ document.addEventListener("click", (e) => {
   const a = e.target.closest("a[data-track]");
   if (!a) return;
 
-  window.gtag("event", a.dataset.track, {
-    from: a.dataset.from
-  });
+  const opt = {}
+  if (a.dataset.from) {
+    opt.from = a.dataset.from;
+  }
+  if (a.dataset.to) {
+    opt.to = a.dataset.to;
+  }
 
+
+  window.gtag("event", a.dataset.track, opt);
 });
 
 
