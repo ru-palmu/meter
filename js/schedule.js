@@ -1447,7 +1447,7 @@ function debugTable() {
     row.appendChild(cell);
 
     const div = document.createElement("div");
-    div.id = "div-canvas" + (i + 1);
+    div.id = "div-canvas-debug-" + (i + 1);
     div.style.display = "flex";
     div.className = "phone-frame-calendar";
     cell.appendChild(div);
@@ -1498,6 +1498,7 @@ function calTypeChange() {
 }
 
 
+// カレンダー画像生成処理
 document.getElementById("btn-cal").addEventListener("click", () => {
   const val = document.querySelector('input[name="cal-type"]:checked').value;
   const isMemo = document.getElementById("cal-memo-enable").checked;
