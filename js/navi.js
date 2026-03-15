@@ -405,6 +405,9 @@ async function copyResult(id) {
 
 async function onCopyAndRedirect(id, redirectFunc) {
 	await copyResult(id);
+	window.gtag('event', 'copy_and_redirect', {
+		event_label: id,
+	});
 	return redirectFunc();
 }
 

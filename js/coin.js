@@ -13,6 +13,31 @@ function updateUrlMeter() {
 	return updateUrl([]);
 }
 
+
+let gaTimer = null;
+
+function sendCalcEvent() {
+  let border_type = document.getElementById("border-type")?.value;
+  if (border_type !== 'dynamic') {
+	border_type = 'static';
+  }
+
+  window.gtag('event', 'coin_calc', {
+    event_category: border_type,
+  });
+}
+
+
+function calculateWrapper() {
+  // GAのイベント送信
+  calculate(); // 元の処理
+
+  // 変更イベントのたびに gtag() 送るのはやりすぎなので，
+  // 最後の変更から800ms後に送るようにする（変更が続く場合は送らない）
+  clearTimeout(gaTimer);
+  gaTimer = setTimeout(sendCalcEvent, 800);
+}
+
 function calculate(rank = '') {
 
   const coinInput = document.getElementById("coin");
@@ -315,7 +340,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // 入力変更時に自動計算
   ['a2', 'a4', 'a6', 'result-format', 'live_score', 'coin', 'dynamic-border-value', 'border-type'].forEach(id => {
-    document.getElementById(id)?.addEventListener('input', calculate, undefined);
+    document.getElementById(id)?.addEventListener('input', calculateWrapper, undefined);
   });
 
 
