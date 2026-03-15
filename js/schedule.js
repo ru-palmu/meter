@@ -1513,22 +1513,35 @@ document.getElementById("btn-cal").addEventListener("click", () => {
     updateTotals();
   }
 
+  const size = document.querySelector('input[name="cal-size"]:checked')?.value;
   targets.forEach(([vid, vv]) => {
     if (vv == "month") {
       const dow = document.getElementById("cal-dow").value;
       const weekn = document.getElementById("cal-month-line").value;
+      window.gtag('event', 'generate_schedule-img', {
+        'cal-type': val,
+        'cal-size': size,
+        'cal-dow': dow,
+        'cal-weekn': weekn,
+      });
       makeMonthPng(vid, parseInt(dow), parseInt(weekn), isMemo);
     } else {
       const days = document.getElementById("cal-days").value;
       const start = document.getElementById("cal-start-day").value;
       const memoSize = document.getElementById("cal-memo-size").value;
+      window.gtag('event', 'generate_schedule-img', {
+        'cal-type': val,
+        'cal-size': size,
+        'cal-days': days,
+        'cal-start': start,
+        'cal-memo-size': memoSize,
+      });
       makeWeekPng(vid, parseInt(start), parseInt(days), isMemo, memoSize);
     }
   });
 
   if (true) {
     const canvas = document.getElementById("div-canvas");
-    const size = document.querySelector('input[name="cal-size"]:checked')?.value;
     if (size != "min") {
       canvas.style.minHeight = "640px";
       canvas.style.aspectRatio = "9 / 16";

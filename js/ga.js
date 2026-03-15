@@ -89,11 +89,10 @@ async function initAnalytics() {
     // EU外なら GA + Auto Ads 有効化
     initGA();
     initAutoAds();
-  } else {
-    window.gtag = function(){}
   }
 }
 
+window.gtag = function(){}
 if (location.protocol !== 'file:' &&
 	window.location.hostname !== 'localhost') {
 	// ページ読み込み時に自動実行
