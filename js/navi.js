@@ -156,6 +156,15 @@ function saveSessionArgs(prefix, table) {
 	});
 }
 
+window.redirectWithScroll = function(url) {
+  // スクロール位置を保存
+  sessionStorage.setItem('scrollY', window.scrollY);
+
+  // 更新したクエリでリダイレクト
+  window.location.href = url;
+
+}
+
 function updateUrl(table) {
     // セレクタを選んだらリダイレクトする
   const params = new URLSearchParams(window.location.search);
@@ -176,11 +185,9 @@ function updateUrl(table) {
       }
   });
 
-  // スクロール位置を保存
-  sessionStorage.setItem('scrollY', window.scrollY);
-
   // 更新したクエリでリダイレクト
-  window.location.href = window.location.pathname + "?" + params.toString();
+  const url = window.location.pathname + "?" + params.toString();
+  window.redirectWithScroll(url);
 }
 
 // スクロール位置を復元

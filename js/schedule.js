@@ -1337,6 +1337,132 @@ function setupEvents() {
   });
 }
 
+function _schedule_tab_display(selector, display) {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach(el => {
+    el.style.display = display;
+  });
+}
+
+function _schedule_tab_changed() {
+  const selected = document.querySelector('input[name="sch-tab"]:checked');
+  if (selected.id == "sch-tab-month") {
+    _schedule_tab_display(".sch-tab-content.image-content .month-content", "block");
+    _schedule_tab_display(".sch-tab-content.image-content .week-content", "none");
+  } else if (selected.id == "sch-tab-week") {
+    _schedule_tab_display(".sch-tab-content.image-content .month-content", "none");
+    _schedule_tab_display(".sch-tab-content.image-content .week-content", "block");
+  }
+}
+
+function _saveOptionTab(gen_image) {
+  const option = {'tab': this.id};
+
+  [
+    ['cal-dow', 'cal-dow'],
+    ['cal-month-line', 'cal-month-line'],
+    ['cal-start-day', 'cal-start-day'],
+    ['cal-days', 'cal-days'],
+    ['cal-memo-size', 'cal-memo-size'],
+    ['cal-size-full', 'cal-size'], // radio
+    ['cal-week-memo-enable', 'cal-week-memo-enable'],
+    ['sch-tab-option', 'sch-tab'],
+  ].forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) {
+      if (el.type == "checkbox") {
+        option[key] = el.checked;
+      } else if (el.type == "radio") {
+        const checked = document.querySelector(`input[name="${el.name}"]:checked`);
+        option[key] = checked ? checked.id : null;
+      } else if (el.type == "select-one") {
+        option[key] = el.value;
+      } else {
+        alert("undefined");
+        option[key] = el.value;
+      }
+    }
+  });
+
+  sessionStorage.setItem("scheduleOptionTab", JSON.stringify(option));
+  sessionStorage.setItem("scheduleOptionTabGenerateImage", gen_image);
+}
+
+function _loadOptionTab() {
+  const option = JSON.parse(sessionStorage.getItem("scheduleOptionTab"));
+  if (option) { // 辞書が存在する場合
+    for (const [key, value] of Object.entries(option)) {
+      const el = document.getElementById(key);
+      if (el) {
+        if (el.type == "checkbox") {
+          el.checked = value;
+        } else if (el.type == "radio") {
+          const target = document.getElementById(value);
+          if (target) {
+            target.checked = true;
+          }
+        } else if (el.type == "select-one") {
+          el.value = value;
+        } else {
+          el.value = value;
+        }
+      } else {
+        // radio..?
+        const radios = document.getElementsByName(key);
+        if (radios) {
+          radios.forEach(radio => {
+            if (radio.id == value) {
+              radio.checked = true;
+            }
+          });
+        }
+      }
+    }
+  }
+  _schedule_tab_changed();
+  const gen_image = sessionStorage.getItem("scheduleOptionTabGenerateImage");
+  if (gen_image && gen_image != "0") {
+    generateImage();
+  }
+  sessionStorage.setItem("scheduleOptionTabGenerateImage", 0);
+}
+
+
+function _renderOptionTab() {
+  _loadOptionTab();
+
+  const tabs = document.querySelectorAll('input[name="sch-tab"]');
+
+  tabs.forEach(tab => tab.addEventListener("change", function() {
+    window.gtag('event', 'change_tab', {
+      'tab_id': this.id,
+    });
+    _saveOptionTab(0);
+
+    // reload...
+    const url = new URL(window.location.href);
+    window.redirectWithScroll(url);
+  }));
+
+  const btn = document.getElementById("sch-tab-close");
+  if (btn) {
+    btn.addEventListener("click", function() {
+      // チェックを外して全部非表示状態にする
+      tabs.forEach(tab => {
+        tab.checked = false;
+      });
+    });
+  }
+
+  document.getElementById("toggle-note").addEventListener("click", function() {
+    const note = document.getElementById("note-text");
+    if (note.style.display === "none") {
+      note.style.display = "block";
+    } else {
+      note.style.display = "none";
+    }
+  });
+}
 
 // --- DOMContentLoaded ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -1388,6 +1514,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+
   loadInitialSettings();
   generateSchedule();
   generateSchedulePast();
@@ -1395,11 +1522,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupEvents();
   updateTotals();
 
+  calInit();
+  _renderOptionTab();
+
   // for (let i = 0; i < 1; i++) {
   //   makeMonthPng("div-canvas" + i, i);
   // }
-  calInit();
-  calTypeChange();
 
   // GET パラメータに debug=1 があればデバッグ用の画像を表示
   cal_debug = new URLSearchParams(window.location.search).get("debug") === "1";
@@ -1488,19 +1616,22 @@ function calInit() {
 	}
 }
 
-function calTypeChange() {
-  const val = document.querySelector('input[name="cal-type"]:checked').value;
-  const mode = (val == "month");
+document.getElementById("btn-cal").addEventListener("click", () => {
+    _saveOptionTab(1);
 
-  const show = "block";
-  document.getElementById("sch-month-group").style.display = (mode ? show : "none");
-  document.getElementById("sch-week-group").style.display = (mode ? "none" : show);
-}
+    // reload...
+    const url = new URL(window.location.href);
+    window.redirectWithScroll(url);
+});
 
 
 // カレンダー画像生成処理
-document.getElementById("btn-cal").addEventListener("click", () => {
-  const val = document.querySelector('input[name="cal-type"]:checked').value;
+function generateImage() {
+  const val = document.querySelector('input[name="sch-tab"]:checked').value;
+  if (val != "month" && val != "week") {
+    return ;
+  }
+
   const isMemo = document.getElementById("cal-memo-enable").checked;
   const targets = [];
   targets.push(["div-canvas", val]);
@@ -1548,6 +1679,8 @@ document.getElementById("btn-cal").addEventListener("click", () => {
     } else {
       canvas.style.minHeight = "auto";
       canvas.style.aspectRatio = "auto";
+      canvas.style.paddingTop = "30px";
+      canvas.style.paddingBottom = "25px";
     }
 
     canvas.style.display = "flex";
@@ -1566,14 +1699,23 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       const previewDiv = document.getElementById("preview")
       previewDiv.src = imgData;
       previewDiv.style.width = "360px";
+      previewDiv.style.cursor = "pointer";
+      previewDiv.addEventListener("click", () => {
+        window.open(imgData, '_blank');
+      });
+
+      const wrap = document.getElementById("sch-preview-container");
+      wrap.style.display = "inline-block";
 
       const div = document.getElementById("div-preview-download");
       div.innerHTML = "";
       const button = document.createElement("button");
       button.textContent = "画像を保存";
+      button.className = "save-btn";
       div.appendChild(button);
       const span = document.createElement("span");
-      span.textContent = "(iOS等ダウンロードが始まらない場合は，画像の長押しを利用してください)";
+      span.className = "save-note";
+      span.innerHTML = "<strong>注意：</strong>iOS等ダウンロードができない場合は，<br><em>画像の長押し</em>を利用してください";
       div.appendChild(span);
 
       button.addEventListener("click", () => {
@@ -1581,6 +1723,10 @@ document.getElementById("btn-cal").addEventListener("click", () => {
         if (!img.src) {
           return;
         }
+        // サイズを小さく表示
+        img.style.width = "360px";
+        img.classNAme = "preview-img";
+
 
         const link = document.createElement("a");
         link.href = img.src;
@@ -1599,6 +1745,6 @@ document.getElementById("btn-cal").addEventListener("click", () => {
       canvas.style.display = "none";
     }
   }
-});
+}
 
 /* vim: set et ts=2 sts=2 sw=2 et: */

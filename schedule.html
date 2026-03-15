@@ -42,37 +42,154 @@
 </p>
 </div>
 
-<fieldset>
-  <legend>日付変更時点の情報</legend>
 
-  <div class="input-group">
-    <label for="dailyPoint">累積デイリーランクポイント</label>
-    <input type="number" id="dailyPoint" min="0" max="18" step="1" />
+<div class="sch-tab-container">
+  <input type="radio" name="sch-tab" class="tab-radio" id="sch-tab-option" checked>
+  <label class="tab-label" for="sch-tab-option">オプション</label>
+
+  <input type="radio" name="sch-tab" class="tab-radio" id="sch-tab-month" value="month">
+  <label class="tab-label" for="sch-tab-month">月間画像生成</label>
+
+  <input type="radio" name="sch-tab" class="tab-radio" id="sch-tab-week" value="week">
+  <label class="tab-label" for="sch-tab-week">週間画像生成</label>
+
+  <button class="tab-label" id="sch-tab-close">∧</button>
+
+  <!-- 予定表のオプション -->
+  <div class="sch-tab-content close-content">
   </div>
+  <div class="sch-tab-content option-content">
+    <p>日付変更(0:00)時点の情報を設定してください</p>
+    <div class="sch-panel">
+      <div class="input-group">
+        <label for="dailyPoint">累積デイリーランクポイント</label>
+        <input type="number" id="dailyPoint" min="0" max="18" step="1" />
+      </div>
 
-  <div class="input-group">
-    <label for="skipCards">スキップカード残数</label>
-    <input type="number" id="skipCards" min="0" max="10" step="1" />
+      <div class="input-group">
+        <label for="skipCards">スキップカード残数</label>
+        <input type="number" id="skipCards" min="0" max="10" step="1" />
+      </div>
+
+      <div class="input-group">
+        <label for="resetDate">残りランク更新期間（日数）</label>
+        <input type="number" id="resetDate" min="1" max="7" step="1" />
+      </div>
+
+      <div class="input-group">
+        <label for="rankChange">前回のランク変動</label>
+        <input type="radio" id="rankChangeDown" name="rankChange" value="Down">ダウン
+        <input type="radio" id="rankChangeKeep" name="rankChange" value="Keep">キープ
+        <input type="radio" id="rankChangeUp"   name="rankChange" value="Up"  >アップ
+      </div>
+
+      <input type="button" id="makePng" value="スクショ" onclick="makePng()">
+
+      <span id="schedule_debug_buttons"></span>
+      <script src="js/debug.js" defer></script>
+    </div>
   </div>
+  <!-- 画像生成 month/week 両方 -->
+  <div class="sch-tab-content image-content">
+    <div class="month-content">
+      <p>入力内容をもとに，スマホサイズの月間スケジュール画像を作成します．</p>
+    </div>
+    <div class="week-content">
+      <p>入力内容をもとに，スマホサイズの週間スケジュール画像を作成します．</p>
+    </div>
+    <div class="sch-panel">
+      <div id="sch-month-group" class="month-content">
+        <div class="input-group" id="cal-dow-group">
+          <label for="cal-dow">開始曜日</label>
+          <select id="cal-dow">
+            <option value="0" selected>日曜日</option>
+            <option value="1">月曜日</option>
+            <option value="2">火曜日</option>
+            <option value="3">水曜日</option>
+            <option value="4">木曜日</option>
+            <option value="5">金曜日</option>
+            <option value="6">土曜日</option>
+          </select>
+        </div>
+        <div class="input-group" id="cal-month-line-group">
+          <label for="cal-month-line">表示行数</label>
+          <select id="cal-month-line">
+            <option value="2">2行 (14日分)</option>
+            <option value="3">3行 (21日分)</option>
+            <option value="4" selected>4行 (28日分)</option>
+            <option value="5">5行 (35日分)</option>
+          </select>
+        </div>
+      </div>
+      <div id="sch-week-group" class="week-content">
+        <div class="input-group">
+          <label for="cal-start-day">開始日</label>
+          <select id="cal-start-day"></select>
+        </div>
+        <div class="input-group" id="cal-days-group">
+          <label for="cal-days">表示日数</label>
+          <select id="cal-days">
+            <option value="3">3日</option>
+            <option value="4">4日</option>
+            <option value="5">5日</option>
+            <option value="6">6日</option>
+            <option value="7" selected>7日</option>
+            <option value="8">8日</option>
+            <option value="9">9日</option>
+            <option value="10">10日</option>
+            <option value="11">11日</option>
+            <option value="12">12日</option>
+            <option value="13">13日</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="cal-memo-size">メモの文字サイズ</label>
+          <select id="cal-memo-size">
+            <option value="small">小</option>
+            <option value="medium" selected>中</option>
+            <option value="large">大</option>
+          </select>
+        </div>
+      </div>
 
-  <div class="input-group">
-    <label for="resetDate">残りランク更新期間（日数）</label>
-    <input type="number" id="resetDate" min="1" max="7" step="1" />
+      <div class="input-group">
+        <label for="cal-size">画像サイズ</label>
+        <div class="radio-group">
+          <label><input type="radio" name="cal-size" value="full" id="cal-size-full"  checked> スマホサイズ</label>
+          <label><input type="radio" name="cal-size" value="min"> 最小サイズ (上下余白を削ります)</label>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>オプション</label>
+        <input type="checkbox" id="cal-memo-enable" checked>メモ表示 (1文字目が空白のメモは非表示)
+      </div>
+
+      <div>
+        <input type="button" id="btn-cal" value="生成開始" class="fancy-btn">
+      </div>
+      <div class="info-text">
+        <p>「生成開始」を押すと，↓に画像が生成されます．<br>
+          間に広告が挟まることがあります．
+          広告の下までスクロールしてください．</p>
+      </div>
+
+      <div>
+        <button id="toggle-note" class="note-btn">画像が表示できない場合はこちら</button>
+        <div id="note-text" class="note-text">
+          <p>iOS の場合は、ブラウザからでないと生成できない可能性があります。</p>
+          <p>右下の「ブラウザで開く」を選択して、ブラウザで本ページを開いてください。</p>
+          <p>いつも同じブラウザで開いていただいたほうが、設定が保存されていて便利です。</p>
+        </div>
+      </div>
+
+      <div class="preview-container" id="sch-preview-container">
+        <div id="div-preview-download"></div>
+        <img id="preview">
+      </div>
+    </div>
   </div>
-
-  <div class="input-group">
-    <label for="rankChange">前回のランク変動</label>
-    <input type="radio" id="rankChangeDown" name="rankChange" value="Down">ダウン
-    <input type="radio" id="rankChangeKeep" name="rankChange" value="Keep">キープ
-    <input type="radio" id="rankChangeUp"   name="rankChange" value="Up"  >アップ
-  </div>
-
-  <input type="button" id="makePng" value="スクショ" onclick="makePng()">
-
-  <span id="schedule_debug_buttons"></span>
-  <script src="js/debug.js" defer></script>
-</fieldset>
-
+</div>
 
 
 <div class="toggle-wrapper">
@@ -154,108 +271,7 @@
   <li><a href="https://intercom.help/light-inc/ja/articles/9418458-%E3%82%B9%E3%82%AD%E3%83%83%E3%83%97%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">スキップカードについて</a></li>
 </ul>
 
-
-<span class="sub-title" id="exp">実験中</span>
-
-<ul class="help">
-  <li>本ページ上部に入力した内容から，スケジュール画像生成機能を実験的に追加しました．
-    「生成」ボタンを押すと，予定表の内容を画像として保存できます．</li>
-  <li>ご意見・ご要望あれば，<a href="https://x.com/ru_palmu">X</a> (DM可) や<a href="https://marshmallow-qa.com/fcbapahukbveobw?t=mZ9AzD&utm_medium=url_text&utm_source=promotion">匿名質問箱</a>などでお知らせください．仮公開中のいまなら対応可能な場合が多いです</li>
-  <li>SS+ 表示は未対応</li>
-</ul>
-
-<fieldset>
-  <legend>カレンダー画像生成</legend>
-
-  <div class="input-group" onchange="calTypeChange()">
-    <label for="cal-type">種別</label>
-    <input type="radio" id="cal-type-month" name="cal-type" value="month" checked>月間スケジュール
-    <input type="radio" id="cal-type-week"  name="cal-type" value="week">週間スケジュール
-  </div>
-  <div id="sch-month-group">
-    <div class="input-group" id="cal-dow-group">
-      <label for="cal-dow">開始曜日</label>
-      <select id="cal-dow">
-        <option value="0" selected>日曜日</option>
-        <option value="1">月曜日</option>
-        <option value="2">火曜日</option>
-        <option value="3">水曜日</option>
-        <option value="4">木曜日</option>
-        <option value="5">金曜日</option>
-        <option value="6">土曜日</option>
-      </select>
-    </div>
-    <div class="input-group" id="cal-month-line-group">
-      <label for="cal-month-line">表示行数</label>
-      <select id="cal-month-line">
-        <option value="2">2行 (14日分)</option>
-        <option value="3">3行 (21日分)</option>
-        <option value="4" selected>4行 (28日分)</option>
-        <option value="5">5行 (35日分)</option>
-      </select>
-    </div>
-  </div>
-  <div id="sch-week-group">
-    <div class="input-group">
-      <label for="cal-start-day">開始日</label>
-      <select id="cal-start-day"></select>
-    </div>
-    <div class="input-group" id="cal-days-group">
-      <label for="cal-days">表示日数</label>
-      <select id="cal-days">
-        <option value="3">3日</option>
-        <option value="4">4日</option>
-        <option value="5">5日</option>
-        <option value="6">6日</option>
-        <option value="7" selected>7日</option>
-        <option value="8">8日</option>
-        <option value="9">9日</option>
-        <option value="10">10日</option>
-        <option value="11">11日</option>
-        <option value="12">12日</option>
-        <option value="13">13日</option>
-      </select>
-    </div>
-    <div class="input-group">
-      <label for="cal-memo-size">メモの文字サイズ</label>
-      <select id="cal-memo-size">
-        <option value="small">小</option>
-        <option value="medium" selected>中</option>
-        <option value="large">大</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="input-group">
-    <label for="cal-size">画像サイズ</label>
-    <input type="radio" name="cal-size" value="full" checked> スマホサイズ
-    <input type="radio" name="cal-size" value="min"> 最小サイズ (上下余白を削ります)
-  </div>
-
-  <div class="input-group">
-    <label>オプション</label>
-    <input type="checkbox" id="cal-memo-enable" checked>メモ表示 (1文字目が空白のメモは非表示)
-  </div>
-
-  <div>
-  (iOS の場合は，ブラウザからでないと生成できない可能性があります．
-  右下の「ブラウザで開く」を選択して，ブラウザで本ページを開いてください.
-  いつも，同じブラウザで開いていただいたほうが設定画保存されていて便利かと思います．)
-  </div>
-
-  <br>
-  <br>
-  <div>
-    <input type="button" id="btn-cal" value="生成 ver.0.9">
-    <p>↓に画像が生成されます．間に広告が挟まることがあるので，広告の下までスクロールしてください．</p>
-  </div>
-</fieldset>
-
-<div>
-<div id="div-preview-download"></div>
-<img id="preview">
-</div>
-
+<!-- 画像生成の作業領域 -->
 <table id="debug-img-table">
   <tr>
     <td><div id="div-canvas" class="phone-frame-calendar"></div></td>
