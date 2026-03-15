@@ -100,7 +100,6 @@ function __plan2scoreOrcoin(plan, preset, metrics) {
 	return window.plan2scoreOrcoin(plan, preset, metrics);
 }
 
-
 // preset を出力 (for 履歴 history.html)
 // 保証ボーダーの履歴
 function __renderBorderHistory(sortedDates) {
@@ -172,6 +171,9 @@ function __renderBorderHistory(sortedDates) {
             presets[sortedDates[i + 1]][rank][point] &&
             val < presets[sortedDates[i + 1]][rank][point]) {
             td.className = 'decrease';
+			const rate = 1 - val / presets[sortedDates[i + 1]][rank][point];
+			const alpha = window.clamp(rate * 10, 0.1, 1);
+			td.style.backgroundColor = `rgba(173, 216, 230, ${alpha})`;
         }
 
         td.textContent = _scoreOrCoinHistory(val, metrics, format);

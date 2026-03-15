@@ -871,7 +871,8 @@ table.history th {
 }
 
 table.history tbody tr:nth-child(even) {
-  background-color: #e4f0dc;
+  /* background-color: #e4f0dc; */
+  background-color: rgba(228, 240, 220, 0.3); /* 薄い緑 */
 }
 
 table.history tbody tr:hover {
@@ -881,7 +882,8 @@ table.history tbody tr:hover {
 
 table.history td.decrease {
   /* background-color: #f6dddd; */
-  background-color: rgba(246, 221, 221, 0.75);
+  /* background-color: rgba(246, 221, 221, 0.75); */
+  background-color: rgba(173, 216, 230, 0.75); /* 薄い青 */
   color: #000;
   font-weight: bold;
 }

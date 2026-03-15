@@ -25,6 +25,10 @@ function getCandRank(group = '') {
 // 共通関数
 //////////////////////////////////////////////////
 
+window.clamp = function(value, min, max) {
+	return Math.min(Math.max(value, min), max);
+}
+
 // キロ表示
 function formatAsK(value) {
   if (value < 100000) {
