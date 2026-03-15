@@ -29,6 +29,19 @@ window.clamp = function(value, min, max) {
 	return Math.min(Math.max(value, min), max);
 }
 
+// startColor, endColor: [r,g,b] 配列
+// t: 0 ~ 1 の割合
+//
+// e.g.: 黒→赤
+//    let color = lerpColor([0,0,0], [217,83,79], 0.5); // 半分の赤
+window.lerpColor = function (startColor, endColor, t) {
+    const rgb = startColor.map((start, i) => {
+		const end = endColor[i];
+		return window.clamp(Math.round(start + (end - start) * t), 0, 255);
+	});
+    return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+}
+
 // キロ表示
 function formatAsK(value) {
   if (value < 100000) {

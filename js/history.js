@@ -168,12 +168,18 @@ function __renderBorderHistory(sortedDates) {
         const td = document.createElement("td");
         if (i + 1 < sortedDates.length &&
             presets[sortedDates[i + 1]][rank] &&
-            presets[sortedDates[i + 1]][rank][point] &&
-            val < presets[sortedDates[i + 1]][rank][point]) {
+            presets[sortedDates[i + 1]][rank][point]) {
+          if (val < presets[sortedDates[i + 1]][rank][point]) {
             td.className = 'decrease';
-			const rate = 1 - val / presets[sortedDates[i + 1]][rank][point];
-			const alpha = window.clamp(rate * 10, 0.1, 1);
-			td.style.backgroundColor = `rgba(173, 216, 230, ${alpha})`;
+            const rate = 1 - val / presets[sortedDates[i + 1]][rank][point];
+            const alpha = window.clamp(rate * 10, 0.1, 1);
+            td.style.backgroundColor = `rgba(173, 216, 230, ${alpha})`;
+          } else if (val > presets[sortedDates[i + 1]][rank][point]) {
+            td.className = 'increase';
+            const rate = 1 - presets[sortedDates[i + 1]][rank][point] / val;
+            const alpha = window.clamp(rate * 10, 0.1, 1);
+            td.style.color = window.lerpColor([0, 0, 0], [217, 83, 79], alpha);
+          }
         }
 
         td.textContent = _scoreOrCoinHistory(val, metrics, format);
