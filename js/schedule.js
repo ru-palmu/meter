@@ -1390,6 +1390,8 @@ function _saveOptionTab(gen_image) {
 
 function _loadOptionTab() {
   const option = JSON.parse(sessionStorage.getItem("scheduleOptionTab"));
+  const gen_image = sessionStorage.getItem("scheduleOptionTabGenerateImage");
+
   if (option) { // 辞書が存在する場合
     for (const [key, value] of Object.entries(option)) {
       const el = document.getElementById(key);
@@ -1420,7 +1422,6 @@ function _loadOptionTab() {
     }
   }
   _schedule_tab_changed();
-  const gen_image = sessionStorage.getItem("scheduleOptionTabGenerateImage");
   if (gen_image && gen_image != "0") {
     generateImage();
   }
@@ -1620,14 +1621,20 @@ document.getElementById("btn-cal").addEventListener("click", () => {
     _saveOptionTab(1);
 
     // reload...
-    const url = new URL(window.location.href);
-    window.redirectWithScroll(url);
+    // const url = new URL(window.location.href);
+    // window.redirectWithScroll(url);
+  generateImage();
 });
 
 
 // カレンダー画像生成処理
 function generateImage() {
   const val = document.querySelector('input[name="sch-tab"]:checked').value;
+  window.gtag('event', 'debug', {
+    'pos': 'schedule_img_generate_button',
+    'kind': val,
+    'debug': cal_debug ? '1' : '0',
+  });
   if (val != "month" && val != "week") {
     return ;
   }

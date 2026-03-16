@@ -2,6 +2,8 @@
 // EU判定 + GA/Auto Ads初期化（localStorageキャッシュ対応）
 // =====================
 
+window.gtag = function(){}
+
 // GA/AdSense 設定
 const GA_MEASUREMENT_ID = "G-BDZWH7BTKY";
 const ADSENSE_CLIENT   = "ca-pub-1005701113779263";
@@ -92,7 +94,6 @@ async function initAnalytics() {
   }
 }
 
-window.gtag = function(){}
 if (location.protocol !== 'file:' &&
 	window.location.hostname !== 'localhost') {
 	// ページ読み込み時に自動実行
