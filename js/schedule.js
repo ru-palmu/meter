@@ -1492,6 +1492,15 @@ function _renderOptionTab() {
     });
   }
 
+  document.getElementById("btn-cal").addEventListener("click", () => {
+      _saveOptionTab(1);
+
+      // reload...
+      // const url = new URL(window.location.href);
+      // window.redirectWithScroll(url);
+    generateImage();
+  });
+
   document.getElementById("toggle-note").addEventListener("click", function() {
     const note = document.getElementById("note-text");
     if (note.style.display === "none") {
@@ -1502,6 +1511,10 @@ function _renderOptionTab() {
   });
 
 
+  _reanderOptionTabFile();
+}
+
+function _reanderOptionTabFile() {
   ['tl', 'tr', 'bl', 'br'].forEach(pos => {
     const td_id = `mini-char-td-${pos}`;
     const td = document.getElementById(td_id);
@@ -1566,81 +1579,7 @@ function _renderOptionTab() {
       label.textContent = input.files[0] ? input.files[0].name : "なし";
     });
   });
-
-
 }
-
-// --- DOMContentLoaded ---
-document.addEventListener("DOMContentLoaded", () => {
-  renderNavis("navi_func", "navi_rank", "footer");
-
-  const toggleDescription = [
-      '昨日から順に過去を表示しています',
-      '今日から順に未来を表示しています',
-  ];
-
-  const toggle = document.getElementById('schedule-toggle');
-  const direction = document.getElementById('schedule-direction');
-  // 未来（チェック）をデフォルトにする
-  toggle.checked = true;
-  direction.textContent = toggleDescription[toggle.checked ? 1 : 0];
-  toggle.addEventListener('change', function() {
-
-    if (this.checked) {
-      // 未来
-      document.getElementById('pastScheduleDiv').style.display = 'none';
-      document.getElementById('futureScheduleDiv').style.display = 'block';
-      direction.textContent = toggleDescription[1];
-    } else {
-      // 過去
-      document.getElementById('pastScheduleDiv').style.display = 'block';
-      document.getElementById('futureScheduleDiv').style.display = 'none';
-      direction.textContent = toggleDescription[0];
-    }
-
-    // アニメーション
-    const rows = document.querySelectorAll('.scheduler tr');
-    rows.forEach(row => {
-      row.style.transform = this.checked ? 'translateY(20px)' : 'translateY(-20px)';
-      row.style.opacity = '0';
-      setTimeout(() => {
-        row.style.transform = 'translateY(0)';
-        row.style.opacity = '1';
-      }, 50);
-
-
-      // 【重要】アニメーション完了後にスタイルを完全リセット
-      setTimeout(() => {
-        row.style.transform = '';
-        row.style.opacity = '';
-        // 強制的に再描画をトリガー
-        row.offsetHeight;
-      }, 100);
-
-    });
-  });
-
-
-  loadInitialSettings();
-  generateSchedule();
-  generateSchedulePast();
-  setupEventTitles();
-  setupEvents();
-  updateTotals();
-
-  calInit();
-  _renderOptionTab();
-
-  // for (let i = 0; i < 1; i++) {
-  //   makeMonthPng("div-canvas" + i, i);
-  // }
-
-  // GET パラメータに debug=1 があればデバッグ用の画像を表示
-  cal_debug = new URLSearchParams(window.location.search).get("debug") === "1";
-  if (cal_debug) {
-    debugTable();
-  }
-});
 
 function _debugTitles(div) {
 
@@ -1721,15 +1660,6 @@ function calInit() {
 		select.appendChild(option);
 	}
 }
-
-document.getElementById("btn-cal").addEventListener("click", () => {
-    _saveOptionTab(1);
-
-    // reload...
-    // const url = new URL(window.location.href);
-    // window.redirectWithScroll(url);
-  generateImage();
-});
 
 
 // カレンダー画像生成処理
@@ -1858,5 +1788,77 @@ function generateImage() {
     }
   }
 }
+
+// --- DOMContentLoaded ---
+document.addEventListener("DOMContentLoaded", () => {
+  renderNavis("navi_func", "navi_rank", "footer");
+
+  const toggleDescription = [
+      '昨日から順に過去を表示しています',
+      '今日から順に未来を表示しています',
+  ];
+
+  const toggle = document.getElementById('schedule-toggle');
+  const direction = document.getElementById('schedule-direction');
+  // 未来（チェック）をデフォルトにする
+  toggle.checked = true;
+  direction.textContent = toggleDescription[toggle.checked ? 1 : 0];
+  toggle.addEventListener('change', function() {
+
+    if (this.checked) {
+      // 未来
+      document.getElementById('pastScheduleDiv').style.display = 'none';
+      document.getElementById('futureScheduleDiv').style.display = 'block';
+      direction.textContent = toggleDescription[1];
+    } else {
+      // 過去
+      document.getElementById('pastScheduleDiv').style.display = 'block';
+      document.getElementById('futureScheduleDiv').style.display = 'none';
+      direction.textContent = toggleDescription[0];
+    }
+
+    // アニメーション
+    const rows = document.querySelectorAll('.scheduler tr');
+    rows.forEach(row => {
+      row.style.transform = this.checked ? 'translateY(20px)' : 'translateY(-20px)';
+      row.style.opacity = '0';
+      setTimeout(() => {
+        row.style.transform = 'translateY(0)';
+        row.style.opacity = '1';
+      }, 50);
+
+
+      // 【重要】アニメーション完了後にスタイルを完全リセット
+      setTimeout(() => {
+        row.style.transform = '';
+        row.style.opacity = '';
+        // 強制的に再描画をトリガー
+        row.offsetHeight;
+      }, 100);
+
+    });
+  });
+
+
+  loadInitialSettings();
+  generateSchedule();
+  generateSchedulePast();
+  setupEventTitles();
+  setupEvents();
+  updateTotals();
+
+  calInit();
+  _renderOptionTab();
+
+  // for (let i = 0; i < 1; i++) {
+  //   makeMonthPng("div-canvas" + i, i);
+  // }
+
+  // GET パラメータに debug=1 があればデバッグ用の画像を表示
+  cal_debug = new URLSearchParams(window.location.search).get("debug") === "1";
+  if (cal_debug) {
+    debugTable();
+  }
+});
 
 /* vim: set et ts=2 sts=2 sw=2 et: */
