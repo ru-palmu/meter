@@ -1004,15 +1004,15 @@ function makeCopyright(year) {
   const mini_char = document.querySelector("input[name=cal-mini-char]:checked")?.value || "ru";
   if (mini_char == "ru") {
     addMiniChar(copyright, [
-      "img/cal-ru-dl.png",
-      "img/cal-ru-dl2.png",
+      "img/cal-ru-bl1.png",
+      "img/cal-ru-bl2.png",
     ], ["mini-char", "left"], 0.2);
     copyright.appendChild(text);
     addMiniChar(copyright, [
-      "img/cal-ru-dr.png",
-      "img/cal-ru-dr2.png",
-      "img/cal-ru-dr3.png",
-      "img/cal-ru-dr4.png",
+      "img/cal-ru-br1.png",
+      "img/cal-ru-br2.png",
+      "img/cal-ru-br3.png",
+      "img/cal-ru-br4.png",
     ], ["mini-char", "right"], 0.2);
   } else {
     addMiniCharUser("bl", copyright, ["mini-char", "left"]);
@@ -1190,20 +1190,20 @@ function setTitleIcons(title) {
   const mini_char = document.querySelector("input[name=cal-mini-char]:checked")?.value || "ru";
   if (mini_char == "ru") {
     addMiniCharStyle(title, [
-      ["img/cal-ru-ul.png", []],
-      ["img/cal-ru-ul2.png", ['mini-char2']],
-      ["img/cal-ru-ul3.png", ['mini-char3']],
-    ], ["mini-char-upper-left"]);
+      ["img/cal-ru-tl1.png", []],
+      ["img/cal-ru-tl2.png", ['mini-char2']],
+      ["img/cal-ru-tl3.png", ['mini-char3']],
+    ], ["mini-char-title-left"]);
 
     addMiniCharStyle(title, [
-      ["img/cal-ru-ur.png", []],
-      ["img/cal-ru-ur2.png", ['mini-char2']],
-      ["img/cal-ru-ur3.png", ['mini-char3']],
-      ["img/cal-ru-ur4.png", ['mini-char4']],
-    ], ["mini-char-upper-right"]);
+      ["img/cal-ru-tr1.png", []],
+      ["img/cal-ru-tr2.png", ['mini-char2']],
+      ["img/cal-ru-tr3.png", ['mini-char3']],
+      ["img/cal-ru-tr4.png", ['mini-char4']],
+    ], ["mini-char-title-right"]);
   } else {
-    addMiniCharUser("tl", title, ["mini-char-upper-left"]);
-    addMiniCharUser("tr", title, ["mini-char-upper-right"]);
+    addMiniCharUser("tl", title, ["mini-char-title-left"]);
+    addMiniCharUser("tr", title, ["mini-char-title-right"]);
   }
 }
 

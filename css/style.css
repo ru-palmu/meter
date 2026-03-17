@@ -1611,8 +1611,8 @@ div.sch-month-title .date {
 }
 
 
-div.sch-month-title .mini-char-upper-left,
-div.sch-week-title  .mini-char-upper-left {
+div.sch-month-title .mini-char-title-left,
+div.sch-week-title  .mini-char-title-left {
 	position: absolute;
 	left: 5px;
 	bottom: 0%;
@@ -1624,18 +1624,18 @@ div.sch-week-title  .mini-char-upper-left {
 }
 
 
-div.sch-month-title .mini-char-upper-left.mini-char2,
-div.sch-week-title .mini-char-upper-left.mini-char2 {
+div.sch-month-title .mini-char-title-left.mini-char2,
+div.sch-week-title .mini-char-title-left.mini-char2 {
 	margin-bottom: -6px;
 }
 
-div.sch-month-title .mini-char-upper-left.mini-char3,
-div.sch-week-title .mini-char-upper-left.mini-char3 {
+div.sch-month-title .mini-char-title-left.mini-char3,
+div.sch-week-title .mini-char-title-left.mini-char3 {
 	margin-bottom: -9px;
 }
 
-div.sch-month-title .mini-char-upper-right,
-div.sch-week-title  .mini-char-upper-right {
+div.sch-month-title .mini-char-title-right,
+div.sch-week-title  .mini-char-title-right {
 	position: absolute;
 	right: 10px;
 	bottom: 100%;
