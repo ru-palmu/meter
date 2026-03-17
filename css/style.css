@@ -1334,7 +1334,91 @@ label {
   box-shadow: none;
 }
 
+table.mini-char {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
 
+table.mini-char th,
+table.mini-char td {
+  border: 1px solid #ccc;
+  padding: 4px;
+}
+
+table.mini-char th {
+  vertical-align: center;
+}
+
+table.mini-char td {
+  vertical-align: top;
+}
+
+table.mini-char td {
+  width: 50%;
+}
+
+.input-group table.mini-char td input[type="number"] {
+  width: 100%;
+}
+
+table.mini-char th:first-child {
+  width: 3em;
+  text-align: center;
+}
+
+table.opt-table {
+  all: revert;
+}
+
+table.opt-table th {
+  all: revert;
+}
+
+table.opt-table td {
+  all: revert;
+  font-size: 0.9em;
+}
+
+table.opt-table td.mini-char-opt-label {
+  font-size: 0.7em;
+  white-space: nowrap;
+}
+
+table.opt-table td.mini-char-opt-unit {
+  font-size: 0.7em;
+  vertical-align: bottom;
+}
+
+table.opt-table td.mini-char-opt-input {
+  width: 100%;
+}
+
+table.opt-table td.mini-char-opt-input input {
+  width: 100%;
+}
+
+.sch-tab-container .input-group .upload {
+  display: none;
+}
+
+.sch-tab-container .input-group .upload label.file input{
+  display: none;
+}
+
+.sch-tab-container .input-group .upload label.file {
+  display: inline;
+  color: #06c;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sch-tab-container .input-group .upload .filename {
+  margin-left: 5px;
+  font-size: 0.7em;
+}
+
+label:has(#cal-mini-char-me:checked) ~ .upload,
 #sch-tab-option:checked ~ .option-content,
 #sch-tab-month:checked ~ .month-content,
 #sch-tab-week:checked ~ .week-content,

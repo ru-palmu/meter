@@ -154,6 +154,29 @@
       </div>
 
       <div class="input-group">
+        <label for="cal-size">ミニキャラ</label>
+        <div class="radio-group">
+          <label><input type="radio" name="cal-mini-char" value="ru" id="cal-mini-char-ru"  checked> デフォルトミニキャラ</label>
+          <label><input type="radio" name="cal-mini-char" value="user" id="cal-mini-char-me"> 自分のミニキャラ (or なし)</label>
+          <div class="info-text upload">
+            <p>画像ファイルのサイズが大きすぎるとエラーになることがあります．</p>
+          </div>
+          <table class="mini-char upload">
+            <tr><th></th><th>左</th><th>右</th></tr>
+            <tr>
+              <th>上</th>
+              <td id="mini-char-td-tl"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-tl"></label></td>
+              <td id="mini-char-td-tr"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-tr"></label></td>
+            </tr>
+            <tr>
+              <th>下</th>
+              <td id="mini-char-td-bl"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-br"></label></td>
+              <td id="mini-char-td-br"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-bl"></label></td>
+          </table>
+        </div>
+      </div>
+
+      <div class="input-group">
         <label for="cal-size">画像サイズ</label>
         <div class="radio-group">
           <label><input type="radio" name="cal-size" value="full" id="cal-size-full"  checked> スマホサイズ</label>

@@ -948,14 +948,38 @@ function _makeTdMemo(dateStr, isMemo) {
 function addMiniCharStyle(parentElement, pngs, classnames) {
   for (let n = pngs.length - 1; n >= 0; n--) {
     if (Math.random() * (n + 1) < 1) {
-      addMiniChar(parentElement, [pngs[n][0]], [...classnames, ...pngs[n][1]]);
+      addMiniChar(parentElement, [pngs[n][0]], [...classnames, ...pngs[n][1]], 0.2);
       return ;
     }
   }
 }
 
-function addMiniChar(parentElement, pngs, classnames) {
-  if (Math.random() < 0.20) {
+function addMiniCharUser(pos, parentElement, classnames) {
+  const file = document.getElementById('cal-upload-' + pos)?.files?.[0];
+  if (!file) {
+    return ;
+  }
+  const img = document.createElement("img");
+  img.src = URL.createObjectURL(file);
+  img.className = classnames.join(' ');
+  parentElement.appendChild(img);
+
+  const size = window.clamp(document.getElementById('cal-opt-size-' + pos)?.valueAsNumber ?? 30, 5, 200);
+  img.style.maxHeight = size + "px";
+  img.style.maxWidth = size + "px";
+  img.style.width = "auto";
+  img.style.height = "auto";
+
+  const x = document.getElementById('cal-opt-x-' + pos)?.valueAsNumber ?? 0;
+  const y = document.getElementById('cal-opt-y-' + pos)?.valueAsNumber ?? 0;
+  img.style.transform = `translate(${x}px, ${y}px)`;
+  console.log(img);
+
+  return img;
+}
+
+function addMiniChar(parentElement, pngs, classnames, rate) {
+  if (Math.random() < rate) {
     return ;
   }
 
@@ -972,22 +996,29 @@ function makeCopyright(year) {
 	const copyright = document.createElement("div");
   copyright.className = "copyright";
 
-  const sp = "\u00A0 "; // "\u00A0";
+  const sp = "\u00A0"; // "\u00A0";
   const sp1 = sp.repeat(2);
   const sp2 = sp.repeat(1);
   const text = document.createTextNode(`ぱ(る)むの計算機 ${sp1} © ${year} ${sp2} (る)`);
 
-  addMiniChar(copyright, [
-    "img/cal-ru-dl.png",
-    "img/cal-ru-dl2.png",
-  ], ["mini-char", "left"]);
-  copyright.appendChild(text);
-  addMiniChar(copyright, [
-    "img/cal-ru-dr.png",
-    "img/cal-ru-dr2.png",
-    "img/cal-ru-dr3.png",
-    "img/cal-ru-dr4.png",
-  ], ["mini-char", "right"]);
+  const mini_char = document.querySelector("input[name=cal-mini-char]:checked")?.value || "ru";
+  if (mini_char == "ru") {
+    addMiniChar(copyright, [
+      "img/cal-ru-dl.png",
+      "img/cal-ru-dl2.png",
+    ], ["mini-char", "left"], 0.2);
+    copyright.appendChild(text);
+    addMiniChar(copyright, [
+      "img/cal-ru-dr.png",
+      "img/cal-ru-dr2.png",
+      "img/cal-ru-dr3.png",
+      "img/cal-ru-dr4.png",
+    ], ["mini-char", "right"], 0.2);
+  } else {
+    addMiniCharUser("bl", copyright, ["mini-char", "left"]);
+    copyright.appendChild(text);
+    addMiniCharUser("br", copyright, ["mini-char", "right"]);
+  }
 
   return copyright;
 }
@@ -1156,18 +1187,24 @@ function _makeWeekTitle(title, startDay, endDay) {
 
 
 function setTitleIcons(title) {
-  addMiniCharStyle(title, [
-    ["img/cal-ru-ul.png", []],
-    ["img/cal-ru-ul2.png", ['mini-char2']],
-    ["img/cal-ru-ul3.png", ['mini-char3']],
-  ], ["mini-char-upper-left"]);
+  const mini_char = document.querySelector("input[name=cal-mini-char]:checked")?.value || "ru";
+  if (mini_char == "ru") {
+    addMiniCharStyle(title, [
+      ["img/cal-ru-ul.png", []],
+      ["img/cal-ru-ul2.png", ['mini-char2']],
+      ["img/cal-ru-ul3.png", ['mini-char3']],
+    ], ["mini-char-upper-left"]);
 
-  addMiniCharStyle(title, [
-    ["img/cal-ru-ur.png", []],
-    ["img/cal-ru-ur2.png", ['mini-char2']],
-    ["img/cal-ru-ur3.png", ['mini-char3']],
-    ["img/cal-ru-ur4.png", ['mini-char4']],
-  ], ["mini-char-upper-right"]);
+    addMiniCharStyle(title, [
+      ["img/cal-ru-ur.png", []],
+      ["img/cal-ru-ur2.png", ['mini-char2']],
+      ["img/cal-ru-ur3.png", ['mini-char3']],
+      ["img/cal-ru-ur4.png", ['mini-char4']],
+    ], ["mini-char-upper-right"]);
+  } else {
+    addMiniCharUser("tl", title, ["mini-char-upper-left"]);
+    addMiniCharUser("tr", title, ["mini-char-upper-right"]);
+  }
 }
 
 /**
@@ -1463,6 +1500,74 @@ function _renderOptionTab() {
       note.style.display = "none";
     }
   });
+
+
+  ['tl', 'tr', 'bl', 'br'].forEach(pos => {
+    const td_id = `mini-char-td-${pos}`;
+    const td = document.getElementById(td_id);
+    if (td == null) {
+      console.log("mini-char-table not found:", td_id);
+      return;
+    }
+    td.textContent = "";
+
+    const label = document.createElement("label");
+    label.className = "file"
+    label.textContent = "画像選択";
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.id = `cal-upload-${pos}`;
+    label.appendChild(input);
+    td.appendChild(label);
+
+    const tbl = document.createElement("table");
+    tbl.className = "opt-table";
+    td.appendChild(tbl);
+
+    [
+      ["サイズ", "size", 30, 5, 200, "px"],
+      ["位置→", "x", 0, -200, 200, "px"],
+      ["位置↓", "y", 0, -200, 200, "px"],
+    ].forEach(([label, key, val, min, max, unit]) => {
+      const tr = document.createElement("tr");
+      tbl.appendChild(tr);
+
+      const td1 = document.createElement("td");
+      tr.appendChild(td1);
+      td1.textContent = label;
+      td1.className = "mini-char-opt-label";
+
+      const td2 = document.createElement("td");
+      tr.appendChild(td2);
+      const input = document.createElement("input");
+      input.type = "number";
+      input.value = val;
+      input.min = min;
+      input.max = max;
+      input.id = `cal-opt-${key}-${pos}`;
+      td2.className = "mini-char-opt-input";
+      td2.appendChild(input);
+
+      const td3 = document.createElement("td");
+      tr.appendChild(td3);
+      td3.textContent = unit;
+      td3.className = "mini-char-opt-unit";
+    });
+
+  });
+
+  document.querySelectorAll("input[type='file']").forEach(input => {
+    const label = document.createElement("span");
+    label.textContent = "なし";
+    label.className = "filename";
+    input.parentNode.after(label);
+    input.addEventListener("change", () => {
+      label.textContent = input.files[0] ? input.files[0].name : "なし";
+    });
+  });
+
+
 }
 
 // --- DOMContentLoaded ---
