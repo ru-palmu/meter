@@ -1497,7 +1497,7 @@ label:has(#cal-mini-char-me:checked) ~ .upload,
 }
 
 .user-mini-char-preview-parent {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   gap: 10px;

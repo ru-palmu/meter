@@ -638,7 +638,7 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
     if (resetDate == 0 && !skipCard || dailyPoint >= RANK_UP_POINT && !rank_down) {
       rank_status = '';
       if (dailyPoint >= RANK_UP_POINT && !rank_down) {  // ランクアップ
-        if (rank + 1 < cand_rank.length && cand_rank[rank + 1] != RANK_CUSTOM) {
+        if (rank + 1 < cand_rank.length && cand_rank[rank + 1] != window.RANK_CUSTOM) {
           rank++;
         } else {
           rank_status = '+';
@@ -970,7 +970,6 @@ function addMiniCharUser(pos, parentElement, classnames) {
   img.className = classnames.join(' ');
   parentElement.appendChild(img);
 
-  const size = window.clamp(document.getElementById('cal-opt-size-' + pos)?.valueAsNumber ?? 30, 5, 1500);
   img.style.maxHeight = 'none';
   img.style.maxWidth = 'none';
 
@@ -1622,7 +1621,7 @@ function _reanderOptionTabFile() {
     ["サイズ", "size", 30, 5, 200, "px"],
     ["位置→", "dx", 0, -200, 200, "px"],
     ["位置↓", "dy", 0, -200, 200, "px"],
-  ].forEach(([label, key, val, min, max, unit]) => {
+  ].forEach(([label, key, val, min, max, _]) => {
 
     const tr = document.createElement("tr");
     table.appendChild(tr);
@@ -1772,12 +1771,11 @@ function _reanderOptionTabFile() {
         return ;
       }
 
+      document.getElementById("user-mini-char-preview-parent").style.display = "flex";
+
       const img = new Image();
       img.onload = () => {
         minichar_state[pos].ratio = img.naturalWidth / img.naturalHeight;
-        console.log("ratio set from image", pos, minichar_state[pos].ratio,
-          img.naturalWidth, img.naturalHeight,
-          typeof img.naturalWidth, typeof img.naturalHeight);
         _renderBox(pos);
       }
       img.src = URL.createObjectURL(input.files[0]);
