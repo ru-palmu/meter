@@ -821,7 +821,7 @@ function _renderFooter() {
 
   const year = new Date().getFullYear(); // ← 現在の年を取得
 
-  const aopt = 'target="_blank" rel="noopener" data-track="link-click" data-from="footer"';
+  const aopt = 'target="_blank" rel="noopener" data-track="link_click" data-from="footer"';
   footer.innerHTML = `
     <div class="footer-content">
       © ${year} (る) |

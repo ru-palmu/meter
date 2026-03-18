@@ -1917,10 +1917,10 @@ function generateImage() {
       const dow = document.getElementById("cal-dow").value;
       const weekn = document.getElementById("cal-month-line").value;
       window.gtag('event', 'generate_schedule-img', {
-        'cal-type': val,
-        'cal-size': size,
-        'cal-dow': dow,
-        'cal-weekn': weekn,
+        'cal_type': val,
+        'cal_size': size,
+        'cal_dow': dow,
+        'cal_weekn': weekn,
       });
       makeMonthPng(vid, parseInt(dow), parseInt(weekn), isMemo);
     } else {
@@ -1928,11 +1928,11 @@ function generateImage() {
       const start = document.getElementById("cal-start-day").value;
       const memoSize = document.getElementById("cal-memo-size").value;
       window.gtag('event', 'generate_schedule-img', {
-        'cal-type': val,
-        'cal-size': size,
-        'cal-days': days,
-        'cal-start': start,
-        'cal-memo-size': memoSize,
+        'cal_type': val,
+        'cal_size': size,
+        'cal_days': days,
+        'cal_start': start,
+        'cal_memo-size': memoSize,
       });
       makeWeekPng(vid, parseInt(start), parseInt(days), isMemo, memoSize);
     }
