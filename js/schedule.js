@@ -1683,7 +1683,7 @@ function _reanderOptionTabFile() {
 
     const scale = 0.4;  // css とあわせること
 
-    charDiv.addEventListener("mousedown", (e) => {
+    charDiv.addEventListener("pointerdown", (e) => {
       if (e.target.classList.contains("handle")) {
         // 右下のハンドルをドラッグしている場合
         return ;
@@ -1707,15 +1707,15 @@ function _reanderOptionTabFile() {
       }
 
       function up() {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
+        document.removeEventListener("pointermove", move);
+        document.removeEventListener("pointerup", up);
       }
 
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
+      document.addEventListener("pointermove", move);
+      document.addEventListener("pointerup", up);
     });
 
-    handleBR.addEventListener("mousedown", (e) => {
+    handleBR.addEventListener("pointerdown", (e) => {
 
       e.stopPropagation();
 
@@ -1732,12 +1732,12 @@ function _reanderOptionTabFile() {
       }
 
       function up() {
-        document.removeEventListener("mousemove", resize);
-        document.removeEventListener("mouseup", up);
+        document.removeEventListener("pointermove", resize);
+        document.removeEventListener("pointerup", up);
       }
 
-      document.addEventListener("mousemove", resize);
-      document.addEventListener("mouseup", up);
+      document.addEventListener("pointermove", resize);
+      document.addEventListener("pointerup", up);
     });
 
     _renderBox(pos);
