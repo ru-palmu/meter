@@ -856,6 +856,7 @@ function rankMove(nowDay, dstr) {
 
 
 function makeTdRankBand(nowDay, dateStr, today, j) {
+  // dateStr == dateToStr(nowDay) であることが前提
   const tdRank = document.createElement("td");
   tdRank.className = "rank";
 
@@ -867,10 +868,11 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
     d.setDate(d.getDate() + k);
     const dstr = dateToStr(d);
     if (dstr == today && k > 0) {
-      k--;
-      break;
+      tdRank.conSpan = k;
+      return tdRank;
     }
-    if (scheduleData[dstr]?.separator) {
+    if (scheduleData[dstr]?.separator && dstr >= today) {
+      // 昨日までは非表示にする
       end = true;
       classRankMove = rankMove(d, dstr);
       tdRank.classList.add("date" + dstr);
@@ -901,7 +903,7 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
     const d = new Date(nowDay);
     d.setDate(d.getDate() - 1);
     const dstr = dateToStr(d);
-    if (scheduleData[dstr]?.separator || today == dateStr) {
+    if (scheduleData[dstr]?.separator && today != dateStr) {
       span.classList.add("start");
     }
   }
@@ -1269,6 +1271,17 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
   nowDay.setDate(nowDay.getDate() - ((dow + 7 - sep) % 7)); // 4週間分前から表示
 
   let new_rank_week = (7 + dow - sep) % 7;
+
+  if (cal_debug && false) {
+    for (let i = 0; i < 14; i++) {
+      const newDay = new Date(nowDay);
+      newDay.setDate(newDay.getDate() + i);
+      const dddstr = dateToStr(newDay);
+      if (scheduleData[dddstr] && dddstr.startsWith("2026-03")) {
+        console.log(dddstr, scheduleData[dddstr]);
+      }
+    }
+  }
 
   for (let i = 0; i < weekn; i++) {
     const trs = {};
