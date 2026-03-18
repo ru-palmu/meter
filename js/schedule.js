@@ -298,6 +298,12 @@ function generateSchedule() {
     tdWeek.textContent = dow;
     if (d == today) {
         tdWeek.classList.add("today"); // 今日の日付にクラスを追加
+    } else if (d.getDay() === EVENT_STATE_DOW) {
+        tdWeek.classList.add("event-day"); // イベント切り替わりの日にクラスを追加
+    } else if (d.getDay() === 0) {
+      tdWeek.classList.add("Sun");
+    } else if (d.getDay() === 6) {
+      tdWeek.classList.add("Sat");
     }
     tr.appendChild(tdWeek);
 
@@ -318,21 +324,22 @@ function generateSchedule() {
     const tdPoint = document.createElement("td");
     tdPoint.className = "point";
     const pointSel = document.createElement("select");
-    pointSel.className = "point-select";
     POINT_OPTIONS.forEach((pt) => {
       const opt = document.createElement("option");
       opt.value = pt;
       opt.textContent = pt;
       pointSel.appendChild(opt);
     });
-    if (scheduleData[dateStr]?.point) pointSel.value = scheduleData[dateStr].point;
+    if (scheduleData[dateStr]?.point) {
+      pointSel.value = scheduleData[dateStr].point;
+    } else {
+      pointSel.value = "+1";
+    }
+    pointSel.className = "point-select " + _point2className(pointSel.value);
     pointSel.addEventListener("change", () => {
       saveSchedule();
       updateTotals();
-    });
-    pointSel.addEventListener("input", () => {
-      saveSchedule();
-      updateTotals();
+      pointSel.className = "point-select " + _point2className(pointSel.value);
     });
     tdPoint.appendChild(pointSel);
     tr.appendChild(tdPoint);
@@ -423,6 +430,11 @@ function generateSchedulePast() {
     tdWeek.className = "weekday";
     tdWeek.textContent = dow;
     tr.appendChild(tdWeek);
+    if (d.getDay() === 0) {
+      tdWeek.classList.add("Sun");
+    } else if (d.getDay() === 6) {
+      tdWeek.classList.add("Sat");
+    }
 
     // イベント
     if (d.getDay() == EVENT_STATE_DOW - 1 || first_row) { // 月曜日ならイベント情報を表示
@@ -435,16 +447,21 @@ function generateSchedulePast() {
     const tdPoint = document.createElement("td");
     tdPoint.className = "point";
     const pointSel = document.createElement("select");
-    pointSel.className = "point-select";
     POINT_OPTIONS.forEach((pt) => {
       const opt = document.createElement("option");
       opt.value = pt;
       opt.textContent = pt;
       pointSel.appendChild(opt);
     });
-    if (scheduleData[dateStr]?.point) pointSel.value = scheduleData[dateStr].point;
+    if (scheduleData[dateStr]?.point) {
+      pointSel.value = scheduleData[dateStr].point;
+    } else {
+      pointSel.value = "+1";
+    }
+    pointSel.className = "point-select " + _point2className(pointSel.value);
     pointSel.addEventListener("change", () => {
       saveSchedule();
+      pointSel.className = "point-select " + _point2className(pointSel.value);
     });
     tdPoint.appendChild(pointSel);
     tr.appendChild(tdPoint);
@@ -910,6 +927,10 @@ function makeTdRankBand(nowDay, dateStr, today, j) {
   return tdRank;
 }
 
+function _point2className(point) {
+  return point.replace("+", "p").replace("ス", "skip");
+}
+
 function makeTdPoint(dateStr) {
   const tdPoint = document.createElement("td");
   tdPoint.className = "point";
@@ -925,7 +946,7 @@ function makeTdPoint(dateStr) {
       spanPoint.appendChild(spanTotal);
     }
     spanPoint.className = "point";
-    spanPoint.classList.add(scheduleData[dateStr].point.replace("+", "p").replace("ス", "skip"));
+    spanPoint.classList.add(_point2className(scheduleData[dateStr].point));
 
     tdPoint.appendChild(spanPoint);
   }

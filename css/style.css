@@ -1794,6 +1794,7 @@ table.scheduler_month td.date.past {
 	opacity: 0.4;
 }
 
+.weekday.Sun,
 table.scheduler_month th.Sun,
 table.scheduler_month td.date.Sun,
 .day-row .date.Sun,
@@ -1802,6 +1803,8 @@ table.scheduler_month td.date.Sun,
 	color: #d64a4a;
 }
 
+.weekday.Sat,
+table.scheduler_month td.date.Sat,
 table.scheduler_month th.Sat,
 table.scheduler_month td.date.Sat,
 .day-row .date.Sat,
@@ -1990,6 +1993,9 @@ table.scheduler_month td.point span.point .total {
 }
 
 /* がんばる */
+.point-select.p2,
+.point-select.p4,
+.point-select.p6,
 .day-row .point.p2,
 .day-row .point.p4,
 .day-row .point.p6 {
@@ -2000,7 +2006,15 @@ table.scheduler_month td.point span.point .total {
 .day-row .point.p4 .daily { font-weight: 800; }
 .day-row .point.p6 .daily { font-weight: 900; }
 
+.point-select.p0 {
+  background: #ffd1d1;
+}
+
 /* skip */
+.point-select.skip {
+  background: #ccc;
+  color: #000;
+}
 .day-row .point.skip {
   background: #f0f0f0;
   color: #555;
