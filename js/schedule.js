@@ -1,4 +1,4 @@
-let cal_debug = false;
+let cal_debug = ((new URLSearchParams(window.location.search)).get("debug") === "1");
 
 const SCHEDULE_PREFIX = 'meter_schedule_';
 
@@ -1008,7 +1008,7 @@ function makeCopyright(year, debug_str) {
   const sp = "\u00A0"; // "\u00A0";
   const sp1 = sp.repeat(2);
   const sp2 = sp.repeat(1);
-  const suffix = debug_str;
+  const suffix = (cal_debug) ? debug_str : "";
   const text = document.createTextNode(`ぱ(る)むの計算機 ${sp1} © ${year} ${sp2} (る)` + suffix);
 
   if (!isMiniCharUserEnabled()) {
@@ -1816,14 +1816,14 @@ function debugTable() {
     div.className = "phone-frame-calendar";
     cell.appendChild(div);
 
-    if (i == 0) {
+    if (i == 2) {
       const div2 = document.createElement("div");
       div2.className = "calendar-wrapper";
       div.appendChild(div2);
       _debugTitles(div2);
-    } else if (i == 1) {
+    } else if (i == 0) {
       makeMonthPng(div.id, 0, 5, true);
-    } else if (i == 2) {
+    } else if (i == 1) {
       makeWeekPng(div.id, 3, 13, true, "medium");
     }
   }
@@ -2046,7 +2046,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // }
 
   // GET パラメータに debug=1 があればデバッグ用の画像を表示
-  cal_debug = new URLSearchParams(window.location.search).get("debug") === "1";
   if (cal_debug) {
     debugTable();
   }
