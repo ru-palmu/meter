@@ -1672,6 +1672,7 @@ function _reanderOptionTabFile() {
     const charDiv = document.createElement("div");
     charDiv.className = "character-box " + pos;
     charDiv.id = `mini-char-preview-box-${pos}`;
+    charDiv.style.touchAction = "none";
     canvas.appendChild(charDiv);
 
     charDiv.style.size = minichar_state[pos].size + "px";
@@ -1679,6 +1680,7 @@ function _reanderOptionTabFile() {
     const handleBR = document.createElement("div");
     handleBR.className = "handle br";
     handleBR.id = `mini-char-preview-handle-${pos}`;
+    handleBR.style.touchAction = "none";
     charDiv.appendChild(handleBR);
 
     const scale = 0.4;  // css とあわせること
