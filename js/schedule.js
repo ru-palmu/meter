@@ -638,7 +638,7 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
     if (resetDate == 0 && !skipCard || dailyPoint >= RANK_UP_POINT && !rank_down) {
       rank_status = '';
       if (dailyPoint >= RANK_UP_POINT && !rank_down) {  // ランクアップ
-        if (rank + 1 < cand_rank.length) {
+        if (rank + 1 < cand_rank.length && cand_rank[rank + 1] != RANK_CUSTOM) {
           rank++;
         } else {
           rank_status = '+';
