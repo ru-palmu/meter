@@ -11,6 +11,10 @@ const EVENT_COMMON = [
     ['EDSC', '毎日配信', '毎日配信'],
 ];
 
+const file_minichar_targets = ['tl', 'tr'];
+
+const minichar_state = {}
+file_minichar_targets.forEach(t => minichar_state[t] = { ratio: 1, size: 100, dx: 0, dy: 0});
 
 // スキップカードを配布するのは月曜日
 const DISTRIBUTE_SKIP_CARDS_DAY = 1; // 月曜日(0)
@@ -964,16 +968,18 @@ function addMiniCharUser(pos, parentElement, classnames) {
   img.className = classnames.join(' ');
   parentElement.appendChild(img);
 
-  const size = window.clamp(document.getElementById('cal-opt-size-' + pos)?.valueAsNumber ?? 30, 5, 200);
-  img.style.maxHeight = size + "px";
-  img.style.maxWidth = size + "px";
-  img.style.width = "auto";
-  img.style.height = "auto";
+  const size = window.clamp(document.getElementById('cal-opt-size-' + pos)?.valueAsNumber ?? 30, 5, 1500);
+  img.style.maxHeight = 'none';
+  img.style.maxWidth = 'none';
 
-  const x = document.getElementById('cal-opt-x-' + pos)?.valueAsNumber ?? 0;
-  const y = document.getElementById('cal-opt-y-' + pos)?.valueAsNumber ?? 0;
-  img.style.transform = `translate(${x}px, ${y}px)`;
-  console.log(img);
+  const wh = _renderBoxWH(pos);
+  img.style.width = wh[0];
+  img.style.height = wh[1];
+
+  const x = document.getElementById('cal-opt-dx-' + pos)?.valueAsNumber ?? 0;
+  const y = document.getElementById('cal-opt-dy-' + pos)?.valueAsNumber ?? 0;
+  img.style.top = `${y}px`;
+  img.style.left = `${x}px`;
 
   return img;
 }
@@ -990,19 +996,22 @@ function addMiniChar(parentElement, pngs, classnames, rate) {
   return img;
 }
 
+function isMiniCharUserEnabled() {
+  const mini_char = document.querySelector("input[name=cal-mini-char]:checked")?.value || "ru";
+  return mini_char == "user";
+}
 
-
-function makeCopyright(year) {
+function makeCopyright(year, debug_str) {
 	const copyright = document.createElement("div");
   copyright.className = "copyright";
 
   const sp = "\u00A0"; // "\u00A0";
   const sp1 = sp.repeat(2);
   const sp2 = sp.repeat(1);
-  const text = document.createTextNode(`ぱ(る)むの計算機 ${sp1} © ${year} ${sp2} (る)`);
+  const suffix = debug_str;
+  const text = document.createTextNode(`ぱ(る)むの計算機 ${sp1} © ${year} ${sp2} (る)` + suffix);
 
-  const mini_char = document.querySelector("input[name=cal-mini-char]:checked")?.value || "ru";
-  if (mini_char == "ru") {
+  if (!isMiniCharUserEnabled()) {
     addMiniChar(copyright, [
       "img/cal-ru-bl1.png",
       "img/cal-ru-bl2.png",
@@ -1015,9 +1024,9 @@ function makeCopyright(year) {
       "img/cal-ru-br4.png",
     ], ["mini-char", "right"], 0.2);
   } else {
-    addMiniCharUser("bl", copyright, ["mini-char", "left"]);
+    // addMiniCharUser("bl", copyright, ["mini-char"]);
     copyright.appendChild(text);
-    addMiniCharUser("br", copyright, ["mini-char", "right"]);
+    // addMiniCharUser("br", copyright, ["mini-char"]);
   }
 
   return copyright;
@@ -1169,8 +1178,9 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
   _makeWeekTitle(title, startDay, nowDay);
   setTitleIcons(title);
 
-	const copyright = makeCopyright(today.slice(0, 4));
+	const copyright = makeCopyright(today.slice(0, 4), id_canvas);
   div.appendChild(copyright);
+  setMiniCharUsers(div);
 }
 
 
@@ -1185,26 +1195,31 @@ function _makeWeekTitle(title, startDay, endDay) {
   title.appendChild(span_title_rest);
 }
 
+function setMiniCharUsers(canvas) {
+  if (!isMiniCharUserEnabled()) {
+    return ;
+  }
+  file_minichar_targets.forEach((pos) => {
+    addMiniCharUser(pos, canvas, ['mini-char', 'overlay']);
+  });
+}
 
 function setTitleIcons(title) {
-  const mini_char = document.querySelector("input[name=cal-mini-char]:checked")?.value || "ru";
-  if (mini_char == "ru") {
-    addMiniCharStyle(title, [
-      ["img/cal-ru-tl1.png", []],
-      ["img/cal-ru-tl2.png", ['mini-char2']],
-      ["img/cal-ru-tl3.png", ['mini-char3']],
-    ], ["mini-char-title-left"]);
-
-    addMiniCharStyle(title, [
-      ["img/cal-ru-tr1.png", []],
-      ["img/cal-ru-tr2.png", ['mini-char2']],
-      ["img/cal-ru-tr3.png", ['mini-char3']],
-      ["img/cal-ru-tr4.png", ['mini-char4']],
-    ], ["mini-char-title-right"]);
-  } else {
-    addMiniCharUser("tl", title, ["mini-char-title-left"]);
-    addMiniCharUser("tr", title, ["mini-char-title-right"]);
+  if (isMiniCharUserEnabled()) {
+    return ;
   }
+  addMiniCharStyle(title, [
+    ["img/cal-ru-tl1.png", []],
+    ["img/cal-ru-tl2.png", ['mini-char2']],
+    ["img/cal-ru-tl3.png", ['mini-char3']],
+  ], ["mini-char-title-left"]);
+
+  addMiniCharStyle(title, [
+    ["img/cal-ru-tr1.png", []],
+    ["img/cal-ru-tr2.png", ['mini-char2']],
+    ["img/cal-ru-tr3.png", ['mini-char3']],
+    ["img/cal-ru-tr4.png", ['mini-char4']],
+  ], ["mini-char-title-right"]);
 }
 
 /**
@@ -1231,7 +1246,7 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
   table.className = "scheduler_month";
   div.appendChild(table);
 
-	const copyright = makeCopyright(today.slice(0, 4));
+	const copyright = makeCopyright(today.slice(0, 4), id_canvas);
   div.appendChild(copyright);
 
   const thead = document.createElement("thead");
@@ -1320,7 +1335,9 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
 
   nowDay.setDate(nowDay.getDate() - 1);
   _makeMonthTitle(title, today, nowDay);
+
   setTitleIcons(title);
+  setMiniCharUsers(div);
 }
 
 function _makeMonthTitle(div_title, startDayStr, endDay) {
@@ -1514,69 +1531,243 @@ function _renderOptionTab() {
   _reanderOptionTabFile();
 }
 
+function _renderBoxWH(pos) {
+  let w, h;
+
+  if (minichar_state[pos].ratio == 0) {
+    minichar_state[pos].ratio = 1;
+  }
+  if (minichar_state[pos].ratio > 1) {
+    w = minichar_state[pos].size;
+    h = minichar_state[pos].size / minichar_state[pos].ratio;
+  } else {
+    h = minichar_state[pos].size;
+    w = minichar_state[pos].size * minichar_state[pos].ratio;
+  }
+  return [w + "px", h + "px"];
+}
+
+function _renderBox(pos) {
+  const wh = _renderBoxWH(pos);
+  const el = document.getElementById(`mini-char-preview-box-${pos}`);
+
+  el.style.width = wh[0];
+  el.style.height = wh[1];
+
+  el.style.setProperty("--dx", minichar_state[pos].dx + "px");
+  el.style.setProperty("--dy", minichar_state[pos].dy + "px");
+
+  ["size", "dx", "dy"].forEach(key => {
+    const input = document.getElementById(`cal-opt-${key}-${pos}`);
+    input.value = Math.round(minichar_state[pos][key]);
+  });
+}
+
 function _reanderOptionTabFile() {
-  ['tl', 'tr', 'bl', 'br'].forEach(pos => {
-    const td_id = `mini-char-td-${pos}`;
-    const td = document.getElementById(td_id);
-    if (td == null) {
-      console.log("mini-char-table not found:", td_id);
-      return;
-    }
-    td.textContent = "";
+
+  const canvas = document.getElementById("user-mini-char-preview-canvas");
+  const table = document.getElementById("mini-char-upload-table");
+  const targets = file_minichar_targets;
+
+  const tr_header = document.createElement("tr");
+  table.appendChild(tr_header);
+  const th_empty = document.createElement("th");
+  tr_header.appendChild(th_empty);
+  targets.forEach((pos, idx) => {
+    const th = document.createElement("th");
+    th.textContent = idx;
+    tr_header.appendChild(th);
+    th.className = "box " + pos;
+  });
+
+  const tr_file = document.createElement("tr");
+  table.appendChild(tr_file);
+
+  const th_file = document.createElement("th");
+  th_file.textContent = "ファイル";
+  tr_file.appendChild(th_file);
+
+  targets.forEach(pos => {
+    const td = document.createElement("td");
+    td.id = "mini-char-td-" + pos;
+    tr_file.appendChild(td);
 
     const label = document.createElement("label");
     label.className = "file"
+    label.id = `cal-upload-label-${pos}`;
     label.textContent = "画像選択";
+    td.appendChild(label);
+
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
     input.id = `cal-upload-${pos}`;
     label.appendChild(input);
-    td.appendChild(label);
+  });
 
-    const tbl = document.createElement("table");
-    tbl.className = "opt-table";
-    td.appendChild(tbl);
+  [
+    ["サイズ", "size", 30, 5, 200, "px"],
+    ["位置→", "dx", 0, -200, 200, "px"],
+    ["位置↓", "dy", 0, -200, 200, "px"],
+  ].forEach(([label, key, val, min, max, unit]) => {
 
-    [
-      ["サイズ", "size", 30, 5, 200, "px"],
-      ["位置→", "x", 0, -200, 200, "px"],
-      ["位置↓", "y", 0, -200, 200, "px"],
-    ].forEach(([label, key, val, min, max, unit]) => {
-      const tr = document.createElement("tr");
-      tbl.appendChild(tr);
+    const tr = document.createElement("tr");
+    table.appendChild(tr);
 
-      const td1 = document.createElement("td");
-      tr.appendChild(td1);
-      td1.textContent = label;
-      td1.className = "mini-char-opt-label";
+    const th = document.createElement("th");
+    th.textContent = label;
+    tr.appendChild(th);
 
-      const td2 = document.createElement("td");
-      tr.appendChild(td2);
+    targets.forEach(pos => {
+
+    /////////////////////////
+    // テーブルセル
+    /////////////////////////
+    // const label = document.createElement("label");
+    // label.className = "file"
+    // label.textContent = "画像選択";
+    // const input = document.createElement("input");
+    // input.type = "file";
+    // input.accept = "image/*";
+    // input.id = `cal-upload-${pos}`;
+    // label.appendChild(input);
+    // td.appendChild(label);
+
+      const td = document.createElement("td");
+      tr.appendChild(td);
+
       const input = document.createElement("input");
       input.type = "number";
       input.value = val;
       input.min = min;
       input.max = max;
       input.id = `cal-opt-${key}-${pos}`;
-      td2.className = "mini-char-opt-input";
-      td2.appendChild(input);
+      td.className = "mini-char-opt-input";
+      td.appendChild(input);
 
-      const td3 = document.createElement("td");
-      tr.appendChild(td3);
-      td3.textContent = unit;
-      td3.className = "mini-char-opt-unit";
+      input.addEventListener("input", () => {
+        minichar_state[pos][key] = Number(input.value);
+        _renderBox(pos);
+      });
+    });
+  });
+
+
+  /////////////////////////
+  // プレビューキャンバス
+  /////////////////////////
+  targets.forEach(pos => {
+    const charDiv = document.createElement("div");
+    charDiv.className = "character-box " + pos;
+    charDiv.id = `mini-char-preview-box-${pos}`;
+    canvas.appendChild(charDiv);
+
+    charDiv.style.size = minichar_state[pos].size + "px";
+
+    const handleBR = document.createElement("div");
+    handleBR.className = "handle br";
+    handleBR.id = `mini-char-preview-handle-${pos}`;
+    charDiv.appendChild(handleBR);
+
+    const scale = 0.4;  // css とあわせること
+
+    charDiv.addEventListener("mousedown", (e) => {
+      if (e.target.classList.contains("handle")) {
+        // 右下のハンドルをドラッグしている場合
+        return ;
+      }
+
+      let startX = e.clientX;
+      let startY = e.clientY;
+
+      let baseX = minichar_state[pos].dx;
+      let baseY = minichar_state[pos].dy;
+
+      function move(ev) {
+
+        const mx = (ev.clientX - startX) / scale;
+        const my = (ev.clientY - startY) / scale;
+
+        minichar_state[pos].dx = baseX + mx;
+        minichar_state[pos].dy = baseY + my;
+
+        _renderBox(pos);
+      }
+
+      function up() {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+      }
+
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
     });
 
+    handleBR.addEventListener("mousedown", (e) => {
+
+      e.stopPropagation();
+
+      let startX = e.clientX;
+      let startSize = minichar_state[pos].size;
+
+      function resize(ev) {
+
+        const dx = (ev.clientX - startX) / scale;
+
+        minichar_state[pos].size = Math.max(10, startSize + dx); // 最小サイズ制限
+
+        _renderBox(pos);
+      }
+
+      function up() {
+        document.removeEventListener("mousemove", resize);
+        document.removeEventListener("mouseup", up);
+      }
+
+      document.addEventListener("mousemove", resize);
+      document.addEventListener("mouseup", up);
+    });
+
+    _renderBox(pos);
   });
+
+  function _showPreviewBox(input, label, pos) {
+    const isSet = input.files[0] != null;
+
+    label.textContent = isSet ? input.files[0].name : "なし";
+
+    document.getElementById(`mini-char-preview-box-${pos}`).hidden = !isSet;
+    document.getElementById(`mini-char-preview-handle-${pos}`).hidden = !isSet;
+    document.getElementById(`mini-char-preview-box-${pos}`).display = (isSet ? "block" : "none");
+    document.getElementById(`mini-char-preview-handle-${pos}`).display = (isSet ? "block" : "none");
+    return isSet;
+  }
+
 
   document.querySelectorAll("input[type='file']").forEach(input => {
     const label = document.createElement("span");
     label.textContent = "なし";
     label.className = "filename";
     input.parentNode.after(label);
+
+    const pos = input.id.slice(-2)
+    _showPreviewBox(input, label, pos);
+
     input.addEventListener("change", () => {
-      label.textContent = input.files[0] ? input.files[0].name : "なし";
+      const isSet = _showPreviewBox(input, label, pos);
+      if (!isSet) {
+        return ;
+      }
+
+      const img = new Image();
+      img.onload = () => {
+        minichar_state[pos].ratio = img.naturalWidth / img.naturalHeight;
+        console.log("ratio set from image", pos, minichar_state[pos].ratio,
+          img.naturalWidth, img.naturalHeight,
+          typeof img.naturalWidth, typeof img.naturalHeight);
+        _renderBox(pos);
+      }
+      img.src = URL.createObjectURL(input.files[0]);
     });
   });
 }

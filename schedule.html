@@ -161,18 +161,15 @@
           <div class="info-text upload">
             <p>画像ファイルのサイズが大きすぎるとエラーになることがあります．</p>
           </div>
-          <table class="mini-char upload">
-            <tr><th></th><th>左</th><th>右</th></tr>
-            <tr>
-              <th>上</th>
-              <td id="mini-char-td-tl"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-tl"></label></td>
-              <td id="mini-char-td-tr"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-tr"></label></td>
-            </tr>
-            <tr>
-              <th>下</th>
-              <td id="mini-char-td-bl"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-br"></label></td>
-              <td id="mini-char-td-br"><label class="file">選択<input type="file" accept="image/*" id="cal-upload-bl"></label></td>
+          <table class="mini-char upload" id="mini-char-upload-table">
           </table>
+          <div class="user-mini-char-preview-parent">
+            <div class="user-mini-char-preview-container">
+              <div class="canvas" id="user-mini-char-preview-canvas">
+                画像の位置と大きさを調整してください
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
