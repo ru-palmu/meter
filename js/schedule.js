@@ -1524,7 +1524,7 @@ function _renderOptionTab() {
   tabs.forEach(tab => tab.addEventListener("change", function() {
     window.gtag('event', 'change_tab', {
       'tab_id': this.id,
-      'user_rank': selectedRank(),
+      'user_rank': selectedRank("undefined"),
     });
     _saveOptionTab(0);
 
@@ -1895,7 +1895,7 @@ function generateImage() {
     'pos': 'schedule_img_generate_button',
     'kind': val,
     'debug': cal_debug ? '1' : '0',
-    'user_rank': selectedRank(),
+    'user_rank': selectedRank("undefined"),
   });
   if (val != "month" && val != "week") {
     return ;
@@ -1923,7 +1923,7 @@ function generateImage() {
         'cal_size': size,
         'cal_dow': dow,
         'cal_weekn': weekn,
-        'user_rank': selectedRank(),
+        'user_rank': selectedRank("undefined"),
       });
       makeMonthPng(vid, parseInt(dow), parseInt(weekn), isMemo);
     } else {
@@ -1936,7 +1936,7 @@ function generateImage() {
         'cal_days': days,
         'cal_start': start,
         'cal_memo-size': memoSize,
-        'user_rank': selectedRank(),
+        'user_rank': selectedRank("undefined"),
       });
       makeWeekPng(vid, parseInt(start), parseInt(days), isMemo, memoSize);
     }

@@ -414,7 +414,7 @@ async function onCopyAndRedirect(id, redirectFunc) {
 	await copyResult(id);
 	window.gtag('event', 'copy_and_redirect', {
 		event_label: id,
-		user_rank: selectedRank(),
+		user_rank: selectedRank("undefined"),
 	});
 	return redirectFunc();
 }
@@ -501,9 +501,8 @@ function isValidRank(rank, date) {
 }
 
 // 選択されているランクを取得
-function selectedRank() {
+function selectedRank(key = default_rank) {
   const presetFromURL = _getQueryParam("r");
-  let key = default_rank;
   if (isValidRank(presetFromURL, latestDate)) {
     key = presetFromURL;
   } else {
@@ -1160,7 +1159,7 @@ document.addEventListener("click", (e) => {
   if (a.dataset.to) {
     opt.to = a.dataset.to;
   }
-  opt.user_rank = selectedRank();
+  opt.user_rank = selectedRank("undefined");
 
 
   window.gtag("event", a.dataset.track, opt);

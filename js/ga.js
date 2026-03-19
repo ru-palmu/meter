@@ -41,7 +41,9 @@ function initGA() {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(){ window.dataLayer.push(arguments);}
     window.gtag('js', new Date());
-    window.gtag('config', GA_MEASUREMENT_ID);
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      user_rank: "undefined",
+	});
   } catch (e) {
     console.warn("initGA failed", e);
   }
