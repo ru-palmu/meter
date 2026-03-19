@@ -2,7 +2,9 @@
 // EU判定 + GA/Auto Ads初期化（localStorageキャッシュ対応）
 // =====================
 
-window.gtag = function(){}
+window.gtag = function(){
+//	console.log(arguments);
+}
 
 // GA/AdSense 設定
 const GA_MEASUREMENT_ID = "G-BDZWH7BTKY";

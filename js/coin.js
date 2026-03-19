@@ -22,8 +22,10 @@ function sendCalcEvent() {
 	border_type = 'static';
   }
 
+  const rank = selectedRank();
   window.gtag('event', 'coin_calc', {
     event_category: border_type,
+    user_rank: rank,
   });
 }
 

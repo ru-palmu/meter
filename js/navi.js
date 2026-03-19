@@ -414,6 +414,7 @@ async function onCopyAndRedirect(id, redirectFunc) {
 	await copyResult(id);
 	window.gtag('event', 'copy_and_redirect', {
 		event_label: id,
+		user_rank: selectedRank(),
 	});
 	return redirectFunc();
 }
@@ -1159,6 +1160,7 @@ document.addEventListener("click", (e) => {
   if (a.dataset.to) {
     opt.to = a.dataset.to;
   }
+  opt.user_rank = selectedRank();
 
 
   window.gtag("event", a.dataset.track, opt);
