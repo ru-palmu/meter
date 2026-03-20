@@ -1918,7 +1918,7 @@ function generateImage() {
     if (vv == "month") {
       const dow = document.getElementById("cal-dow").value;
       const weekn = document.getElementById("cal-month-line").value;
-      window.gtag('event', 'generate_schedule-img', {
+      window.gtag('event', 'generate_schedule_img', {
         'cal_type': val,
         'cal_size': size,
         'cal_dow': dow,
@@ -1930,7 +1930,7 @@ function generateImage() {
       const days = document.getElementById("cal-days").value;
       const start = document.getElementById("cal-start-day").value;
       const memoSize = document.getElementById("cal-memo-size").value;
-      window.gtag('event', 'generate_schedule-img', {
+      window.gtag('event', 'generate_schedule_img', {
         'cal_type': val,
         'cal_size': size,
         'cal_days': days,

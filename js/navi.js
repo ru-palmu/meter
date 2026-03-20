@@ -521,7 +521,8 @@ function _marshmallow() {
 	const a = document.createElement('a');
 	a.href = 'https://marshmallow-qa.com/fcbapahukbveobw?t=mZ9AzD&utm_medium=url_text&utm_source=promotion';
 	a.textContent = '質問箱';
-	a.dataset.track = 'marshmallow';
+	a.dataset.track = 'link_click'
+	a.dataset.to = 'marshmallow';
 	a.dataset.from = 'navi';
 	li.appendChild(a);
 	return li
@@ -541,7 +542,8 @@ function _shareX() {
   shareA.style.display = 'flex';
   shareA.style.alignItems = 'center';
   shareA.style.gap = '4px';
-  shareA.dataset.track = 'share_x';
+  shareA.dataset.track = 'link_click'
+  shareA.dataset.to = 'share_x';
   shareA.dataset.from = 'navi';
 
   // SVGアイコン（公式Xロゴ）
@@ -716,14 +718,14 @@ function __renderNoticeArchive() {
 	return a;
 }
 
-window.setGtagNotice = function(n, a, from) {
-  if (n.track) {
-    a.dataset.track = n.track;
+window.setGtagLinkClick = function(n, a, from) {
+  a.dataset.track = 'link_click'
+  a.dataset.from = from;
+  if (n.to) {
+    a.dataset.track = n.to;
   } else {
-    a.dataset.track = 'link_click'
     a.dataset.to = n.kind.code;
   }
-  a.dataset.from = from;
 }
 
 /**
@@ -777,7 +779,7 @@ function _renderNotices(elementId, notices) {
       const a = document.createElement('a');
       a.href = n.url;
       a.textContent = displayText;
-      window.setGtagNotice(n, a, 'notice');
+      window.setGtagLinkClick(n, a, 'notice');
 
       li.appendChild(a);
     } else {
