@@ -720,7 +720,7 @@ window.setGtagNotice = function(n, a, from) {
   if (n.track) {
     a.dataset.track = n.track;
   } else {
-    a.dataset.track = 'link-click'
+    a.dataset.track = 'link_click'
     a.dataset.to = n.kind.code;
   }
   a.dataset.from = from;
