@@ -3,7 +3,7 @@
 // =====================
 
 window.gtag = function(){
-//	console.log(arguments);
+//    console.log(arguments);
 }
 
 // GA/AdSense 設定
@@ -41,9 +41,21 @@ function initGA() {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(){ window.dataLayer.push(arguments);}
     window.gtag('js', new Date());
+    const url = new URL(window.location.href);
+    const presetFromURL = url.searchParams.get("r");
+    let userRank = "undefined";
+    if (presetFromURL) {
+        userRank = "URL-" + presetFromURL;
+    } else {
+        const storedRank = localStorage.getItem('meter_common_selected_rank');
+        if (storedRank) {
+            userRank = "LS-" + storedRank;
+        }
+    }
+
     window.gtag('config', GA_MEASUREMENT_ID, {
-      user_rank: "undefined",
-	});
+      user_rank: userRank,
+    });
   } catch (e) {
     console.warn("initGA failed", e);
   }
@@ -99,8 +111,8 @@ async function initAnalytics() {
 }
 
 if (location.protocol !== 'file:' &&
-	window.location.hostname !== 'localhost') {
-	// ページ読み込み時に自動実行
-	initAnalytics();
+    window.location.hostname !== 'localhost') {
+    // ページ読み込み時に自動実行
+    initAnalytics();
 }
 

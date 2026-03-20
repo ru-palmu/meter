@@ -506,7 +506,7 @@ function selectedRank(key = default_rank) {
   if (isValidRank(presetFromURL, latestDate)) {
     key = presetFromURL;
   } else {
-    let kk = localStorage.getItem(COMMON_PREFIX + "selected_rank");
+    const kk = localStorage.getItem(COMMON_PREFIX + "selected_rank");
     if (isValidRank(kk, latestDate)) {
       key = kk;
     }
