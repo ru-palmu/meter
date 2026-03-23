@@ -218,8 +218,16 @@ function setupEventTitles() {
 
       const defaultOpt = document.createElement("option");
       defaultOpt.value = "";
-      defaultOpt.textContent = "不参加";
+      defaultOpt.textContent = "未設定／不参加";
       select.appendChild(defaultOpt);
+
+      select.addEventListener("change", () => {
+        if (select.value && select.value != "") {
+          select.classList.add("selected");
+        } else {
+          select.classList.remove("selected");
+        }
+      });
 
       [...events, ...events_common].forEach((ev) => {
         const opt = document.createElement("option");
@@ -233,6 +241,9 @@ function setupEventTitles() {
       const val = __getScheduleLocalStorage("event_" + dateStr);
       if (val) {
         select.value = val;
+        if (select.value && select.value != "") {
+          select.classList.add("selected");
+        }
       }
 
       td.appendChild(select);

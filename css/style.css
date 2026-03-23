@@ -1140,6 +1140,7 @@ table.scheduler td.td-event-title .event-selector {
 	position: relative;
 }
 
+
 table.scheduler td.td-event-title .event-select {
 	top: 0;
 	left: 0;
@@ -1156,6 +1157,10 @@ table.scheduler td.td-event-title .event-select {
 	inset: 0;
 	cursor: pointer;
 	z-index: 10;
+}
+
+table.scheduler td.td-event-title .event-select.selected {
+	background-color:#fde7ef; /* ピンク系 */
 }
 
 canvas.td-event-title {
@@ -1858,11 +1863,14 @@ table.scheduler_month td.rank span.rank {
 
 
 table.scheduler_month td.event span.event {
-	display: block;
 	background-color: #f6a9c3; /* ピンク系 */
+	color: #7a1f2b;
+}
+
+table.scheduler_month td.event span.event {
+	display: block;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 
-	color: #7a1f2b;
 	padding: 0 0;
 	margin: 0 2px;
 	/* margin-top: 1px; */
