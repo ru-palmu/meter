@@ -90,7 +90,7 @@ function news_renderPageFromParams(page, kind, q) {
       const a = document.createElement('a');
       a.href = n.url;
       a.textContent = n.text || '';
-      window.setGtagNotice(n, a, 'news');
+      window.setGtagLinkClick(n, a, 'news');
 
       textCell.appendChild(a);
     } else {
