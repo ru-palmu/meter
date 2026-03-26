@@ -8,10 +8,68 @@ body {
 	padding: 5px;
 }
 
+
+/* schedule-img: 画像の配置 */
 .overlay {
 	position: absolute;
 	z-index: 1000;
 	touch-action: none;
+}
+
+
+/*=====================================
+ * 注釈 (bys.html)
+ *=====================================*/
+.article-note-ref {
+  font-size: 0.7em;
+  vertical-align: super; /* 上付き */
+  color: #666;
+  margin-left: -2px;
+  margin-right: 2px;
+}
+
+.article-notes {
+  margin-top: 1.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid #ccc;
+  font-size: 0.9em;
+  color: #444;
+}
+
+.article-note-item {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.article-note-number {
+  min-width: 3em;
+  color: #666;
+}
+
+.article-note-text {
+  flex: 1;
+}
+
+.img-box {
+  display: inline-block;
+  background: #f7fcf9;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.img-box img {
+  display: block;
+  border: 1px solid #dceee3;
+  border-radius: 6px;
+}
+
+.img-box figcaption {
+  font-size: 0.8em;
+  color: #555;
+  margin-top: 4px;
+  text-align: center;
 }
 
 
