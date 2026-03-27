@@ -172,12 +172,14 @@ function __renderBorderHistory(sortedDates) {
           if (val < presets[sortedDates[i + 1]][rank][point]) {
             td.className = 'decrease';
             const rate = 1 - val / presets[sortedDates[i + 1]][rank][point];
-            const alpha = window.clamp(rate * 10, 0.1, 1);
+            const alpha_min = 0.25;
+            const alpha = window.clamp(rate * 8 + alpha_min, alpha_min, 1);
             td.style.backgroundColor = `rgba(173, 216, 230, ${alpha})`;
           } else if (val > presets[sortedDates[i + 1]][rank][point]) {
             td.className = 'increase';
             const rate = 1 - presets[sortedDates[i + 1]][rank][point] / val;
-            const alpha = window.clamp(rate * 10, 0.1, 1);
+            const alpha_min = 0.2;
+            const alpha = window.clamp(rate * 15 + alpha_min, alpha_min, 1);
             td.style.color = window.lerpColor([0, 0, 0], [217, 83, 79], alpha);
           }
         }
