@@ -1048,6 +1048,7 @@ function makeCopyright(year, debug_str) {
     addMiniChar(copyright, [
       "img/cal-ru-bl1.png",
       "img/cal-ru-bl2.png",
+      "img/cal-ru-bl3.png",
     ], ["mini-char", "left"], 0.2);
     copyright.appendChild(text);
     addMiniChar(copyright, [
@@ -1245,6 +1246,7 @@ function setTitleIcons(title) {
     ["img/cal-ru-tl1.png", []],
     ["img/cal-ru-tl2.png", ['mini-char2']],
     ["img/cal-ru-tl3.png", ['mini-char3']],
+    ["img/cal-ru-tl4.png", ['mini-char4']],
   ], ["mini-char-title-left"]);
 
   addMiniCharStyle(title, [
@@ -1252,6 +1254,7 @@ function setTitleIcons(title) {
     ["img/cal-ru-tr2.png", ['mini-char2']],
     ["img/cal-ru-tr3.png", ['mini-char3']],
     ["img/cal-ru-tr4.png", ['mini-char4']],
+    ["img/cal-ru-tr5.png", ['mini-char5']],
   ], ["mini-char-title-right"]);
 }
 
