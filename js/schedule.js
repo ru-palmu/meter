@@ -1262,7 +1262,7 @@ function setTitleIcons(title) {
  * 4週間分のカレンダー
  * sep: 左端の曜日
  */
-function makeMonthPng(id_canvas, sep, weekn, isMemo) {
+function makeMonthPng(id_canvas, start, sep, weekn, isMemo) {
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
     return
@@ -1299,8 +1299,11 @@ function makeMonthPng(id_canvas, sep, weekn, isMemo) {
     headerRow.appendChild(th);
   }
 
-  const dow = new Date(today).getDay();
   const nowDay = new Date(today);
+  if (start > 0) {
+    nowDay.setDate(nowDay.getDate() + start * 7);
+  }
+  const dow = new Date(nowDay).getDay();
   // 火曜日を起点にして、表示する月の最初の火曜日の日付を求める
   nowDay.setDate(nowDay.getDate() - ((dow + 7 - sep) % 7)); // 4週間分前から表示
 
@@ -1463,6 +1466,7 @@ function _saveOptionTab(gen_image) {
     ['cal-dow', 'cal-dow'],
     ['cal-month-line', 'cal-month-line'],
     ['cal-start-day', 'cal-start-day'],
+    ['cal-start-week', 'cal-start-week'],
     ['cal-days', 'cal-days'],
     ['cal-memo-size', 'cal-memo-size'],
     ['cal-size-full', 'cal-size'], // radio
@@ -1871,7 +1875,7 @@ function debugTable() {
       div.appendChild(div2);
       _debugTitles(div2);
     } else if (i == 0) {
-      makeMonthPng(div.id, 0, 5, true);
+      makeMonthPng(div.id, 0, 0, 5, true);
     } else if (i == 1) {
       makeWeekPng(div.id, 3, 13, true, "medium");
     }
@@ -1879,11 +1883,32 @@ function debugTable() {
 }
 
 function calInit() {
-	const select = document.getElementById("cal-start-day");
-	const today = new Date();
+  const today = new Date();
+  _calInitStartDay(today, "cal-start-day");
+  _calInitStartWeek(today, "cal-start-week");
+}
 
-  const labels = ["今日", "明日", "明後日"];
+function _calInitStartWeek(today, select_id) {
+  const select = document.getElementById(select_id);
+  const labels = ["今週", "来週"];
   const d = new Date(today);
+  for (let i = 0; i < 4; i++) {
+    d.setDate(today.getDate() + i * 7);
+    const label = labels[i] || `${i}週間後`;
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = label;
+    if (i === 0) option.selected = true;
+
+    select.appendChild(option);
+  }
+}
+
+
+function _calInitStartDay(today, select_id) {
+	const select = document.getElementById(select_id);
+	const labels = ["今日", "明日", "明後日"];
+	const d = new Date(today);
 	for (let i = 0; i <= 7; i++) {
 		d.setDate(today.getDate() + i);
 
@@ -1931,15 +1956,17 @@ function generateImage() {
   targets.forEach(([vid, vv]) => {
     if (vv == "month") {
       const dow = document.getElementById("cal-dow").value;
+      const start = document.getElementById("cal-start-week").value;
       const weekn = document.getElementById("cal-month-line").value;
       window.gtag('event', 'generate_schedule_img', {
         'cal_type': val,
         'cal_size': size,
         'cal_dow': dow,
+        'cal_start_week': start,
         'cal_weekn': weekn,
         'user_rank': selectedRank("undefined"),
       });
-      makeMonthPng(vid, parseInt(dow), parseInt(weekn), isMemo);
+      makeMonthPng(vid, parseInt(start), parseInt(dow), parseInt(weekn), isMemo);
     } else {
       const days = document.getElementById("cal-days").value;
       const start = document.getElementById("cal-start-day").value;
@@ -1948,7 +1975,7 @@ function generateImage() {
         'cal_type': val,
         'cal_size': size,
         'cal_days': days,
-        'cal_start': start,
+        'cal_start_day': start,
         'cal_memo-size': memoSize,
         'user_rank': selectedRank("undefined"),
       });
