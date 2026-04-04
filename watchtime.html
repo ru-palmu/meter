@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script       src="js/meter.js?v=78" defer></script>
+  <script src="../data/notice.js?v=78" defer></script>
+  <script        src="js/navi.js?v=78" defer></script>
+  <script src="js/ga.js" async></script>
+  <link rel="stylesheet" href="css/style.css?v=78">
+  <link rel="icon" href="/favicon.ico">
+  <title>累積視聴時間 - パルムの計算機 for Palmu</title>
+  <meta name="description" content="Palmu（パルム）の累積視聴時間を計算するツールです。バッジと残り時間を選択して、合計視聴時間を確認できます。">
+
+</head>
+<body>
+
+<header>
+<h1 class="tool-title">ぱ(る)むの計算機 for Palmu</h1>
+<nav id="navi_rank"></nav>
+<nav id="navi_func"></nav>
+<div id="notice-banner"></div>
+</header>
+
+<main>
+<div class="intro">
+	<p>
+		累積視聴時間を計算します．
+		バッジが刻まれて，これまで何時間視聴したのかが分かりづらくなりました．
+		現時点でわかっているバッジの情報が限られているので，あくまで参考程度にご利用ください．
+	</p>
+	<p>
+		累積視聴時間がパルム上でみえるようになり，この機能が必要なくなる日が来ることを願います.
+	</p>
+</div>
+
+
+<div class="watch_time_container">
+
+<div class="watch_time_title">視聴時間計算</div>
+
+<div class="watch_time_section">
+  <div class="watch_time_current">
+    選択中：<span id="watch_time_current_badge">未選択</span>
+  </div>
+
+  <div>バッジ選択</div>
+  <div class="watch_time_badge_group" id="watch_time_mainBadge"></div>
+  <div class="watch_time_badge_group" id="watch_time_subBadge"></div>
+</div>
+
+<div class="watch_time_section">
+  <div>残り時間（条件１）</div>
+
+  <div>時間</div>
+  <div class="watch_time_time_group" id="watch_time_hour"></div>
+
+  <div style="margin-top:10px;">分</div>
+  <div class="watch_time_time_group" id="watch_time_min"></div>
+</div>
+
+<button class="watch_time_calc_btn" onclick="watch_time_calc()">計算する</button>
+
+<div class="watch_time_section">
+  <div>累計視聴時間</div>
+  <div class="watch_time_result" id="watch_time_result">--</div>
+</div>
+
+</div>
+
+<script>
+let watch_time_selectedMain = null;
+let watch_time_selectedSub = null;
+let watch_time_hour = 0;
+let watch_time_min = 0;
+
+const watch_time_mainList = ["0","1","2","3","4","5"];
+
+/* メイン */
+function createMain(){
+  const el = document.getElementById("watch_time_mainBadge");
+  watch_time_mainList.forEach(m=>{
+    const b=document.createElement("button");
+    b.textContent=m+".x";
+    b.className="watch_time_badge_btn";
+    b.onclick=()=>selectMain(m,b);
+    el.appendChild(b);
+  });
+}
+
+function selectMain(m,btn){
+  watch_time_selectedMain=m;
+  watch_time_selectedSub=null;
+
+  document.querySelectorAll("#watch_time_mainBadge .watch_time_badge_btn")
+    .forEach(b=>b.classList.remove("watch_time_active"));
+  btn.classList.add("watch_time_active");
+
+  updateCurrent();
+  createSub(m);
+}
+
+/* サブ */
+function createSub(m){
+  const el=document.getElementById("watch_time_subBadge");
+  el.innerHTML="";
+
+  let list=[];
+  if(m==="0") list=["0.1","0.5"];
+  else if(m==="1") list=["1.0","1.2","1.4","1.6","1.8"];
+  else for(let i=0;i<=9;i++) list.push(m+"."+i);
+
+  list.forEach(v=>{
+    const b=document.createElement("button");
+    b.textContent=v;
+    b.className="watch_time_badge_btn";
+    b.onclick=()=>selectSub(v,b);
+    el.appendChild(b);
+  });
+}
+
+function selectSub(v,btn){
+  if(v==="5.9"){
+    watch_time_selectedSub=null;
+    updateCurrent();
+    createDeep();
+    return;
+  }
+
+  watch_time_selectedSub=v;
+
+  document.querySelectorAll("#watch_time_subBadge .watch_time_badge_btn")
+    .forEach(b=>b.classList.remove("watch_time_active"));
+
+  btn.classList.add("watch_time_active");
+  updateCurrent();
+}
+
+/* 5.9詳細 */
+function createDeep(){
+  const el=document.getElementById("watch_time_subBadge");
+  el.innerHTML="";
+
+  // 戻る（操作）
+  const back=document.createElement("button");
+  back.textContent="← 5.xに戻る";
+  back.className="watch_time_badge_btn watch_time_back_btn";
+  back.onclick=()=>createSub("5");
+  el.appendChild(back);
+
+  // データ（5.90〜5.99）
+  for(let i=90;i<=99;i++){
+    const v="5."+i;
+    const b=document.createElement("button");
+    b.textContent=v;
+    b.className="watch_time_badge_btn";
+    b.onclick=()=>selectSub(v,b);
+    el.appendChild(b);
+  }
+}
+
+/* 表示更新 */
+function updateCurrent(){
+  const el=document.getElementById("watch_time_current_badge");
+
+  if (watch_time_selectedSub) {
+    el.textContent = watch_time_selectedSub;
+  } else if (watch_time_selectedMain) {
+    el.textContent = watch_time_selectedMain + ".x";
+  } else {
+    el.textContent = "未選択";
+  }
+}
+
+/* 時間 */
+function createHour(){
+  const el=document.getElementById("watch_time_hour");
+  for(let i=0;i<4;i++){
+    const b=document.createElement("button");
+    b.textContent=i+"h";
+    b.className="watch_time_time_btn";
+    b.onclick=()=>{
+      watch_time_hour=i;
+      document.querySelectorAll("#watch_time_hour .watch_time_time_btn")
+        .forEach(x=>x.classList.remove("watch_time_active"));
+      b.classList.add("watch_time_active");
+    };
+    el.appendChild(b);
+  }
+}
+
+/* 分（5分刻み） */
+function createMin(){
+  const el=document.getElementById("watch_time_min");
+  for(let i=0;i<60;i+=5){
+    const b=document.createElement("button");
+    b.textContent=i+"m";
+    b.className="watch_time_time_btn";
+    b.onclick=()=>{
+      watch_time_min=i;
+      document.querySelectorAll("#watch_time_min .watch_time_time_btn")
+        .forEach(x=>x.classList.remove("watch_time_active"));
+      b.classList.add("watch_time_active");
+    };
+    el.appendChild(b);
+  }
+}
+
+const badgeTimeMap = {
+  "0.1": 1.5,
+  "0.5": 2.0,
+  "1.0": 3.0,
+  "1.2": 3.5,
+  "1.4": 4.0,
+  "1.6": 4.5,
+  "1.8": 5.0,
+  "2.0": 6.0,
+  "2.1": 6.5,
+  "2.2": 7.0,
+  "2.3": 7.5,
+  "2.4": 8.0,
+  "2.5": 8.5,
+  "3.0": 12.0,
+  "3.5": 14.0,
+  "4.0": 16.0,
+  "4.5": 18.0,
+  "5.0": 20.0,
+  "5.1": -22.0,
+  "5.2": -24.0,
+  "5.3": -26.0,
+  "5.4": -28.0,
+  "5.5": 30.0,
+};
+
+/* 計算 */
+function watch_time_calc(){
+  if(!watch_time_selectedSub){
+    alert("バッジ選んで");
+    return;
+  }
+
+  const badge = parseFloat(watch_time_selectedSub);
+  let total = 0;
+  for (let b = badge + 0.1; b < 5.9; b += 0.1) {
+	const key = b.toFixed(1);
+	if (badgeTimeMap[key]) {
+      if (badgeTimeMap[key] > 0) {
+	    total = badgeTimeMap[key];
+	  } else {
+	    total = -badgeTimeMap[key];
+	  }
+	  console.log(key);
+	  break;
+	}
+  }
+
+  let totalHour = Math.floor(total);
+  let totalMin = Math.round((total - totalHour) * 60);
+  totalHour -= watch_time_hour;
+  totalMin -= watch_time_min;
+  console.log(total, Math.floor(total), Math.round((total - totalHour) * 60));
+  console.log(totalHour+"h "+totalMin+"m");
+  if (totalMin < 0) {
+	totalHour -= 1;
+	totalMin += 60;
+  }
+  if (totalHour < 0) {
+	totalHour = 0;
+	totalMin = 0;
+  }
+
+  document.getElementById("watch_time_result").textContent =
+    totalHour+"時間 "+totalMin+"分";
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+	renderNavis("navi_func", "navi_rank", "footer");
+/* 初期化 */
+createMain();
+createHour();
+createMin();
+});
+</script>
+
+</main>
+
+<footer id="footer"></footer>
+
+</body>
+</html>
