@@ -30,7 +30,7 @@
 		現時点でわかっているバッジの情報が限られているので，あくまで参考程度にご利用ください．
 	</p>
 	<p>
-		累積視聴時間がパルム上でみえるようになり，この機能が必要なくなる日が来ることを願います.
+		累積視聴時間がパルム上でみえるようになり，この機能が必要なくなる日が来ることを切に願います.
 	</p>
 </div>
 
@@ -274,11 +274,13 @@ function watch_time_calc(){
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-	renderNavis("navi_func", "navi_rank", "footer");
-/* 初期化 */
-createMain();
-createHour();
-createMin();
+
+  renderNavis("navi_func", "navi_rank", "footer");
+
+  /* 初期化 */
+  createMain();
+  createHour();
+  createMin();
 });
 </script>
 
