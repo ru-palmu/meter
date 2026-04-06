@@ -68,6 +68,61 @@ function __setScheduleLocalStorage(key, value) {
   localStorage.setItem(fullKey, value);
 }
 
+const DB_NAME = "schedule-cal-files";
+const DB_VERSION = 1;
+const STORE_NAME = "files";
+
+function _openDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      // 初回 or バージョンアップ時に呼ばれる
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+
+    request.onsuccess = (event) => {
+      resolve(event.target.result);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
+
+async function _saveFile(key, file) {
+  const db = await _openDB();
+
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+
+    const request = store.put(file, key);
+
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function _loadFile(key) {
+  const db = await _openDB();
+
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readonly");
+    const store = tx.objectStore(STORE_NAME);
+
+    const request = store.get(key);
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+
 
 // 月曜日にスキップカードを2枚配布する
 function distributeSkipCards(skipCards) {
@@ -1533,9 +1588,20 @@ function _loadOptionTab() {
   sessionStorage.setItem("scheduleOptionTabGenerateImage", 0);
 }
 
+function _loadOptionTabImageUser() {
+  file_minichar_targets.forEach((pos) => {
+    ["size", "dx", "dy"].forEach(key => {
+      const element_id = `cal-opt-${key}-${pos}`
+      const input = document.getElementById(element_id);
+      input.value = __getScheduleLocalStorage(element_id) || input.value;
+      minichar_state[pos][key] = input.valueAsNumber;
+    });
+  });
+}
 
 function _renderOptionTab() {
   _loadOptionTab();
+  _loadOptionTabImageUser();
 
   const tabs = document.querySelectorAll('input[name="sch-tab"]');
 
@@ -1610,8 +1676,10 @@ function _renderBox(pos) {
   el.style.setProperty("--dy", minichar_state[pos].dy + "px");
 
   ["size", "dx", "dy"].forEach(key => {
-    const input = document.getElementById(`cal-opt-${key}-${pos}`);
+    const element_id = `cal-opt-${key}-${pos}`
+    const input = document.getElementById(element_id);
     input.value = Math.round(minichar_state[pos][key]);
+    __setScheduleLocalStorage(element_id, input.value);
   });
 }
 
@@ -1757,6 +1825,7 @@ function _reanderOptionTabFile() {
       document.addEventListener("pointerup", up);
     });
 
+    // 右下のハンドル：拡大縮小用
     handleBR.addEventListener("pointerdown", (e) => {
 
       e.stopPropagation();
@@ -1798,6 +1867,7 @@ function _reanderOptionTabFile() {
   }
 
 
+  // cal-upload- + pos
   document.querySelectorAll("input[type='file']").forEach(input => {
     const label = document.createElement("span");
     label.textContent = "なし";
@@ -1807,7 +1877,8 @@ function _reanderOptionTabFile() {
     const pos = input.id.slice(-2)
     _showPreviewBox(input, label, pos);
 
-    input.addEventListener("change", () => {
+    input.addEventListener("change", async
+ () => {
       const isSet = _showPreviewBox(input, label, pos);
       if (!isSet) {
         return ;
@@ -1820,7 +1891,9 @@ function _reanderOptionTabFile() {
         minichar_state[pos].ratio = img.naturalWidth / img.naturalHeight;
         _renderBox(pos);
       }
-      img.src = URL.createObjectURL(input.files[0]);
+      const file = input.files[0];
+      img.src = URL.createObjectURL(file);
+			await _saveFile(input.id, file);
     });
   });
 }
