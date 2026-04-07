@@ -364,8 +364,8 @@ window.EVENT_TITLES = {
      ],
      [
        "SENRYU",
-       "Palmu 春の川柳大会",
-       "川柳大会",
+       "Palmu 大喜利大会！〜GW編〜",
+       "大喜利大会",
      ],
      [
        "HYA",
