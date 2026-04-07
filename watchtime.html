@@ -37,35 +37,47 @@
 
 <div class="watch_time_container">
 
-<div class="watch_time_title">視聴時間計算</div>
+  <div class="watch_time_title">視聴時間計算</div>
 
-<div class="watch_time_section">
-  <div class="watch_time_current">
-    選択中：<span id="watch_time_current_badge">未選択</span>
+  <div class="watch_time_section">
+    <div class="watch_time_current">
+      選択中：<span id="watch_time_current_badge">未選択</span>
+    </div>
+
+    <div>バッジ選択</div>
+    <div class="watch_time_badge_group" id="watch_time_mainBadge"></div>
+    <div class="watch_time_badge_group" id="watch_time_subBadge"></div>
   </div>
 
-  <div>バッジ選択</div>
-  <div class="watch_time_badge_group" id="watch_time_mainBadge"></div>
-  <div class="watch_time_badge_group" id="watch_time_subBadge"></div>
+  <div class="watch_time_section">
+    <div>残り時間（条件１）</div>
+
+    <div>時間</div>
+    <div class="watch_time_time_group" id="watch_time_hour"></div>
+
+    <div style="margin-top:10px;">分</div>
+    <div class="watch_time_time_group" id="watch_time_min"></div>
+  </div>
+
+  <button class="watch_time_calc_btn" onclick="watch_time_calc()">計算する</button>
+
+  <div class="watch_time_section">
+    <div>累計視聴時間</div>
+    <div class="watch_time_result" id="watch_time_result">--</div>
+  </div>
+
 </div>
-
-<div class="watch_time_section">
-  <div>残り時間（条件１）</div>
-
-  <div>時間</div>
-  <div class="watch_time_time_group" id="watch_time_hour"></div>
-
-  <div style="margin-top:10px;">分</div>
-  <div class="watch_time_time_group" id="watch_time_min"></div>
-</div>
-
-<button class="watch_time_calc_btn" onclick="watch_time_calc()">計算する</button>
-
-<div class="watch_time_section">
-  <div>累計視聴時間</div>
-  <div class="watch_time_result" id="watch_time_result">--</div>
-</div>
-
+<div class="table">
+	<table id="watch_time_table" class="history">
+		<thead>
+			<tr>
+				<th>バッジ</th>
+				<th>累積視聴時間</th>
+			</tr>
+		</thead>
+		<tbody id="watch_time_table_body">
+		</tbody>
+	</table>
 </div>
 
 <script>
@@ -120,7 +132,7 @@ function createSub(m){
 }
 
 function selectSub(v,btn){
-  if(v==="5.9"){
+  if(v==="5.9" && false){
     watch_time_selectedSub=null;
     updateCurrent();
     createDeep();
@@ -206,6 +218,30 @@ function createMin(){
   }
 }
 
+function createWatchTimeTable() {
+  const tbody = document.getElementById("watch_time_table_body");
+  tbody.innerHTML = "";
+
+  // badgeTimeMapの内容をテーブル（昇順）に追加
+  Object.keys(badgeTimeMap).sort((a, b) => parseFloat(a) - parseFloat(b)).forEach(badge => {
+	if (badge >= "5.6") {
+	  return ;
+	}
+	const time = badgeTimeMap[badge];
+	const row = document.createElement("tr");
+	const badgeCell = document.createElement("td");
+	const timeCell = document.createElement("td");
+
+	badgeCell.textContent = badge;
+	const min = Math.round((time - Math.floor(time)) * 60);
+	timeCell.textContent = time > 0 ? `${Math.floor(time)}時間 ${String(min).padStart(2, '0')}分` : "不明";
+
+	row.appendChild(badgeCell);
+	row.appendChild(timeCell);
+	tbody.appendChild(row);
+  });
+}
+
 const badgeTimeMap = {
   "0.1": 1.5,
   "0.5": 2.0,
@@ -220,16 +256,37 @@ const badgeTimeMap = {
   "2.3": 7.5,
   "2.4": 8.0,
   "2.5": 8.5,
+  "2.6": 9.0,
+  "2.7": 9.5,
+  "2.8": 10.0,
+  "2.9": 11.0,
   "3.0": 12.0,
+  "3.1": 12.0,
+  "3.2": 12.5,
+  "3.3": 13.0,
+  "3.4": 13.5,
   "3.5": 14.0,
+  "3.6": 14.0,
+  "3.7": 14.5,
+  "3.8": 15.0,
+  "3.9": 15.5,
   "4.0": 16.0,
+  "4.1": 16.0,
+  "4.2": 16.5,
+  "4.3": 17.0,
+  "4.4": 17.5,
   "4.5": 18.0,
   "5.0": 20.0,
-  "5.1": -22.0,
-  "5.2": -24.0,
-  "5.3": -26.0,
-  "5.4": -28.0,
+  "5.1": 22.0,
+  "5.2": 24.0,
+  "5.3": 26.0,
+  "5.4": 28.0,
   "5.5": 30.0,
+  "5.6": 30.0,
+  "5.7": 30.0,
+  "5.8": 30.0,
+  "5.9": 30.0,
+  "6.0": 30.0,
 };
 
 /* 計算 */
@@ -241,7 +298,7 @@ function watch_time_calc(){
 
   const badge = parseFloat(watch_time_selectedSub);
   let total = 0;
-  for (let b = badge + 0.1; b < 5.9; b += 0.1) {
+  for (let b = badge + 0.1; b <= 6.1; b += 0.1) {
 	const key = b.toFixed(1);
 	if (badgeTimeMap[key]) {
       if (badgeTimeMap[key] > 0) {
@@ -249,7 +306,6 @@ function watch_time_calc(){
 	  } else {
 	    total = -badgeTimeMap[key];
 	  }
-	  console.log(key);
 	  break;
 	}
   }
@@ -258,8 +314,6 @@ function watch_time_calc(){
   let totalMin = Math.round((total - totalHour) * 60);
   totalHour -= watch_time_hour;
   totalMin -= watch_time_min;
-  console.log(total, Math.floor(total), Math.round((total - totalHour) * 60));
-  console.log(totalHour+"h "+totalMin+"m");
   if (totalMin < 0) {
 	totalHour -= 1;
 	totalMin += 60;
@@ -281,6 +335,7 @@ window.addEventListener("DOMContentLoaded", () => {
   createMain();
   createHour();
   createMin();
+  createWatchTimeTable();
 });
 </script>
 

@@ -587,6 +587,7 @@ function _renderNaviFunc(page, target) {
 		{ id: "history", name: "履歴", url: "history.html" },
 		{ id: "schedule", name: "予定表", url: "schedule.html" },
 		{ id: "event", name: "イベント", url: "event.html" },
+		{ id: "watchtime", name: "累積時間", url: "watchtime.html" },
 		{ id: "about", name: "使い方", url: "about.html" },
 	];
 
