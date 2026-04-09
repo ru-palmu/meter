@@ -947,6 +947,10 @@ table.history tbody tr:hover {
   cursor: default;
 }
 
+table.history tbody tr.highlight {
+  background-color: #ffe08a;
+}
+
 table.history td.decrease {
   /* background-color: #f6dddd; */
   /* background-color: rgba(246, 221, 221, 0.75); */
