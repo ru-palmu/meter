@@ -682,6 +682,9 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
   let rank = RANK_DIC[selected_rank] ?? -5;
 
   let rank_down = rankChange == "Down";  // ランクダウン直後はランクアップできない
+  if (rank <= 0) {
+    rank_down = false; // Dランク以下はランクダウンしないので、常にランクアップ可能
+  }
   let rank_status = ''; // SS+ 対応でっせ．
 
   if (dailyPoint >= RANK_UP_POINT && !rank_down) {
@@ -731,6 +734,9 @@ function updateTotalsFuture(startx, endx, skipCount, resetDate, dailyPoint, rank
         if (rank > 0) { // Dランクはそれ以上下がらない
           rank--;
           rank_down = true;
+        } else {
+          // D は即ランクアップできる
+          rank_down = false;
         }
         rankChange = "Down";
       } else { // ランクキープ
