@@ -381,8 +381,8 @@ window.EVENT_TITLES = {
   "2026-05-05": [
      [
        "ETC1",
-       "みんなでのろう！Youtube広告",
-       "Youtube広告",
+       "みんなでのろう！YouTube広告",
+       "YouTube広告",
      ],
      [
        "ETC2",
