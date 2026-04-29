@@ -1867,6 +1867,17 @@ table.scheduler_month td.date.past {
 	opacity: 0.4;
 }
 
+.weekday.Sat,
+table.scheduler_month td.date.Sat,
+table.scheduler_month th.Sat,
+table.scheduler_month td.date.Sat,
+.day-row .date.Sat,
+.day-row .weekday.Sat {
+/*	color: #64b5f6; /* 青系 */
+	color:  #2f6fd6;
+}
+
+
 .weekday.Sun,
 table.scheduler_month th.Sun,
 table.scheduler_month td.date.Sun,
@@ -1876,14 +1887,14 @@ table.scheduler_month td.date.Sun,
 	color: #d64a4a;
 }
 
-.weekday.Sat,
-table.scheduler_month td.date.Sat,
-table.scheduler_month th.Sat,
-table.scheduler_month td.date.Sat,
-.day-row .date.Sat,
-.day-row .weekday.Sat {
-/*	color: #64b5f6; /* 青系 */
-	color:  #2f6fd6;
+/* Sat より後ろに書くこと */
+.weekday.holiday,
+table.scheduler_month th.holiday,
+table.scheduler_month td.date.holiday,
+.day-row .date.holiday,
+.day-row .weekday.holiday {
+/*	color: #e57373; /* 赤系 */
+	color: #d64a4a;
 }
 
 

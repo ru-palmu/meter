@@ -1,3 +1,5 @@
+
+
 let cal_debug = ((new URLSearchParams(window.location.search)).get("debug") === "1");
 
 const SCHEDULE_PREFIX = 'meter_schedule_';
@@ -362,14 +364,16 @@ function generateSchedule() {
     const tdWeek = document.createElement("td");
     tdWeek.className = "weekday";
     tdWeek.textContent = dow;
-    if (d == today) {
-        tdWeek.classList.add("today"); // 今日の日付にクラスを追加
-    } else if (d.getDay() === EVENT_STATE_DOW) {
-        tdWeek.classList.add("event-day"); // イベント切り替わりの日にクラスを追加
-    } else if (d.getDay() === 0) {
+
+    if (d.getDay() === 0) {
       tdWeek.classList.add("Sun");
     } else if (d.getDay() === 6) {
       tdWeek.classList.add("Sat");
+    }
+
+    if (window.HOLIDAYS_JP && window.HOLIDAYS_JP[dateStr]) {
+      // 祝日
+      tdWeek.classList.add("holiday");
     }
     tr.appendChild(tdWeek);
 
@@ -425,9 +429,9 @@ function generateSchedule() {
     // 区切り日までの残日数
     const tdRestDay= document.createElement("td");
     tdRestDay.className = "restDay";
-	if (SCHE_DEBUG) {
+    if (SCHE_DEBUG) {
       tr.appendChild(tdRestDay);
-	}
+    }
     if (scheduleData[dateStr]?.restDay) tdRestDay.value = scheduleData[dateStr].restDay;
 
     // メモ
@@ -500,6 +504,10 @@ function generateSchedulePast() {
       tdWeek.classList.add("Sun");
     } else if (d.getDay() === 6) {
       tdWeek.classList.add("Sat");
+    }
+    if (window.HOLIDAYS_JP && window.HOLIDAYS_JP[dateStr]) {
+      // 祝日
+      tdWeek.classList.add("holiday");
     }
 
     // イベント
@@ -1168,6 +1176,10 @@ function makeWeekPngRow(nowDay, isMemo, memoSize, rank_class) {
   tdWeek.classList.add(weekEN[dow]);
   tdDate.appendChild(tdWeek);
 
+  if (window.HOLIDAYS_JP && window.HOLIDAYS_JP[dstr]) {
+    tdDate.classList.add("holiday");
+    tdWeek.classList.add("holiday");
+  }
   tr.appendChild(tdDate);
 
   //////////////////////////////////
@@ -1401,6 +1413,9 @@ function makeMonthPng(id_canvas, start, sep, weekn, isMemo) {
         tdDate.classList.add("today");
       } else if (i == 0 && dateStr < today) {
         tdDate.classList.add("past");
+      }
+      if (window.HOLIDAYS_JP && window.HOLIDAYS_JP[dateStr]) {
+        tdDate.classList.add("holiday");
       }
       trs['date'].appendChild(tdDate);
 
