@@ -64,6 +64,8 @@
   <div class="watch_time_section">
     <div>累計視聴時間</div>
     <div class="watch_time_result" id="watch_time_result">--</div>
+    <div><span id="next_badge_text">次の</span>バッジまで</div>
+    <div class="watch_time_result" id="next_badge_result">--</div>
   </div>
 
 </div>
@@ -225,29 +227,29 @@ function createWatchTimeTable() {
 
   // badgeTimeMapの内容をテーブル（昇順）に追加
   Object.keys(badgeTimeMap).sort((a, b) => parseFloat(a) - parseFloat(b)).forEach(badge => {
-	if (badge >= "5.6") {
-	  return ;
-	}
-	const time = badgeTimeMap[badge][0];
-	const row = document.createElement("tr");
-	const badgeCell = document.createElement("td");
-	const timeCell = document.createElement("td");
-	const giftCell = document.createElement("td");
+    if (badge >= "5.6") {
+      return ;
+    }
+    const time = badgeTimeMap[badge][0];
+    const row = document.createElement("tr");
+    const badgeCell = document.createElement("td");
+    const timeCell = document.createElement("td");
+    const giftCell = document.createElement("td");
 
-	badgeCell.textContent = badge;
-	const min = Math.round((time - Math.floor(time)) * 60);
-	timeCell.textContent = time > 0 ? `${Math.floor(time)}時間 ${String(min).padStart(2, '0')}分` : "不明";
-	giftCell.textContent = (badgeTimeMap[badge][1]).toLocaleString();
+    badgeCell.textContent = badge;
+    const min = Math.round((time - Math.floor(time)) * 60);
+    timeCell.textContent = time > 0 ? `${Math.floor(time)}時間 ${String(min).padStart(2, '0')}分` : "不明";
+    giftCell.textContent = (badgeTimeMap[badge][1]).toLocaleString();
 
-	row.appendChild(badgeCell);
-	row.appendChild(timeCell);
-	row.appendChild(giftCell);
-	tbody.appendChild(row);
+    row.appendChild(badgeCell);
+    row.appendChild(timeCell);
+    row.appendChild(giftCell);
+    tbody.appendChild(row);
 
-	// badge が *.0 のときは強調
-	if (badge.endsWith(".0")) {
-	  row.classList.add("highlight");
-	}
+    // badge が *.0 のときは強調
+    if (badge.endsWith(".0")) {
+      row.classList.add("highlight");
+    }
 
   });
 }
@@ -310,37 +312,75 @@ function watch_time_calc(){
     return;
   }
 
+  // 次のグレードをみつける
   const badge = parseFloat(watch_time_selectedSub);
   let total = 0;
   for (let b = badge + 0.1; b <= 6.1; b += 0.1) {
-	const key = b.toFixed(1);
-	if (badgeTimeMap[key]) {
+    const key = b.toFixed(1);
+    if (badgeTimeMap[key]) {
       if (badgeTimeMap[key][0] > 0) {
-	    total = badgeTimeMap[key][0];
-	  } else {
-	    total = -badgeTimeMap[key][0];
-	  }
-	  console.log(`Badge: ${key}, Time: ${total}`);
-	  break;
+        total = badgeTimeMap[key][0];
+      } else {
+        total = -badgeTimeMap[key][0];
+      }
+      // console.log(`Badge: ${key}, Time: ${total}`);
+      break;
 	}
   }
 
+  // 次のバッジをみつける
+  let next_badge = null;
+  let next_badge_text = '次の';
+  for (let b = badge + 0.1; b <= 6.1; b += 0.1) {
+    const key = b.toFixed(1);
+    if (["1.0", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5"].includes(key)) {
+      next_badge = badgeTimeMap[key][0] * 60;
+      next_badge_text = key;
+      break;
+    }
+  }
+
+  document.getElementById("watch_time_result").textContent = "--";
+  document.getElementById("next_badge_result").textContent = "--";
+
+  const wmin = setTotalResult(total, "watch_time_result");	// いままでの累積
+  setNextResult(next_badge, wmin, "next_badge_result");
+  document.getElementById("next_badge_text").textContent = next_badge_text;
+}
+
+function setNextResult(target_min, wmin, elementId) {
+  if (!target_min) {
+    return ;
+  }
+  const minutes = Math.floor(target_min - wmin);
+
+  const totalMin = minutes % 60;
+  const totalHour = Math.floor(minutes / 60);
+
+  document.getElementById(elementId).textContent =
+    totalHour+"時間 "+totalMin+"分";
+}
+
+function setTotalResult(total, elementId) {
+  if (!total) {
+    return 0;
+  }
   let totalHour = Math.floor(total);
   let totalMin = Math.round((total - totalHour) * 60);
-	console.log(`Total: ${totalHour}h ${totalMin}m`);
+  // console.log(`Total: ${totalHour}h ${totalMin}m`);
   totalHour -= watch_time_hour;
   totalMin -= watch_time_min;
   if (totalMin < 0) {
-	totalHour -= 1;
-	totalMin += 60;
+    totalHour -= 1;
+    totalMin += 60;
   }
   if (totalHour < 0) {
-	totalHour = 0;
-	totalMin = 0;
+    totalHour = 0;
+    totalMin = 0;
   }
-
-  document.getElementById("watch_time_result").textContent =
+  document.getElementById(elementId).textContent =
     totalHour+"時間 "+totalMin+"分";
+  return Math.floor(totalHour * 60 + totalMin);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
