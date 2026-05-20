@@ -951,6 +951,10 @@ table.history tbody tr.highlight {
   background-color: #ffe08a;
 }
 
+table.history tbody tr.highlight2 {
+  background-color: #fff6d6;
+}
+
 table.history td.decrease {
   /* background-color: #f6dddd; */
   /* background-color: rgba(246, 221, 221, 0.75); */

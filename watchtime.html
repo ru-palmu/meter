@@ -249,8 +249,9 @@ function createWatchTimeTable() {
     // badge が *.0 のときは強調
     if (badge.endsWith(".0")) {
       row.classList.add("highlight");
+    } else if (badge.endsWith(".5") && badge != "0.5" || badge == "5.9") {
+      row.classList.add("highlight2");
     }
-
   });
 }
 
