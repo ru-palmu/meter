@@ -144,7 +144,7 @@ function calculateDynamicScores(rank, a, b) {
     } else if (targets.length == 1) {
         return `変動+${targets[0]}=${s.toLocaleString()}`;
     } else {
-        return `目標値=${s.toLocaleString()}`;
+        return `残り${s.toLocaleString()}`;
     }
   });
 
@@ -155,9 +155,9 @@ function calculateDynamicScores(rank, a, b) {
   let is_hitokoto_comment = false;
   if (format.endsWith('x')) {	// 一言コメント用 15文字以内
     // 2x, 4x, 6x
-    ret = b + '→🪙';
+    ret = b + '→🎁';
     is_hitokoto_comment = true;
-    help += '→🪙';
+    help += '→🎁';
     help2 += '変動+' + targets[0] + 'に必要なコイン数';
   } else if (targets.length == 1 || format == 'all') {
     // +2, +4, +6 のみ
@@ -174,8 +174,8 @@ function calculateDynamicScores(rank, a, b) {
     help2 += '約xxxコイン数で目標値達成';
   }
   if (!is_hitokoto_comment) {
-    ret += ' 🪙 ';
-    help += ' 🪙 ';
+    ret += ' 🎁 ';
+    help += ' 🎁 ';
   }
 
   ret += results.filter(s => s !== "").join(', ');
@@ -225,9 +225,9 @@ function calculateLiveScoreToCoins(a, b) {
   let is_hitokoto_comment = false;
   if (format.endsWith('x')) {
     // 2x, 4x, 6x
-    ret = b + '→🪙';
+    ret = b + '→🎁';
     is_hitokoto_comment = true;
-    help += '→🪙';
+    help += '→🎁';
     help2 += '+' + targets[0] + 'に必要なコイン数';
   } else if (targets.length == 1) {
     // +2, +4, +6 のみ
@@ -242,8 +242,8 @@ function calculateLiveScoreToCoins(a, b) {
     help2 += '約xxxコイン数で+2確定, ...';
   }
   if (!is_hitokoto_comment) {
-    ret += ' 🪙 ';
-    help += ' 🪙 ';
+    ret += ' 🎁 ';
+    help += ' 🎁 ';
   }
 
   ret += results.filter(s => s !== "").join(', ');
