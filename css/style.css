@@ -865,7 +865,7 @@ button {
   text-decoration: underline;
 }
 
-thead th {
+thead th, th.header {
 	position: sticky;
 	top: 0;
 	background-color: #a8d5a2; /* 明るい緑 */

@@ -118,6 +118,108 @@ function renderMeterTableForDate() {
 }
 
 
+function renderLiveScoreTableGroup() {
+	const title = document.getElementById('livescore-table-title-group');
+	if (!title) {
+		return;
+	}
+
+	// ymd が妥当でなかったら，最新のものを採用する
+	// ライブスコアを降順に整列
+	let ymd = document.getElementById('date-select').value;
+	if (!ymd || !(ymd in presets)) {
+		// 初期表示
+		const select = document.getElementById('date-select');
+		ymd = select.value = Object.keys(presets).sort().reverse()[0];
+	}
+	const date_base = document.getElementById('date-base-select').value;
+	title.textContent = `ライブスコアを降順に整列`
+
+	const title_date = document.getElementById('livescore-table-title-date-group');
+	title_date.textContent = `${ymd.slice(0,4)}/${ymd.slice(4,6)}/${ymd.slice(6,8)} ver`;
+
+	if (date_base && ymd > date_base) {
+		const note = document.getElementById('livescore-table-title-note-group');
+		note.textContent = `(${date_base.slice(0,4)}/${date_base.slice(4,6)}/${date_base.slice(6,8)} と比較して高くなっていたら赤強調)`;
+	}
+
+	const candRanks = new Set(window.getCandRank(''));
+
+	// データを全部並べる
+	const base = presets[date_base] || {};
+	const results = Object.entries(presets[ymd])
+	    .filter(([rank]) => candRanks.has(rank))
+		.flatMap(([rank, data]) =>
+			Object.entries(data).map(([point, meter]) => [
+				rank,
+				'+' + point,
+				window.scoreOrCoin(meter, 'score', 'raw'),
+				window.scoreOrCoin(meter, 'score', 'short'),
+				window.scoreOrCoin(meter, 'coin', 'comma'),
+				base[rank] && base[rank][point] ? meter / base[rank][point] : 1.0,
+				[],
+			])).sort((a, b) => b[2] - a[2]);
+
+	const tableBody = document.getElementById('livescore-tbody-group');
+	tableBody.innerHTML = '';
+
+	resultsA = results.filter(([rank]) => rank.includes("A") || rank.includes("S"));
+	resultsB = results.filter(([rank]) => rank.includes("B"));
+	resultsC = results.filter(([rank]) => rank.includes("C"));
+	resultsBC = [...resultsB, [], [], [], ...resultsC];
+
+	// 基準日と比較して高くなったもので，かつ比率が1.0より大きいものを抽出して降順に整列
+	_hightlightTopsLivescoreBorder(resultsA, 5, 6);
+	_hightlightTopsLivescoreBorder(resultsB, 5, 6);
+	_hightlightTopsLivescoreBorder(resultsC, 5, 6);
+
+	// データを半分に分割して表示
+	for (let i = 0; i < Math.max(resultsA.length, resultsBC.length); i++) {
+		const row = document.createElement('tr');
+
+		// ランク名
+		let results = resultsA;
+		[results[i][0], results[i][1], results[i][3], results[i][4]].forEach((val, idx) => {
+			const clsNames = [];
+			if (idx == 3 || idx == 2) {
+				for (const cls of results[i][6]) {
+					clsNames.push(cls);
+				}
+			}
+			_createTableData(row, val, clsNames);
+		});
+
+		// 空行 (区切り)
+		const sep = document.createElement('td');
+		sep.className = 'sep';
+		row.appendChild(sep);
+
+		// 2列目
+		if (resultsBC[i].length >= 5) {
+			const j = i;
+			results = resultsBC;
+			[results[j][0], results[j][1], results[j][3], results[j][4]].forEach((val, idx) => {
+				const clsNames = [];
+				if (idx == 3 || idx == 2) {
+					for (const cls of results[j][6]) {
+						clsNames.push(cls);
+					}
+				}
+				_createTableData(row, val, clsNames);
+			});
+		} else if (i + 1 < resultsBC.length && resultsBC[i + 1].length >= 5) {
+			// ヘッダを挿入する
+			['ランク', 'Pt.', 'スコア', 'コイン'].forEach((val) => {
+				const th = document.createElement('th');
+				th.textContent = val;
+				th.className = 'header';
+				row.appendChild(th);
+			});
+		}
+		tableBody.appendChild(row);
+	}
+}
+
 function renderLiveScoreTable() {
 	const title = document.getElementById('livescore-table-title');
 	if (!title) {
@@ -539,6 +641,7 @@ window.addEventListener("DOMContentLoaded", () => {
       params.get('rankgroup') || '');
   renderMeterTableForDate();  // 初期表示
   renderLiveScoreTable();
+  renderLiveScoreTableGroup();
   renderBorderMultiplierTable();
   renderKeeupCoinMultiplierTable();
 

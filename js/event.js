@@ -7,6 +7,7 @@ const EVENT_ITEM = [
 	{"value": "1YA", "text": "１周年", "long": "デビュー１周年"},
 	{"value": "FB", "text": "バッジ", "long": "ファンバッジ"},
 	{"value": "BD", "text": "誕生日"},
+	{"value": "GFT", "text": "オリギフ", "long": "オリジナルギフト"},
 	{"value": "ALL", "text": "大型"},
 	{"value": "ETC", "text": "その他"},
 ];
