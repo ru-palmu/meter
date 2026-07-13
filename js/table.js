@@ -163,10 +163,10 @@ function renderLiveScoreTableGroup() {
 	const tableBody = document.getElementById('livescore-tbody-group');
 	tableBody.innerHTML = '';
 
-	resultsA = results.filter(([rank]) => rank.includes("A") || rank.includes("S"));
-	resultsB = results.filter(([rank]) => rank.includes("B"));
-	resultsC = results.filter(([rank]) => rank.includes("C"));
-	resultsBC = [...resultsB, [], [], [], ...resultsC];
+	const resultsA = results.filter(([rank]) => rank.includes("A") || rank.includes("S"));
+	const resultsB = results.filter(([rank]) => rank.includes("B"));
+	const resultsC = results.filter(([rank]) => rank.includes("C"));
+	const resultsBC = [...resultsB, [], [], [], ...resultsC];
 
 	// 基準日と比較して高くなったもので，かつ比率が1.0より大きいものを抽出して降順に整列
 	_hightlightTopsLivescoreBorder(resultsA, 5, 6);
