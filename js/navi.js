@@ -9,7 +9,7 @@ const cand_rank = ["D", "C1", "C2", "C3", "B1", "B2", "B3", "A1", "A2", "A3", "A
 
 const RANK_DIC = {}
 for (let i = 0; i < cand_rank.length; i++) {
-    RANK_DIC[cand_rank[i]] = i;
+	RANK_DIC[cand_rank[i]] = i;
 }
 
 // preset から最新の日付を取得. meter.js 読み込み済みと仮定
@@ -44,40 +44,87 @@ window.lerpColor = function (startColor, endColor, t) {
 
 // キロ表示
 function formatAsK(value) {
-  if (value < 100000) {
-    return (Math.floor(value / 100) / 10).toFixed(1);  // 小数第1位（切り捨て）
-  } else {
-    return Math.floor(value / 1000);      // 整数（千単位）
-  }
+	if (value < 100000) {
+		return (Math.floor(value / 100) / 10).toFixed(1);    // 小数第1位（切り捨て）
+	} else {
+		return Math.floor(value / 1000);            // 整数（千単位）
+	}
 }
 
 function formatPalmu(value) {
-  if (value < 10000) {
-    // カンマ区切りで
-    return value.toLocaleString();
-  } else if (value < 1000000) {
-    return formatAsK(value) + "K";
-  } else {
-    return (Math.floor(value / 10000) / 100).toFixed(2)+ "M";
-  }
+	if (value < 10000) {
+		// カンマ区切りで
+		return value.toLocaleString();
+	} else if (value < 1000000) {
+		return formatAsK(value) + "K";
+	} else {
+		return (Math.floor(value / 10000) / 100).toFixed(2)+ "M";
+	}
 }
 
+const RU_MODEL_LOW = [
+	// 2026-07-25 〜
+	// [b, a, 右端, 次モデルの左端]
+	[100.0000000000, 3.18084360e+00, 15904, 15904],  // __0k ..  5k  0.80576 1649
+	[471.5818090200, 3.08652724e+00, 31336, 32063],  // __5k .. 10k  0.93238 1756
+	[2332.077706820, 2.97314307e+00, 46929, 48030],  // _10k .. 15k  0.86712  927
+	// 49704 46929, 48030
+];
+
 const RU_MODEL_BA = [
-	[0, 3.040719436589159],
-	[15531.441501008434, 2.6950897058012684],
-	[41958.68833499996, 2.5483011271896387],
+	// 2025-11-06 〜
+	// [0, 3.040719436589159],
+	// [15531.441501008434, 2.6950897058012684],
+	// [41958.68833499996, 2.5483011271896387],
+
+	// 2026-07-25 〜
+	[4.50766479e+03, 2.90153431e+00],  // _15k .. 50k  0.99930
+	[1.25295033e+04, 2.74063787e+00],  // _50k .. 80k  0.99846 3249
+	[1.71157423e+04, 2.68423434e+00],  // _80k .. 150k 0.99941 2534
+	[3.14932929e+04, 2.59226539e+00],  // 150k .. 300k 0.99774 1592
+	[5.86271843e+04, 2.50818833e+00],  // 300k ..      0.99967 480
 ];
 
 function score2coin_orig(score) {
+	// ライブスコアからコイン数算出
+	if (score <= RU_MODEL_LOW[2][3]) {
+		// 15000 コイン以下のモデル.
+		// 連続でない点に注意
+		for (let i = 0; i < RU_MODEL_LOW.length; i++) {
+			const [b, a, max_score, next_model] = RU_MODEL_LOW[i];
+			if (score <= next_model) {
+				if (score <= max_score) {
+					const p = Math.floor((score - b) / a);
+					return Math.max(i * 5000, p);
+				} else {
+					// もう少しだけたりない...
+					return (i + 1) * 5000 + 10;
+				}
+			}
+		}
+	}
 	const model = RU_MODEL_BA;
 	return Math.max(...model.map(([b, a]) => (score - b) / a));
 }
 
 function coin2score(coin) {
-	const model = RU_MODEL_BA;
-	return Math.min(...model.map(([b, a]) => coin * a + b));
+	// コイン数からライブスコア算出
+	if (coin <= 15000) {
+		const model = RU_MODEL_LOW;
+		let m;
+		if (coin <= 5000) {
+			m = model[0];
+		} else if (coin <= 10000) {
+			m = model[1];
+		} else {
+			m = model[2];
+		}
+		return coin * m[1] + m[0];
+	} else {
+		const model = RU_MODEL_BA;
+		return Math.min(...model.map(([b, a]) => coin * a + b));
+	}
 }
-
 
 // ライブスコアに相当するコイン数を算出する．
 // ギフトの最小値が 10 のため, 1の位を切り上げ.
@@ -87,6 +134,14 @@ function score2coin(goal_score, current_score, algorithm='normal') {
     coin = (goal_score - current_score) / 3;
   } else {
     coin = score2coin_orig(goal_score) - score2coin_orig(current_score);
+  }
+
+  if (coin <= 0) {
+    if (goal_score > current_score) {
+      coin = 10;
+    } else {
+      coin = 0;
+    }
   }
   return Math.ceil(coin / 10) * 10;
 }
@@ -1195,3 +1250,4 @@ window.updateUrl = updateUrl;
 window.applyParamsToFormControls = applyParamsToFormControls;
 window.plan2scoreOrcoin = plan2scoreOrcoin;
 
+// vim:set ts=4 sw=4 sts=4 et:
