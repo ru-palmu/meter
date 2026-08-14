@@ -1205,6 +1205,33 @@ function tableHeaderFixer() {
 	});
 }
 
+async function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      // フォールバックへ
+    }
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.top = "0";
+  textarea.style.opacity = "0";       // 透明化（念のため）
+  textarea.style.pointerEvents = "none";  // 操作できないように
+
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  try {
+    return document.execCommand("copy");
+  } finally {
+    textarea.remove();
+  }
+}
+
 document.addEventListener("click", (e) => {
 
   const a = e.target.closest("a[data-track]");
@@ -1249,5 +1276,6 @@ window.updateGuaranteedScore = updateGuaranteedScore;
 window.updateUrl = updateUrl;
 window.applyParamsToFormControls = applyParamsToFormControls;
 window.plan2scoreOrcoin = plan2scoreOrcoin;
+window.copyToClipboard = copyToClipboard;
 
 // vim:set ts=4 sw=4 sts=4 et:
