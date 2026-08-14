@@ -118,6 +118,13 @@ function _calculetePlans(values, rank) {
 
 	const sort_idx = showCond[1];
 	rawPlans.sort((a, b) => a[1][sort_idx] - b[1][sort_idx]);
+
+	const result = _outputStringPlans(rank, days, points, rawPlans, showCond);
+	document.getElementById("result_daily").value = result;
+}
+
+
+function _outputStringPlans(rank, days, points, rawPlans, showCond) {
 	let result = rank + ": " + days + "日で +" + points + "\nプラン";
 
 	// format は coin|score|both のいずれか
@@ -140,7 +147,7 @@ function _calculetePlans(values, rank) {
 			}
 		}
 	}
-	document.getElementById("result_daily").value = result;
+	return result;
 }
 
 
