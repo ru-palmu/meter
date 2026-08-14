@@ -1108,8 +1108,6 @@ function makeCopyright(year, debug_str) {
   copyright.className = "copyright";
 
   const sp = "\u00A0"; // "\u00A0";
-  const sp1 = sp.repeat(2);
-  const sp2 = sp.repeat(1);
   const suffix = (cal_debug) ? debug_str : "";
   const text = document.createTextNode(`ぱ(る)むの計算機 by (る)` + suffix);
 

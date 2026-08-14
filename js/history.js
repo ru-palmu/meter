@@ -424,7 +424,7 @@ async function copyHistory(dateStr) {
   const p6 = formatPalmu(presets[dateStr][rank][6]);
   const textToCopy = `${dateStr} ${rank}確定スコア +2=${p2} +4=${p4} +6=${p6}`;
 
-  const success = await window.copyToClipboard(textToCopy);
+  await window.copyToClipboard(textToCopy);
 }
 
 function __renderHistoryResultEnd() {

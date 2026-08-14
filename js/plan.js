@@ -127,8 +127,9 @@ function _calculetePlans(values, rank) {
 }
 
 async function copyPlanResult() {
-	copyToClipboard(_copy_plan_text);
+	window.copyToClipboard(_copy_plan_text);
 }
+window.__copyPlanResult = copyPlanResult;
 
 
 function _outputStringPlans(rank, days, points, rawPlans, showCond) {
@@ -240,7 +241,7 @@ function _renderPlansTable(rank, days, points, rawPlans, showCond) {
 				text += scorecoin[1].toLocaleString();
 			}
 			text += " / ⤴" + formatPalmu(scorecoin[0]);
-			copyToClipboard(text);
+			window.copyToClipboard(text);
 		});
 	}
 }
