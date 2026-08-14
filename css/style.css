@@ -1695,6 +1695,13 @@ table.mini-char th.box.tr,
 /*==================================================
  * plan プラン
  *=================================================*/
+
+.copy-hint {
+    margin: 0 0 0.4rem;
+    color: #999;
+    font-size: 0.75rem;
+}
+
 .plan-result {
   margin: 1rem 0;
   border: 1px solid #e5e7eb;

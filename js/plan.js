@@ -10,6 +10,8 @@ const PLAN_SELECTORS = [
 	['date-select', 'date'],
 ];
 
+let _copy_plan_text = "";
+
 function _updateUrlPlan() {
 	return updateUrl(PLAN_SELECTORS);
 }
@@ -119,10 +121,13 @@ function _calculetePlans(values, rank) {
 	const sort_idx = showCond[1];
 	rawPlans.sort((a, b) => a[1][sort_idx] - b[1][sort_idx]);
 
-	const result = _outputStringPlans(rank, days, points, rawPlans, showCond);
-	document.getElementById("result_daily").value = result;
+	_copy_plan_text = _outputStringPlans(rank, days, points, rawPlans, showCond);
 
 	_renderPlansTable(rank, days, points, rawPlans, showCond);
+}
+
+async function copyPlanResult() {
+	copyToClipboard(_copy_plan_text);
 }
 
 
@@ -209,6 +214,7 @@ function _renderPlansTable(rank, days, points, rawPlans, showCond) {
 			}
 		}
 		if (th_num == 1) {
+			// １列しかないときは、最適との差を表示
 			let text = '-';
 			if (target_value == null) {
 				target_value = scorecoin[index];
@@ -223,6 +229,19 @@ function _renderPlansTable(rank, days, points, rawPlans, showCond) {
 			td.classList.add("coin-diff");
 			tr.appendChild(td);
 		}
+
+		tr.addEventListener("click", async () => {
+			// 行タップでコピー
+			let text = plan.join("") + " 🎁";
+			if (!showCond[0][0] && !showCond[0][1] && showCond[0][2]) {
+				// コイン[÷3] のみ表示されている場合
+				text +=  "[÷3]" + scorecoin[2].toLocaleString();
+			} else {
+				text += scorecoin[1].toLocaleString();
+			}
+			text += " / ⤴" + formatPalmu(scorecoin[0]);
+			copyToClipboard(text);
+		});
 	}
 }
 

@@ -54,7 +54,7 @@
 <br>
 
 <div>
-	<button class="copy-button" onclick="copyResult('result_daily')">📋 コピー</button>
+	<button class="copy-button" onclick="copyPlanResult()">📋 コピー</button>
 
 <select id="result-format">
 	<option value="coin">コイン（改良モデル）</option>
@@ -62,6 +62,7 @@
 	<option value="score">ライブスコア</option>
 	<option value="both">全部</option>
 </select>
+<span class="copy-hint">行タップで，プラン情報をコピーできます</span>
 <br>
 
 <section class="plan-result">
@@ -113,8 +114,6 @@
   </table>
 </section>
 
-
-  <textarea class="copy-output" id="result_daily" rows="8" cols="40" readonly></textarea>
 </div>
 
 
