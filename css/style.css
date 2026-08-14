@@ -1692,6 +1692,153 @@ table.mini-char th.box.tr,
   border: 1px solid #ccc;
 }
 
+/*==================================================
+ * plan プラン
+ *=================================================*/
+.plan-result {
+  margin: 1rem 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.plan-result__heading {
+  padding: 0.5rem 2rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.plan-result__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.plan-result__subtitle {
+  margin-top: 0.15rem;
+  margin-left: 0.15rem;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.plan-result__subtitle strong {
+  color: #334155;
+  font-size: 1rem;
+}
+
+
+/* table */
+
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.plan-table th,
+.plan-table td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.plan-table thead th {
+  color: #64748b;
+  background: #fafafa;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.plan-table thead th.coin-diff {
+  font-size: 0.67rem;
+}
+
+.plan-table tbody tr:last-child th,
+.plan-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+
+/* 7日間の配分 */
+
+.plan {
+  padding: 0.35rem 0.2rem;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  white-space: nowrap;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.point {
+  display: inline-block;
+
+  margin: 0.1rem;
+  padding: 0.20rem 0.15rem;
+
+  border-radius: 0.2rem;
+
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.point-6 {
+  color: #fff;
+  background: #2563eb;
+}
+
+.point-4 {
+  color: #fff;
+  background: #16a34a;
+}
+
+.point-2 {
+  color: #fff;
+  background: #f59e0b;
+}
+
+.point-1 {
+  color: #64748b;
+  background: #f1f5f9;
+}
+
+/* コイン・差額 */
+
+.coins,
+.coin-diff {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.coins {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.coin-diff {
+  color: #94a3b8;
+  font-size: 0.7rem;
+}
+
+
+/* 最安プラン */
+
+.plan-table .is-best {
+  background: #f8fbff;
+}
+
+.plan-table .is-best .coins {
+  color: #2563eb;
+  font-size: 0.9rem;
+}
 
 /*==================================================
  * 月間スケジューラ・画像生成

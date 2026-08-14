@@ -121,6 +121,8 @@ function _calculetePlans(values, rank) {
 
 	const result = _outputStringPlans(rank, days, points, rawPlans, showCond);
 	document.getElementById("result_daily").value = result;
+
+	_renderPlansTable(rank, days, points, rawPlans, showCond);
 }
 
 
@@ -150,6 +152,79 @@ function _outputStringPlans(rank, days, points, rawPlans, showCond) {
 	return result;
 }
 
+function _renderPlansTable(rank, days, points, rawPlans, showCond) {
+	document.getElementById("plan-result-rank").innerText = rank
+	document.getElementById("plan-result-days").innerText = days + "日";
+	document.getElementById("plan-result-points").innerText = "+" + points;
+
+	const tr_head = document.getElementById("plan-result-header-tr");
+	tr_head.innerHTML = "";
+
+	const th_plan = document.createElement("th");
+	th_plan.innerText = "プラン";
+	tr_head.appendChild(th_plan);
+
+	let th_num = 0;
+	["スコア", "コイン[改]", "コイン[÷3]"].forEach((label, idx) => {
+		if (showCond[0][idx]) {
+			const th = document.createElement("th");
+			th.innerText = label;
+			tr_head.appendChild(th);
+			th_num++;
+		}
+	});
+	if (th_num == 1) {
+		const th = document.createElement("th");
+		th.innerText = "最適との差";
+		th.classList.add("coin-diff");
+		tr_head.appendChild(th);
+	}
+
+	const tbody = document.getElementById("plan-result-tbody");
+	tbody.innerHTML = "";
+	let target_value = null;
+	let index = 0;
+	for (const [plan, scorecoin] of rawPlans) {
+		const tr = document.createElement("tr");
+		tbody.appendChild(tr);
+
+		const td_plan = document.createElement("td");
+		td_plan.classList.add("plan");
+		plan.forEach(p => {
+			const span = document.createElement("span");
+			span.innerText = p;
+			span.classList.add("point")
+			span.classList.add("point-" + p)
+			td_plan.appendChild(span);
+		});
+		tr.appendChild(td_plan);
+
+		for (let i = 0; i < showCond[0].length; i++) {
+			if (showCond[0][i]) {
+				const td = document.createElement("td");
+				td.innerText = scorecoin[i].toLocaleString();
+				td.classList.add("coins");
+				tr.appendChild(td);
+				index = i;
+			}
+		}
+		if (th_num == 1) {
+			let text = '-';
+			if (target_value == null) {
+				target_value = scorecoin[index];
+				tr.classList.add("is-best");
+			} else {
+				text = scorecoin[index] - target_value;
+				// target_value = scorecoin[index];
+				text = text.toLocaleString();
+			}
+			const td = document.createElement("td");
+			td.innerText = text;
+			td.classList.add("coin-diff");
+			tr.appendChild(td);
+		}
+	}
+}
 
 // n 日後に x ポイントの選択除法をセッションに保存する
 function _savePlanArgs(days, points, format) {
