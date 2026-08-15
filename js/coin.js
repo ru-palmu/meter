@@ -4,9 +4,11 @@ const METER_PREFIX = 'meter_meter_';
 
 const METER_INPUT_SELECT = [
 	// [session-id, html-id]
-	['format', 'result-format'],
+	['format', 'meter-copy-format'],
 	['live_score', 'live_score'],
-	['date', 'date-select'],
+	['meter-display-2', 'meter-display-2'],
+	['meter-display-4', 'meter-display-4'],
+	['meter-display-6', 'meter-display-6'],
 ];
 
 function updateUrlMeter() {
@@ -76,8 +78,10 @@ function calculate(rank = '') {
 
   const border_type = document.getElementById("border-type")?.value;
   if (border_type === 'dynamic') {
+	// 変動値
     calculateDynamicScores(rank, a, b);
   } else {
+	// 確定値
     calculateLiveScoreToCoins(a, b);
   }
 
@@ -102,6 +106,15 @@ function _saveMeterArgs() {
 			table.push([session_id, value]);
 		}
 	});
+	['meter-display-2', 'meter-display-4', 'meter-display-6'].forEach(id => {
+		const elm = document.getElementById(id);
+		if (!elm) {
+			return;
+		}
+		const value = elm.checked ? 1 : 0;
+		table.push([id, value]);
+	});
+
 	saveSessionArgs(METER_PREFIX, table);
 }
 
@@ -109,148 +122,178 @@ function loadDefaultMeter() {
 	loadDefaultValues(METER_PREFIX, METER_INPUT_SELECT);
 }
 
-// いったん，calculateLiveScoreToCoins のコピーから
+// 「変動値」用
 function calculateDynamicScores(rank, a, b) {
+  const tbody = document.getElementById("meter-result-tbody")
+  tbody.innerHTML = '';
 
-  const format = document.getElementById("result-format").value;
+  target = 'g';
+  const score = parseInt(document.getElementById("dynamic-border-value")?.value ?? '0') || '0';
+  const coin = score2coin(score, b, 'normal') ?? 0;
+  const tr = __reanderMeterCardRow(score, b, target);
+  tbody.appendChild(tr);
 
-  let targets = [];
-  if (format == 'all' || format.startsWith('easy')) {
-    targets = [2, 4, 6];
-  } else if (format.endsWith('x')) {
-    // 2x, 4x, 6x
-    targets = [parseInt(format[0])];
-  } else {
-    // 2, 4, 6
-    targets = [parseInt(format)];
+  const str = __resultMeterStr(b, score, coin, target, true);
+  __setTextAreaText('result', str);
+}
+
+function __createSpan(className, textContent) {
+	const span = document.createElement('span');
+	span.classList.add(className);
+	span.textContent = textContent;
+	return span;
+}
+
+function __setTextAreaText(id, str) {
+  const ta = document.getElementById(id);
+  ta.value = str;
+
+  // str の行数を数える
+  const lineCount = str.split('\n').length;
+  ta.rows = Math.min(Math.max(lineCount, 1), 10); // 最小3行、最大10行
+}
+
+function __reanderMeterCardRow(score, b, target) {
+  const tr = document.createElement('tr');
+
+  const th = document.createElement('th');
+  th.scope = 'row'
+  if (target != 'g') {
+    th.appendChild(__createSpan('point-' + target, target));
   }
+  th.appendChild(__createSpan('meter-result-target', '⤴ ' + formatPalmu(score) + 'まで'));
+  tr.appendChild(th);
 
+  const td2 = document.createElement('td');
+  td2.classList.add('meter-result-coins');
+  td2.appendChild(__createSpan('meter-result-unit', '🎁'));
+  const coin = score2coin(score, b, 'normal');
+  td2.appendChild(__createSpan('meter-result-value', coin.toLocaleString()));
+  tr.appendChild(td2);
 
-  a['g'] = parseInt(document.getElementById("dynamic-border-value")?.value ?? '0');
+  const td3 = document.createElement('td');
+  td3.classList.add('meter-result-copy');
+  const button = document.createElement('button');
+  button.textContent = 'コピー';
+  button.classList.add('meter-copy-button');
+  td3.appendChild(button);
+  tr.appendChild(td3);
 
-  const s2calgo = format.endsWith('_per3') ? 'per3' : 'normal';
-
-  const results = ['g'].map(i => {
-    // 残スコアから必要コイン数を算出
-    const s = score2coin(a[i], b, s2calgo);
-    if (s < 20) {
-        return '';
-    }
-    if (format.startsWith('easy')) {
-        return `${s.toLocaleString()}コインで目標値達成`;
-    } else if (format.endsWith('x')) {
-        // 一言
-        return s;
-    } else if (targets.length == 1) {
-        return `変動+${targets[0]}=${s.toLocaleString()}`;
-    } else {
-        return `残り${s.toLocaleString()}`;
-    }
+  button.addEventListener("click", async () => {
+    const str = __resultMeterStr(b, score, coin, target, true);
+    window.copyToClipboard(str);
+    // document.getElementById('result-placeholder').value = str;
+    // return updateUrlMeter();
   });
-
-  let help = '現在のスコア';
-  let help2 = '';
-
-  let ret = b.toLocaleString();
-  let is_hitokoto_comment = false;
-  if (format.endsWith('x')) {	// 一言コメント用 15文字以内
-    // 2x, 4x, 6x
-    ret = b + '→🎁';
-    is_hitokoto_comment = true;
-    help += '→🎁';
-    help2 += '変動+' + targets[0] + 'に必要なコイン数';
-  } else if (targets.length == 1 || format == 'all') {
-    // +2, +4, +6 のみ
-    ret += ' / ' + formatAsK(a['g']) + 'k';
-    help += ' / 目標値';
-    if (format == 'all') {
-        help2 += '目標値=目標値に必要なコイン数';
-    } else {
-        help2 += '変動+' + targets[0] + '=目標値に必要なコイン数';
-    }
-  } else {
-    // やさしいひょうじ
-    ret = '現在のスコア ' + ret;
-    help2 += '約xxxコイン数で目標値達成';
-  }
-  if (!is_hitokoto_comment) {
-    ret += ' 🎁 ';
-    help += ' 🎁 ';
-  }
-
-  ret += results.filter(s => s !== "").join(', ');
-  // ret +=  ': ' + getCurrentTime() + '';
-
-  document.getElementById("result").value = ret;
-  document.getElementById("result-placeholder").value = help + help2;
+  return tr;
 
 }
 
-// 現在のライブスコアから確定スコアまでのコイン数を算出
-function calculateLiveScoreToCoins(a, b) {
 
-  const format = document.getElementById("result-format").value;
-  let targets = [];
-  if (format == 'all' || format.startsWith('easy')) {
-    targets = [2, 4, 6];
-  } else if (format.endsWith('x')) {
-    // 2x, 4x, 6x
-    targets = [parseInt(format[0])];
-  } else {
-    // 2, 4, 6
-    targets = [parseInt(format)];
+// 全体コピー
+function copyAllMeter() {
+  const str = document.getElementById('result').value;
+  if (str !== '') {
+    window.copyToClipboard(str);
+  }
+}
+
+
+function __makeAllMeterStr(a, b) {
+  const checkboxes = document.querySelectorAll('input[name="meter-display"]:checked');
+  if (checkboxes.length === 0) {
+    return '';
   }
 
-  const s2calgo = format.endsWith('_per3') ? 'per3' : 'normal';
+  const format = document.getElementById("meter-copy-format").value;
 
-  const results = targets.map(i => {
-    // 残スコアから必要コイン数を算出
-    const s = score2coin(a[i], b, s2calgo);
-    if (s < 20) {
-        return '';
+  let str = '';
+  let sep = ''
+  const mark_livescore = '⤴';
+  if (format == "easy") {
+	  str = '現在のスコア ' + mark_livescore + b.toLocaleString();
+	  sep = '\n';
+  } if (format == "simple") {
+	  str = mark_livescore + b.toLocaleString() + ' 🎁 ';
+	  sep = ' ';
+  }
+
+  let is_end = false;
+  checkboxes.forEach(checkbox => {
+    const target = checkbox.value;
+    const score = a[target];
+    const coin = score2coin(score, b, 'normal');
+	if (format == "short" && coin == 0 || is_end) {
+		return ;
+	}
+	let s = __resultMeterStr(b, score, coin, target, false);
+	if (format == "easy") {
+	  coin_str = coin.toLocaleString();
+	  if (coin_str.length < 10) {
+	    s = (" ".repeat(10 - coin_str.length)) + s;
+	  }
     }
-    if (format.startsWith('easy')) {
-        return `${s.toLocaleString()}コインで+${i}確定`;
-    } else if (format.endsWith('x')) {
-        return s;
-    } else {
-        return `+${i}=${s.toLocaleString()}`;
-    }
+	str += sep + s;
+
+	if (format == "short") {
+		is_end = true;
+	}
   });
 
-  let help = '現在のスコア';
-  let help2 = '';
+  return str;
+}
 
-  let ret = b.toLocaleString();
-  let is_hitokoto_comment = false;
-  if (format.endsWith('x')) {
-    // 2x, 4x, 6x
-    ret = b + '→🎁';
-    is_hitokoto_comment = true;
-    help += '→🎁';
-    help2 += '+' + targets[0] + 'に必要なコイン数';
-  } else if (targets.length == 1) {
-    // +2, +4, +6 のみ
-    ret += ' / ' + formatAsK(a[targets[0]]) + 'k';
-    help += ' / 保証ボーダー';
-    help2 += '+' + targets[0] + '=確定+' + targets[0] + 'に必要なコイン数';
-  } else if (format == 'all') {
-    help2 += '+2=確定+2に必要なコイン数, +4=確定+4に..., +6=確定+6に...';
+
+function __resultMeterStr(score, goal, coin, point, prefix) {
+  const format = document.getElementById("meter-copy-format").value;
+  const MARK_SCORE = '⤴';
+  if (format === 'easy') {
+    if (point == "g") {
+        return `現在のスコア ${MARK_SCORE}${score.toLocaleString()} / ${formatPalmu(goal)} | 🎁${coin.toLocaleString()}で目標達成`;
+    } else {
+        const p = prefix ? ('現在のスコア ⤴' + score.toLocaleString() + ' 🎁 ') : '';
+      return `${p}${coin.toLocaleString()}コインで+${point}確定 / ${formatPalmu(goal)}`;
+    }
+  } else if (format === 'short') {  // 一言コメント用
+    return `${score}→🎁${coin}`;
+  } else if (format === 'simple') {
+    if (point == "g") {
+      return `🎁 ${coin.toLocaleString()}  (⤴${score.toLocaleString()} / ${formatPalmu(goal)})`;
+    } else {
+      const p = prefix ? (score.toLocaleString() + ' 🎁 ') : '';
+      return `${p}+${point}=${coin.toLocaleString()}/${formatPalmu(goal)}`;
+    }
   } else {
-    // やさしいひょうじ
-    ret = '現在のスコア ' + ret;
-    help2 += '約xxxコイン数で+2確定, ...';
+    return `unknown format; ${format}`;
   }
-  if (!is_hitokoto_comment) {
-    ret += ' 🎁 ';
-    help += ' 🎁 ';
+}
+
+
+// 「確定値」用：現在のライブスコアから確定スコアまでのコイン数を算出
+function calculateLiveScoreToCoins(a, b) {
+
+  const tbody = document.getElementById("meter-result-tbody")
+  tbody.innerHTML = '';
+
+  const checkboxes = document.querySelectorAll('input[name="meter-display"]:checked');
+  if (checkboxes.length === 0) {
+    // 何もチェックされていない
+    document.getElementById('meter-result-empty').hidden = false;
+    document.getElementById('meter-result-table').hidden = true;
+  } else {
+    document.getElementById('meter-result-empty').hidden = true;
+    document.getElementById('meter-result-table').hidden = false;
+    checkboxes.forEach(checkbox => {
+      const target = checkbox.value;
+      const score = a[target];
+      const tr = __reanderMeterCardRow(score, b, target);
+      tbody.appendChild(tr);
+    });
   }
 
-  ret += results.filter(s => s !== "").join(', ');
-  // ret +=  ': ' + getCurrentTime() + '';
-
-  document.getElementById("result").value = ret;
-  document.getElementById("result-placeholder").value = help + help2;
+  const str = __makeAllMeterStr(a, b);
+  __setTextAreaText('result', str);
+  return ;
 }
 
 function __getTodayString() {
@@ -341,10 +384,15 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // 入力変更時に自動計算
-  ['a2', 'a4', 'a6', 'result-format', 'live_score', 'coin', 'dynamic-border-value', 'border-type'].forEach(id => {
+  ['a2', 'a4', 'a6', 'meter-copy-format', 'live_score', 'coin', 'dynamic-border-value', 'border-type'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', calculateWrapper, undefined);
   });
 
+  document.querySelectorAll('input[name="meter-display"]').forEach(elm => {
+	  elm.addEventListener('change', () => {
+		  calculateWrapper();
+	  });
+  });
 
   // 初回計算
   calculate();

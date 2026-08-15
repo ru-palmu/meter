@@ -198,8 +198,12 @@ function loadDefaultValues(prefix, table) {
 		const elem = document.getElementById(elem_id);
 		if (elem) {
 			const value = sessionStorage.getItem(prefix + session_id);
-			if (value) {
-				elem.value = value;
+			if (elem?.type === "checkbox") {
+				elem.checked = (value != "0" && value != 0);
+			} else {
+				if (value) {
+					elem.value = value;
+				}
 			}
 		}
 	});
