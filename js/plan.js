@@ -168,6 +168,7 @@ function _renderPlansTable(rank, days, points, rawPlans, showCond) {
 
 	const th_plan = document.createElement("th");
 	th_plan.innerText = "プラン";
+	th_plan.classList.add("plan");
 	tr_head.appendChild(th_plan);
 
 	let th_num = 0;

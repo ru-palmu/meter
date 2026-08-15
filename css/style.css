@@ -1697,7 +1697,7 @@ table.mini-char th.box.tr,
  *=================================================*/
 
 .copy-hint {
-    margin: 0 0 0.4rem;
+    margin-left: 1.6em;
     color: #999;
     font-size: 0.75rem;
 }
@@ -1745,6 +1745,7 @@ table.mini-char th.box.tr,
 .plan-table td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid #f1f5f9;
+  text-align: right;
 }
 
 .plan-table thead th {
@@ -1753,6 +1754,9 @@ table.mini-char th.box.tr,
   font-size: 0.78rem;
   font-weight: 600;
   white-space: nowrap;
+}
+.plan-table thead th.plan {
+  text-align: center;
 }
 .plan-table thead th.coin-diff {
   font-size: 0.67rem;
@@ -1766,7 +1770,7 @@ table.mini-char th.box.tr,
 
 /* 7日間の配分 */
 
-.plan {
+.plan-table td.plan {
   padding: 0.35rem 0.2rem;
 
   font-family:

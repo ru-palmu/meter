@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script       src="js/meter.js?v=94" defer></script>
-  <script src="../data/notice.js?v=94" defer></script>
-  <script        src="js/navi.js?v=94" defer></script>
-  <script        src="js/plan.js?v=94" defer></script>
-  <script src="js/ga.js" async></script>
-  <link rel="stylesheet" href="css/style.css?v=94">
-  <link rel="icon" href="/favicon.ico">
-  <title>ランクキープ・ランクアップまでのプラン計算 - パルムの計算機 for Palmu</title>
-  <meta name="description" content="Palmu（パルム）専用のプラン比較．ランク毎にランクキープ・ランクアップに必要なコイン数やライブスコアを計算します．">
-
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script       src="js/meter.js?v=94" defer></script>
+	<script src="../data/notice.js?v=94" defer></script>
+	<script        src="js/navi.js?v=94" defer></script>
+	<script        src="js/plan.js?v=94" defer></script>
+	<script src="js/ga.js" async></script>
+	<link rel="stylesheet" href="css/style.css?v=94">
+	<link rel="icon" href="/favicon.ico">
+	<title>ランクキープ・ランクアップまでのプラン計算 - パルムの計算機 for Palmu</title>
+	<meta name="description" content="Palmu（パルム）専用のプラン比較．ランク毎にランクキープ・ランクアップに必要なコイン数やライブスコアを計算します．">
 </head>
 <body>
 
@@ -54,7 +53,7 @@
 <br>
 
 <div>
-	<button class="copy-button" onclick="copyPlanResult()">📋 コピー</button>
+	<button class="copy-button" onclick="copyPlanResult()">📋 全体コピー</button>
 
 <select id="result-format">
 	<option value="coin">コイン（改良モデル）</option>
@@ -62,56 +61,57 @@
 	<option value="score">ライブスコア</option>
 	<option value="both">全部</option>
 </select>
-<span class="copy-hint">行タップで，プラン情報をコピーできます</span>
-<br>
+<div>
+<span class="copy-hint">行タップで，その行のプラン情報をコピーできます</span>
+</div>
 
 <section class="plan-result">
-  <div class="plan-result__heading">
-    <div>
-      <span class="plan-result__title" id="plan-result-rank">A4</span>:
-	  <span class="plan-result__subtitle"><strong id="plan-result-days">7日</strong>で <strong id="plan-result-points">+12</strong></span>
-    </div>
-  </div>
+	<div class="plan-result__heading">
+		<div>
+			<span class="plan-result__title" id="plan-result-rank">A4</span>:
+			<span class="plan-result__subtitle"><strong id="plan-result-days">7日</strong>で <strong id="plan-result-points">+12</strong></span>
+		</div>
+	</div>
 
-  <table class="plan-table">
-    <thead>
-      <tr id="plan-result-header-tr">
-        <th>プラン</th>
-        <th>コイン[改]</th>
-        <th></th>
-      </tr>
-    </thead>
+	<table class="plan-table">
+		<thead>
+			<tr id="plan-result-header-tr">
+				<th>プラン</th>
+				<th>コイン[改]</th>
+				<th></th>
+			</tr>
+		</thead>
 
-	<tbody id="plan-result-tbody">
-      <tr class="is-best">
-        <td class="points">
-          <span class="point point-6">+6</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span>
-        </td>
-        <td class="coins">172,440</td>
-        <td class="diff">-</td>
-      </tr>
+		<tbody id="plan-result-tbody">
+			<tr class="is-best">
+				<td class="points">
+					<span class="point point-6">+6</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span>
+				</td>
+				<td class="coins">172,440</td>
+				<td class="diff">-</td>
+			</tr>
 
-      <tr>
-        <td class="points">
-          <span class="point point-4">+4</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span>
-        </td>
-        <td class="coins">180,600</td>
-        <td class="diff">4,323</td>
-      </tr>
+			<tr>
+				<td class="points">
+					<span class="point point-4">+4</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span>
+				</td>
+				<td class="coins">180,600</td>
+				<td class="diff">4,323</td>
+			</tr>
 
-      <tr>
-        <td class="points">
-          <span class="point point-4">+4</span><span class="point point-4">+4</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span>
-        </td>
-        <td class="coins">180,600</td>
-      </tr>
+			<tr>
+				<td class="points">
+					<span class="point point-4">+4</span><span class="point point-4">+4</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span><span class="point point-1">+1</span>
+				</td>
+				<td class="coins">180,600</td>
+			</tr>
 
-      <tr>
-        <td class="points"><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-1">+1</span><span class="point point-1">+1</span></td>
-        <td class="coins">225,750</td>
-      </tr>
-    </tbody>
-  </table>
+			<tr>
+				<td class="points"><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-2">+2</span><span class="point point-1">+1</span><span class="point point-1">+1</span></td>
+				<td class="coins">225,750</td>
+			</tr>
+		</tbody>
+	</table>
 </section>
 
 </div>
@@ -125,20 +125,20 @@
 <p>新しい更新期間に入る前のプラン確定にご利用ください．また，保証ボーダーが更新されたときにも，再計算することをおすすめします．</p>
 
 <div class="help-container">
-  <div class="help-image-area">
-    <img src="img/help-plan.png" alt="操作手順">
-  </div>
+	<div class="help-image-area">
+		<img src="img/help-plan.png" alt="操作手順">
+	</div>
 
-  <div class="help">
-    <ol>
-        <li>最初に一番上のタブから，<span class="term" data-term="rank">ランク</span>を選択してください．</li>
-        <li>+2/+4/+6 の<span class="term" data-term="border">保証ボーダー</span>が正しいことを確認してください．正しくなければ修正してください．</li>
-        <li>残りの日数と，獲得したい<span class="term" data-term="point">デイリーランクポイント数</span>を選択してください．</li>
-        <li>出力形式を選択してください．</li>
-        <li>結果にプランが表示されます．結果は<span class="term" data-term="coin">コイン数</span>（ライブスコア）の少ない順に並んでいます．</li>
-        <li>（リスナーなら，「コピー」ボタンを押下して，Palmu のチャットに貼り付けてください．注：7日で18ポイント等では長くなり一度での貼り付けができません．）</li>
-    </ol>
-  </div>
+	<div class="help">
+		<ol>
+			<li>最初に一番上のタブから，<span class="term" data-term="rank">ランク</span>を選択してください．</li>
+			<li>+2/+4/+6 の<span class="term" data-term="border">保証ボーダー</span>が正しいことを確認してください．正しくなければ修正してください．</li>
+			<li>残りの日数と，獲得したい<span class="term" data-term="point">デイリーランクポイント数</span>を選択してください．</li>
+			<li>出力形式を選択してください．</li>
+			<li>結果にプランが表示されます．結果は<span class="term" data-term="coin">コイン数</span>（ライブスコア）の少ない順に並んでいます．</li>
+			<li>（リスナーなら，「コピー」ボタンを押下して，Palmu のチャットに貼り付けてください．注：7日で18ポイント等では長くなり一度での貼り付けができません．）</li>
+		</ol>
+	</div>
 </div>
 
 <p><span class="term" data-term="score">ライブスコア</span>から<span class="term" data-term="coin">コイン数</span>の算出方法は，２種類あります．どちらの方法でも，コメント数や視聴人数などの影響により若干の誤差が生じます．参考値としてご利用ください．</p>
