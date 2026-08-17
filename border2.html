@@ -45,13 +45,6 @@
 
 <div class="output-block">
 
-<select id="meter-copy-format">
-	<option value="" disabled>コピー形式</option>
-	<option value="easy" selected>標準</option>
-	<option value="simple">シンプル</option>
-	<option value="short">一言コメ</option>
-</select>
-
 <table id="meter-result-table">
 	<tbody id="meter-result-tbody">
 		<tr>
@@ -84,6 +77,13 @@
 
 
 <button class="copy-button" onclick="copyAllMeter()">📋コピー</button>
+<select id="meter-copy-format">
+	<option value="" disabled>コピー形式</option>
+	<option value="easy" selected>標準</option>
+	<option value="simple">シンプル</option>
+	<option value="short">一言コメ</option>
+</select>
+
 <textarea class="copy-output" id="result" readonly cols="40" rows="1" placeholder=""></textarea>
 </div>
 
