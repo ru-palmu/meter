@@ -33,7 +33,7 @@
 
 <div class="input-block">
 	<div class="meter-field score">
-		<label id="score_label">現在のライブスコア: </label>
+		<label id="score_label">現在のライブスコア⤴</label>
 		<input type="number" id="live_score" value="0">
 	</div>
 	<input type="hidden" id="border-type" value="dynamic">
@@ -44,27 +44,49 @@
 </div>
 
 <div class="output-block">
-<button class="copy-button" onclick="onCopyAndRedirect('result', updateUrlMeter)">📋コピー</button>
-<select id="result-format">
-	<option value="easy">標準（全部）＋改良モデル</option>
-	<option value="easy_per3">標準（全部）＋従来モデル[÷3]</option>
-	<option value="all">シンプル（全部）＋改良モデル</option>
-	<option value="2">シンプル（+2 のみ）＋改良モデル</option>
-	<option value="4">シンプル（+4 のみ）＋改良モデル</option>
-	<option value="6">シンプル（+6 のみ）＋改良モデル</option>
-	<option value="2x">一言コメ（+2 のみ）＋改良モデル</option>
-	<option value="4x">一言コメ（+4 のみ）＋改良モデル</option>
-	<option value="6x">一言コメ（+6 のみ）＋改良モデル</option>
+
+<table id="meter-result-table">
+	<tbody id="meter-result-tbody">
+		<tr>
+			<th scope="row">
+				<span class="point-4">+4</span>
+				<span class="meter-result-target">⤴259K まで</span>
+			</th>
+			<td class="meter-result-coins">
+				<span class="meter-result-unit">🎁</span><span class="meter-result-value">89,950</span>
+			</td>
+			<td class="meter-result-copy">
+				<button type="button" class="meter-copy-button">コピー</button>
+			</td>
+		</tr>
+
+		<tr>
+			<th scope="row">
+				<span class="point-6">+6</span>
+				<span class="meter-result-target">⤴478K まで</span>
+			</th>
+			<td class="meter-result-coins">
+				<span class="meter-result-unit">🎁</span><span class="meter-result-value">172,090</span>
+			</td>
+			<td class="meter-result-copy">
+				<button type="button" class="meter-copy-button">コピー</button>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<button class="copy-button" onclick="copyAllMeter()">📋コピー</button>
+<select id="meter-copy-format">
+	<option value="" disabled>コピー形式</option>
+	<option value="easy" selected>標準</option>
+	<option value="simple">シンプル</option>
+	<option value="short">一言コメ</option>
 </select>
 
 <textarea class="copy-output" id="result" readonly cols="40" rows="1" placeholder=""></textarea>
 </div>
 
-<br>
-<div>
-<button class="copy-button" onclick="onCopyAndRedirect('result-placeholder', updateUrlMeter)">📋表示の説明をコピー</button>
-<textarea class="copy-output" id="result-placeholder" readonly cols="40" rows="1" placeholder=""></textarea>
-</div>
 
 <div id="guaranteed-score"></div>
 
