@@ -96,7 +96,7 @@ function _openDB() {
   });
 }
 
-async function _saveFile(key, file) {
+async function __saveFile(key, file) {
   const db = await _openDB();
 
   return new Promise((resolve, reject) => {
@@ -110,7 +110,7 @@ async function _saveFile(key, file) {
   });
 }
 
-async function _loadFile(key) {
+async function __loadFile(key) {
   const db = await _openDB();
 
   return new Promise((resolve, reject) => {
@@ -1107,7 +1107,7 @@ function makeCopyright(year, debug_str) {
 	const copyright = document.createElement("div");
   copyright.className = "copyright";
 
-  const sp = "\u00A0"; // "\u00A0";
+  // const sp = "\u00A0"; // "\u00A0";
   const suffix = (cal_debug) ? debug_str : "";
   const text = document.createTextNode(`ぱ(る)むの計算機 by (る)` + suffix);
 
@@ -1910,7 +1910,7 @@ function _reanderOptionTabFile() {
       }
       const file = input.files[0];
       img.src = URL.createObjectURL(file);
-			// await _saveFile(input.id, file);
+			// await __saveFile(input.id, file);
     });
   });
 }

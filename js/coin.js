@@ -127,7 +127,7 @@ function calculateDynamicScores(rank, a, b) {
   const tbody = document.getElementById("meter-result-tbody")
   tbody.innerHTML = '';
 
-  target = 'g';
+  const target = 'g';
   const score = parseInt(document.getElementById("dynamic-border-value")?.value ?? '0') || '0';
   const coin = score2coin(score, b, 'normal') ?? 0;
   const tr = __reanderMeterCardRow(score, b, target);
@@ -228,7 +228,7 @@ function __makeAllMeterStr(a, b) {
 	}
 	let s = __resultMeterStr(b, score, coin, target, false);
 	if (format == "easy") {
-	  coin_str = coin.toLocaleString();
+	  const coin_str = coin.toLocaleString();
 	  if (coin_str.length < 10) {
 	    s = (" ".repeat(10 - coin_str.length)) + s;
 	  }
@@ -404,3 +404,4 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 window.updateUrlMeter = updateUrlMeter;
+window.copyAllMeter = copyAllMeter;
