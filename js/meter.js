@@ -1,6 +1,14 @@
 // GETパラメータがないときのデフォルト値
 window.default_rank = "A1";
 
+const v=95;
+const version = new URL(document.currentScript.src).searchParams.get('v');
+if (version != v) {
+    throw new Error('Too bad. Come back again!');
+}
+
+
+
 // 日付 => 保証ボーダー
 // 要bump-up
 window.presets = {

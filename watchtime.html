@@ -125,7 +125,7 @@ function createSub(m){
   else if(m==="1") list=["1.0","1.2","1.4","1.6","1.8"];
   else for(let i=0;i<=9;i++) list.push(m+"."+i);
 
-  list.forEach(v=>{
+  list.forEach(v => {
     const b=document.createElement("button");
     b.textContent=v;
     b.className="watch_time_badge_btn";
@@ -135,7 +135,7 @@ function createSub(m){
 }
 
 function selectSub(v,btn){
-  if(v==="5.9" && false){
+  if(v === "5.9" && false){
     watch_time_selectedSub=null;
     updateCurrent();
     createDeep();
@@ -165,7 +165,7 @@ function createDeep(){
 
   // データ（5.90〜5.99）
   for(let i=90;i<=99;i++){
-    const v="5."+i;
+    const v = "5."+i;
     const b=document.createElement("button");
     b.textContent=v;
     b.className="watch_time_badge_btn";
