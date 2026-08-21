@@ -1791,7 +1791,7 @@ table.mini-char th.box.tr,
   text-align: center;
 }
 
-.point {
+.plan-table .point {
   display: inline-block;
 
   margin: 0.1rem;
