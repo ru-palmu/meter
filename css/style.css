@@ -619,13 +619,15 @@ table.gborder-multiplier-table tr.multiplier td.rate-decrease {
 table.gborder-multiplier-table td.keep,
 table.gborder-multiplier-table td.point-2,
 table.gborder-multiplier-table td.point-6 {
+	color: #000;
 	background-color: rgba(180, 160, 80, 0.05);
 }
 
 /* 列グループ：ランクアップ */
 table.gborder-multiplier-table td.up,
 table.gborder-multiplier-table td.point-4 {
-	/* background-color: rgba(100, 180, 120, 0.08); */
+	color: #000;
+	background-color: rgba(100, 180, 120, 0.08);
 }
 
 
