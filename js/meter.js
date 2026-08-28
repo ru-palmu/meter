@@ -1,7 +1,7 @@
 // GETパラメータがないときのデフォルト値
 window.default_rank = "A1";
 
-const v=95;
+const v=6788;
 const version = new URL(document.currentScript.src).searchParams.get('v');
 if (version != v) {
     throw new Error('Too bad. Come back again!');
