@@ -1806,22 +1806,25 @@ table.mini-char th.box.tr,
   line-height: 1.4;
 }
 
-.point-6 {
+.plan-result .point-6,
+#meter-result-tbody .point-6 {
   color: #fff;
   background: var(--meter-point-6);
 }
 
-.point-4 {
+.plan-result .point-4,
+#meter-result-tbody .point-4 {
   color: #fff;
   background: var(--meter-point-4);
 }
 
-.point-2 {
+.plan-result .point-2,
+#meter-result-tbody .point-2 {
   color: #fff;
   background: var(--meter-point-2);
 }
 
-.point-1 {
+.plan-result .point-1 {
   color: #64748b;
   background: #f1f5f9;
 }
@@ -3020,6 +3023,7 @@ table.scatter-table tr.coin1000 {
     border: 1px solid #ccc;
     border-radius: 0.4em;
     background: #fff;
+    margin-right: 0.2em;
     color: #000;
 }
 
