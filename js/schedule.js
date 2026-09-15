@@ -242,11 +242,15 @@ function createEventSelectorsPast(dateStr, dow, sep) {
   return tdEvent;
 }
 
-function _eventOptionTV(ev) {
+function _eventOptionTV(ev, isLongName) {
   let ev_text = ev;
   if (Array.isArray(ev)) {
     if (ev.length == 3) {
-      ev_text = ev[2];
+      if (isLongName) {
+        ev_text = ev[1];
+      } else {
+        ev_text = ev[2];
+      }
       ev = ev[0];
     } else {
       ev_text = ev[1];
@@ -289,7 +293,7 @@ function setupEventTitles() {
       [...events, ...events_common].forEach((ev) => {
         const opt = document.createElement("option");
         // リストなら，１番目の要素を使う
-        const ev_value = _eventOptionTV(ev);
+        const ev_value = _eventOptionTV(ev, false);
         opt.value = ev_value.value;
         opt.textContent = ev_value.text;
         select.appendChild(opt);
@@ -825,7 +829,7 @@ function updateTotals() {
 //////////////////////////////////////////////////////////
 //
 //
-function __getEventName(day) {
+function __getEventName(day, isLongName) {
   const d = new Date(day);
   // 前の火曜日を求める
   const dow = d.getDay();
@@ -835,7 +839,7 @@ function __getEventName(day) {
   const events = window.EVENT_TITLES[dateStr] || [];
 
   [...events, ...EVENT_COMMON].forEach((e) => {
-    const ee =  _eventOptionTV(e);
+    const ee =  _eventOptionTV(e, isLongName);
     if (ee.value == ev) {
       ev = ee.text;
       return ev;
@@ -863,7 +867,7 @@ function makeTdEventBand(nowDay, dow, sep, j) {
     spanEvent.classList.add("end");
   }
 
-  const ev = __getEventName(nowDay)
+  const ev = __getEventName(nowDay, j == 0 && dow == "Tue");
   if (ev) {
     spanEvent.textContent = ev;
     tdEvent.appendChild(spanEvent);
@@ -1104,7 +1108,7 @@ function isMiniCharUserEnabled() {
 }
 
 function makeCopyright(year, debug_str) {
-	const copyright = document.createElement("div");
+  const copyright = document.createElement("div");
   copyright.className = "copyright";
 
   // const sp = "\u00A0"; // "\u00A0";
@@ -1283,7 +1287,7 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
   _makeWeekTitle(title, startDay, nowDay);
   setTitleIcons(title);
 
-	const copyright = makeCopyright(today.slice(0, 4), id_canvas);
+  const copyright = makeCopyright(today.slice(0, 4), id_canvas);
   div.appendChild(copyright);
   setMiniCharUsers(div);
 }
@@ -1353,7 +1357,7 @@ function makeMonthPng(id_canvas, start, sep, weekn, isMemo) {
   table.className = "scheduler_month";
   div.appendChild(table);
 
-	const copyright = makeCopyright(today.slice(0, 4), id_canvas);
+  const copyright = makeCopyright(today.slice(0, 4), id_canvas);
   div.appendChild(copyright);
 
   const thead = document.createElement("thead");
@@ -1384,10 +1388,6 @@ function makeMonthPng(id_canvas, start, sep, weekn, isMemo) {
     for (let i = 0; i < 14; i++) {
       const newDay = new Date(nowDay);
       newDay.setDate(newDay.getDate() + i);
-      const dddstr = dateToStr(newDay);
-      if (scheduleData[dddstr] && dddstr.startsWith("2026-03")) {
-        console.log(dddstr, scheduleData[dddstr]);
-      }
     }
   }
 
@@ -1910,7 +1910,7 @@ function _reanderOptionTabFile() {
       }
       const file = input.files[0];
       img.src = URL.createObjectURL(file);
-			// await __saveFile(input.id, file);
+      // await __saveFile(input.id, file);
     });
   });
 }
@@ -2219,5 +2219,6 @@ document.addEventListener("DOMContentLoaded", () => {
     debugTable();
   }
 });
+
 
 /* vim: set et ts=2 sts=2 sw=2 et: */
