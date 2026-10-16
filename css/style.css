@@ -2113,11 +2113,8 @@ table.scheduler_month td.rank span.rank {
 
 
 table.scheduler_month td.event span.event {
-	background-color: #f6a9c3; /* ピンク系 */
 	color: #7a1f2b;
-}
 
-table.scheduler_month td.event span.event {
 	display: block;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 
@@ -2131,6 +2128,13 @@ table.scheduler_month td.event span.event {
 	overflow: hidden;
 
 	transform: translateZ(0);
+}
+
+table.scheduler_month td.event span.event-odd {
+	background-color: #f6a9c3; /* 濃ピンク系 */
+}
+table.scheduler_month td.event span.event-even {
+	background-color: #f9c7d8; /* 淡ピンク系 */
 }
 
 

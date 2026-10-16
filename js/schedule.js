@@ -849,13 +849,19 @@ function __getEventName(day, isLongName) {
   return ev
 }
 
-function makeTdEventBand(nowDay, dow, sep, j) {
+// nowDay; その日の日付
+// dow; 曜日
+// sep; 区切り曜日
+// j; カレンダーの横位置
+// i; カレンダーの縦位置
+function makeTdEventBand(nowDay, dow, sep, j, i) {
 
   const tdEvent = document.createElement("td");
   tdEvent.className = "event";
 
   const spanEvent = document.createElement("span");
   spanEvent.className = "event";
+  spanEvent.classList.add((i + (j == 0 ? -1 : 0)) % 2 == 0 ? "event-odd" : "event-even");
 
   // 月曜日までの帯
   if (dow == "Tue") {
@@ -1333,6 +1339,18 @@ function setTitleIcons(title) {
   ], ["mini-char-title-right"]);
 }
 
+
+// イベント帯で、短い帯の文字がはみ出している場合は非表示にする
+// 長い帯がはみ出しているときは諦める
+function hideOverflowEventNames(table) {
+  table.querySelectorAll("td.event span.event").forEach(span => {
+    if (span.parentElement.colSpan <= 3 &&
+        span.scrollWidth > span.clientWidth) {
+      span.style.color = "transparent";
+    }
+  });
+}
+
 /**
  * 4週間分のカレンダー
  * sep: 左端の曜日
@@ -1420,8 +1438,8 @@ function makeMonthPng(id_canvas, start, sep, weekn, isMemo) {
       ////////////////////////////////////
       // イベント帯
       ////////////////////////////////////
-      if (day == "Tue" || j == 0) {
-        const tdEvent = makeTdEventBand(nowDay, day, sep, j);
+      if (day == "Tue" || j == 0) { // 火曜日=イベント始まり or 左端の曜日
+        const tdEvent = makeTdEventBand(nowDay, day, sep, j, i);
         trs['event'].appendChild(tdEvent);
       }
 
@@ -2086,6 +2104,7 @@ function generateImage() {
     }
 
     canvas.style.display = "flex";
+    hideOverflowEventNames(canvas);
     html2canvas(canvas, {
       scale: 4,
     }).then((canvas) => {
