@@ -1252,8 +1252,19 @@ function makeWeekPngRow(nowDay, isMemo, memoSize, rank_class) {
   return classRankMove
 }
 
+function makeWeekEventLabel(day) {
+  const name = __getEventName(day, true);
+  const div = document.createElement("div");
+  div.className = "week-event-label";
+  div.textContent = name || "不参加";
+
+  return div;
+}
+
+
+
 // days 分のスケジュール表
-function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
+function makeWeekPng(id_canvas, start, days, isMemo, memoSize, isEvent = false) {
 
   const canvas = document.getElementById(id_canvas);
   if (!canvas) {
@@ -1263,6 +1274,10 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
 
   const div = document.createElement("div");
   div.className = "calendar-wrapper";
+  if (isEvent) {
+    // 下のミニキャラがあふれる対策
+    div.classList.add("with-event-labels");
+  }
   canvas.appendChild(div);
 
   const title = document.createElement("div");
@@ -1282,6 +1297,16 @@ function makeWeekPng(id_canvas, start, days, isMemo, memoSize) {
   div.appendChild(dayrows);
   let nx_class = '';
   for (let i = 0; i < days; i++) {
+
+    // 表示初日、またはイベント切り替わりの火曜日
+    if (isEvent && (i === 0 || nowDay.getDay() === EVENT_STATE_DOW)) {
+      const label = makeWeekEventLabel(nowDay);
+      if (label) {
+        dayrows.appendChild(label);
+      }
+    }
+
+
     const tx = makeWeekPngRow(nowDay, isMemo, memoSize, nx_class);
     dayrows.appendChild(tx[2]);
     nx_class = tx[0];
@@ -1563,6 +1588,7 @@ function _saveOptionTab(gen_image) {
     ['cal-memo-size', 'cal-memo-size'],
     ['cal-size-full', 'cal-size'], // radio
     ['cal-week-memo-enable', 'cal-week-memo-enable'],
+    ['cal-event-enable', 'cal-event-enable'],
     ['sch-tab-option', 'sch-tab'],
   ].forEach(([id, key]) => {
     const el = document.getElementById(id);
@@ -2061,6 +2087,7 @@ function generateImage() {
   }
 
   const size = document.querySelector('input[name="cal-size"]:checked')?.value;
+  const isEvent = document.getElementById("cal-event-enable").checked;
   targets.forEach(([vid, vv]) => {
     if (vv == "month") {
       const dow = document.getElementById("cal-dow").value;
@@ -2087,7 +2114,7 @@ function generateImage() {
         'cal_memo-size': memoSize,
         'user_rank': selectedRank("undefined"),
       });
-      makeWeekPng(vid, parseInt(start), parseInt(days), isMemo, memoSize);
+      makeWeekPng(vid, parseInt(start), parseInt(days), isMemo, memoSize, isEvent);
     }
   });
 
@@ -2095,7 +2122,9 @@ function generateImage() {
     const canvas = document.getElementById("div-canvas");
     if (size != "min") {
       canvas.style.minHeight = "640px";
-      canvas.style.aspectRatio = "9 / 16";
+      // canvas.style.aspectRatio = "9 / 16";
+      canvas.style.aspectRatio = val === "week" && isEvent ? "auto" : "9 / 16";
+
     } else {
       canvas.style.minHeight = "auto";
       canvas.style.aspectRatio = "auto";
